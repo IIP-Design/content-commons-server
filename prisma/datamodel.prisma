@@ -1,0 +1,39 @@
+enum Permission {
+  SUBSCRIBER
+  AUTHOR
+  EDITOR
+  TEAM_ADMIN
+  ADMIN
+}
+
+type User {
+  id: ID! @unique
+  firstName: String!
+  lastName: String!
+  email: String! @unique
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  jobTitle: String
+  country: String
+  city: String
+  howHeard: String
+  permissions: [Permission!]!
+  team: Team
+  isConfirmed: Boolean! @default(value: "false")
+}
+
+type Team {
+  id: ID! @unique
+  name: String! @unique
+  organization: String!
+  members: [User]!
+  isConfirmed: Boolean! @default(value: "false")
+}
+
+type Video {
+  id: ID! @unique
+  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
