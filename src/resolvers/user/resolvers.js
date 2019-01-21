@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 import { verifyGoogleToken } from '../../services/googleAuth';
 
@@ -65,6 +65,17 @@ export default {
 
       // 7.Return user
       return user;
+    },
+
+    async signUp( parent, args, ctx ) {
+      try {
+        await ctx.prisma.createUser( args.data );
+        return {
+          text: 'success'
+        };
+      } catch ( err ) {
+        throw new ApolloError( 'There is already a user with that email in the system.' );
+      }
     },
 
     /**

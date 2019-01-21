@@ -6,6 +6,14 @@ enum Permission {
   ADMIN
 }
 
+enum ContentType {
+  AUDIO
+  VIDEO
+  DOCUMENT
+  IMAGE
+  TEACHING_MATERIAL
+}
+
 type User {
   id: ID! @unique
   firstName: String!
@@ -27,7 +35,8 @@ type Team {
   id: ID! @unique
   name: String! @unique
   organization: String!
-  members: [User]!
+  members: [User]
+  contentTypes: [ContentType]
   isConfirmed: Boolean! @default(value: "false")
 }
 
