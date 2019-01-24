@@ -11,18 +11,12 @@ type Mutation {
   deleteVideo(id: ID!): Video
   createTeam(name: String!, organization: String!): Team!
   signOut: String!
-  # signUp(
-  #   firstName: String!
-  #   lastName: String!
-  #   email: String!
-  #   jobTitle: String
-  #   country: String
-  #   city: String
-  #   howHeard: String
-  #   permissions: [Permission]
-  #   teamId: String!
-  # ): Message
   signUp(data: UserCreateInput): Message
+  confirmRegistration(
+    tempToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
   googleSignin(token: String!): User
 }
 
@@ -32,4 +26,18 @@ type Query {
   teams: [Team]!
   team(id: ID!): Team
   authenticatedUser: User
+}
+
+# Redefine to not reveal sensitive user fields
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  jobTitle: String
+  country: String
+  city: String
+  howHeard: String
+  permissions: [Permission!]!
+  team: Team
 }
