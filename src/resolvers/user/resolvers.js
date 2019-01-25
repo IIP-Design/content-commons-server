@@ -6,6 +6,8 @@ import { promisify } from 'util';
 import { transport, createEmailMessage } from '../../services/mail';
 import { verifyGoogleToken } from '../../services/googleAuth';
 
+const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
 
 export default {
   Query: {
@@ -49,30 +51,54 @@ export default {
       }
 
       // 5.Create user's JWT token
-      const jwtToken = jwt.sign( { userId: user.id }, process.env.PUBLISHER_APP_SECRET );
+      const jwtToken = generateToken( user.id );
 
       // 6.Set the jwt as a cookie on the response
       ctx.res.cookie( 'americaCommonsToken', jwtToken, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
+        maxAge: COOKIE_MAX_AGE
       } );
 
       // 7.Return user
       return user;
     },
 
-    // signin( parent, { email }, ctx ) {
-    // 1. check if there is a user with that email
-    // 2. check if password is correct
-    // 3. generate jwt token
-    // 4. set cookie with the token
-    // 5. return the user
-    // },
+    /**
+     *  Sign user in via email/password
+     *
+     * @param {object} args { email, password }
+     */
+    async signIn( parent, { email, password }, ctx ) {
+      // 1. check if there is a user with that email
+      const user = await ctx.prisma.user( { email } );
+      if ( !user ) {
+        throw new AuthenticationError( `No such user found for email ${email}` );
+      }
+
+      // 2. Check if their password is correct
+      const valid = await bcrypt.compare( password, user.password );
+      if ( !valid ) {
+        throw new AuthenticationError( 'Invalid Password!' );
+      }
+
+      // 3. generate the JWT Token
+      const jwtToken = generateToken( user.id );
+
+      // 4. Set the cookie with the token
+      ctx.res.cookie( 'americaCommonsToken', jwtToken, {
+        httpOnly: true,
+        maxAge: COOKIE_MAX_AGE
+      } );
+
+      // 5. Return the user
+      return user;
+    },
 
 
     /**
      * Creates an unconfirmed user in db then send confirmation email
-     * @param {*} args { UserCreateInput }
+     *
+     * @param {object} args { UserCreateInput }
      */
     async signUp( parent, args, ctx ) {
       try {
@@ -121,7 +147,8 @@ export default {
      * Verify temporary token is still valid, and passwords match
      * If so, update isConfirmed user property and store password
      * Then create a token, set cookie and return user
-     * @param {*} args
+     *
+     * @param {object} args
      */
     async confirmRegistration( parent, args, ctx ) {
       // 1. Verify passwords match.  This is a second check as it is
@@ -156,12 +183,12 @@ export default {
       } );
 
       // 6. Generate JWT
-      const jwtToken = jwt.sign( { userId: user.id }, process.env.PUBLISHER_APP_SECRET );
+      const jwtToken = generateToken( user.id );
 
       // 7. Set the JWT cookie
       ctx.res.cookie( 'americaCommonsToken', jwtToken, {
         httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
+        maxAge: COOKIE_MAX_AGE
       } );
 
       // 8. return the new user
