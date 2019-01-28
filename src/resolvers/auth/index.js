@@ -39,15 +39,9 @@ export default {
       }
 
       // 4. Check to see if user is in the db, if not create & save user
-      let user = await ctx.prisma.user( { email: googleUser.email } );
+      const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
-        user = await ctx.prisma.createUser( {
-          firstName: googleUser.given_name,
-          lastName: googleUser.family_name,
-          email: googleUser.email,
-          permissions: { set: ['EDITOR'] },
-          isConfirmed: true
-        } );
+        throw new AuthenticationError( 'You must first creat an account before using Google sign in' );
       }
 
       // 5.Create user's JWT token

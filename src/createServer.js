@@ -2,13 +2,16 @@ import path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import merge from 'lodash/merge';
-import UserResolvers from './resolvers/user/resolvers';
-import TeamResolvers from './resolvers/team/resolvers';
-import VideoResolvers from './resolvers/video/resolvers';
+import AuthResolvers from './resolvers/auth';
+import UserResolvers from './resolvers/user';
+import TeamResolvers from './resolvers/team';
+import VideoResolvers from './resolvers/video';
 import { prisma } from './generated/prisma-client';
+
 
 const typeDefs = importSchema( path.resolve( 'src/schema.graphql' ) );
 const resolvers = merge(
+  AuthResolvers,
   UserResolvers,
   TeamResolvers,
   VideoResolvers
