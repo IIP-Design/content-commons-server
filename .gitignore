@@ -1,5 +1,10 @@
 # dependencies
 node_modules
+
+.package-lock.json
+
+# src files
+src/generated
  
 # misc
 .DS_Store
