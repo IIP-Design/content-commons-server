@@ -30,8 +30,13 @@ export default {
         throw new AuthenticationError( 'A vaid Google token is not avaialble' );
       }
 
+      let googleUser;
       // 2. Verify that the google token sent is vaild
-      const googleUser = await verifyGoogleToken( token );
+      try {
+        googleUser = await verifyGoogleToken( token );
+      } catch ( err ) {
+        throw new AuthenticationError( 'Unable to verify Google Token' );
+      }
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
