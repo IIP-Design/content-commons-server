@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { promisify } from 'util';
-import { transport, createEmailMessage } from '../../services/mail';
-import { verifyGoogleToken } from '../../services/googleAuth';
+import { transport, createEmailMessage } from '../services/mail';
+import { verifyGoogleToken } from '../services/googleAuth';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
@@ -30,13 +30,13 @@ export default {
         throw new AuthenticationError( 'A vaid Google token is not avaialble' );
       }
 
-      let googleUser;
       // 2. Verify that the google token sent is vaild
-      try {
-        googleUser = await verifyGoogleToken( token );
-      } catch ( err ) {
+      const googleUser = await verifyGoogleToken( token );
+
+      if ( !googleUser ) {
         throw new AuthenticationError( 'Unable to verify Google Token' );
       }
+
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
