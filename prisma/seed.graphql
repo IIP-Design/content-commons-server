@@ -1,0 +1,20 @@
+mutation {
+  video: createTeam(
+    data: {
+      name: "IIP Video Production"
+      organization: "Department of State"
+      isConfirmed: true
+    }
+  ) {
+    id
+  }
+  editorial: createTeam(
+    data: {
+      name: "IIP Editorial Content"
+      organization: "Department of State"
+      isConfirmed: true
+    }
+  ) {
+    id
+  }
+}

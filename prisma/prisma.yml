@@ -9,6 +9,10 @@ generate:
   - generator: graphql-schema
     output: ../src/generated/prisma-client/
 
+# seed your service with initial data from seed.graphql. Runs once on start up
+seed:
+  import: seed.graphql
+
 hooks:
   post-deploy:
     - prisma generate
