@@ -1,7 +1,7 @@
 version: "3"
 services:
   prisma:
-    image: prismagraphql/prisma:1.22.2
+    image: prismagraphql/prisma:1.25
     restart: always
     ports:
       - "4466:4466"
@@ -14,7 +14,7 @@ services:
           default:
             connector: mysql
             host: mysql
-            user: root
+            user: root 
             password: prisma
             rawAccess: true
             port: 3306
