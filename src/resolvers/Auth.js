@@ -40,13 +40,17 @@ export default {
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
-        throw new AuthenticationError( 'You must use an america.gov email address' );
+        throw new AuthenticationError( 'You must use an america.gov email address.' );
       }
 
       // 4. Check to see if user is in the db, if not create & save user
       const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
-        throw new AuthenticationError( 'You must first creat an account before using Google sign in' );
+        throw new AuthenticationError( 'You must first create an account before using Google sign in.' );
+      }
+
+      if ( !user.isConfirmed ) {
+        throw new AuthenticationError( 'You must confirm your account before using Google sign in. Please check your email.' );
       }
 
       // 5.Create user's JWT token
