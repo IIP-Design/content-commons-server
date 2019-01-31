@@ -139,7 +139,7 @@ export default {
      */
     signOut( parent, args, ctx ) {
       ctx.res.clearCookie( 'americaCommonsToken' );
-      return 'Bye';
+      return 'loggedout';
     },
 
     /**
