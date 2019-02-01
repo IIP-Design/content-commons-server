@@ -13,13 +13,20 @@ type Mutation {
   signOut: String!
   signUp(data: UserCreateInput): Message
   signIn(email: String!, password: String!): User!
-  passwordUpdateViaToken(
+  googleSignin(token: String!): User
+  updatePassword(
     tempToken: String!
     password: String!
     confirmPassword: String!
   ): User!
-  passwordResetRequest(email: String!): Message
-  googleSignin(token: String!): User
+  requestAccountAction(
+    email: String!
+    subject: String!
+    body: String!
+    link: String!
+    reply: String!
+    page: String!
+  ): Message
 }
 
 type Query {

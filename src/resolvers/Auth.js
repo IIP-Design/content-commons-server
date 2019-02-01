@@ -155,7 +155,7 @@ export default {
      *
      * @param {object} args
      */
-    async passwordUpdateViaToken( parent, args, ctx ) {
+    async updatePassword( parent, args, ctx ) {
       // 1. Verify passwords match.  This is a second check as it is
       if ( args.password !== args.confirmPassword ) {
         throw new AuthenticationError( "Your Passwords don't match!" );
@@ -201,11 +201,14 @@ export default {
     },
 
     /**
-     * Creates an unconfirmed user in db then send confirmation email
+     * Checks for valid user and send email with token to reset password
      *
      * @param {object} args { UserCreateInput }
      */
-    async passwordResetRequest( parent, { email }, ctx ) {
+    async requestAccountAction( parent, args, ctx ) {
+      const {
+        email, subject, body, link, reply, page
+      } = args;
       try {
         // 1. check if there is a user with that email
         const user = await ctx.prisma.user( { email } );
@@ -231,20 +234,20 @@ export default {
         // 4. Email the user
         if ( updatedUser ) {
           const htmlEmail = createEmailMessage(
-            `Reset your password by using the link below:\n\n<a href="${process.env.FRONTEND_URL}/passwordreset?tempToken=${tempToken}">Click Here to Reset Password</a>`
+            `${body}\n\n<a href="${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}">${link}</a>`
           );
 
           // 2. Email user a link to confirm account
           const mailResponse = await transport.sendMail( {
             from: process.env.MAIL_RETURN_ADDRESS,
             to: user.email,
-            subject: 'Reset Your Password',
+            subject,
             html: htmlEmail
           } );
         }
 
         return {
-          text: 'Please check your email for a link to reset your password'
+          text: reply
         };
       } catch ( err ) {
         throw new ApolloError( err ); // debugging
