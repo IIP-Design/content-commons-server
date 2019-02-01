@@ -4,7 +4,10 @@ node_modules
 .package-lock.json
 
 # src files
-src/generated
+#src/generated
+
+# build
+build
  
 # misc
 .DS_Store
@@ -13,3 +16,6 @@ src/generated
 .env
 .next
 .vscode
+
+#exports
+*.zip

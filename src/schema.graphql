@@ -13,11 +13,12 @@ type Mutation {
   signOut: String!
   signUp(data: UserCreateInput): Message
   signIn(email: String!, password: String!): User!
-  confirmRegistration(
+  passwordUpdateViaToken(
     tempToken: String!
     password: String!
     confirmPassword: String!
   ): User!
+  passwordResetRequest(email: String!): Message
   googleSignin(token: String!): User
 }
 

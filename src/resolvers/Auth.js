@@ -151,9 +151,11 @@ export default {
      * If so, update isConfirmed user property and store password
      * Then create a token, set cookie and return user
      *
+     * This is should for both registration confirmation and password resets
+     *
      * @param {object} args
      */
-    async confirmRegistration( parent, args, ctx ) {
+    async passwordUpdateViaToken( parent, args, ctx ) {
       // 1. Verify passwords match.  This is a second check as it is
       if ( args.password !== args.confirmPassword ) {
         throw new AuthenticationError( "Your Passwords don't match!" );
@@ -196,7 +198,58 @@ export default {
 
       // 8. return the new user
       return updatedUser;
-    }
+    },
 
+    /**
+     * Creates an unconfirmed user in db then send confirmation email
+     *
+     * @param {object} args { UserCreateInput }
+     */
+    async passwordResetRequest( parent, { email }, ctx ) {
+      try {
+        // 1. check if there is a user with that email
+        const user = await ctx.prisma.user( { email } );
+        if ( !user ) {
+          throw new AuthenticationError( `No such user found for email ${email}` );
+        }
+
+        // 2. Set a temporary token and expiry on that user for confirmation purposes
+        const randomBytesPromiseified = promisify( randomBytes );
+        const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
+        const tempTokenExpiry = Date.now() + 3600000; // 1 hour from now
+        const userWithToken = { tempToken, tempTokenExpiry };
+
+        // 3. Update user with temporary token
+        const updatedUser = await ctx.prisma
+          .updateUser( {
+            data: userWithToken,
+            where: {
+              email
+            }
+          } );
+
+        // 4. Email the user
+        if ( updatedUser ) {
+          const htmlEmail = createEmailMessage(
+            `Reset your password by using the link below:\n\n<a href="${process.env.FRONTEND_URL}/passwordreset?tempToken=${tempToken}">Click Here to Reset Password</a>`
+          );
+
+          // 2. Email user a link to confirm account
+          const mailResponse = await transport.sendMail( {
+            from: process.env.MAIL_RETURN_ADDRESS,
+            to: user.email,
+            subject: 'Reset Your Password',
+            html: htmlEmail
+          } );
+        }
+
+        return {
+          text: 'Please check your email for a link to reset your password'
+        };
+      } catch ( err ) {
+        throw new ApolloError( err ); // debugging
+        // throw new ApolloError( 'There is already a user with that email in the system.' );
+      }
+    }
   }
 };
