@@ -7,6 +7,15 @@ import { transport, createEmailMessage } from '../services/mail';
 import { verifyGoogleToken } from '../services/googleAuth';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
+
+const createToken = async () => {
+  const randomBytesPromiseified = promisify( randomBytes );
+  const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
+  const tempTokenExpiry = Date.now() + 3600000; // 1 hour from now
+  return {
+    tempToken, tempTokenExpiry
+  };
+};
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
 
 export default {
@@ -106,9 +115,7 @@ export default {
     async signUp( parent, args, ctx ) {
       try {
         // 1. Set a temporary token and expiry on that user for confirmation purposes
-        const randomBytesPromiseified = promisify( randomBytes );
-        const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
-        const tempTokenExpiry = Date.now() + 3600000; // 1 hour from now
+        const { tempToken, tempTokenExpiry } = await createToken();
         const userWithToken = { ...args.data, tempToken, tempTokenExpiry };
 
         // 2. Create an unconfirmed user in the db
@@ -156,7 +163,7 @@ export default {
      * @param {object} args
      */
     async updatePassword( parent, args, ctx ) {
-      // 1. Verify passwords match.  This is a second check as it is
+      // 1. Verify passwords match.  This is a second check as it is checked in client
       if ( args.password !== args.confirmPassword ) {
         throw new AuthenticationError( "Your Passwords don't match!" );
       }
@@ -201,7 +208,7 @@ export default {
     },
 
     /**
-     * Checks for valid user and send email with token to reset password
+     * Checks for valid user and send email with token to execute action
      *
      * @param {object} args { UserCreateInput }
      */
@@ -217,9 +224,7 @@ export default {
         }
 
         // 2. Set a temporary token and expiry on that user for confirmation purposes
-        const randomBytesPromiseified = promisify( randomBytes );
-        const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
-        const tempTokenExpiry = Date.now() + 3600000; // 1 hour from now
+        const { tempToken, tempTokenExpiry } = await createToken();
         const userWithToken = { tempToken, tempTokenExpiry };
 
         // 3. Update user with temporary token
@@ -237,8 +242,7 @@ export default {
             `${body}\n\n<a href="${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}">${link}</a>`
           );
 
-          // 2. Email user a link to confirm account
-          const mailResponse = await transport.sendMail( {
+          await transport.sendMail( {
             from: process.env.MAIL_RETURN_ADDRESS,
             to: user.email,
             subject,
