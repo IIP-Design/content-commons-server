@@ -52,7 +52,7 @@ export default {
         throw new AuthenticationError( 'You must use an america.gov email address.' );
       }
 
-      // 4. Check to see if user is in the db, if not create & save user
+      // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
         throw new AuthenticationError( 'You must first create an account before using Google sign in.' );
