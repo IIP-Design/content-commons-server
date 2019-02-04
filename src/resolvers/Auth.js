@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { promisify } from 'util';
-import { transport, createEmailMessage } from '../services/mail';
+import { transport, createEmailMessage, confirmationEmail } from '../services/mail';
+import { sendSesEmail, setSesParams } from '../services/ses';
 import { verifyGoogleToken } from '../services/googleAuth';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
@@ -123,17 +124,24 @@ export default {
 
         // 3. Email the user
         if ( user ) {
-          const htmlEmail = createEmailMessage(
-            `Confirm your account by using the link below:\n\n<a href="${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}">Click Here to Confirm</a>`
-          );
+          // const htmlEmail = createEmailMessage(
+          //   `Confirm your account by using the link below:\n\n<a href="${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}">Click Here to Confirm</a>`
+          // );
 
-          // 2. Email user a link to confirm account
-          const mailResponse = await transport.sendMail( {
-            from: process.env.MAIL_RETURN_ADDRESS,
-            to: user.email,
-            subject: 'Please confirm your account',
-            html: htmlEmail
-          } );
+          // // 2. Email user a link to confirm account
+          // const mailResponse = await transport.sendMail( {
+          //   from: process.env.MAIL_RETURN_ADDRESS,
+          //   to: user.email,
+          //   subject: 'Please confirm your account',
+          //   html: htmlEmail
+          // } );
+
+          const confirmLink = `${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}`;
+          const body = confirmationEmail( confirmLink );
+          const subject = 'Please confirm your account';
+          const params = setSesParams( user.email, body, subject );
+
+          sendSesEmail( params );
         }
 
         return {

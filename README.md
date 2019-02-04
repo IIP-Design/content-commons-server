@@ -37,6 +37,11 @@ Install the following if not already installed
   - **MAIL_PASS**
   - **MAIL_RETURN_ADDRESS**
 
+  Mail configuration for sending emails via AWS SES.
+  - **AWS_REGION** : us-east-1
+  - **AWS_ACCESS_KEY_ID** : AWS IAM programmatic access key with full SES permissions
+  - **AWS_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
+
 - Deploy prisma schema, install dependencies and start development server
 
 ```
