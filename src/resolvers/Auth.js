@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
 import { promisify } from 'util';
-import { transport, createEmailMessage, confirmationEmail } from '../services/mail';
-import { sendSesEmail, setSesParams } from '../services/ses';
+import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
+import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { verifyGoogleToken } from '../services/googleAuth';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
@@ -124,24 +124,12 @@ export default {
 
         // 3. Email the user
         if ( user ) {
-          // const htmlEmail = createEmailMessage(
-          //   `Confirm your account by using the link below:\n\n<a href="${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}">Click Here to Confirm</a>`
-          // );
-
-          // // 2. Email user a link to confirm account
-          // const mailResponse = await transport.sendMail( {
-          //   from: process.env.MAIL_RETURN_ADDRESS,
-          //   to: user.email,
-          //   subject: 'Please confirm your account',
-          //   html: htmlEmail
-          // } );
-
           const confirmLink = `${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}`;
           const body = confirmationEmail( confirmLink );
           const subject = 'Please confirm your account';
           const params = setSesParams( user.email, body, subject );
 
-          sendSesEmail( params );
+          await sendSesEmail( params );
         }
 
         return {
@@ -246,16 +234,11 @@ export default {
 
         // 4. Email the user
         if ( updatedUser ) {
-          const htmlEmail = createEmailMessage(
-            `${body}\n\n<a href="${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}">${link}</a>`
-          );
+          const confirmLink = `${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}`;
+          const htmlEmail = passwordResetEmail( body, confirmLink, link );
+          const params = setSesParams( user.email, htmlEmail, subject );
 
-          await transport.sendMail( {
-            from: process.env.MAIL_RETURN_ADDRESS,
-            to: user.email,
-            subject,
-            html: htmlEmail
-          } );
+          await sendSesEmail( params );
         }
 
         return {

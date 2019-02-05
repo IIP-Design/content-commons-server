@@ -30,14 +30,7 @@ Install the following if not already installed
   - **GOOGLE_CLIENT_ID:** : google client id used for Google authentication
   - **PUBLISHER_APP_SECRET** : secret to sign authentication token
 
-  Mail configuration for sending emails via nodemailer. For testing purposes, you can use [mailtrap](https://mailtrap.io/). The config options will be available after you create an account
-
-  - **MAIL_PORT**
-  - **MAIL_USER**
-  - **MAIL_PASS**
-  - **MAIL_RETURN_ADDRESS**
-
-  Mail configuration for sending emails via AWS SES.
+- Mail configuration for sending emails via AWS SES.
   - **AWS_REGION** : us-east-1
   - **AWS_ACCESS_KEY_ID** : AWS IAM programmatic access key with full SES permissions
   - **AWS_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
