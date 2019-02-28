@@ -7,10 +7,14 @@ export default {
 
     videoUnits ( parent, args, ctx ) {
       return ctx.prisma.videoUnits();
+    },
+
+    videoUnit ( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: args.id } );
     }
 
       return video;
-    },
+  },
 
   Mutation: {}
 };
