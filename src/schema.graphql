@@ -6,9 +6,14 @@ type Message {
 }
 
 type Mutation {
-  createVideo(title: String): Video!
-  updateVideo(id: ID!, title: String!): Video!
-  deleteVideo(id: ID!): Video
+  createVideoProject(
+    projectType: String!
+    projectTitle: String!
+    visibility: String!
+  ): VideoProject!
+  updateVideoProject(id: ID!): VideoProject!
+  deleteVideoProject(id: ID!): VideoProject!
+
   createTeam(name: String!, organization: String!): Team!
   signOut: String!
   signUp(data: UserCreateInput): Message
