@@ -10,9 +10,11 @@ export default {
 
     videoUnit ( parent, args, ctx ) {
       return ctx.prisma.videoUnit( { id: args.id } );
-    }
+    },
 
-      return video;
+    supportFiles ( parent, args, ctx ) {
+      return ctx.prisma.supportFiles();
+    }
   },
 
   Mutation: {}
