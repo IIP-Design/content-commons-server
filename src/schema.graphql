@@ -14,6 +14,10 @@ type Mutation {
   updateVideoProject(id: ID!): VideoProject!
   deleteVideoProject(id: ID!): VideoProject!
 
+  createVideoUnit(title: String!): VideoUnit!
+  updateVideoUnit(id: ID!): VideoUnit!
+  deleteVideoUnit(id: ID!): VideoUnit!
+
   createTeam(name: String!, organization: String!): Team!
   signOut: String!
   signUp(data: UserCreateInput): Message
