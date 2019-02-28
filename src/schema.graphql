@@ -11,7 +11,19 @@ type Mutation {
     projectTitle: String!
     visibility: String!
   ): VideoProject!
-  updateVideoProject(id: ID!): VideoProject!
+  updateVideoProject(
+    id: ID!
+    projectType: String
+    projectTitle: String
+    visibility: String
+    descPublic: String
+    descInternal: String
+    author: String
+    team: String
+    status: String
+    # need to determine how to update units, srts,
+    # thumbnails, categories, tags
+  ): VideoProject!
   deleteVideoProject(id: ID!): VideoProject!
 
   createVideoUnit(title: String!): VideoUnit!
