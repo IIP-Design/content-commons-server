@@ -51,6 +51,17 @@ export default {
       } );
 
       return video;
+    },
+
+    updateVideoUnit ( parent, args, ctx ) {
+      const updates = { ...args };
+      delete updates.id;
+      return ctx.prisma.updateVideoUnit( {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      } );
     }
   }
 };
