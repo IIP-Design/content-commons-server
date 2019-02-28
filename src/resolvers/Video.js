@@ -62,6 +62,10 @@ export default {
           id: args.id
         }
       } );
+    },
+
+    deleteVideoUnit( parent, { id }, ctx ) {
+      return ctx.prisma.deleteVideoUnit( { id } );
     }
   }
 };
