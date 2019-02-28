@@ -39,6 +39,10 @@ export default {
           id: args.id
         }
       } );
+    },
+
+    deleteVideoProject( parent, { id }, ctx ) {
+      return ctx.prisma.deleteVideoProject( { id } );
     }
   }
 };
