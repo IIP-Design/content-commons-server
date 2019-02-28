@@ -35,6 +35,9 @@ type Query {
   videoUnits: [VideoUnit]!
   videoUnit(id: ID!): VideoUnit
 
+  supportFiles: [SupportFile]!
+  supportFile(id: ID!): SupportFile
+
   teams: [Team]!
   team(id: ID!): Team
   authenticatedUser: User
