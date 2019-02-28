@@ -28,6 +28,17 @@ export default {
       } );
 
       return video;
+    },
+
+    updateVideoProject ( parent, args, ctx ) {
+      const updates = { ...args };
+      delete updates.id;
+      return ctx.prisma.updateVideoProject( {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      } );
     }
   }
 };
