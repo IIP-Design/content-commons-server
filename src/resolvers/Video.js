@@ -1,5 +1,9 @@
 export default {
   Query: {
+    videoProjects ( parent, args, ctx ) {
+      return ctx.prisma.videoProjects();
+    },
+
     videoProject ( parent, args, ctx ) {
       return ctx.prisma.videoProject( { id: args.id } );
     },

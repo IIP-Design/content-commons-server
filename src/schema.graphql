@@ -47,6 +47,7 @@ type Mutation {
 }
 
 type Query {
+  videoProjects: [VideoProject]!
   videoProject(id: ID!): VideoProject
 
   videoUnits: [VideoUnit]!
