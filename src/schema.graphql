@@ -30,8 +30,8 @@ type Mutation {
 }
 
 type Query {
-  videos: [Video]!
-  video(id: ID!): Video
+  videoProject(id: ID!): VideoProject
+
   teams: [Team]!
   team(id: ID!): Team
   authenticatedUser: User
