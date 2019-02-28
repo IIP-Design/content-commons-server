@@ -3,13 +3,11 @@ export default {
     videoProject ( parent, args, ctx ) {
       return ctx.prisma.videoProject( { id: args.id } );
     }
-  },
+    },
 
-  Mutation: {
-    async createVideo ( parent, args, ctx ) {
-      const video = await ctx.prisma.createVideo( {
-        ...args
-      } );
+    videoUnits ( parent, args, ctx ) {
+      return ctx.prisma.videoUnits();
+    }
 
       return video;
     },
