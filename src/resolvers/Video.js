@@ -21,5 +21,13 @@ export default {
     }
   },
 
-  Mutation: {}
+  Mutation: {
+    async createVideoProject ( parent, args, ctx ) {
+      const video = await ctx.prisma.createVideoProject( {
+        ...args
+      } );
+
+      return video;
+    }
+  }
 };
