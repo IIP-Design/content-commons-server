@@ -14,6 +14,10 @@ export default {
 
     supportFiles ( parent, args, ctx ) {
       return ctx.prisma.supportFiles();
+    },
+
+    supportFile ( parent, args, ctx ) {
+      return ctx.prisma.supportFile( { id: args.id } );
     }
   },
 
