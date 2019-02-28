@@ -43,6 +43,14 @@ export default {
 
     deleteVideoProject( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoProject( { id } );
+    },
+
+    async createVideoUnit ( parent, args, ctx ) {
+      const video = await ctx.prisma.createVideoUnit( {
+        ...args
+      } );
+
+      return video;
     }
   }
 };
