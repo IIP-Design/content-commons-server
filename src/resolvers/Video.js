@@ -27,11 +27,11 @@ export default {
 
   Mutation: {
     async createVideoProject ( parent, args, ctx ) {
-      const video = await ctx.prisma.createVideoProject( {
+      const videoProject = await ctx.prisma.createVideoProject( {
         ...args
       } );
 
-      return video;
+      return videoProject;
     },
 
     updateVideoProject ( parent, args, ctx ) {
@@ -50,11 +50,11 @@ export default {
     },
 
     async createVideoUnit ( parent, args, ctx ) {
-      const video = await ctx.prisma.createVideoUnit( {
+      const videoUnit = await ctx.prisma.createVideoUnit( {
         ...args
       } );
 
-      return video;
+      return videoUnit;
     },
 
     updateVideoUnit ( parent, args, ctx ) {
