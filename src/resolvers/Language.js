@@ -11,8 +11,9 @@ export default {
 
   Mutation: {
     async createLanguage ( parent, args, ctx ) {
+      const { data } = args;
       const language = await ctx.prisma.createLanguage( {
-        ...args
+        ...data
       } );
 
       return language;

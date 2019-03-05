@@ -38,14 +38,7 @@ type Mutation {
   updateSupportFile(id: ID!): SupportFile!
   deleteSupportFile(id: ID!): SupportFile!
 
-  createLanguage(
-    languageCode: String!
-    locale: String!
-    textDirection: String!
-    displayName: String!
-    nativeName: String!
-  ): Language!
-
+  createLanguage(data: LanguageCreateInput!): Language!
   createTeam(name: String!, organization: String!): Team!
   signOut: String!
   signUp(data: UserCreateInput): Message
