@@ -79,6 +79,15 @@ export default {
       } );
 
       return supportFile;
+    },
+
+    updateSupportFile ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateSupportFile( {
+        data,
+        where: { id }
+      } );
     }
   },
 
