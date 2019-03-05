@@ -70,6 +70,21 @@ export default {
 
     deleteVideoUnit( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoUnit( { id } );
+    },
+
+    async createSupportFile ( parent, args, ctx ) {
+      const { data } = args;
+      const supportFile = await ctx.prisma.createSupportFile( {
+        ...data
+      } );
+
+      return supportFile;
+    }
+  },
+
+  SupportFile: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.supportFile( { id: parent.id } ).language();
     }
   }
 };

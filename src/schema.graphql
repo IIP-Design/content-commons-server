@@ -30,11 +30,7 @@ type Mutation {
   updateVideoUnit(id: ID!): VideoUnit!
   deleteVideoUnit(id: ID!): VideoUnit!
 
-  createSupportFile(
-    language: String!
-    filename: String
-    filetype: String
-  ): SupportFile!
+  createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(id: ID!): SupportFile!
   deleteSupportFile(id: ID!): SupportFile!
 
