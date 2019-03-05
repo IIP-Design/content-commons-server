@@ -88,6 +88,10 @@ export default {
         data,
         where: { id }
       } );
+    },
+
+    deleteSupportFile ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteSupportFile( { id } );
     }
   },
 
