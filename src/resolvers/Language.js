@@ -17,6 +17,15 @@ export default {
       } );
 
       return language;
+    },
+
+    updateLanguage ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateLanguage( {
+        data,
+        where: { id }
+      } );
     }
   }
 };
