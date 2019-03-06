@@ -34,6 +34,14 @@ type Mutation {
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile!
   deleteSupportFile(id: ID!): SupportFile!
 
+  createCategory(data: CategoryCreateInput!): Category!
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  deleteCategory(id: ID!): Category
+
+  createTag(data: TagCreateInput!): Tag!
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
+  deleteTag(id: ID!): Tag
+
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
   createTeam(name: String!, organization: String!): Team!

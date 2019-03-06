@@ -107,6 +107,50 @@ export default {
 
     deleteSupportFile ( parent, { id }, ctx ) {
       return ctx.prisma.deleteSupportFile( { id } );
+    },
+
+    async createCategory ( parent, args, ctx ) {
+      const { data } = args;
+      const category = await ctx.prisma.createCategory( {
+        ...data
+      } );
+
+      return category;
+    },
+
+    updateCategory ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateCategory( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteCategory ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteCategory( { id } );
+    },
+
+    async createTag ( parent, args, ctx ) {
+      const { data } = args;
+      const tag = await ctx.prisma.createTag( {
+        ...data
+      } );
+
+      return tag;
+    },
+
+    updateTag ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateTag( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteTag ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteTag( { id } );
     }
   },
 
