@@ -22,6 +22,22 @@ export default {
 
     supportFile ( parent, args, ctx ) {
       return ctx.prisma.supportFile( { id: args.id } );
+    },
+
+    categories ( parent, args, ctx ) {
+      return ctx.prisma.categories();
+    },
+
+    category ( parent, args, ctx ) {
+      return ctx.prisma.category( { id: args.id } );
+    },
+
+    tags ( parent, args, ctx ) {
+      return ctx.prisma.tags();
+    },
+
+    tag ( parent, args, ctx ) {
+      return ctx.prisma.tag( { id: args.id } );
     }
   },
 
@@ -149,6 +165,18 @@ export default {
   Thumbnail: {
     image( parent, args, ctx ) {
       return ctx.prisma.thumbnail( { id: parent.id } ).image();
+    }
+  },
+
+  Category: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.category( { id: parent.id } ).language();
+    }
+  },
+
+  Tag: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.tag( { id: parent.id } ).language();
     }
   }
 };

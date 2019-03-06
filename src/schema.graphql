@@ -72,6 +72,12 @@ type Query {
 
   languages: [Language]!
   language(id: ID!): Language
+
+  categories: [Category]!
+  category(id: ID!): Category
+
+  tags: [Tag]!
+  tag(id: ID!): Tag
 }
 
 # Redefine to not reveal sensitive user fields
