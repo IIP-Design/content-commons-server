@@ -24,6 +24,14 @@ export default {
       return ctx.prisma.videoFile( { id: args.id } );
     },
 
+    imageFiles ( parent, args, ctx ) {
+      return ctx.prisma.imageFiles();
+    },
+
+    imageFile ( parent, args, ctx ) {
+      return ctx.prisma.imageFile( { id: args.id } );
+    },
+
     supportFiles ( parent, args, ctx ) {
       return ctx.prisma.supportFiles();
     },
@@ -231,6 +239,10 @@ export default {
   },
 
   ImageFile: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.imageFile( { id: parent.id } ).language();
+    },
+
     dimensions( parent, args, ctx ) {
       return ctx.prisma.imageFile( { id: parent.id } ).dimensions();
     }

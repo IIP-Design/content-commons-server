@@ -78,6 +78,9 @@ type Query {
   videoFiles: [VideoFile]!
   videoFile(id: ID!): VideoFile
 
+  imageFiles: [ImageFile]!
+  imageFile(id: ID!): ImageFile
+
   supportFiles: [SupportFile]!
   supportFile(id: ID!): SupportFile
 
