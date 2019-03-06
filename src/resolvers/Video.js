@@ -50,8 +50,9 @@ export default {
     },
 
     async createVideoUnit ( parent, args, ctx ) {
+      const { data } = args;
       const videoUnit = await ctx.prisma.createVideoUnit( {
-        ...args
+        ...data
       } );
 
       return videoUnit;
@@ -95,9 +96,61 @@ export default {
     }
   },
 
+  VideoUnit: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: parent.id } ).language();
+    },
+
+    files( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: parent.id } ).files();
+    },
+
+    tags( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: parent.id } ).tags();
+    },
+
+    categories( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: parent.id } ).categories();
+    },
+
+    thumbnails( parent, args, ctx ) {
+      return ctx.prisma.videoUnit( { id: parent.id } ).thumbnails();
+    },
+  },
+
+  VideoFile: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.videoFile( { id: parent.id } ).language();
+    },
+
+    use( parent, args, ctx ) {
+      return ctx.prisma.videoFile( { id: parent.id } ).use();
+    },
+
+    dimensions( parent, args, ctx ) {
+      return ctx.prisma.videoFile( { id: parent.id } ).dimensions();
+    },
+
+    stream( parent, args, ctx ) {
+      return ctx.prisma.videoFile( { id: parent.id } ).stream();
+    }
+  },
+
   SupportFile: {
     language( parent, args, ctx ) {
       return ctx.prisma.supportFile( { id: parent.id } ).language();
+    }
+  },
+
+  ImageFile: {
+    dimensions( parent, args, ctx ) {
+      return ctx.prisma.imageFile( { id: parent.id } ).dimensions();
+    }
+  },
+
+  Thumbnail: {
+    image( parent, args, ctx ) {
+      return ctx.prisma.thumbnail( { id: parent.id } ).image();
     }
   }
 };

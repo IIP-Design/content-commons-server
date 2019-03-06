@@ -26,7 +26,7 @@ type Mutation {
   ): VideoProject!
   deleteVideoProject(id: ID!): VideoProject!
 
-  createVideoUnit(title: String!): VideoUnit!
+  createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(id: ID!): VideoUnit!
   deleteVideoUnit(id: ID!): VideoUnit!
 
