@@ -16,6 +16,14 @@ export default {
       return ctx.prisma.videoUnit( { id: args.id } );
     },
 
+    videoFiles ( parent, args, ctx ) {
+      return ctx.prisma.videoFiles();
+    },
+
+    videoFile ( parent, args, ctx ) {
+      return ctx.prisma.videoFile( { id: args.id } );
+    },
+
     supportFiles ( parent, args, ctx ) {
       return ctx.prisma.supportFiles();
     },

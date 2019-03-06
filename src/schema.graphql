@@ -71,6 +71,9 @@ type Query {
   videoUnits: [VideoUnit]!
   videoUnit(id: ID!): VideoUnit
 
+  videoFiles: [VideoFile]!
+  videoFile(id: ID!): VideoFile
+
   supportFiles: [SupportFile]!
   supportFile(id: ID!): SupportFile
 
