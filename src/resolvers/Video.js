@@ -227,6 +227,48 @@ export default {
 
     deleteTag ( parent, { id }, ctx ) {
       return ctx.prisma.deleteTag( { id } );
+    },
+
+    async createVideoUse ( parent, args, ctx ) {
+      const videoUse = await ctx.prisma.createVideoUse( {
+        ...args
+      } );
+
+      return videoUse;
+    },
+
+    updateVideoUse ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateVideoUse( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteVideoUse ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteVideoUse( { id } );
+    },
+
+    async createImageUse ( parent, args, ctx ) {
+      const imageUse = await ctx.prisma.createImageUse( {
+        ...args
+      } );
+
+      return imageUse;
+    },
+
+    updateImageUse ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateImageUse( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteImageUse ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteImageUse( { id } );
     }
   },
 
