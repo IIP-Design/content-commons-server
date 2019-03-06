@@ -100,6 +100,12 @@ type Query {
 
   tags: [Tag]!
   tag(id: ID!): Tag
+
+  videoUses: [VideoUse]!
+  videoUse(id: ID!): VideoUse
+
+  imageUses: [ImageUse]!
+  imageUse(id: ID!): ImageUse
 }
 
 # Redefine to not reveal sensitive user fields

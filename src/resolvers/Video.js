@@ -54,6 +54,22 @@ export default {
 
     tag ( parent, args, ctx ) {
       return ctx.prisma.tag( { id: args.id } );
+    },
+
+    videoUses ( parent, args, ctx ) {
+      return ctx.prisma.videoUses();
+    },
+
+    videoUse ( parent, args, ctx ) {
+      return ctx.prisma.videoUse( { id: args.id } );
+    },
+
+    imageUses ( parent, args, ctx ) {
+      return ctx.prisma.imageUses();
+    },
+
+    imageUse ( parent, args, ctx ) {
+      return ctx.prisma.imageUse( { id: args.id } );
     }
   },
 
