@@ -60,12 +60,10 @@ export default {
 
     updateVideoUnit ( parent, args, ctx ) {
       const updates = { ...args };
-      delete updates.id;
+      const { data, where: { id } } = updates;
       return ctx.prisma.updateVideoUnit( {
-        data: updates,
-        where: {
-          id: args.id
-        }
+        data,
+        where: { id }
       } );
     },
 
