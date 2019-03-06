@@ -125,6 +125,28 @@ export default {
       return ctx.prisma.deleteVideoFile( { id } );
     },
 
+    async createImageFile ( parent, args, ctx ) {
+      const { data } = args;
+      const imageFile = await ctx.prisma.createImageFile( {
+        ...data
+      } );
+
+      return imageFile;
+    },
+
+    updateImageFile ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateImageFile( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteImageFile ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteImageFile( { id } );
+    },
+
     async createSupportFile ( parent, args, ctx ) {
       const { data } = args;
       const supportFile = await ctx.prisma.createSupportFile( {
