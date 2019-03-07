@@ -34,6 +34,10 @@ type Mutation {
   updateVideoFile(data: VideoFileUpdateInput!, where: VideoFileWhereUniqueInput!): VideoFile
   deleteVideoFile(id: ID!): VideoFile
 
+  createThumbnail(data: ThumbnailCreateInput!): Thumbnail!
+  updateThumbnail(data: ThumbnailUpdateInput!, where: ThumbnailWhereUniqueInput!): Thumbnail
+  deleteThumbnail(id: ID!): Thumbnail
+
   createImageFile(data: ImageFileCreateInput!): ImageFile!
   updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
   deleteImageFile(id: ID!): ImageFile

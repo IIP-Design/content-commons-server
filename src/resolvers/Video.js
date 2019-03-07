@@ -165,6 +165,28 @@ export default {
       return ctx.prisma.deleteVideoFile( { id } );
     },
 
+    async createThumbnail ( parent, args, ctx ) {
+      const { data } = args;
+      const thumbnailFile = await ctx.prisma.createThumbnail( {
+        ...data
+      } );
+
+      return thumbnailFile;
+    },
+
+    updateThumbnail ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateThumbnail( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteThumbnail ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteThumbnail( { id } );
+    },
+
     async createImageFile ( parent, args, ctx ) {
       const { data } = args;
       const imageFile = await ctx.prisma.createImageFile( {
