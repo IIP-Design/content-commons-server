@@ -62,6 +62,10 @@ type Mutation {
   updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
   deleteDimensions(id: ID!): Dimensions
 
+  createVideoStream(data: VideoStreamCreateInput!): VideoStream!
+  updateVideoStream(data: VideoStreamUpdateInput!, where: VideoStreamWhereUniqueInput!): VideoStream
+  deleteVideoStream(id: ID!): VideoStream
+
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
   createTeam(name: String!, organization: String!): Team!

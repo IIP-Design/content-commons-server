@@ -306,7 +306,29 @@ export default {
 
     deleteDimensions ( parent, { id }, ctx ) {
       return ctx.prisma.deleteDimensions( { id } );
-    }
+    },
+
+    async createVideoStream ( parent, args, ctx ) {
+      const { data } = args;
+      const videoStream = await ctx.prisma.createVideoStream( {
+        ...data
+      } );
+
+      return videoStream;
+    },
+
+    updateVideoStream ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateVideoStream( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteVideoStream ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteVideoStream( { id } );
+    },
   },
 
   VideoUnit: {
