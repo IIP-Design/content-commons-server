@@ -70,6 +70,14 @@ export default {
 
     imageUse ( parent, args, ctx ) {
       return ctx.prisma.imageUse( { id: args.id } );
+    },
+
+    dimensionses ( parent, args, ctx ) {
+      return ctx.prisma.dimensionses();
+    },
+
+    dimensions ( parent, args, ctx ) {
+      return ctx.prisma.dimensions( { id: args.id } );
     }
   },
 

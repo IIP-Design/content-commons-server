@@ -114,6 +114,9 @@ type Query {
 
   imageUses: [ImageUse]!
   imageUse(id: ID!): ImageUse
+
+  dimensionses: [Dimensions]!
+  dimensions(id: ID!): Dimensions
 }
 
 # Redefine to not reveal sensitive user fields
