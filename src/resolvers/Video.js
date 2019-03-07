@@ -78,6 +78,14 @@ export default {
 
     dimensions ( parent, args, ctx ) {
       return ctx.prisma.dimensions( { id: args.id } );
+    },
+
+    videoStreams ( parent, args, ctx ) {
+      return ctx.prisma.videoStreams();
+    },
+
+    videoStream ( parent, args, ctx ) {
+      return ctx.prisma.videoStream( { id: args.id } );
     }
   },
 

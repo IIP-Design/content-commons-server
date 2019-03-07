@@ -121,6 +121,9 @@ type Query {
 
   dimensionses: [Dimensions]!
   dimensions(id: ID!): Dimensions
+
+  videoStreams: [VideoStream]!
+  videoStream(id: ID!): VideoStream
 }
 
 # Redefine to not reveal sensitive user fields
