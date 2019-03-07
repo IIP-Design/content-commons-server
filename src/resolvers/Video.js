@@ -99,8 +99,9 @@ export default {
 
   Mutation: {
     async createVideoProject ( parent, args, ctx ) {
+      const { data } = args;
       const videoProject = await ctx.prisma.createVideoProject( {
-        ...args
+        ...data
       } );
 
       return videoProject;
@@ -108,12 +109,10 @@ export default {
 
     updateVideoProject ( parent, args, ctx ) {
       const updates = { ...args };
-      delete updates.id;
+      const { data, where: { id } } = updates;
       return ctx.prisma.updateVideoProject( {
-        data: updates,
-        where: {
-          id: args.id
-        }
+        data,
+        where: { id }
       } );
     },
 
@@ -358,6 +357,32 @@ export default {
 
     deleteVideoStream ( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoStream( { id } );
+    },
+  },
+
+  VideoProject: {
+    team( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).team();
+    },
+
+    tags( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).tags();
+    },
+
+    categories( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).categories();
+    },
+
+    units( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).units();
+    },
+
+    srts( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).srts();
+    },
+
+    thumbnails( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).thumbnails();
     },
   },
 

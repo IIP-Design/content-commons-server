@@ -6,24 +6,8 @@ type Message {
 }
 
 type Mutation {
-  createVideoProject(
-    projectType: String!
-    projectTitle: String!
-    visibility: String!
-  ): VideoProject!
-  updateVideoProject(
-    id: ID!
-    projectType: String
-    projectTitle: String
-    visibility: String
-    descPublic: String
-    descInternal: String
-    author: String
-    team: String
-    status: String
-    # need to determine how to update units, srts,
-    # thumbnails, categories, tags
-  ): VideoProject!
+  createVideoProject(data: VideoProjectCreateInput!): VideoProject!
+  updateVideoProject(data: VideoProjectUpdateInput!, where: VideoProjectWhereUniqueInput!): VideoProject
   deleteVideoProject(id: ID!): VideoProject!
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
