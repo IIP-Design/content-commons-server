@@ -58,6 +58,10 @@ type Mutation {
   updateImageUse(data: ImageUseUpdateInput!, where: ImageUseWhereUniqueInput!): ImageUse
   deleteImageUse(id: ID!): ImageUse
 
+  createDimensions(height: Int, width: Int): Dimensions!
+  updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
+  deleteDimensions(id: ID!): Dimensions
+
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
   createTeam(name: String!, organization: String!): Team!

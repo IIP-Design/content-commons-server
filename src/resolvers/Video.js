@@ -277,6 +277,27 @@ export default {
 
     deleteImageUse ( parent, { id }, ctx ) {
       return ctx.prisma.deleteImageUse( { id } );
+    },
+
+    async createDimensions ( parent, args, ctx ) {
+      const dimensions = await ctx.prisma.createDimensions( {
+        ...args
+      } );
+
+      return dimensions;
+    },
+
+    updateDimensions ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateDimensions( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteDimensions ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteDimensions( { id } );
     }
   },
 
