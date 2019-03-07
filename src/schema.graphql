@@ -98,6 +98,9 @@ type Query {
   videoFiles: [VideoFile]!
   videoFile(id: ID!): VideoFile
 
+  thumbnails: [Thumbnail]!
+  thumbnail(id: ID!): Thumbnail
+
   imageFiles: [ImageFile]!
   imageFile(id: ID!): ImageFile
 
