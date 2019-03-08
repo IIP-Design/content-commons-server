@@ -62,7 +62,9 @@ type Mutation {
 
   createVideoStream(data: VideoStreamCreateInput!): VideoStream!
   updateVideoStream(data: VideoStreamUpdateInput!, where: VideoStreamWhereUniqueInput!): VideoStream
+  updateManyVideoStreams(data: VideoStreamUpdateManyMutationInput!, where: VideoStreamWhereInput): BatchPayload!
   deleteVideoStream(id: ID!): VideoStream
+  deleteManyVideoStreams(where: VideoStreamWhereInput): BatchPayload!
 
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language

@@ -408,6 +408,16 @@ export default {
     deleteVideoStream ( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoStream( { id } );
     },
+
+    updateManyVideoStreams ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyVideoStreams( { data, where } );
+    },
+
+    deleteManyVideoStreams ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyVideoStreams( { ...where } );
+    }
   },
 
   VideoProject: {
