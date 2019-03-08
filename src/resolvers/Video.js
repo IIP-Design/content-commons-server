@@ -320,8 +320,18 @@ export default {
       } );
     },
 
+    updateManyTags ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyTags( { data, where } );
+    },
+
     deleteTag ( parent, { id }, ctx ) {
       return ctx.prisma.deleteTag( { id } );
+    },
+
+    deleteManyTags ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyTags( { ...where } );
     },
 
     async createVideoUse ( parent, args, ctx ) {

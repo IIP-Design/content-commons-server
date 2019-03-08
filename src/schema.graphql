@@ -46,7 +46,9 @@ type Mutation {
 
   createTag(data: TagCreateInput!): Tag!
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   deleteTag(id: ID!): Tag
+  deleteManyTags(where: TagWhereInput): BatchPayload!
 
   createVideoUse(name: String!): VideoUse!
   updateVideoUse(data: VideoUseUpdateInput!, where: VideoUseWhereUniqueInput!): VideoUse
