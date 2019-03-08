@@ -138,8 +138,18 @@ export default {
       } );
     },
 
+    updateManyVideoUnits ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyVideoUnits( { data, where } );
+    },
+
     deleteVideoUnit( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoUnit( { id } );
+    },
+
+    deleteManyVideoUnits( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyVideoUnits( { ...where } );
     },
 
     async createVideoFile ( parent, args, ctx ) {

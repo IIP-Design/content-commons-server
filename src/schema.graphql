@@ -12,7 +12,9 @@ type Mutation {
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(data: VideoUnitUpdateInput!, where: VideoUnitWhereUniqueInput!): VideoUnit!
+  updateManyVideoUnits(data: VideoUnitUpdateManyMutationInput!, where: VideoUnitWhereInput): BatchPayload!
   deleteVideoUnit(id: ID!): VideoUnit!
+  deleteManyVideoUnits(where: VideoUnitWhereInput): BatchPayload!
 
   createVideoFile(data: VideoFileCreateInput!): VideoFile!
   updateVideoFile(data: VideoFileUpdateInput!, where: VideoFileWhereUniqueInput!): VideoFile
