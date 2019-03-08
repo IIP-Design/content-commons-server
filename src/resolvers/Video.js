@@ -341,8 +341,18 @@ export default {
       } );
     },
 
+    updateManyVideoUses ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyVideoUses( { data, where } );
+    },
+
     deleteVideoUse ( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoUse( { id } );
+    },
+
+    deleteManyVideoUses ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyVideoUses( { ...where } );
     },
 
     async createImageUse ( parent, args, ctx ) {
@@ -405,14 +415,14 @@ export default {
       } );
     },
 
-    deleteVideoStream ( parent, { id }, ctx ) {
-      return ctx.prisma.deleteVideoStream( { id } );
-    },
-
     updateManyVideoStreams ( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
       return ctx.prisma.updateManyVideoStreams( { data, where } );
+    },
+
+    deleteVideoStream ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteVideoStream( { id } );
     },
 
     deleteManyVideoStreams ( parent, { where }, ctx ) {

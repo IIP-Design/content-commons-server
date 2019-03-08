@@ -50,7 +50,9 @@ type Mutation {
 
   createVideoUse(name: String!): VideoUse!
   updateVideoUse(data: VideoUseUpdateInput!, where: VideoUseWhereUniqueInput!): VideoUse
+  updateManyVideoUses(data: VideoUseUpdateManyMutationInput!, where: VideoUseWhereInput): BatchPayload!
   deleteVideoUse(id: ID!): VideoUse
+  deleteManyVideoUses(where: VideoUseWhereInput): BatchPayload!
 
   createImageUse(name: String!): ImageUse!
   updateImageUse(data: ImageUseUpdateInput!, where: ImageUseWhereUniqueInput!): ImageUse
