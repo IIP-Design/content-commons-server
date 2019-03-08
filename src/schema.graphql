@@ -8,7 +8,9 @@ type Message {
 type Mutation {
   createVideoProject(data: VideoProjectCreateInput!): VideoProject!
   updateVideoProject(data: VideoProjectUpdateInput!, where: VideoProjectWhereUniqueInput!): VideoProject
+  updateManyVideoProjects(data: VideoProjectUpdateManyMutationInput!, where: VideoProjectWhereInput): BatchPayload!
   deleteVideoProject(id: ID!): VideoProject!
+  deleteManyVideoProjects(where: VideoProjectWhereInput): BatchPayload!
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(data: VideoUnitUpdateInput!, where: VideoUnitWhereUniqueInput!): VideoUnit!

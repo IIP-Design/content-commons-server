@@ -116,8 +116,18 @@ export default {
       } );
     },
 
+    updateManyVideoProjects ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyVideoProjects( { data, where } );
+    },
+
     deleteVideoProject( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoProject( { id } );
+    },
+
+    deleteManyVideoProjects( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyVideoProjects( { ...where } );
     },
 
     async createVideoUnit ( parent, args, ctx ) {
