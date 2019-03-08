@@ -62,7 +62,9 @@ type Mutation {
 
   createDimensions(height: Int, width: Int): Dimensions!
   updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
+  updateManyDimensionses(data: DimensionsUpdateManyMutationInput!, where: DimensionsWhereInput): BatchPayload!
   deleteDimensions(id: ID!): Dimensions
+  deleteManyDimensionses(where: DimensionsWhereInput): BatchPayload!
 
   createVideoStream(data: VideoStreamCreateInput!): VideoStream!
   updateVideoStream(data: VideoStreamUpdateInput!, where: VideoStreamWhereUniqueInput!): VideoStream

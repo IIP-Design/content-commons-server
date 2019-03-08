@@ -403,8 +403,18 @@ export default {
       } );
     },
 
+    updateManyDimensionses ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyDimensionses( { data, where } );
+    },
+
     deleteDimensions ( parent, { id }, ctx ) {
       return ctx.prisma.deleteDimensions( { id } );
+    },
+
+    deleteManyDimensionses ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyDimensionses( { ...where } );
     },
 
     async createVideoStream ( parent, args, ctx ) {
