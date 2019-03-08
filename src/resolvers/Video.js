@@ -214,8 +214,18 @@ export default {
       } );
     },
 
+    updateManyImageFiles ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyImageFiles( { data, where } );
+    },
+
     deleteImageFile ( parent, { id }, ctx ) {
       return ctx.prisma.deleteImageFile( { id } );
+    },
+
+    deleteManyImageFiles ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyImageFiles( { ...where } );
     },
 
     async createSupportFile ( parent, args, ctx ) {

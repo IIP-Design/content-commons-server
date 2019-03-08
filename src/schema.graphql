@@ -26,7 +26,9 @@ type Mutation {
 
   createImageFile(data: ImageFileCreateInput!): ImageFile!
   updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
+  updateManyImageFiles(data: ImageFileUpdateManyMutationInput!, where: ImageFileWhereInput): BatchPayload!
   deleteImageFile(id: ID!): ImageFile
+  deleteManyImageFiles(where: ImageFileWhereInput): BatchPayload!
 
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile!
