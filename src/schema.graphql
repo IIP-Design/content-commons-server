@@ -18,7 +18,9 @@ type Mutation {
 
   createVideoFile(data: VideoFileCreateInput!): VideoFile!
   updateVideoFile(data: VideoFileUpdateInput!, where: VideoFileWhereUniqueInput!): VideoFile
+  updateManyVideoFiles(data: VideoFileUpdateManyMutationInput!, where: VideoFileWhereInput): BatchPayload!
   deleteVideoFile(id: ID!): VideoFile
+  deleteManyVideoFiles(where: VideoFileWhereInput): BatchPayload!
 
   createThumbnail(data: ThumbnailCreateInput!): Thumbnail!
   updateThumbnail(data: ThumbnailUpdateInput!, where: ThumbnailWhereUniqueInput!): Thumbnail

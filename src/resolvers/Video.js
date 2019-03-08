@@ -170,8 +170,18 @@ export default {
       } );
     },
 
+    updateManyVideoFiles ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyVideoFiles( { data, where } );
+    },
+
     deleteVideoFile ( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoFile( { id } );
+    },
+
+    deleteManyVideoFiles ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyVideoFiles( { ...where } );
     },
 
     async createThumbnail ( parent, args, ctx ) {
