@@ -3418,7 +3418,7 @@ export interface VideoProjectCreateInput {
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
   units?: VideoUnitCreateManyInput;
-  srts?: SupportFileCreateManyInput;
+  supportFiles?: SupportFileCreateManyInput;
   thumbnails?: ImageFileCreateManyInput;
   categories?: CategoryCreateManyInput;
   tags?: TagCreateManyInput;
@@ -3596,7 +3596,7 @@ export interface VideoProjectUpdateInput {
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
   units?: VideoUnitUpdateManyInput;
-  srts?: SupportFileUpdateManyInput;
+  supportFiles?: SupportFileUpdateManyInput;
   thumbnails?: ImageFileUpdateManyInput;
   categories?: CategoryUpdateManyInput;
   tags?: TagUpdateManyInput;
@@ -3792,9 +3792,9 @@ export interface VideoProjectWhereInput {
   units_every?: VideoUnitWhereInput;
   units_some?: VideoUnitWhereInput;
   units_none?: VideoUnitWhereInput;
-  srts_every?: SupportFileWhereInput;
-  srts_some?: SupportFileWhereInput;
-  srts_none?: SupportFileWhereInput;
+  supportFiles_every?: SupportFileWhereInput;
+  supportFiles_some?: SupportFileWhereInput;
+  supportFiles_none?: SupportFileWhereInput;
   thumbnails_every?: ImageFileWhereInput;
   thumbnails_some?: ImageFileWhereInput;
   thumbnails_none?: ImageFileWhereInput;
@@ -5930,7 +5930,7 @@ export interface VideoProjectPromise
     first?: Int;
     last?: Int;
   }) => T;
-  srts: <T = FragmentableArray<SupportFile>>(args?: {
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
     where?: SupportFileWhereInput;
     orderBy?: SupportFileOrderByInput;
     skip?: Int;
@@ -5989,7 +5989,7 @@ export interface VideoProjectSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  srts: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
+  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
     where?: SupportFileWhereInput;
     orderBy?: SupportFileOrderByInput;
     skip?: Int;

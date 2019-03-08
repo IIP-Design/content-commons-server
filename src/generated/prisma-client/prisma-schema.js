@@ -3143,7 +3143,7 @@ type VideoProject {
   status: ProjectPublishStatus
   visibility: ProjectVisibility
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
-  srts(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
+  supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
@@ -3165,7 +3165,7 @@ input VideoProjectCreateInput {
   status: ProjectPublishStatus
   visibility: ProjectVisibility
   units: VideoUnitCreateManyInput
-  srts: SupportFileCreateManyInput
+  supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
   categories: CategoryCreateManyInput
   tags: TagCreateManyInput
@@ -3238,7 +3238,7 @@ input VideoProjectUpdateInput {
   status: ProjectPublishStatus
   visibility: ProjectVisibility
   units: VideoUnitUpdateManyInput
-  srts: SupportFileUpdateManyInput
+  supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
@@ -3351,9 +3351,9 @@ input VideoProjectWhereInput {
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput
-  srts_every: SupportFileWhereInput
-  srts_some: SupportFileWhereInput
-  srts_none: SupportFileWhereInput
+  supportFiles_every: SupportFileWhereInput
+  supportFiles_some: SupportFileWhereInput
+  supportFiles_none: SupportFileWhereInput
   thumbnails_every: ImageFileWhereInput
   thumbnails_some: ImageFileWhereInput
   thumbnails_none: ImageFileWhereInput

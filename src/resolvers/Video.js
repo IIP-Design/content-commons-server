@@ -377,8 +377,8 @@ export default {
       return ctx.prisma.videoProject( { id: parent.id } ).units();
     },
 
-    srts( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).srts();
+    supportFiles( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).supportFiles();
     },
 
     thumbnails( parent, args, ctx ) {

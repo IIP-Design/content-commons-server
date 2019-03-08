@@ -126,7 +126,7 @@ type VideoProject {
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility # what is default?
   units: [VideoUnit]
-  srts: [SupportFile]
+  supportFiles: [SupportFile]
   thumbnails: [ImageFile]
   categories: [Category]
   tags: [Tag]
