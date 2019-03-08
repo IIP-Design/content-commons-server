@@ -372,8 +372,18 @@ export default {
       } );
     },
 
+    updateManyImageUses ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyImageUses( { data, where } );
+    },
+
     deleteImageUse ( parent, { id }, ctx ) {
       return ctx.prisma.deleteImageUse( { id } );
+    },
+
+    deleteManyImageUses ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyImageUses( { ...where } );
     },
 
     async createDimensions ( parent, args, ctx ) {

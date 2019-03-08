@@ -56,7 +56,9 @@ type Mutation {
 
   createImageUse(name: String!): ImageUse!
   updateImageUse(data: ImageUseUpdateInput!, where: ImageUseWhereUniqueInput!): ImageUse
+  updateManyImageUses(data: ImageUseUpdateManyMutationInput!, where: ImageUseWhereInput): BatchPayload!
   deleteImageUse(id: ID!): ImageUse
+  deleteManyImageUses(where: ImageUseWhereInput): BatchPayload!
 
   createDimensions(height: Int, width: Int): Dimensions!
   updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
