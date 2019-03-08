@@ -226,8 +226,18 @@ export default {
       } );
     },
 
+    updateManySupportFiles ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManySupportFiles( { data, where } );
+    },
+
     deleteSupportFile ( parent, { id }, ctx ) {
       return ctx.prisma.deleteSupportFile( { id } );
+    },
+
+    deleteManySupportFiles ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManySupportFiles( { ...where } );
     },
 
     async createCategory ( parent, args, ctx ) {

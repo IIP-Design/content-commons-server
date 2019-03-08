@@ -28,7 +28,9 @@ type Mutation {
 
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile!
+  updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
   deleteSupportFile(id: ID!): SupportFile!
+  deleteManySupportFiles(where: SupportFileWhereInput): BatchPayload!
 
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
