@@ -202,8 +202,18 @@ export default {
       } );
     },
 
+    updateManyThumbnails ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyThumbnails( { data, where } );
+    },
+
     deleteThumbnail ( parent, { id }, ctx ) {
       return ctx.prisma.deleteThumbnail( { id } );
+    },
+
+    deleteManyThumbnails ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyThumbnails( { ...where } );
     },
 
     async createImageFile ( parent, args, ctx ) {

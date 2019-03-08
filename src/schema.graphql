@@ -24,7 +24,9 @@ type Mutation {
 
   createThumbnail(data: ThumbnailCreateInput!): Thumbnail!
   updateThumbnail(data: ThumbnailUpdateInput!, where: ThumbnailWhereUniqueInput!): Thumbnail
+  updateManyThumbnails(data: ThumbnailUpdateManyMutationInput!, where: ThumbnailWhereInput): BatchPayload!
   deleteThumbnail(id: ID!): Thumbnail
+  deleteManyThumbnails(where: ThumbnailWhereInput): BatchPayload!
 
   createImageFile(data: ImageFileCreateInput!): ImageFile!
   updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
