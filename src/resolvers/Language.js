@@ -1,7 +1,7 @@
 export default {
   Query: {
     languages ( parent, args, ctx ) {
-      return ctx.prisma.languages();
+      return ctx.prisma.languages( { ...args } );
     },
 
     language( parent, args, ctx ) {

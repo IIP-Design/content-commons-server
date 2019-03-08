@@ -1,7 +1,7 @@
 export default {
   Query: {
     videoProjects ( parent, args, ctx ) {
-      return ctx.prisma.videoProjects();
+      return ctx.prisma.videoProjects( { ...args } );
     },
 
     videoProject ( parent, args, ctx ) {
@@ -9,7 +9,7 @@ export default {
     },
 
     videoUnits ( parent, args, ctx ) {
-      return ctx.prisma.videoUnits();
+      return ctx.prisma.videoUnits( { ...args } );
     },
 
     videoUnit ( parent, args, ctx ) {
@@ -17,7 +17,7 @@ export default {
     },
 
     videoFiles ( parent, args, ctx ) {
-      return ctx.prisma.videoFiles();
+      return ctx.prisma.videoFiles( { ...args } );
     },
 
     videoFile ( parent, args, ctx ) {
@@ -25,7 +25,7 @@ export default {
     },
 
     thumbnails ( parent, args, ctx ) {
-      return ctx.prisma.thumbnails();
+      return ctx.prisma.thumbnails( { ...args } );
     },
 
     thumbnail ( parent, args, ctx ) {
@@ -33,7 +33,7 @@ export default {
     },
 
     imageFiles ( parent, args, ctx ) {
-      return ctx.prisma.imageFiles();
+      return ctx.prisma.imageFiles( { ...args } );
     },
 
     imageFile ( parent, args, ctx ) {
@@ -41,7 +41,7 @@ export default {
     },
 
     supportFiles ( parent, args, ctx ) {
-      return ctx.prisma.supportFiles();
+      return ctx.prisma.supportFiles( { ...args } );
     },
 
     supportFile ( parent, args, ctx ) {
@@ -49,7 +49,7 @@ export default {
     },
 
     categories ( parent, args, ctx ) {
-      return ctx.prisma.categories();
+      return ctx.prisma.categories( { ...args } );
     },
 
     category ( parent, args, ctx ) {
@@ -57,7 +57,7 @@ export default {
     },
 
     tags ( parent, args, ctx ) {
-      return ctx.prisma.tags();
+      return ctx.prisma.tags( { ...args } );
     },
 
     tag ( parent, args, ctx ) {
@@ -65,7 +65,7 @@ export default {
     },
 
     videoUses ( parent, args, ctx ) {
-      return ctx.prisma.videoUses();
+      return ctx.prisma.videoUses( { ...args } );
     },
 
     videoUse ( parent, args, ctx ) {
@@ -73,7 +73,7 @@ export default {
     },
 
     imageUses ( parent, args, ctx ) {
-      return ctx.prisma.imageUses();
+      return ctx.prisma.imageUses( { ...args } );
     },
 
     imageUse ( parent, args, ctx ) {
@@ -81,7 +81,7 @@ export default {
     },
 
     dimensionses ( parent, args, ctx ) {
-      return ctx.prisma.dimensionses();
+      return ctx.prisma.dimensionses( { ...args } );
     },
 
     dimensions ( parent, args, ctx ) {
@@ -89,7 +89,7 @@ export default {
     },
 
     videoStreams ( parent, args, ctx ) {
-      return ctx.prisma.videoStreams();
+      return ctx.prisma.videoStreams( { ...args } );
     },
 
     videoStream ( parent, args, ctx ) {

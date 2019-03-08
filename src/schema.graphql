@@ -77,47 +77,47 @@ type Mutation {
 }
 
 type Query {
-  videoProjects: [VideoProject]!
+  videoProjects(where: VideoProjectWhereInput, orderBy: VideoProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoProject]!
   videoProject(id: ID!): VideoProject
 
-  videoUnits: [VideoUnit]!
+  videoUnits(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit]!
   videoUnit(id: ID!): VideoUnit
 
-  videoFiles: [VideoFile]!
+  videoFiles(where: VideoFileWhereInput, orderBy: VideoFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoFile]!
   videoFile(id: ID!): VideoFile
 
-  thumbnails: [Thumbnail]!
+  thumbnails(where: ThumbnailWhereInput, orderBy: ThumbnailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Thumbnail]!
   thumbnail(id: ID!): Thumbnail
 
-  imageFiles: [ImageFile]!
+  imageFiles(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile]!
   imageFile(id: ID!): ImageFile
 
-  supportFiles: [SupportFile]!
+  supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFile(id: ID!): SupportFile
 
-  teams: [Team]!
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
   team(id: ID!): Team
   authenticatedUser: User
 
-  languages: [Language]!
+  languages(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Language]!
   language(id: ID!): Language
 
-  categories: [Category]!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   category(id: ID!): Category
 
-  tags: [Tag]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   tag(id: ID!): Tag
 
-  videoUses: [VideoUse]!
+  videoUses(where: VideoUseWhereInput, orderBy: VideoUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUse]!
   videoUse(id: ID!): VideoUse
 
-  imageUses: [ImageUse]!
+  imageUses(where: ImageUseWhereInput, orderBy: ImageUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageUse]!
   imageUse(id: ID!): ImageUse
 
-  dimensionses: [Dimensions]!
+  dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
   dimensions(id: ID!): Dimensions
 
-  videoStreams: [VideoStream]!
+  videoStreams(where: VideoStreamWhereInput, orderBy: VideoStreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoStream]!
   videoStream(id: ID!): VideoStream
 }
 

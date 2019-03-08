@@ -1,7 +1,7 @@
 export default {
   Query: {
     teams ( parent, args, ctx ) {
-      return ctx.prisma.teams();
+      return ctx.prisma.teams( { ...args } );
     },
 
     team( parent, args, ctx ) {
