@@ -1331,6 +1331,7 @@ type SupportFile {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 type SupportFileConnection {
@@ -1345,6 +1346,7 @@ input SupportFileCreateInput {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileCreateManyInput {
@@ -1368,6 +1370,8 @@ enum SupportFileOrderByInput {
   filename_DESC
   filetype_ASC
   filetype_DESC
+  filesize_ASC
+  filesize_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1380,6 +1384,7 @@ type SupportFilePreviousValues {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileScalarWhereInput {
@@ -1453,6 +1458,14 @@ input SupportFileScalarWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -1482,6 +1495,7 @@ input SupportFileUpdateDataInput {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileUpdateInput {
@@ -1490,6 +1504,7 @@ input SupportFileUpdateInput {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileUpdateManyDataInput {
@@ -1497,6 +1512,7 @@ input SupportFileUpdateManyDataInput {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileUpdateManyInput {
@@ -1515,6 +1531,7 @@ input SupportFileUpdateManyMutationInput {
   md5: String
   filename: String
   filetype: String
+  filesize: Float
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -1605,6 +1622,14 @@ input SupportFileWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
   NOT: [SupportFileWhereInput!]

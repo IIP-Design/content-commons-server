@@ -208,6 +208,7 @@ type SupportFile {
   md5: String
   filename: String
   filetype: String # srt, pdf
+  filesize: Float
 }
 
 
