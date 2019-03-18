@@ -14,6 +14,54 @@ enum ContentType {
   TEACHING_MATERIAL
 }
 
+enum VideoBurnedInStatus {
+  SUBTITLED
+  CAPTIONED
+  CLEAN
+}
+
+enum VideoQuality {
+  WEB
+  BROADCAST
+}
+
+enum ImageQuality {
+  WEB
+  PRINT
+}
+
+enum ProjectPublishStatus {
+  DRAFT
+  PUBLISHED
+  EMBARGOED
+}
+
+enum ProjectVisibility {
+  INTERNAL
+  PUBLIC
+}
+
+enum TextDirection {
+  LTR
+  RTL
+}
+
+enum ThumbnailSize {
+  SMALL
+  MEDIUM
+  LARGE
+  FULL
+}
+
+# enum VideoFileType {
+  
+# }
+
+# enum ImageFileType {
+  
+# }
+
+
 type User {
   id: ID! @unique
   firstName: String!
@@ -40,9 +88,130 @@ type Team {
   isConfirmed: Boolean! @default(value: "false")
 }
 
-type Video {
+type Language {
   id: ID! @unique
-  title: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  languageCode: String!
+  locale: String!
+  textDirection: String! @default(value: LTR)
+  displayName: String!
+  nativeName: String!
 }
+
+type Category {
+  id: ID! @unique
+  name: String!
+  language: Language!
+}
+
+type Tag {
+  id: ID! @unique
+  name: String!
+  language: Language!
+}
+
+type Thumbnail {
+  id: ID! @unique
+  size: ThumbnailSize @default(value: FULL)
+  image: ImageFile
+}
+
+type VideoProject {
+  id: ID! @unique
+  projectType: String! # How are the units related? LANGUAGE_TRANSLATION, SERIES, etc
+  projectTitle: String!
+  descPublic: String
+  descInternal: String
+  author: String
+  team: Team
+  status: ProjectPublishStatus @default(value: DRAFT)
+  visibility: ProjectVisibility # what is default?
+  units: [VideoUnit]
+  supportFiles: [SupportFile]
+  thumbnails: [ImageFile]
+  categories: [Category]
+  tags: [Tag]
+}
+
+type VideoUnit {
+  id: ID! @unique
+  language: Language
+  title: String!
+  descPublic: String
+  files: [VideoFile]
+  tags: [Tag] 
+  categories: [Category] 
+  thumbnails: [Thumbnail]
+}
+
+type VideoStream {
+  id: ID! @unique
+  site: String  # You Tube, Vimeo
+  url: String
+  embedUrl: String # verify that this is needed
+}
+
+type Dimensions {
+  id: ID! @unique
+  width: Int
+  height: Int  
+}
+
+
+# Full video,promotional teaser, etc
+type VideoUse {
+  id: ID! @unique
+  name: String!
+}
+
+# thumbnil/cover image, email graphic etc
+type ImageUse {
+  id: ID! @unique
+  name: String!
+}
+
+
+type VideoFile {
+  id: ID! @unique
+  language: Language
+  filetype: String 
+  filename: String
+  use: VideoUse  
+  quality: VideoQuality  
+  videoBurnedInStatus: VideoBurnedInStatus
+  url: String
+  md5: String
+  duration: Float
+  bitrate: Float
+  filesize: Float
+  dimensions: Dimensions
+  stream: VideoStream
+}
+
+
+type ImageFile {
+  id: ID! @unique
+  language: Language
+  dimensions: Dimensions
+  alt: String
+  longdesc: String
+  caption: String
+  filename: String
+  filetype: String
+  md5: String
+  url: String  
+}
+
+type SupportFile {
+  id: ID! @unique
+  language: Language! 
+  url: String
+  md5: String
+  filename: String
+  filetype: String # srt, pdf
+  filesize: Float
+}
+
+
+# type EditableFile {
+
+# }

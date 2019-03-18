@@ -5,7 +5,27 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
+    name: "Category",
+    embedded: false
+  },
+  {
     name: "ContentType",
+    embedded: false
+  },
+  {
+    name: "Dimensions",
+    embedded: false
+  },
+  {
+    name: "ImageFile",
+    embedded: false
+  },
+  {
+    name: "ImageQuality",
+    embedded: false
+  },
+  {
+    name: "ImageUse",
     embedded: false
   },
   {
@@ -17,7 +37,35 @@ var models = [
     embedded: false
   },
   {
+    name: "ProjectPublishStatus",
+    embedded: false
+  },
+  {
+    name: "ProjectVisibility",
+    embedded: false
+  },
+  {
+    name: "SupportFile",
+    embedded: false
+  },
+  {
+    name: "Tag",
+    embedded: false
+  },
+  {
     name: "Team",
+    embedded: false
+  },
+  {
+    name: "TextDirection",
+    embedded: false
+  },
+  {
+    name: "Thumbnail",
+    embedded: false
+  },
+  {
+    name: "ThumbnailSize",
     embedded: false
   },
   {
@@ -25,7 +73,31 @@ var models = [
     embedded: false
   },
   {
-    name: "Video",
+    name: "VideoBurnedInStatus",
+    embedded: false
+  },
+  {
+    name: "VideoFile",
+    embedded: false
+  },
+  {
+    name: "VideoProject",
+    embedded: false
+  },
+  {
+    name: "VideoQuality",
+    embedded: false
+  },
+  {
+    name: "VideoStream",
+    embedded: false
+  },
+  {
+    name: "VideoUnit",
+    embedded: false
+  },
+  {
+    name: "VideoUse",
     embedded: false
   }
 ];
