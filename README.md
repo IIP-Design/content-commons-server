@@ -31,10 +31,16 @@ Install the following if not already installed
   - **PUBLISHER_APP_SECRET** : secret to sign authentication token
 
 - Mail configuration for sending emails via AWS SES.
+
   - **AWS_REGION** : us-east-1
-  - **AWS_ACCESS_KEY_ID** : AWS IAM programmatic access key with full SES permissions
-  - **AWS_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
+  - **AWS_SES_ACCESS_KEY_ID** : AWS IAM programmatic access key with full SES permissions
+  - **AWS_SES_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
   - **MAIL_RETURN_ADDRESS** : Return address for emails sent by app
+
+- S3 AWS configuration for uploading files.
+
+  - **AWS_S3_ACCESS_KEY_ID** : AWS IAM programmatic access key with full S3 permissions
+  - **AWS_S3_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
 
 - Deploy prisma schema, install dependencies and start development server
 
@@ -70,6 +76,5 @@ Prisma database endpoint requires authorization. To add authorization to the pla
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/IIP-Design/content-commons-server/tags).
-
 
 Bye
