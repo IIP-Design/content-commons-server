@@ -1,0 +1,23 @@
+type Query {
+  authenticatedUser: User
+}
+
+type Mutation {
+  signOut: String!
+  signUp(data: UserCreateInput): Message
+  signIn(email: String!, password: String!): User!
+  googleSignin(token: String!): User
+  updatePassword(
+    tempToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
+  requestAccountAction(
+    email: String!
+    subject: String!
+    body: String!
+    link: String!
+    reply: String!
+    page: String!
+  ): Message
+}

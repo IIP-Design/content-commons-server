@@ -1,0 +1,30 @@
+type Query {
+  thumbnails(where: ThumbnailWhereInput, orderBy: ThumbnailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Thumbnail]!
+  thumbnail(id: ID!): Thumbnail
+
+  imageFiles(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile]!
+  imageFile(id: ID!): ImageFile
+
+  imageUses(where: ImageUseWhereInput, orderBy: ImageUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageUse]!
+  imageUse(id: ID!): ImageUse
+}
+
+type Mutation {
+  createThumbnail(data: ThumbnailCreateInput!): Thumbnail!
+  updateThumbnail(data: ThumbnailUpdateInput!, where: ThumbnailWhereUniqueInput!): Thumbnail
+  updateManyThumbnails(data: ThumbnailUpdateManyMutationInput!, where: ThumbnailWhereInput): BatchPayload!
+  deleteThumbnail(id: ID!): Thumbnail
+  deleteManyThumbnails(where: ThumbnailWhereInput): BatchPayload!
+
+  createImageFile(data: ImageFileCreateInput!): ImageFile!
+  updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
+  updateManyImageFiles(data: ImageFileUpdateManyMutationInput!, where: ImageFileWhereInput): BatchPayload!
+  deleteImageFile(id: ID!): ImageFile
+  deleteManyImageFiles(where: ImageFileWhereInput): BatchPayload!
+
+  createImageUse(name: String!): ImageUse!
+  updateImageUse(data: ImageUseUpdateInput!, where: ImageUseWhereUniqueInput!): ImageUse
+  updateManyImageUses(data: ImageUseUpdateManyMutationInput!, where: ImageUseWhereInput): BatchPayload!
+  deleteImageUse(id: ID!): ImageUse
+  deleteManyImageUses(where: ImageUseWhereInput): BatchPayload!
+}

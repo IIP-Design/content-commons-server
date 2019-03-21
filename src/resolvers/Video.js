@@ -48,21 +48,21 @@ export default {
       return ctx.prisma.supportFile( { id: args.id } );
     },
 
-    categories ( parent, args, ctx ) {
-      return ctx.prisma.categories( { ...args } );
-    },
+    // categories ( parent, args, ctx ) {
+    //   return ctx.prisma.categories( { ...args } );
+    // },
 
-    category ( parent, args, ctx ) {
-      return ctx.prisma.category( { id: args.id } );
-    },
+    // category ( parent, args, ctx ) {
+    //   return ctx.prisma.category( { id: args.id } );
+    // },
 
-    tags ( parent, args, ctx ) {
-      return ctx.prisma.tags( { ...args } );
-    },
+    // tags ( parent, args, ctx ) {
+    //   return ctx.prisma.tags( { ...args } );
+    // },
 
-    tag ( parent, args, ctx ) {
-      return ctx.prisma.tag( { id: args.id } );
-    },
+    // tag ( parent, args, ctx ) {
+    //   return ctx.prisma.tag( { id: args.id } );
+    // },
 
     videoUses ( parent, args, ctx ) {
       return ctx.prisma.videoUses( { ...args } );
@@ -290,59 +290,59 @@ export default {
       return ctx.prisma.deleteManySupportFiles( { ...where } );
     },
 
-    async createCategory ( parent, args, ctx ) {
-      const { data } = args;
-      const category = await ctx.prisma.createCategory( {
-        ...data
-      } );
+    // async createCategory ( parent, args, ctx ) {
+    //   const { data } = args;
+    //   const category = await ctx.prisma.createCategory( {
+    //     ...data
+    //   } );
 
-      return category;
-    },
+    //   return category;
+    // },
 
-    updateCategory ( parent, args, ctx ) {
-      const updates = { ...args };
-      const { data, where: { id } } = updates;
-      return ctx.prisma.updateCategory( {
-        data,
-        where: { id }
-      } );
-    },
+    // updateCategory ( parent, args, ctx ) {
+    //   const updates = { ...args };
+    //   const { data, where: { id } } = updates;
+    //   return ctx.prisma.updateCategory( {
+    //     data,
+    //     where: { id }
+    //   } );
+    // },
 
-    deleteCategory ( parent, { id }, ctx ) {
-      return ctx.prisma.deleteCategory( { id } );
-    },
+    // deleteCategory ( parent, { id }, ctx ) {
+    //   return ctx.prisma.deleteCategory( { id } );
+    // },
 
-    async createTag ( parent, args, ctx ) {
-      const { data } = args;
-      const tag = await ctx.prisma.createTag( {
-        ...data
-      } );
+    // async createTag ( parent, args, ctx ) {
+    //   const { data } = args;
+    //   const tag = await ctx.prisma.createTag( {
+    //     ...data
+    //   } );
 
-      return tag;
-    },
+    //   return tag;
+    // },
 
-    updateTag ( parent, args, ctx ) {
-      const updates = { ...args };
-      const { data, where: { id } } = updates;
-      return ctx.prisma.updateTag( {
-        data,
-        where: { id }
-      } );
-    },
+    // updateTag ( parent, args, ctx ) {
+    //   const updates = { ...args };
+    //   const { data, where: { id } } = updates;
+    //   return ctx.prisma.updateTag( {
+    //     data,
+    //     where: { id }
+    //   } );
+    // },
 
-    updateManyTags ( parent, args, ctx ) {
-      const updates = { ...args };
-      const { data, where } = updates;
-      return ctx.prisma.updateManyTags( { data, where } );
-    },
+    // updateManyTags ( parent, args, ctx ) {
+    //   const updates = { ...args };
+    //   const { data, where } = updates;
+    //   return ctx.prisma.updateManyTags( { data, where } );
+    // },
 
-    deleteTag ( parent, { id }, ctx ) {
-      return ctx.prisma.deleteTag( { id } );
-    },
+    // deleteTag ( parent, { id }, ctx ) {
+    //   return ctx.prisma.deleteTag( { id } );
+    // },
 
-    deleteManyTags ( parent, { where }, ctx ) {
-      return ctx.prisma.deleteManyTags( { ...where } );
-    },
+    // deleteManyTags ( parent, { where }, ctx ) {
+    //   return ctx.prisma.deleteManyTags( { ...where } );
+    // },
 
     async createVideoUse ( parent, args, ctx ) {
       const videoUse = await ctx.prisma.createVideoUse( {
@@ -558,15 +558,15 @@ export default {
     }
   },
 
-  Category: {
-    language( parent, args, ctx ) {
-      return ctx.prisma.category( { id: parent.id } ).language();
-    }
-  },
+  // Category: {
+  //   language( parent, args, ctx ) {
+  //     return ctx.prisma.category( { id: parent.id } ).language();
+  //   }
+  // },
 
-  Tag: {
-    language( parent, args, ctx ) {
-      return ctx.prisma.tag( { id: parent.id } ).language();
-    }
-  }
+  // Tag: {
+  //   language( parent, args, ctx ) {
+  //     return ctx.prisma.tag( { id: parent.id } ).language();
+  //   }
+  // }
 };

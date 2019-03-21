@@ -1,0 +1,8 @@
+type Query {
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
+  team(id: ID!): Team
+}
+
+type Mutation {
+  createTeam(name: String!, organization: String!): Team!
+}

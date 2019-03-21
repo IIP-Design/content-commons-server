@@ -53,15 +53,6 @@ enum ThumbnailSize {
   FULL
 }
 
-# enum VideoFileType {
-  
-# }
-
-# enum ImageFileType {
-  
-# }
-
-
 type User {
   id: ID! @unique
   firstName: String!
@@ -97,13 +88,19 @@ type Language {
   nativeName: String!
 }
 
+# translations prop required as we need at least the English translation to create a category
 type Category {
   id: ID! @unique
-  name: String!
-  language: Language!
+  translations: [LanguageTranslation!]!
 }
 
+# translations prop required as we need at least the English translation to create a category
 type Tag {
+  id: ID! @unique
+  translations: [LanguageTranslation!]!
+}
+
+type LanguageTranslation {
   id: ID! @unique
   name: String!
   language: Language!
@@ -138,14 +135,14 @@ type VideoUnit {
   title: String!
   descPublic: String
   files: [VideoFile]
-  tags: [Tag] 
-  categories: [Category] 
+  tags: [Tag]
+  categories: [Category]
   thumbnails: [Thumbnail]
 }
 
 type VideoStream {
   id: ID! @unique
-  site: String  # You Tube, Vimeo
+  site: String # You Tube, Vimeo
   url: String
   embedUrl: String # verify that this is needed
 }
@@ -153,9 +150,8 @@ type VideoStream {
 type Dimensions {
   id: ID! @unique
   width: Int
-  height: Int  
+  height: Int
 }
-
 
 # Full video,promotional teaser, etc
 type VideoUse {
@@ -163,20 +159,19 @@ type VideoUse {
   name: String!
 }
 
-# thumbnil/cover image, email graphic etc
+# thumbnail/cover image, email graphic etc
 type ImageUse {
   id: ID! @unique
   name: String!
 }
 
-
 type VideoFile {
   id: ID! @unique
   language: Language
-  filetype: String 
+  filetype: String
   filename: String
-  use: VideoUse  
-  quality: VideoQuality  
+  use: VideoUse
+  quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   md5: String
@@ -186,7 +181,6 @@ type VideoFile {
   dimensions: Dimensions
   stream: VideoStream
 }
-
 
 type ImageFile {
   id: ID! @unique
@@ -198,20 +192,15 @@ type ImageFile {
   filename: String
   filetype: String
   md5: String
-  url: String  
+  url: String
 }
 
 type SupportFile {
   id: ID! @unique
-  language: Language! 
+  language: Language!
   url: String
   md5: String
   filename: String
   filetype: String # srt, pdf
   filesize: Float
 }
-
-
-# type EditableFile {
-
-# }

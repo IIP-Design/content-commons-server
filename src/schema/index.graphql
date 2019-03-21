@@ -1,0 +1,17 @@
+
+# This file imports our graphql schema from multiple files.
+# the order is important, do not change!
+# We default to the generated schema prisma unless an override is specified
+# to override a type, simply check the type name in the generated schema,
+# then create that type again in either one of the Query or Mutation files, or your own file
+# add your own imports at the end of the file like so: # import * from "./MyFile.graphql"
+
+# import * from "./generated/prisma-client/prisma.graphql"
+# import Query.*, Mutation.*, * from "./shared.graphql"
+# import Query.*, Mutation.*, * from "./language.graphql"
+# import Query.*, Mutation.*, * from "./taxonomy.graphql"
+# import Query.*, Mutation.*, * from "./user.graphql"
+# import Query.*, Mutation.*, * from "./team.graphql"
+# import Query.*, Mutation.*, * from "./auth.graphql"
+# import Query.*, Mutation.*, * from "./image.graphql"
+# import Query.*, Mutation.*, * from "./video.graphql"

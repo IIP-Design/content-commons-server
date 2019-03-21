@@ -33,6 +33,10 @@ var models = [
     embedded: false
   },
   {
+    name: "LanguageTranslation",
+    embedded: false
+  },
+  {
     name: "Permission",
     embedded: false
   },

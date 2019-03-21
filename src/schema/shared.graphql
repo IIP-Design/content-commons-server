@@ -1,0 +1,26 @@
+type Message {
+  flag: String
+  text: String
+}
+
+type Query {
+  supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
+  supportFile(id: ID!): SupportFile
+
+  dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
+  dimensions(id: ID!): Dimensions
+}
+
+type Mutation {
+  createSupportFile(data: SupportFileCreateInput!): SupportFile!
+  updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile!
+  updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
+  deleteSupportFile(id: ID!): SupportFile!
+  deleteManySupportFiles(where: SupportFileWhereInput): BatchPayload!
+
+  createDimensions(height: Int, width: Int): Dimensions!
+  updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
+  updateManyDimensionses(data: DimensionsUpdateManyMutationInput!, where: DimensionsWhereInput): BatchPayload!
+  deleteDimensions(id: ID!): Dimensions
+  deleteManyDimensionses(where: DimensionsWhereInput): BatchPayload!
+}

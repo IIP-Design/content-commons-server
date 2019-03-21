@@ -1,0 +1,13 @@
+# Redefine to not reveal sensitive user fields
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  jobTitle: String
+  country: String
+  city: String
+  howHeard: String
+  permissions: [Permission!]!
+  team: Team
+}

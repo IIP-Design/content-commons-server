@@ -1,4 +1,5 @@
-type AggregateCategory {
+module.exports = {
+        typeDefs: /* GraphQL */ `type AggregateCategory {
   count: Int!
 }
 
@@ -15,6 +16,10 @@ type AggregateImageUse {
 }
 
 type AggregateLanguage {
+  count: Int!
+}
+
+type AggregateLanguageTranslation {
   count: Int!
 }
 
@@ -64,8 +69,7 @@ type BatchPayload {
 
 type Category {
   id: ID!
-  name: String!
-  language: Language!
+  translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
 type CategoryConnection {
@@ -75,8 +79,7 @@ type CategoryConnection {
 }
 
 input CategoryCreateInput {
-  name: String!
-  language: LanguageCreateOneInput!
+  translations: LanguageTranslationCreateManyInput
 }
 
 input CategoryCreateManyInput {
@@ -92,8 +95,6 @@ type CategoryEdge {
 enum CategoryOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -102,7 +103,6 @@ enum CategoryOrderByInput {
 
 type CategoryPreviousValues {
   id: ID!
-  name: String!
 }
 
 input CategoryScalarWhereInput {
@@ -120,20 +120,6 @@ input CategoryScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
   AND: [CategoryScalarWhereInput!]
   OR: [CategoryScalarWhereInput!]
   NOT: [CategoryScalarWhereInput!]
@@ -158,17 +144,11 @@ input CategorySubscriptionWhereInput {
 }
 
 input CategoryUpdateDataInput {
-  name: String
-  language: LanguageUpdateOneRequiredInput
+  translations: LanguageTranslationUpdateManyInput
 }
 
 input CategoryUpdateInput {
-  name: String
-  language: LanguageUpdateOneRequiredInput
-}
-
-input CategoryUpdateManyDataInput {
-  name: String
+  translations: LanguageTranslationUpdateManyInput
 }
 
 input CategoryUpdateManyInput {
@@ -179,16 +159,6 @@ input CategoryUpdateManyInput {
   connect: [CategoryWhereUniqueInput!]
   disconnect: [CategoryWhereUniqueInput!]
   deleteMany: [CategoryScalarWhereInput!]
-  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
-}
-
-input CategoryUpdateManyMutationInput {
-  name: String
-}
-
-input CategoryUpdateManyWithWhereNestedInput {
-  where: CategoryScalarWhereInput!
-  data: CategoryUpdateManyDataInput!
 }
 
 input CategoryUpdateWithWhereUniqueNestedInput {
@@ -217,21 +187,9 @@ input CategoryWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  language: LanguageWhereInput
+  translations_every: LanguageTranslationWhereInput
+  translations_some: LanguageTranslationWhereInput
+  translations_none: LanguageTranslationWhereInput
   AND: [CategoryWhereInput!]
   OR: [CategoryWhereInput!]
   NOT: [CategoryWhereInput!]
@@ -986,6 +944,185 @@ input LanguageSubscriptionWhereInput {
   NOT: [LanguageSubscriptionWhereInput!]
 }
 
+type LanguageTranslation {
+  id: ID!
+  name: String!
+  language: Language!
+}
+
+type LanguageTranslationConnection {
+  pageInfo: PageInfo!
+  edges: [LanguageTranslationEdge]!
+  aggregate: AggregateLanguageTranslation!
+}
+
+input LanguageTranslationCreateInput {
+  name: String!
+  language: LanguageCreateOneInput!
+}
+
+input LanguageTranslationCreateManyInput {
+  create: [LanguageTranslationCreateInput!]
+  connect: [LanguageTranslationWhereUniqueInput!]
+}
+
+type LanguageTranslationEdge {
+  node: LanguageTranslation!
+  cursor: String!
+}
+
+enum LanguageTranslationOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type LanguageTranslationPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input LanguageTranslationScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [LanguageTranslationScalarWhereInput!]
+  OR: [LanguageTranslationScalarWhereInput!]
+  NOT: [LanguageTranslationScalarWhereInput!]
+}
+
+type LanguageTranslationSubscriptionPayload {
+  mutation: MutationType!
+  node: LanguageTranslation
+  updatedFields: [String!]
+  previousValues: LanguageTranslationPreviousValues
+}
+
+input LanguageTranslationSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: LanguageTranslationWhereInput
+  AND: [LanguageTranslationSubscriptionWhereInput!]
+  OR: [LanguageTranslationSubscriptionWhereInput!]
+  NOT: [LanguageTranslationSubscriptionWhereInput!]
+}
+
+input LanguageTranslationUpdateDataInput {
+  name: String
+  language: LanguageUpdateOneRequiredInput
+}
+
+input LanguageTranslationUpdateInput {
+  name: String
+  language: LanguageUpdateOneRequiredInput
+}
+
+input LanguageTranslationUpdateManyDataInput {
+  name: String
+}
+
+input LanguageTranslationUpdateManyInput {
+  create: [LanguageTranslationCreateInput!]
+  update: [LanguageTranslationUpdateWithWhereUniqueNestedInput!]
+  upsert: [LanguageTranslationUpsertWithWhereUniqueNestedInput!]
+  delete: [LanguageTranslationWhereUniqueInput!]
+  connect: [LanguageTranslationWhereUniqueInput!]
+  disconnect: [LanguageTranslationWhereUniqueInput!]
+  deleteMany: [LanguageTranslationScalarWhereInput!]
+  updateMany: [LanguageTranslationUpdateManyWithWhereNestedInput!]
+}
+
+input LanguageTranslationUpdateManyMutationInput {
+  name: String
+}
+
+input LanguageTranslationUpdateManyWithWhereNestedInput {
+  where: LanguageTranslationScalarWhereInput!
+  data: LanguageTranslationUpdateManyDataInput!
+}
+
+input LanguageTranslationUpdateWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput!
+  data: LanguageTranslationUpdateDataInput!
+}
+
+input LanguageTranslationUpsertWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput!
+  update: LanguageTranslationUpdateDataInput!
+  create: LanguageTranslationCreateInput!
+}
+
+input LanguageTranslationWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  language: LanguageWhereInput
+  AND: [LanguageTranslationWhereInput!]
+  OR: [LanguageTranslationWhereInput!]
+  NOT: [LanguageTranslationWhereInput!]
+}
+
+input LanguageTranslationWhereUniqueInput {
+  id: ID
+}
+
 input LanguageUpdateDataInput {
   languageCode: String
   locale: String
@@ -1130,7 +1267,6 @@ scalar Long
 type Mutation {
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
@@ -1158,6 +1294,12 @@ type Mutation {
   upsertLanguage(where: LanguageWhereUniqueInput!, create: LanguageCreateInput!, update: LanguageUpdateInput!): Language!
   deleteLanguage(where: LanguageWhereUniqueInput!): Language
   deleteManyLanguages(where: LanguageWhereInput): BatchPayload!
+  createLanguageTranslation(data: LanguageTranslationCreateInput!): LanguageTranslation!
+  updateLanguageTranslation(data: LanguageTranslationUpdateInput!, where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
+  updateManyLanguageTranslations(data: LanguageTranslationUpdateManyMutationInput!, where: LanguageTranslationWhereInput): BatchPayload!
+  upsertLanguageTranslation(where: LanguageTranslationWhereUniqueInput!, create: LanguageTranslationCreateInput!, update: LanguageTranslationUpdateInput!): LanguageTranslation!
+  deleteLanguageTranslation(where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
+  deleteManyLanguageTranslations(where: LanguageTranslationWhereInput): BatchPayload!
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile
   updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
@@ -1166,7 +1308,6 @@ type Mutation {
   deleteManySupportFiles(where: SupportFileWhereInput): BatchPayload!
   createTag(data: TagCreateInput!): Tag!
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
-  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
@@ -1272,6 +1413,9 @@ type Query {
   language(where: LanguageWhereUniqueInput!): Language
   languages(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Language]!
   languagesConnection(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LanguageConnection!
+  languageTranslation(where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
+  languageTranslations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation]!
+  languageTranslationsConnection(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LanguageTranslationConnection!
   supportFile(where: SupportFileWhereUniqueInput!): SupportFile
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFilesConnection(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileConnection!
@@ -1311,6 +1455,7 @@ type Subscription {
   imageFile(where: ImageFileSubscriptionWhereInput): ImageFileSubscriptionPayload
   imageUse(where: ImageUseSubscriptionWhereInput): ImageUseSubscriptionPayload
   language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
+  languageTranslation(where: LanguageTranslationSubscriptionWhereInput): LanguageTranslationSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
@@ -1640,8 +1785,7 @@ input SupportFileWhereUniqueInput {
 
 type Tag {
   id: ID!
-  name: String!
-  language: Language!
+  translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
 type TagConnection {
@@ -1651,8 +1795,7 @@ type TagConnection {
 }
 
 input TagCreateInput {
-  name: String!
-  language: LanguageCreateOneInput!
+  translations: LanguageTranslationCreateManyInput
 }
 
 input TagCreateManyInput {
@@ -1668,8 +1811,6 @@ type TagEdge {
 enum TagOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1678,7 +1819,6 @@ enum TagOrderByInput {
 
 type TagPreviousValues {
   id: ID!
-  name: String!
 }
 
 input TagScalarWhereInput {
@@ -1696,20 +1836,6 @@ input TagScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
   AND: [TagScalarWhereInput!]
   OR: [TagScalarWhereInput!]
   NOT: [TagScalarWhereInput!]
@@ -1734,17 +1860,11 @@ input TagSubscriptionWhereInput {
 }
 
 input TagUpdateDataInput {
-  name: String
-  language: LanguageUpdateOneRequiredInput
+  translations: LanguageTranslationUpdateManyInput
 }
 
 input TagUpdateInput {
-  name: String
-  language: LanguageUpdateOneRequiredInput
-}
-
-input TagUpdateManyDataInput {
-  name: String
+  translations: LanguageTranslationUpdateManyInput
 }
 
 input TagUpdateManyInput {
@@ -1755,16 +1875,6 @@ input TagUpdateManyInput {
   connect: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
   deleteMany: [TagScalarWhereInput!]
-  updateMany: [TagUpdateManyWithWhereNestedInput!]
-}
-
-input TagUpdateManyMutationInput {
-  name: String
-}
-
-input TagUpdateManyWithWhereNestedInput {
-  where: TagScalarWhereInput!
-  data: TagUpdateManyDataInput!
 }
 
 input TagUpdateWithWhereUniqueNestedInput {
@@ -1793,21 +1903,9 @@ input TagWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  language: LanguageWhereInput
+  translations_every: LanguageTranslationWhereInput
+  translations_some: LanguageTranslationWhereInput
+  translations_none: LanguageTranslationWhereInput
   AND: [TagWhereInput!]
   OR: [TagWhereInput!]
   NOT: [TagWhereInput!]
@@ -3934,3 +4032,6 @@ input VideoUseWhereInput {
 input VideoUseWhereUniqueInput {
   id: ID
 }
+`
+      }
+    
