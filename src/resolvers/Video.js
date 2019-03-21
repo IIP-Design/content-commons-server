@@ -48,21 +48,21 @@ export default {
       return ctx.prisma.supportFile( { id: args.id } );
     },
 
-    // categories ( parent, args, ctx ) {
-    //   return ctx.prisma.categories( { ...args } );
-    // },
+    categories ( parent, args, ctx ) {
+      return ctx.prisma.categories( { ...args } );
+    },
 
-    // category ( parent, args, ctx ) {
-    //   return ctx.prisma.category( { id: args.id } );
-    // },
+    category ( parent, args, ctx ) {
+      return ctx.prisma.category( { id: args.id } );
+    },
 
-    // tags ( parent, args, ctx ) {
-    //   return ctx.prisma.tags( { ...args } );
-    // },
+    tags ( parent, args, ctx ) {
+      return ctx.prisma.tags( { ...args } );
+    },
 
-    // tag ( parent, args, ctx ) {
-    //   return ctx.prisma.tag( { id: args.id } );
-    // },
+    tag ( parent, args, ctx ) {
+      return ctx.prisma.tag( { id: args.id } );
+    },
 
     videoUses ( parent, args, ctx ) {
       return ctx.prisma.videoUses( { ...args } );
