@@ -1260,6 +1260,7 @@ input LanguageWhereInput {
 
 input LanguageWhereUniqueInput {
   id: ID
+  locale: String
 }
 
 scalar Long

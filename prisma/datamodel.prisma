@@ -82,7 +82,7 @@ type Team {
 type Language {
   id: ID! @unique
   languageCode: String!
-  locale: String!
+  locale: String! @unique
   textDirection: String! @default(value: LTR)
   displayName: String!
   nativeName: String!

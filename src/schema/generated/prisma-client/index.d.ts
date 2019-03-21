@@ -2366,6 +2366,7 @@ export interface TeamUpdateDataInput {
 
 export type LanguageWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  locale?: String;
 }>;
 
 export interface TeamUpdateOneInput {
