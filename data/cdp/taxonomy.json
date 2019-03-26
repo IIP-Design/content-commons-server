@@ -1,0 +1,3331 @@
+[
+  {
+    "_id": "J4riF2MBR4UFGCthEuBP",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL"
+    ],
+    "synonymMapping": [
+      "united states culture",
+      "us culture",
+      "u.s. culture",
+      "u.s.a culture"
+    ],
+    "language": {
+      "en": "american culture",
+      "en-us": "american culture",
+      "es-es": "Cultura de Estados Unidos",
+      "fr-fr": "Culture américaine",
+      "pt-br": "Cultura americana",
+      "ar": "الثقافة الأميركية",
+      "fa-ir": "فرهنگ آمریکایی",
+      "zh-cn": "美国文化",
+      "ru-ru": "Американская культура",
+      "id-id": "Budaya Amerika",
+      "ur": "امریکی ثقافت"
+    }
+  },
+  {
+    "_id": "JoriF2MBR4UFGCthEuAL",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "about united states",
+      "about u.s.",
+      "about u.s.a",
+      "about usa",
+      "info about u.s ",
+      "info about u.s.a"
+    ],
+    "language": {
+      "en": "about america",
+      "en-us": "about america",
+      "es-es": "conozca Estados Unidos",
+      "fr-fr": "Amérique",
+      "pt-br": "sobre os Estados Unidos",
+      "ar": "عن أميركا",
+      "fa-ir": "درباره آمریکا",
+      "zh-cn": "美国概览",
+      "ru-ru": "Об Америке",
+      "id-id": "Tentang Amerika",
+      "ur": "امریکہ سے متعلق"
+    }
+  },
+  {
+    "_id": "K4riF2MBR4UFGCthEuDx",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "english learning",
+      "en-us": "english learning",
+      "es-es": "aprendizaje del idioma inglés",
+      "fr-fr": "Anglais langue étrangère",
+      "pt-br": "aprendizagem de Inglês",
+      "ar": "تعلم اللغة الإنجليزية",
+      "fa-ir": "یادگیری زبان انگلیسی",
+      "zh-cn": "英语学习",
+      "ru-ru": "Изучение английского языка",
+      "id-id": "pembelajaran bahasa Inggris",
+      "ur": "انگریزی سیکھنا"
+    }
+  },
+  {
+    "_id": "KIriF2MBR4UFGCthEuCI",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "diversity",
+      "en-us": "diversity",
+      "es-es": "diversidad",
+      "fr-fr": "Diversité",
+      "pt-br": "diversidade",
+      "ar": "التنوع",
+      "fa-ir": "گوناگونی",
+      "zh-cn": "多样性",
+      "ru-ru": "Разнообразие",
+      "id-id": "keberagaman",
+      "ur": "تنوع"
+    }
+  },
+  {
+    "_id": "KYriF2MBR4UFGCthEuCt",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "employment legislation",
+      "en-us": "employment legislation",
+      "es-es": "legislación laboral",
+      "fr-fr": "législation du travail",
+      "pt-br": "legislação trabalhista",
+      "ar": "تشريعات العمل",
+      "fa-ir": "قانون کار",
+      "zh-cn": "就業立法",
+      "ru-ru": "трудовое законодательство",
+      "id-id": "undang-undang ketenagakerjaan",
+      "ur": "روزگار کے قانون سازی"
+    }
+  },
+  {
+    "_id": "KoriF2MBR4UFGCthEuDP",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [
+      "lgbt",
+      "lesbian",
+      "gay",
+      "bisexual",
+      "transgender",
+      "intersex "
+    ],
+    "language": {
+      "en": "lgbti",
+      "en-us": "lgbti",
+      "es-es": "LGBTI",
+      "fr-fr": "LGBTI",
+      "pt-br": "LGBT",
+      "ar": "المثليون ومزدوجو الميل الجنسي ومغايرو الهوية الجنسانية",
+      "fa-ir": "دگرباشان",
+      "zh-cn": "LGBTI",
+      "ru-ru": "ЛГБТИ",
+      "id-id": "LGBTI",
+      "ur": "ایل جی بی ٹی آئی"
+    }
+  },
+  {
+    "_id": "L4riF2MBR4UFGCthE-Bs",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "leadership & community action",
+      "en-us": "leadership & community action",
+      "es-es": "Liderazgo y acción comunitaria",
+      "fr-fr": "leadership et action communautaire",
+      "pt-br": "liderança e ação comunitária",
+      "ar": "القيادة والعمل المجتمعي",
+      "fa-ir": "رهبری و اقدامات اجتماعی",
+      "zh-cn": "領導力和社區行動",
+      "ru-ru": "руководство и действия сообщества",
+      "id-id": "kepemimpinan & aksi komunitas",
+      "ur": "قیادت اور کمیونٹی کی کارروائی"
+    }
+  },
+  {
+    "_id": "LIriF2MBR4UFGCthE-AP",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OIriF2MBR4UFGCthFeDR"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "entertainment",
+      "en-us": "entertainment",
+      "es-es": "entretenimiento",
+      "fr-fr": "divertissement",
+      "pt-br": "entretenimento",
+      "ar": "وسائل الترفيه",
+      "fa-ir": "سرگرمی",
+      "zh-cn": "娛樂",
+      "ru-ru": "развлекательная программа",
+      "id-id": "hiburan",
+      "ur": "تفریح"
+    }
+  },
+  {
+    "_id": "LYriF2MBR4UFGCthE-Az",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "WIriF2MBR4UFGCthHOCO",
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "exchange",
+      "en-us": "exchange",
+      "es-es": "intercambiar",
+      "fr-fr": "échange",
+      "pt-br": "troca",
+      "ar": "تبادل",
+      "fa-ir": "تبادل",
+      "zh-cn": "交換",
+      "ru-ru": "обмен",
+      "id-id": "bertukar",
+      "ur": "تبادلہ"
+    }
+  },
+  {
+    "_id": "LoriF2MBR4UFGCthE-BR",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "leadership",
+      "en-us": "leadership",
+      "es-es": "liderazgo",
+      "fr-fr": "direction",
+      "pt-br": "Liderança",
+      "ar": "قيادة",
+      "fa-ir": "رهبری",
+      "zh-cn": "領導",
+      "ru-ru": "руководство",
+      "id-id": "kepemimpinan",
+      "ur": "قیادت"
+    }
+  },
+  {
+    "_id": "M4riF2MBR4UFGCthFeAp",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OIriF2MBR4UFGCthFeDR",
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "sport event",
+      "en-us": "sport event",
+      "es-es": "evento deportivo",
+      "fr-fr": "événement sportif",
+      "pt-br": "evento esportivo",
+      "ar": "حدث رياضي",
+      "fa-ir": "رویداد ورزشی",
+      "zh-cn": "體育賽事",
+      "ru-ru": "Спортивное событие",
+      "id-id": "acara olahraga",
+      "ur": "کھیل کی تقریب"
+    }
+  },
+  {
+    "_id": "MIriF2MBR4UFGCthE-CJ",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OIriF2MBR4UFGCthFeDR"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "people",
+      "en-us": "people",
+      "es-es": "gente",
+      "fr-fr": "gens",
+      "pt-br": "pessoas",
+      "ar": "اشخاص",
+      "fa-ir": "مردم",
+      "zh-cn": "人",
+      "ru-ru": "люди",
+      "id-id": "orang-orang",
+      "ur": "لوگ"
+    }
+  },
+  {
+    "_id": "MYriF2MBR4UFGCthE-Cn",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "retirement",
+      "en-us": "retirement",
+      "es-es": "Jubilación",
+      "fr-fr": "retraite",
+      "pt-br": "aposentadoria",
+      "ar": "تقاعد",
+      "fa-ir": "بازنشستگی",
+      "zh-cn": "退休",
+      "ru-ru": "выход на пенсию",
+      "id-id": "pensiun",
+      "ur": "ریٹائرمنٹ"
+    }
+  },
+  {
+    "_id": "MoriF2MBR4UFGCthFeAE",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "social learning",
+      "en-us": "social learning",
+      "es-es": "aprendizaje social",
+      "fr-fr": "apprentissage social",
+      "pt-br": "aprendizagem social",
+      "ar": "تعليم اجتماعي",
+      "fa-ir": "یادگیری اجتماعی",
+      "zh-cn": "社會學習",
+      "ru-ru": "социальное обучение",
+      "id-id": "pembelajaran sosial",
+      "ur": "سماجی سیکھنے"
+    }
+  },
+  {
+    "_id": "N4riF2MBR4UFGCthFeC0",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "values",
+      "en-us": "values",
+      "es-es": "valores",
+      "fr-fr": "valeurs",
+      "pt-br": "valores",
+      "ar": "القيم",
+      "fa-ir": "ارزش های",
+      "zh-cn": "值",
+      "ru-ru": "значения",
+      "id-id": "nilai-nilai",
+      "ur": "اقدار"
+    }
+  },
+  {
+    "_id": "NIriF2MBR4UFGCthFeBG",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "study in the u.s.",
+      "en-us": "study in the u.s.",
+      "es-es": "estudiar en Estados Unidos",
+      "fr-fr": "Études aux USA",
+      "pt-br": "estudar nos EUA",
+      "ar": "الدراسة في الولايات المتحدة",
+      "fa-ir": "تحصیل در ایالات متحده",
+      "zh-cn": "留学美国",
+      "ru-ru": "Учеба в США",
+      "id-id": "belajar di AS",
+      "ur": "امریکہ میں تعلیم حاصل کریں"
+    }
+  },
+  {
+    "_id": "NYriF2MBR4UFGCthFeB1",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "OIriF2MBR4UFGCthFeDR"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "travel to the u.s. ",
+      "en-us": "travel to the u.s. ",
+      "es-es": "viajar a Estados Unidos",
+      "fr-fr": "Voyages aux États-Unis",
+      "pt-br": "viajar para os EUA",
+      "ar": "السفر إلى الولايات المتحدة",
+      "fa-ir": "سفر به ایالات متحده",
+      "zh-cn": "赴美旅行",
+      "ru-ru": "Путешествие в США",
+      "id-id": "bepergian ke AS",
+      "ur": "امریکہ آئیں"
+    }
+  },
+  {
+    "_id": "NoriF2MBR4UFGCthFeCX",
+    "primary": false,
+    "parents": [
+      "JoriF2MBR4UFGCthEuAL",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "u.s. government",
+      "en-us": "u.s. government",
+      "es-es": "Gobierno de Estados Unidos",
+      "fr-fr": "Gouvernement américain",
+      "pt-br": "Governo dos EUA",
+      "ar": "الحكومة الأميركية",
+      "fa-ir": "دولت ایالات متحده",
+      "zh-cn": "美国政府",
+      "ru-ru": "Правительство США",
+      "id-id": "Pemerintah AS",
+      "ur": "امریکی حکومت"
+    }
+  },
+  {
+    "_id": "O4riF2MBR4UFGCthFuCE",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "anti-corruption",
+      "en-us": "anti-corruption",
+      "es-es": "anti corrupcion",
+      "fr-fr": "anti-corruption",
+      "pt-br": "anti-corrupção",
+      "ar": "مكافحة الفساد",
+      "fa-ir": "ضد فساد",
+      "zh-cn": "反腐敗",
+      "ru-ru": "антикоррупционный",
+      "id-id": "anti korupsi",
+      "ur": "انسداد فساد"
+    }
+  },
+  {
+    "_id": "OIriF2MBR4UFGCthFeDR",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "arts & entertainment",
+      "arts and society"
+    ],
+    "language": {
+      "en": "arts & culture",
+      "en-us": "arts & culture",
+      "es-es": "Arte y cultura",
+      "fr-fr": "Arts et culture",
+      "pt-br": "Artes e Cultura",
+      "ar": "فنون وثقافة",
+      "fa-ir": "هنر و فرهنگ",
+      "zh-cn": "藝術與文化",
+      "ru-ru": "Искусство и культура",
+      "id-id": "Seni & Budaya",
+      "ur": "آرٹس اور ثقافت"
+    }
+  },
+  {
+    "_id": "OYriF2MBR4UFGCthFeDt",
+    "primary": false,
+    "parents": [
+      "OIriF2MBR4UFGCthFeDR",
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "ceremony",
+      "en-us": "ceremony",
+      "es-es": "ceremonia",
+      "fr-fr": "la cérémonie",
+      "pt-br": "cerimônia",
+      "ar": "مراسم",
+      "fa-ir": "مراسم",
+      "zh-cn": "儀式",
+      "ru-ru": "церемония",
+      "id-id": "upacara",
+      "ur": "تقریب"
+    }
+  },
+  {
+    "_id": "OoriF2MBR4UFGCthFuBm",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "democracy & civil society",
+      "en-us": "democracy & civil society",
+      "es-es": "Democracia y sociedad civil",
+      "fr-fr": "Démocratie et société civile",
+      "pt-br": "Democracia e sociedade civil",
+      "ar": "الديمقراطية والمجتمع المدني",
+      "fa-ir": "دموکراسی و جامعه مدنی",
+      "zh-cn": "民主與公民社會",
+      "ru-ru": "Демократия и гражданское общество",
+      "id-id": "Demokrasi dan Masyarakat Sipil",
+      "ur": "جمہوریت اور سول سوسائٹی"
+    }
+  },
+  {
+    "_id": "P4riF2MBR4UFGCthGOAw",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "detainees",
+      "en-us": "detainees",
+      "es-es": "detenidos",
+      "fr-fr": "détenus",
+      "pt-br": "detidos",
+      "ar": "المعتقلين",
+      "fa-ir": "بازداشت شدگان",
+      "zh-cn": "被拘留者",
+      "ru-ru": "задержанные",
+      "id-id": "tahanan",
+      "ur": "قیدی"
+    }
+  },
+  {
+    "_id": "PIriF2MBR4UFGCthFuCh",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "civic leadership",
+      "en-us": "civic leadership",
+      "es-es": "liderazgo cívico",
+      "fr-fr": "leadership civique",
+      "pt-br": "liderança cívica",
+      "ar": "القيادة المدنية",
+      "fa-ir": "رهبری مدنی",
+      "zh-cn": "公民領導",
+      "ru-ru": "гражданское лидерство",
+      "id-id": "kepemimpinan sipil",
+      "ur": "شہری قیادت"
+    }
+  },
+  {
+    "_id": "PYriF2MBR4UFGCthFuC7",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "civil unrest",
+      "en-us": "civil unrest",
+      "es-es": "disturbios civiles",
+      "fr-fr": "troubles civils",
+      "pt-br": "agitação civil",
+      "ar": "اضطراب مدني",
+      "fa-ir": "ناآرامی مدنی",
+      "zh-cn": "內亂",
+      "ru-ru": "гражданские беспорядки",
+      "id-id": "kerusuhan sipil",
+      "ur": "سول بدامنی"
+    }
+  },
+  {
+    "_id": "PoriF2MBR4UFGCthGOAO",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "communities",
+      "en-us": "communities",
+      "es-es": "comunidades",
+      "fr-fr": "communautés",
+      "pt-br": "comunidades",
+      "ar": "مجتمعات",
+      "fa-ir": "جوامع",
+      "zh-cn": "社區",
+      "ru-ru": "сообщества",
+      "id-id": "komunitas",
+      "ur": "کمیونٹی"
+    }
+  },
+  {
+    "_id": "Q4riF2MBR4UFGCthGOC7",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "emergency incident",
+      "en-us": "emergency incident",
+      "es-es": "incidente de emergencia",
+      "fr-fr": "incident d'urgence",
+      "pt-br": "incidente de emergência",
+      "ar": "حادث طارئ",
+      "fa-ir": "حادثه اضطراری",
+      "zh-cn": "緊急事件",
+      "ru-ru": "аварийный инцидент",
+      "id-id": "insiden darurat",
+      "ur": "ہنگامی واقعہ"
+    }
+  },
+  {
+    "_id": "QIriF2MBR4UFGCthGOBM",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "development",
+      "en-us": "development",
+      "es-es": "desarrollo",
+      "fr-fr": "Développement",
+      "pt-br": "desenvolvimento",
+      "ar": "التنمية",
+      "fa-ir": "توسعه",
+      "zh-cn": "发展",
+      "ru-ru": "Развитие",
+      "id-id": "pembangunan",
+      "ur": "ترقی"
+    }
+  },
+  {
+    "_id": "QYriF2MBR4UFGCthGOCA",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "drug use",
+      "en-us": "drug use",
+      "es-es": "uso de drogas",
+      "fr-fr": "usage de drogues",
+      "pt-br": "uso de drogas",
+      "ar": "تعاطي المخدرات",
+      "fa-ir": "用藥",
+      "zh-cn": "用藥",
+      "ru-ru": "употребление наркотиков",
+      "id-id": "penggunaan narkoba",
+      "ur": "منشیات کا استعمال"
+    }
+  },
+  {
+    "_id": "QoriF2MBR4UFGCthGOCa",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "election",
+      "en-us": "election",
+      "es-es": "elección",
+      "fr-fr": "élection",
+      "pt-br": "eleição",
+      "ar": "انتخاب",
+      "fa-ir": "انتخابات",
+      "zh-cn": "選舉",
+      "ru-ru": "выборы",
+      "id-id": "pemilihan",
+      "ur": "انتخاب"
+    }
+  },
+  {
+    "_id": "R4riF2MBR4UFGCthGeAr",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "foreign aid",
+      "en-us": "foreign aid",
+      "es-es": "Ayuda exterior",
+      "fr-fr": "Aide à l’étranger",
+      "pt-br": "Ajuda externa",
+      "ar": "مساعدات خارجية",
+      "fa-ir": "کمک های خارجی",
+      "zh-cn": "对外援助",
+      "ru-ru": "Внешняя помощь",
+      "id-id": "Bantuan Luar Negeri",
+      "ur": "غیر ملکی امداد"
+    }
+  },
+  {
+    "_id": "RIriF2MBR4UFGCthGODY",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "emergency planning",
+      "en-us": "emergency planning",
+      "es-es": "planificación de emergencias",
+      "fr-fr": "planification d'urgence",
+      "pt-br": "planejamento de emergência",
+      "ar": "تخطيط الطوارئ",
+      "fa-ir": "برنامه ریزی اضطراری",
+      "zh-cn": "應急計劃",
+      "ru-ru": "планирование чрезвычайных ситуаций",
+      "id-id": "perencanaan darurat",
+      "ur": "ہنگامی منصوبہ بندی"
+    }
+  },
+  {
+    "_id": "RYriF2MBR4UFGCthGOD0",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "emergency response",
+      "en-us": "emergency response",
+      "es-es": "respuesta de emergencia",
+      "fr-fr": "réponse d'urgence",
+      "pt-br": "Resposta de emergência",
+      "ar": "رد طارئ",
+      "fa-ir": "پاسخ اضطرار ی",
+      "zh-cn": "應急響應",
+      "ru-ru": "аварийного реагирования",
+      "id-id": "respon darurat",
+      "ur": "ہنگامی ردعمل"
+    }
+  },
+  {
+    "_id": "RoriF2MBR4UFGCthGeAQ",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "family",
+      "en-us": "family",
+      "es-es": "familia",
+      "fr-fr": "famille",
+      "pt-br": "família",
+      "ar": "أسرة",
+      "fa-ir": "خانواده",
+      "zh-cn": "家庭",
+      "ru-ru": "семья",
+      "id-id": "keluarga",
+      "ur": "خاندان"
+    }
+  },
+  {
+    "_id": "S4riF2MBR4UFGCthGeCq",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "interreligious dialogue",
+      "en-us": "interreligious dialogue",
+      "es-es": "diálogo interreligioso",
+      "fr-fr": "dialogue interreligieux",
+      "pt-br": "diálogo inter-religioso",
+      "ar": "الحوار بين الاديان",
+      "fa-ir": "گفتگوی مذهبی",
+      "zh-cn": "宗教間對話",
+      "ru-ru": "межрелигиозный диалог",
+      "id-id": "dialog antaragama",
+      "ur": "مداخلت کی بات چیت"
+    }
+  },
+  {
+    "_id": "SIriF2MBR4UFGCthGeBK",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "government policy",
+      "en-us": "government policy",
+      "es-es": "política gubernamental",
+      "fr-fr": "politique gouvernementale",
+      "pt-br": "política do governo",
+      "ar": "سياسة الحكومة",
+      "fa-ir": "سیاست دولت",
+      "zh-cn": "政府政策",
+      "ru-ru": "правительственная политика",
+      "id-id": "Kebijakan pemerintah",
+      "ur": "حکومتی پالیسی"
+    }
+  },
+  {
+    "_id": "SYriF2MBR4UFGCthGeBk",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [
+      "mankind"
+    ],
+    "language": {
+      "en": "humankind",
+      "en-us": "humankind",
+      "es-es": "Humanidad",
+      "fr-fr": "Humanité",
+      "pt-br": "Humanidade",
+      "ar": "البشرية",
+      "fa-ir": "HUmankind",
+      "zh-cn": "人類",
+      "ru-ru": "человечество",
+      "id-id": "HUmankind",
+      "ur": "HUmankind"
+    }
+  },
+  {
+    "_id": "SoriF2MBR4UFGCthGeCK",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "h4riF2MBR4UFGCthI-Bb",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "international relations",
+      "en-us": "international relations",
+      "es-es": "Relaciones internacionales",
+      "fr-fr": "Relations internationales",
+      "pt-br": "Relações internacionais",
+      "ar": "العلاقات الدولية",
+      "fa-ir": "روابط بین المللی",
+      "zh-cn": "国际关系",
+      "ru-ru": "Международные отношения",
+      "id-id": "Hubungan Internasional",
+      "ur": "بین الاقوامی تعلقات"
+    }
+  },
+  {
+    "_id": "T4riF2MBR4UFGCthGuBE",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "prisoners",
+      "en-us": "prisoners",
+      "es-es": "السجناء",
+      "fr-fr": "les prisonniers",
+      "pt-br": "prisioneiros",
+      "ar": "السجناء",
+      "fa-ir": "زندانیان",
+      "zh-cn": "囚犯",
+      "ru-ru": "заключенных",
+      "id-id": "tahanan",
+      "ur": "قیدیوں"
+    }
+  },
+  {
+    "_id": "TIriF2MBR4UFGCthGeDG",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "law enforcement",
+      "en-us": "law enforcement",
+      "es-es": "cumplimiento de la ley",
+      "fr-fr": "forces de l'ordre",
+      "pt-br": "aplicação da lei",
+      "ar": "تطبيق القانون",
+      "fa-ir": "اجرای قانون",
+      "zh-cn": "執法",
+      "ru-ru": "правоохранительные органы",
+      "id-id": "penegakan hukum",
+      "ur": "قانون نافذ کرنے والے"
+    }
+  },
+  {
+    "_id": "TYriF2MBR4UFGCthGuAN",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "non-governmental organization (ngo)",
+      "en-us": "non-governmental organization (ngo)",
+      "es-es": "organización no gubernamental (ONG)",
+      "fr-fr": "organisation non gouvernementale (ONG)",
+      "pt-br": "organização não governamental (ONG)",
+      "ar": "منظمة غير حكومية (NGO)",
+      "fa-ir": "سازمان غیردولتی (NGO)",
+      "zh-cn": "非政府組織（NGO）",
+      "ru-ru": "неправительственная организация (НПО)",
+      "id-id": "organisasi non-pemerintah (LSM)",
+      "ur": "غیر سرکاری تنظیم (این جی او)"
+    }
+  },
+  {
+    "_id": "ToriF2MBR4UFGCthGuAo",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "post-war reconstruction",
+      "en-us": "post-war reconstruction",
+      "es-es": "reconstrucción de posguerra",
+      "fr-fr": "reconstruction d'après-guerre",
+      "pt-br": "reconstrução pós-guerra",
+      "ar": "إعادة الإعمار بعد الحرب",
+      "fa-ir": "بازسازی پس از جنگ",
+      "zh-cn": "戰後重建",
+      "ru-ru": "послевоенная реконструкция",
+      "id-id": "rekonstruksi pasca perang",
+      "ur": "جنگ کے بعد تعمیر"
+    }
+  },
+  {
+    "_id": "U4riF2MBR4UFGCthGuC4",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "state relations",
+      "en-us": "state relations",
+      "es-es": "relaciones estatales",
+      "fr-fr": "relations d'état",
+      "pt-br": "relações estatais",
+      "ar": "علاقات الدولة",
+      "fa-ir": "روابط دولت",
+      "zh-cn": "國家關係",
+      "ru-ru": "отношения государства",
+      "id-id": "hubungan negara",
+      "ur": "ریاستی تعلقات"
+    }
+  },
+  {
+    "_id": "UIriF2MBR4UFGCthGuBi",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "public management",
+      "en-us": "public management",
+      "es-es": "gestión pública",
+      "fr-fr": "gestion publique",
+      "pt-br": "gestão pública",
+      "ar": "الإدارة العامة",
+      "fa-ir": "مدیریت عمومی",
+      "zh-cn": "公共管理",
+      "ru-ru": "государственное управление",
+      "id-id": "manajemen publik",
+      "ur": "عوامی انتظام"
+    }
+  },
+  {
+    "_id": "UYriF2MBR4UFGCthGuB_",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "WIriF2MBR4UFGCthHOCO",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "social condition",
+      "en-us": "social condition",
+      "es-es": "حالة اجتماعية",
+      "fr-fr": "Condition sociale",
+      "pt-br": "Condição social",
+      "ar": "حالة اجتماعية",
+      "fa-ir": "شرایط اجتماعی",
+      "zh-cn": "社會狀況",
+      "ru-ru": "социальное состояние",
+      "id-id": "kondisi sosial",
+      "ur": "سماجی حالت"
+    }
+  },
+  {
+    "_id": "UoriF2MBR4UFGCthGuCb",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "social problem",
+      "en-us": "social problem",
+      "es-es": "problema social",
+      "fr-fr": "problème social",
+      "pt-br": "Problema social",
+      "ar": "مشكلة اجتماعية",
+      "fa-ir": "مشکل اجتماعی",
+      "zh-cn": "社會問題",
+      "ru-ru": "социальная проблема",
+      "id-id": "masalah sosial",
+      "ur": "سماجی مسئلہ"
+    }
+  },
+  {
+    "_id": "V4riF2MBR4UFGCthG-Ar",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "women’s empowerment",
+      "en-us": "women’s empowerment",
+      "es-es": "potenciación de la mujer",
+      "fr-fr": "autonomisation des femmes",
+      "pt-br": "empoderamento da mulher",
+      "ar": "تمكين النساء",
+      "fa-ir": "توانمندسازی زنان",
+      "zh-cn": "女性自主权",
+      "ru-ru": "расширение прав и возможностей женщин",
+      "id-id": "pemberdayaan wanita",
+      "ur": "خواتین کو بااختیار بنانا"
+    }
+  },
+  {
+    "_id": "VIriF2MBR4UFGCthGuDY",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "transparency",
+      "en-us": "transparency",
+      "es-es": "transparencia",
+      "fr-fr": "transparence",
+      "pt-br": "transparência",
+      "ar": "الشفافية",
+      "fa-ir": "شفافیت",
+      "zh-cn": "透明度",
+      "ru-ru": "прозрачность",
+      "id-id": "Transparansi",
+      "ur": "شفافیت"
+    }
+  },
+  {
+    "_id": "VYriF2MBR4UFGCthGuDz",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "women & girls",
+      "en-us": "women & girls",
+      "es-es": "mujeres y niñas",
+      "fr-fr": "Femmes et filles",
+      "pt-br": "mulheres e meninas",
+      "ar": "النساء والفتيات",
+      "fa-ir": "زنان و دختران",
+      "zh-cn": "妇女和女孩",
+      "ru-ru": "Женщины и девочки",
+      "id-id": "perempuan & anak perempuan",
+      "ur": "عورتیں اور لڑکیاں"
+    }
+  },
+  {
+    "_id": "VoriF2MBR4UFGCthG-AQ",
+    "primary": false,
+    "parents": [
+      "OoriF2MBR4UFGCthFuBm",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "women's issues",
+      "en-us": "women's issues",
+      "es-es": "Problemas de mujeres",
+      "fr-fr": "les problèmes des femmes",
+      "pt-br": "problemas femininos",
+      "ar": "قضايا المرأة",
+      "fa-ir": "مسائل زنان",
+      "zh-cn": "婦女的問題",
+      "ru-ru": "проблемы женщин",
+      "id-id": "masalah wanita",
+      "ur": "خواتین کے مسائل"
+    }
+  },
+  {
+    "_id": "W4riF2MBR4UFGCthHODh",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "business planning",
+      "en-us": "business planning",
+      "es-es": "planificación empresarial",
+      "fr-fr": "Planning d'affaires",
+      "pt-br": "planejamento de negócios",
+      "ar": "تخطيط الأعمال",
+      "fa-ir": "برنامه ریزی کسب و کار",
+      "zh-cn": "商業計劃",
+      "ru-ru": "планирование бизнеса",
+      "id-id": "perencanaan bisnis",
+      "ur": "کاروباری منصوبہ بندی"
+    }
+  },
+  {
+    "_id": "WIriF2MBR4UFGCthHOCO",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "economic security",
+      "economic prosperity",
+      "business, economy, & finance",
+      "entrepreneurship",
+      "economic diplomacy",
+      "economic policy & development",
+      "economic issues"
+    ],
+    "language": {
+      "en": "economic opportunity",
+      "en-us": "economic opportunity",
+      "es-es": "Oportunidades económicas",
+      "fr-fr": "Opportunités économiques",
+      "pt-br": "Oportunidade econômica",
+      "ar": "فرص اقتصادية",
+      "fa-ir": "فرصت های اقتصادی",
+      "zh-cn": "经济机会",
+      "ru-ru": "Экономические возможности",
+      "id-id": "Peluang  Ekonomi",
+      "ur": "اقتصادی موقع"
+    }
+  },
+  {
+    "_id": "WYriF2MBR4UFGCthHOCq",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO",
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "agriculture",
+      "en-us": "agriculture",
+      "es-es": "agricultura",
+      "fr-fr": "agriculture",
+      "pt-br": "agricultura",
+      "ar": "الزراعة",
+      "fa-ir": "کشاورزی",
+      "zh-cn": "農業",
+      "ru-ru": "сельское хозяйство",
+      "id-id": "pertanian",
+      "ur": "زراعت"
+    }
+  },
+  {
+    "_id": "WoriF2MBR4UFGCthHODH",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "business and entrepreneurship",
+      "en-us": "business and entrepreneurship",
+      "es-es": "negocios y emprendimiento",
+      "fr-fr": "affaires et entrepreneuriat",
+      "pt-br": "negócios e empreendedorismo",
+      "ar": "الأعمال وريادة الأعمال",
+      "fa-ir": "کسب و کار و کارآفرینی",
+      "zh-cn": "商業和創業",
+      "ru-ru": "бизнес и предпринимательство",
+      "id-id": "bisnis dan kewirausahaan",
+      "ur": "کاروبار اور کاروباری اداری"
+    }
+  },
+  {
+    "_id": "X4riF2MBR4UFGCthHeBN",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "entrepreneurship",
+      "en-us": "entrepreneurship",
+      "es-es": "espíritu empresarial",
+      "fr-fr": "Esprit d'entreprise",
+      "pt-br": "empreendedorismo",
+      "ar": "ريادة الاعمال",
+      "fa-ir": "کارآفرینی",
+      "zh-cn": "创业 ",
+      "ru-ru": "предпринимательство",
+      "id-id": "Kewirausahaan",
+      "ur": "کاروباری تنظیم کار"
+    }
+  },
+  {
+    "_id": "XIriF2MBR4UFGCthHOD8",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "business plans & operations",
+      "en-us": "business plans & operations",
+      "es-es": "planes de negocios y operaciones",
+      "fr-fr": "plans d'affaires et opérations",
+      "pt-br": "planos de negócios e operações",
+      "ar": "خطط العمل والعمليات",
+      "fa-ir": "برنامه های تجاری و عملیات",
+      "zh-cn": "業務計劃和運營",
+      "ru-ru": "бизнес-планы и операции",
+      "id-id": "encana & operasi bisnis",
+      "ur": "کاروباری منصوبہ بندی اور آپریشن"
+    }
+  },
+  {
+    "_id": "XYriF2MBR4UFGCthHeAW",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "economic sector",
+      "en-us": "economic sector",
+      "es-es": "Sector económico",
+      "fr-fr": "secteur économique",
+      "pt-br": "setor economico",
+      "ar": "القطاع الاقتصادي",
+      "fa-ir": "بخش اقتصادی",
+      "zh-cn": "經濟部門",
+      "ru-ru": "экономический сектор",
+      "id-id": "sektor ekonomi",
+      "ur": "اقتصادی شعبے"
+    }
+  },
+  {
+    "_id": "XoriF2MBR4UFGCthHeAz",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "employment",
+      "en-us": "employment",
+      "es-es": "empleo",
+      "fr-fr": "emploi",
+      "pt-br": "emprego",
+      "ar": "توظيف",
+      "fa-ir": "استخدام",
+      "zh-cn": "僱用",
+      "ru-ru": "занятость",
+      "id-id": "pekerjaan",
+      "ur": "روزگار"
+    }
+  },
+  {
+    "_id": "Y4riF2MBR4UFGCthHeDR",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "labor relations",
+      "en-us": "labor relations",
+      "es-es": "relaciones laborales",
+      "fr-fr": "les relations de travail",
+      "pt-br": "relações de trabalho",
+      "ar": "علاقات العمل",
+      "fa-ir": "روابط کارگری",
+      "zh-cn": "勞動關係",
+      "ru-ru": "трудовые отношения",
+      "id-id": "hubungan kerja",
+      "ur": "مزدور تعلقات"
+    }
+  },
+  {
+    "_id": "YIriF2MBR4UFGCthHeB3",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "funding",
+      "en-us": "funding",
+      "es-es": "Fondos",
+      "fr-fr": "Financement",
+      "pt-br": "Financiamento",
+      "ar": "التمويل",
+      "fa-ir": "منابع مالی",
+      "zh-cn": "資金",
+      "ru-ru": "финансирование",
+      "id-id": "Pendanaan",
+      "ur": "فنڈ"
+    }
+  },
+  {
+    "_id": "YYriF2MBR4UFGCthHeCW",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "international trade",
+      "en-us": "international trade",
+      "es-es": "comercio internacional",
+      "fr-fr": "Commerce international",
+      "pt-br": "comércio internacional",
+      "ar": "التجارة الدولية ",
+      "fa-ir": "تجارت بین المللی",
+      "zh-cn": "国际贸易",
+      "ru-ru": "международная торговля",
+      "id-id": "perdagangan internasional",
+      "ur": "بین الاقوامی تجارت"
+    }
+  },
+  {
+    "_id": "YoriF2MBR4UFGCthHeC1",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "labor market",
+      "en-us": "labor market",
+      "es-es": "mercado de trabajo",
+      "fr-fr": "marché du travail",
+      "pt-br": "mercado de trabalho",
+      "ar": "سوق العمل",
+      "fa-ir": "بازار کار",
+      "zh-cn": "勞動力市場",
+      "ru-ru": "рынок труда",
+      "id-id": "pasar tenaga kerja",
+      "ur": "مزدوروں کی منڈی"
+    }
+  },
+  {
+    "_id": "Z4riF2MBR4UFGCthHuCB",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "small family business",
+      "en-us": "small family business",
+      "es-es": "pequeña empresa familiar",
+      "fr-fr": "petite entreprise familiale",
+      "pt-br": "pequena empresa familiar",
+      "ar": "الشركات العائلية الصغيرة",
+      "fa-ir": "کسب و کار خانوادگی کوچک",
+      "zh-cn": "小型家族企業",
+      "ru-ru": "небольшой семейный бизнес",
+      "id-id": "bisnis keluarga kecil",
+      "ur": "چھوٹے خاندان کے کاروبار"
+    }
+  },
+  {
+    "_id": "ZIriF2MBR4UFGCthHeDt",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "market",
+      "en-us": "market",
+      "es-es": "mercado",
+      "fr-fr": "marché",
+      "pt-br": "mercado",
+      "ar": "سوق",
+      "fa-ir": "بازار",
+      "zh-cn": "市場",
+      "ru-ru": "рынок",
+      "id-id": "pasar",
+      "ur": "مارکیٹ"
+    }
+  },
+  {
+    "_id": "ZYriF2MBR4UFGCthHuAJ",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO",
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "natural resources",
+      "en-us": "natural resources",
+      "es-es": "recursos naturales",
+      "fr-fr": "ressources naturelles",
+      "pt-br": "recursos naturais",
+      "ar": "الموارد الطبيعية",
+      "fa-ir": "منابع طبیعی",
+      "zh-cn": "自然資源",
+      "ru-ru": "природные ресурсы",
+      "id-id": "sumber daya alam",
+      "ur": "قدرتی وسائل"
+    }
+  },
+  {
+    "_id": "ZoriF2MBR4UFGCthHuAj",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO",
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "personal & professional development",
+      "en-us": "personal & professional development",
+      "es-es": "desarrollo personal y profesional",
+      "fr-fr": "développement personnel et professionnel",
+      "pt-br": "desenvolvimento pessoal e profissional",
+      "ar": "التطوير الشخصي والمهني",
+      "fa-ir": "توسعه شخصی و حرفه ای",
+      "zh-cn": "個人和職業發展",
+      "ru-ru": "личное и профессиональное развитие",
+      "id-id": "pengembangan pribadi & profesional",
+      "ur": "ذاتی اور پیشہ ورانہ ترقی"
+    }
+  },
+  {
+    "_id": "a4riF2MBR4UFGCthH-AC",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO",
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "unions",
+      "en-us": "unions",
+      "es-es": "النقابات",
+      "fr-fr": "syndicats",
+      "pt-br": "uniões",
+      "ar": "النقابات",
+      "fa-ir": "اتحادیه ها",
+      "zh-cn": "工會",
+      "ru-ru": "союзы",
+      "id-id": "serikat pekerja",
+      "ur": "یونین"
+    }
+  },
+  {
+    "_id": "aIriF2MBR4UFGCthHuCv",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "social entrepreneurship",
+      "en-us": "social entrepreneurship",
+      "es-es": "el emprendimiento social",
+      "fr-fr": "l'entrepreneuriat social",
+      "pt-br": "empreendedorismo Social",
+      "ar": "المشاريع الاجتماعية",
+      "fa-ir": "کارآفرینی اجتماعی",
+      "zh-cn": "社會創業",
+      "ru-ru": "социальное предпринимательство",
+      "id-id": "kewirausahaan sosial",
+      "ur": "سماجی کاروباری"
+    }
+  },
+  {
+    "_id": "aYriF2MBR4UFGCthHuDL",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [
+      "startup",
+      "start-up"
+    ],
+    "language": {
+      "en": "startups",
+      "en-us": "startups",
+      "es-es": "puesta en marcha",
+      "fr-fr": "démarrer",
+      "pt-br": "arranque",
+      "ar": "تبدأ",
+      "fa-ir": "شروع کن",
+      "zh-cn": "啟動",
+      "ru-ru": "запускать",
+      "id-id": "memulai",
+      "ur": "شروع کرو"
+    }
+  },
+  {
+    "_id": "aoriF2MBR4UFGCthHuDl",
+    "primary": false,
+    "parents": [
+      "WIriF2MBR4UFGCthHOCO"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "unemployment",
+      "en-us": "unemployment",
+      "es-es": "desempleo",
+      "fr-fr": "chômage",
+      "pt-br": "desemprego",
+      "ar": "بطالة",
+      "fa-ir": "بیکاری",
+      "zh-cn": "失業",
+      "ru-ru": "безработица",
+      "id-id": "pengangguran",
+      "ur": "بے روزگار"
+    }
+  },
+  {
+    "_id": "b4riF2MBR4UFGCthH-Ce",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "mechanical engineering",
+      "en-us": "mechanical engineering",
+      "es-es": "Ingeniería mecánica",
+      "fr-fr": "ingénierie mécanique",
+      "pt-br": "Engenharia Mecânica",
+      "ar": "مهندس ميكانيكى",
+      "fa-ir": "مهندسی مکانیک",
+      "zh-cn": "機械工業",
+      "ru-ru": "машиностроение",
+      "id-id": "teknik Mesin",
+      "ur": "میکینکل انجینئرنگ"
+    }
+  },
+  {
+    "_id": "bIriF2MBR4UFGCthH-Ad",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "education",
+      "en-us": "education",
+      "es-es": "educación",
+      "fr-fr": "Éducation",
+      "pt-br": "educação",
+      "ar": "التعليم",
+      "fa-ir": "آموزش",
+      "zh-cn": "教育",
+      "ru-ru": "Образование",
+      "id-id": "Pendidikan",
+      "ur": "تعلیم"
+    }
+  },
+  {
+    "_id": "bYriF2MBR4UFGCthH-A-",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "application information",
+      "en-us": "application information",
+      "es-es": "información de la aplicación",
+      "fr-fr": "informations d'application",
+      "pt-br": "informação da aplicação",
+      "ar": "معلومات التطبيق",
+      "fa-ir": "اطلاعات برنامه",
+      "zh-cn": "應用信息",
+      "ru-ru": "информация о приложении",
+      "id-id": "informasi aplikasi",
+      "ur": "درخواست کی معلومات"
+    }
+  },
+  {
+    "_id": "boriF2MBR4UFGCthH-CD",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "mathematics",
+      "en-us": "mathematics",
+      "es-es": "matemáticas",
+      "fr-fr": "mathématiques",
+      "pt-br": "matemática",
+      "ar": "الرياضيات",
+      "fa-ir": "ریاضیات",
+      "zh-cn": "數學",
+      "ru-ru": "математика",
+      "id-id": "matematika",
+      "ur": "ریاضی"
+    }
+  },
+  {
+    "_id": "c4riF2MBR4UFGCthIOCE",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad",
+      "doriF2MBR4UFGCthIeAP",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "scientific institutions",
+      "en-us": "scientific institutions",
+      "es-es": "instituciones científicas",
+      "fr-fr": "institutions scientifiques",
+      "pt-br": "instituições científicas",
+      "ar": "المؤسسات العلمية",
+      "fa-ir": "موسسات علمی",
+      "zh-cn": "科學機構",
+      "ru-ru": "научных учреждений",
+      "id-id": "institusi ilmiah",
+      "ur": "سائنسی اداروں"
+    }
+  },
+  {
+    "_id": "cIriF2MBR4UFGCthIOAO",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad",
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious education",
+      "en-us": "religious education",
+      "es-es": "educación religiosa",
+      "fr-fr": "éducation religieuse",
+      "pt-br": "Educação religiosa",
+      "ar": "التعليم الديني",
+      "fa-ir": "مطالعات دینی و اعتقادی",
+      "zh-cn": "宗教教育",
+      "ru-ru": "религиозное образование",
+      "id-id": "pendidikan agama",
+      "ur": "دینی تعلیم"
+    }
+  },
+  {
+    "_id": "cYriF2MBR4UFGCthIOAu",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "research",
+      "en-us": "research",
+      "es-es": "investigación",
+      "fr-fr": "recherche",
+      "pt-br": "pesquisa",
+      "ar": "ابحاث",
+      "fa-ir": "پژوهش",
+      "zh-cn": "研究",
+      "ru-ru": "исследование",
+      "id-id": "penelitian",
+      "ur": "تحقیق"
+    }
+  },
+  {
+    "_id": "coriF2MBR4UFGCthIOBP",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "school",
+      "en-us": "school",
+      "es-es": "colegio",
+      "fr-fr": "école",
+      "pt-br": "escola",
+      "ar": "مدرسة",
+      "fa-ir": "مدرسه",
+      "zh-cn": "學校",
+      "ru-ru": "школа",
+      "id-id": "sekolah",
+      "ur": "اسکول"
+    }
+  },
+  {
+    "_id": "d4riF2MBR4UFGCthIeA7",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "animal",
+      "en-us": "animal",
+      "es-es": "animal",
+      "fr-fr": "animal",
+      "pt-br": "animal",
+      "ar": "حيوان",
+      "fa-ir": "حیوانات",
+      "zh-cn": "動物",
+      "ru-ru": "животное",
+      "id-id": "hewan",
+      "ur": "جانور"
+    }
+  },
+  {
+    "_id": "dIriF2MBR4UFGCthIODH",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "social sciences",
+      "en-us": "social sciences",
+      "es-es": "Ciencias Sociales",
+      "fr-fr": "Sciences sociales",
+      "pt-br": "Ciências Sociais",
+      "ar": "العلوم الاجتماعية",
+      "fa-ir": "علوم اجتماعی",
+      "zh-cn": "社會科學",
+      "ru-ru": "социальные науки",
+      "id-id": "ilmu Sosial",
+      "ur": "سماجی علوم"
+    }
+  },
+  {
+    "_id": "dYriF2MBR4UFGCthIOD1",
+    "primary": false,
+    "parents": [
+      "bIriF2MBR4UFGCthH-Ad"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "teaching",
+      "en-us": "teaching",
+      "es-es": "enseñando",
+      "fr-fr": "enseignement",
+      "pt-br": "ensino",
+      "ar": "تعليم",
+      "fa-ir": "درس دادن",
+      "zh-cn": "教學",
+      "ru-ru": "обучение",
+      "id-id": "pengajaran",
+      "ur": "پڑھانا"
+    }
+  },
+  {
+    "_id": "doriF2MBR4UFGCthIeAP",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "environment",
+      "en-us": "environment",
+      "es-es": "medioambiente",
+      "fr-fr": "Environnement",
+      "pt-br": "meio ambiente",
+      "ar": "البيئة",
+      "fa-ir": "محیط زیست",
+      "zh-cn": "环境",
+      "ru-ru": "Окружающая среда",
+      "id-id": "lingkungan hidup",
+      "ur": "ماحول"
+    }
+  },
+  {
+    "_id": "e4riF2MBR4UFGCthIeCn",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "environmental politics",
+      "en-us": "environmental politics",
+      "es-es": "política ambiental",
+      "fr-fr": "politique environnementale",
+      "pt-br": "política ambiental",
+      "ar": "السياسة البيئية",
+      "fa-ir": "سیاست زیست محیطی",
+      "zh-cn": "環境政治",
+      "ru-ru": "экологическая политика",
+      "id-id": "politik lingkungan",
+      "ur": "ماحولیاتی سیاست"
+    }
+  },
+  {
+    "_id": "eIriF2MBR4UFGCthIeBY",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "climate",
+      "en-us": "climate",
+      "es-es": "clima",
+      "fr-fr": "climat",
+      "pt-br": "clima",
+      "ar": "مناخ",
+      "fa-ir": "آب و هوا",
+      "zh-cn": "氣候",
+      "ru-ru": "климат",
+      "id-id": "iklim",
+      "ur": "آب و ہوا"
+    }
+  },
+  {
+    "_id": "eYriF2MBR4UFGCthIeBz",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "climate change",
+      "en-us": "climate change",
+      "es-es": "cambio climático",
+      "fr-fr": "Changement climatique",
+      "pt-br": "mudanças climáticas",
+      "ar": "تغير المناخ",
+      "fa-ir": "تغییرات آب و هوا",
+      "zh-cn": "气候变化",
+      "ru-ru": "изменение климата",
+      "id-id": "perubahan iklim",
+      "ur": "آب و ہوا میں تبدیلی"
+    }
+  },
+  {
+    "_id": "eoriF2MBR4UFGCthIeCN",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "conservation",
+      "en-us": "conservation",
+      "es-es": "conservación",
+      "fr-fr": "Conservation",
+      "pt-br": "conservação",
+      "ar": "المحميات",
+      "fa-ir": "محافظت از محیط زیست",
+      "zh-cn": "自然保护",
+      "ru-ru": "охрана окружающей среды",
+      "id-id": "konservasi/pelestarian",
+      "ur": "تحفظ"
+    }
+  },
+  {
+    "_id": "f4riF2MBR4UFGCthIuBb",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "oceans",
+      "en-us": "oceans",
+      "es-es": "océanos",
+      "fr-fr": "océans",
+      "pt-br": "oceanos",
+      "ar": "المحيطات",
+      "fa-ir": "اقیانوس",
+      "zh-cn": "海洋",
+      "ru-ru": "океаны",
+      "id-id": "Lautan",
+      "ur": "سمندر"
+    }
+  },
+  {
+    "_id": "fIriF2MBR4UFGCthIeDI",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "environmental pollution",
+      "en-us": "environmental pollution",
+      "es-es": "contaminación ambiental",
+      "fr-fr": "pollution environnementale",
+      "pt-br": "poluição ambiental",
+      "ar": "التلوث البيئي",
+      "fa-ir": "آلودگی محیطی",
+      "zh-cn": "環境污染",
+      "ru-ru": "загрязнение окружающей среды",
+      "id-id": "pencemaran lingkungan",
+      "ur": "ماحولیاتی آلودگی"
+    }
+  },
+  {
+    "_id": "fYriF2MBR4UFGCthIuAj",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "natural science",
+      "en-us": "natural science",
+      "es-es": "Ciencias Naturales",
+      "fr-fr": "sciences naturelles",
+      "pt-br": "Ciência natural",
+      "ar": "علم الطبيعة",
+      "fa-ir": "علوم طبیعی",
+      "zh-cn": "自然科學",
+      "ru-ru": "естественные науки",
+      "id-id": "ilmu pengetahuan Alam",
+      "ur": "قدرتی سائنس"
+    }
+  },
+  {
+    "_id": "foriF2MBR4UFGCthIuA_",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "nature",
+      "en-us": "nature",
+      "es-es": "naturaleza",
+      "fr-fr": "la nature",
+      "pt-br": "natureza",
+      "ar": "طبيعة",
+      "fa-ir": "طبیعت",
+      "zh-cn": "性質",
+      "ru-ru": "природа",
+      "id-id": "alam",
+      "ur": "فطرت"
+    }
+  },
+  {
+    "_id": "g4riF2MBR4UFGCthIuDv",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "weather phenomena",
+      "en-us": "weather phenomena",
+      "es-es": "fenómenos meteorológicos",
+      "fr-fr": "phénomènes météorologiques",
+      "pt-br": "fenômenos climáticos",
+      "ar": "ظواهر الطقس",
+      "fa-ir": "پدیده آب و هوا",
+      "zh-cn": "天氣現象",
+      "ru-ru": "явления погоды",
+      "id-id": "fenomena cuaca",
+      "ur": "موسم کے رجحان"
+    }
+  },
+  {
+    "_id": "gIriF2MBR4UFGCthIuB4",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "plant",
+      "en-us": "plant",
+      "es-es": "planta",
+      "fr-fr": "plante",
+      "pt-br": "plantar",
+      "ar": "نبات",
+      "fa-ir": "گیاه",
+      "zh-cn": "廠",
+      "ru-ru": "растение",
+      "id-id": "menanam",
+      "ur": "پلانٹ"
+    }
+  },
+  {
+    "_id": "gYriF2MBR4UFGCthIuC2",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "scientific standards",
+      "en-us": "scientific standards",
+      "es-es": "estándares científicos",
+      "fr-fr": "normes scientifiques",
+      "pt-br": "padrões científicos",
+      "ar": "المعايير العلمية",
+      "fa-ir": "استانداردهای علمی",
+      "zh-cn": "科學標準",
+      "ru-ru": "научные стандарты",
+      "id-id": "standar ilmiah",
+      "ur": "سائنسی معیار"
+    }
+  },
+  {
+    "_id": "goriF2MBR4UFGCthIuDR",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "weather forecast",
+      "en-us": "weather forecast",
+      "es-es": "pronóstico del tiempo",
+      "fr-fr": "prévisions météorologiques",
+      "pt-br": "previsão do tempo",
+      "ar": "النشرة الجوية",
+      "fa-ir": "پیش بینی آب و هوا",
+      "zh-cn": "天氣預報",
+      "ru-ru": "прогноз погоды",
+      "id-id": "Prakiraan Cuaca",
+      "ur": "موسم کا حال"
+    }
+  },
+  {
+    "_id": "h4riF2MBR4UFGCthI-Bb",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "global"
+    ],
+    "language": {
+      "en": "geography",
+      "en-us": "geography",
+      "es-es": "Geografía",
+      "fr-fr": "Géographie",
+      "pt-br": "Geografia",
+      "ar": "جغرافية",
+      "fa-ir": "جغرافیا",
+      "zh-cn": "جغرافیا",
+      "ru-ru": "география",
+      "id-id": "Geografi",
+      "ur": "جغرافیہ"
+    }
+  },
+  {
+    "_id": "hIriF2MBR4UFGCthI-AK",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "weather statistic",
+      "en-us": "weather statistic",
+      "es-es": "estadística del tiempo",
+      "fr-fr": "statistique météorologique",
+      "pt-br": "estatística do tempo",
+      "ar": "إحصائيات الطقس",
+      "fa-ir": "آمار آب و هوا",
+      "zh-cn": "天氣統計",
+      "ru-ru": "статистика погоды",
+      "id-id": "statistik cuaca",
+      "ur": "موسم کی حیثیت"
+    }
+  },
+  {
+    "_id": "hYriF2MBR4UFGCthI-Ak",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "weather warning",
+      "en-us": "weather warning",
+      "es-es": "advertencia del clima",
+      "fr-fr": "avertissement de temps",
+      "pt-br": "aviso de tempo",
+      "ar": "تحذير الطقس",
+      "fa-ir": "هشدار هوا",
+      "zh-cn": "天氣警告",
+      "ru-ru": "предупреждение о погоде",
+      "id-id": "peringatan cuaca",
+      "ur": "موسم انتباہ"
+    }
+  },
+  {
+    "_id": "horiF2MBR4UFGCthI-A_",
+    "primary": false,
+    "parents": [
+      "doriF2MBR4UFGCthIeAP"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "wildlife",
+      "en-us": "wildlife",
+      "es-es": "Vida silvestre",
+      "fr-fr": "Faune et flore",
+      "pt-br": "Vida selvagem",
+      "ar": "الحياة البرية",
+      "fa-ir": "حیات وحش",
+      "zh-cn": "野生生物",
+      "ru-ru": "Живая природа",
+      "id-id": "Margasatwa",
+      "ur": "جَنگَلی حَيات"
+    }
+  },
+  {
+    "_id": "i4riF2MBR4UFGCthI-DG",
+    "primary": false,
+    "parents": [
+      "h4riF2MBR4UFGCthI-Bb"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "geographical regions",
+      "en-us": "geographical regions",
+      "es-es": "regiones geográficas",
+      "fr-fr": "régions géographiques",
+      "pt-br": "regiões geográficas",
+      "ar": "المناطق الجغرافية",
+      "fa-ir": "مناطق جغرافیایی",
+      "zh-cn": "地理區域",
+      "ru-ru": "географических регионах",
+      "id-id": "wilayah geografis",
+      "ur": "جغرافیای علاقوں"
+    }
+  },
+  {
+    "_id": "iIriF2MBR4UFGCthI-B0",
+    "primary": false,
+    "parents": [
+      "h4riF2MBR4UFGCthI-Bb"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "continents",
+      "en-us": "continents",
+      "es-es": "continentes",
+      "fr-fr": "continents",
+      "pt-br": "continentes",
+      "ar": "القارات",
+      "fa-ir": "قاره ها",
+      "zh-cn": "大陸",
+      "ru-ru": "континенты",
+      "id-id": "benua",
+      "ur": "براعظم"
+    }
+  },
+  {
+    "_id": "iYriF2MBR4UFGCthI-CP",
+    "primary": false,
+    "parents": [
+      "h4riF2MBR4UFGCthI-Bb"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "countries",
+      "en-us": "countries",
+      "es-es": "países",
+      "fr-fr": "des pays",
+      "pt-br": "paises",
+      "ar": "بلدان",
+      "fa-ir": "کشورها",
+      "zh-cn": "國家",
+      "ru-ru": "страны",
+      "id-id": "negara-negara",
+      "ur": "ممالک"
+    }
+  },
+  {
+    "_id": "ioriF2MBR4UFGCthI-Cs",
+    "primary": false,
+    "parents": [
+      "h4riF2MBR4UFGCthI-Bb"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "demographics",
+      "en-us": "demographics",
+      "es-es": "datos demográficos",
+      "fr-fr": "démographie",
+      "pt-br": "demografia",
+      "ar": "التركيبة السكانية",
+      "fa-ir": "جمعیت شناسی",
+      "zh-cn": "人口統計學",
+      "ru-ru": "демографические",
+      "id-id": "demografi",
+      "ur": "ڈیموگرافکس"
+    }
+  },
+  {
+    "_id": "j4riF2MBR4UFGCthJOBV",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "countering violent extremism",
+      "en-us": "countering violent extremism",
+      "es-es": "Contrarrestar el extremismo violento",
+      "fr-fr": "Contrer l’extrémisme violent",
+      "pt-br": "Combate ao extremismo violento",
+      "ar": "مكافحة التطرّف العنيف",
+      "fa-ir": "مقابله با افراط گرایی خشونت آمیز",
+      "zh-cn": "抗击暴力极端主义",
+      "ru-ru": "Противодействие насильственному экстремизму",
+      "id-id": "Melawan kekerasan ekstremisme",
+      "ur": "پرتشدد انتہا پسندی کا مقابلہ کرنا"
+    }
+  },
+  {
+    "_id": "jIriF2MBR4UFGCthI-Dv",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "global security",
+      "countering violent extremism",
+      "peace & security",
+      "international relations"
+    ],
+    "language": {
+      "en": "global issues",
+      "en-us": "global issues",
+      "es-es": "Asuntos mundiales",
+      "fr-fr": "Questions mondiales",
+      "pt-br": "Questões globais",
+      "ar": "قضايا عالمية",
+      "fa-ir": "مسائل جهانی",
+      "zh-cn": "全球事务",
+      "ru-ru": "Глобальные вопросы",
+      "id-id": "Isu Global",
+      "ur": "عالمگیر مسائل"
+    }
+  },
+  {
+    "_id": "jYriF2MBR4UFGCthJOAO",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "act of terror",
+      "en-us": "act of terror",
+      "es-es": "acto de terror",
+      "fr-fr": "acte de terreur",
+      "pt-br": "ato de terror",
+      "ar": "فعل من الارهاب",
+      "fa-ir": "اقدام تروریستی",
+      "zh-cn": "恐怖行為",
+      "ru-ru": "акт ужаса",
+      "id-id": "tindakan teror",
+      "ur": "دہشت گردی کا کام"
+    }
+  },
+  {
+    "_id": "joriF2MBR4UFGCthJOAp",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "armed conflict",
+      "en-us": "armed conflict",
+      "es-es": "conflicto armado",
+      "fr-fr": "un conflit armé",
+      "pt-br": "conflito armado",
+      "ar": "الصراع المسلح",
+      "fa-ir": "درگیری های مسلحانه",
+      "zh-cn": "武裝衝突",
+      "ru-ru": "вооруженный конфликт",
+      "id-id": "konflik bersenjata",
+      "ur": "مسلح تصادم"
+    }
+  },
+  {
+    "_id": "k4riF2MBR4UFGCthJeA5",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "health",
+      "en-us": "health",
+      "es-es": "salud",
+      "fr-fr": "Santé",
+      "pt-br": "saúde",
+      "ar": "الصحة",
+      "fa-ir": "بهداشت",
+      "zh-cn": "健康",
+      "ru-ru": "Здоровье",
+      "id-id": "kesehatan",
+      "ur": "صحت"
+    }
+  },
+  {
+    "_id": "kIriF2MBR4UFGCthJOBx",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "coup d’etat",
+      "en-us": "coup d’etat",
+      "es-es": "golpe de Estado",
+      "fr-fr": "coup d'État",
+      "pt-br": "golpe de Estado",
+      "ar": "قاعدة شاذة",
+      "fa-ir": "کودتا",
+      "zh-cn": "政變",
+      "ru-ru": "государственный переворот",
+      "id-id": "kudeta",
+      "ur": "بغاوت"
+    }
+  },
+  {
+    "_id": "kYriF2MBR4UFGCthJODg",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "massacre",
+      "en-us": "massacre",
+      "es-es": "masacre",
+      "fr-fr": "massacre",
+      "pt-br": "massacre",
+      "ar": "مذبحة",
+      "fa-ir": "قتل عام",
+      "zh-cn": "屠殺",
+      "ru-ru": "бойня",
+      "id-id": "pembantaian",
+      "ur": "قتل عام"
+    }
+  },
+  {
+    "_id": "koriF2MBR4UFGCthJOD6",
+    "primary": false,
+    "parents": [
+      "jIriF2MBR4UFGCthI-Dv",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "peace process",
+      "en-us": "peace process",
+      "es-es": "proceso de paz",
+      "fr-fr": "procédé de paix",
+      "pt-br": "processo de paz",
+      "ar": "عملية السلام",
+      "fa-ir": "روند صلح",
+      "zh-cn": "和平進程",
+      "ru-ru": "мирный процесс",
+      "id-id": "proses perdamaian",
+      "ur": "امن عمل"
+    }
+  },
+  {
+    "_id": "l4riF2MBR4UFGCthJeDA",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "health organizations",
+      "en-us": "health organizations",
+      "es-es": "organizaciones de salud",
+      "fr-fr": "organisations de santé",
+      "pt-br": "organizações de saúde",
+      "ar": "المنظمات الصحية",
+      "fa-ir": "سازمان های بهداشتی",
+      "zh-cn": "衛生組織",
+      "ru-ru": "организации здравоохранения",
+      "id-id": "organisasi kesehatan",
+      "ur": "صحت کی تنظیمیں"
+    }
+  },
+  {
+    "_id": "lIriF2MBR4UFGCthJeBV",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5",
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "biomedical science",
+      "en-us": "biomedical science",
+      "es-es": "ciencia Biomedica",
+      "fr-fr": "science biomédicale",
+      "pt-br": "Ciência biomédica",
+      "ar": "علم الطب الحيوي",
+      "fa-ir": "علم پزشکی",
+      "zh-cn": "生物醫學科學",
+      "ru-ru": "биомедицинская наука",
+      "id-id": "ilmu biomedis",
+      "ur": "حیاتیاتی سائنس"
+    }
+  },
+  {
+    "_id": "lYriF2MBR4UFGCthJeBy",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "diseases",
+      "en-us": "diseases",
+      "es-es": "enfermedades",
+      "fr-fr": "maladies",
+      "pt-br": "doenças",
+      "ar": "الأمراض",
+      "fa-ir": "بیماری ها",
+      "zh-cn": "疾病",
+      "ru-ru": "болезни",
+      "id-id": "penyakit",
+      "ur": "بیماریوں"
+    }
+  },
+  {
+    "_id": "loriF2MBR4UFGCthJeCm",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "health facility",
+      "en-us": "health facility",
+      "es-es": "facilidad de salud",
+      "fr-fr": "établissement de santé",
+      "pt-br": "estabelecimento de saúde",
+      "ar": "مرفق صحي",
+      "fa-ir": "مرکز بهداشت",
+      "zh-cn": "衛生設施",
+      "ru-ru": "медицинское учреждение",
+      "id-id": "fasilitas kesehatan",
+      "ur": "صحت کی سہولت"
+    }
+  },
+  {
+    "_id": "m4riF2MBR4UFGCthJ-AY",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "non-human diseases",
+      "en-us": "non-human diseases",
+      "es-es": "enfermedades no humanas",
+      "fr-fr": "maladies non-humaines",
+      "pt-br": "doenças não humanas",
+      "ar": "أمراض غير بشرية",
+      "fa-ir": "بیماری های غیر انسانی",
+      "zh-cn": "非人類疾病",
+      "ru-ru": "нечеловеческие заболевания",
+      "id-id": "penyakit non-manusia",
+      "ur": "غیر انسانی بیماریوں"
+    }
+  },
+  {
+    "_id": "mIriF2MBR4UFGCthJeDd",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "health treatment",
+      "en-us": "health treatment",
+      "es-es": "tratamiento de salud",
+      "fr-fr": "traitement de santé",
+      "pt-br": "tratamento de saúde",
+      "ar": "العلاج الصحي",
+      "fa-ir": "درمان درمانی",
+      "zh-cn": "健康治療",
+      "ru-ru": "лечение",
+      "id-id": "perawatan kesehatan",
+      "ur": "صحت کا علاج"
+    }
+  },
+  {
+    "_id": "mYriF2MBR4UFGCthJeD4",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "healthcare policy",
+      "en-us": "healthcare policy",
+      "es-es": "política de salud",
+      "fr-fr": "politique de santé",
+      "pt-br": "política de saúde",
+      "ar": "سياسة الرعاية الصحية",
+      "fa-ir": "سیاست های بهداشتی",
+      "zh-cn": "保健政策",
+      "ru-ru": "политика здравоохранения",
+      "id-id": "kebijakan perawatan kesehatan",
+      "ur": "صحت کی دیکھ بھال کی پالیسی"
+    }
+  },
+  {
+    "_id": "moriF2MBR4UFGCthJuAa",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "medical profession",
+      "en-us": "medical profession",
+      "es-es": "profesión médica",
+      "fr-fr": "profession médicale",
+      "pt-br": "profissão médica",
+      "ar": "مهنة طبية",
+      "fa-ir": "حرفه پزشکی",
+      "zh-cn": "醫學界",
+      "ru-ru": "Медицинская профессия",
+      "id-id": "profesi medis",
+      "ur": "طبی پیشہ"
+    }
+  },
+  {
+    "_id": "n4riF2MBR4UFGCthJ-Cb",
+    "primary": false,
+    "parents": [
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "fundamental rights",
+      "en-us": "fundamental rights",
+      "es-es": "derechos fundamentales",
+      "fr-fr": "droits fondamentaux",
+      "pt-br": "direitos fundamentais",
+      "ar": "الحقوق الأساسية",
+      "fa-ir": "حقوق بنیادی",
+      "zh-cn": "基本權利",
+      "ru-ru": "основные права",
+      "id-id": "hak dasar",
+      "ur": "بنیادی حقوق"
+    }
+  },
+  {
+    "_id": "nIriF2MBR4UFGCthJ-A0",
+    "primary": false,
+    "parents": [
+      "k4riF2MBR4UFGCthJeA5"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "treatment",
+      "en-us": "treatment",
+      "es-es": "tratamiento",
+      "fr-fr": "traitement",
+      "pt-br": "tratamento",
+      "ar": "علاج او معاملة",
+      "fa-ir": "رفتار",
+      "zh-cn": "治療",
+      "ru-ru": "лечение",
+      "id-id": "pengobatan",
+      "ur": "علاج"
+    }
+  },
+  {
+    "_id": "nYriF2MBR4UFGCthJ-BQ",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "human rights",
+      "en-us": "human rights",
+      "es-es": "derechos humanos",
+      "fr-fr": "Droits de l’homme",
+      "pt-br": "direitos humanos",
+      "ar": "حقوق الإنسان",
+      "fa-ir": "حقوق بشر",
+      "zh-cn": "人权",
+      "ru-ru": "Права человека",
+      "id-id": "Hak asasi manusia (HAM)",
+      "ur": "انسانی حقوق"
+    }
+  },
+  {
+    "_id": "noriF2MBR4UFGCthJ-Bt",
+    "primary": false,
+    "parents": [
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "discrimination",
+      "en-us": "discrimination",
+      "es-es": "discriminación",
+      "fr-fr": "discrimination",
+      "pt-br": "discriminação",
+      "ar": "تمييز",
+      "fa-ir": "تبعیض",
+      "zh-cn": "區別",
+      "ru-ru": "дискриминация",
+      "id-id": "diskriminasi",
+      "ur": "امتیازی سلوک"
+    }
+  },
+  {
+    "_id": "o4riF2MBR4UFGCthKOCY",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "press & journalism",
+      "en-us": "press & journalism",
+      "es-es": "Prensa y periodismo",
+      "fr-fr": "Presse et journalisme",
+      "pt-br": "Imprensa e Jornalismo",
+      "ar": "الصحافة والصحافة",
+      "fa-ir": "مطبوعات و روزنامه نگاری",
+      "zh-cn": "新聞與新聞",
+      "ru-ru": "Пресса и журналистика",
+      "id-id": "Tekan & Jurnalisme",
+      "ur": "پریس اور صحافت"
+    }
+  },
+  {
+    "_id": "oIriF2MBR4UFGCthJ-DK",
+    "primary": false,
+    "parents": [
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "pride",
+      "en-us": "pride",
+      "es-es": "فخر",
+      "fr-fr": "fierté",
+      "pt-br": "orgulho",
+      "ar": "فخر",
+      "fa-ir": "غرور",
+      "zh-cn": "自豪",
+      "ru-ru": "гордость",
+      "id-id": "kebanggaan",
+      "ur": "فخر"
+    }
+  },
+  {
+    "_id": "oYriF2MBR4UFGCthKOAL",
+    "primary": false,
+    "parents": [
+      "nYriF2MBR4UFGCthJ-BQ"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "rights",
+      "en-us": "rights",
+      "es-es": "حقوق",
+      "fr-fr": "droits",
+      "pt-br": "direitos",
+      "ar": "حقوق",
+      "fa-ir": "حقوق",
+      "zh-cn": "權利",
+      "ru-ru": "права",
+      "id-id": "hak",
+      "ur": "حقوق"
+    }
+  },
+  {
+    "_id": "ooriF2MBR4UFGCthKOBI",
+    "primary": false,
+    "parents": [
+      "nYriF2MBR4UFGCthJ-BQ",
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "welfare",
+      "en-us": "welfare",
+      "es-es": "bienestar",
+      "fr-fr": "aide sociale",
+      "pt-br": "bem-estar",
+      "ar": "خير",
+      "fa-ir": "رفاه",
+      "zh-cn": "福利",
+      "ru-ru": "благосостояние",
+      "id-id": "kesejahteraan",
+      "ur": "فلاح و بہبود"
+    }
+  },
+  {
+    "_id": "p4riF2MBR4UFGCthKeAp",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "democracy",
+      "en-us": "democracy",
+      "es-es": "DEMOCRACIA",
+      "fr-fr": "Démocratie",
+      "pt-br": "democracia",
+      "ar": "الديمقراطية",
+      "fa-ir": "دموکراسی",
+      "zh-cn": "民主",
+      "ru-ru": "Демократия",
+      "id-id": "Demokrasi",
+      "ur": "جمہوریت"
+    }
+  },
+  {
+    "_id": "pIriF2MBR4UFGCthKOC2",
+    "primary": false,
+    "parents": [
+      "o4riF2MBR4UFGCthKOCY"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "mass media",
+      "en-us": "mass media",
+      "es-es": "medios de comunicación",
+      "fr-fr": "médias de masse",
+      "pt-br": "mídia de massa",
+      "ar": "وسائل الإعلام الجماهيرية",
+      "fa-ir": "رسانه های جمعی",
+      "zh-cn": "媒體",
+      "ru-ru": "СМИ",
+      "id-id": "media massa",
+      "ur": "ذرائع ابلاغ"
+    }
+  },
+  {
+    "_id": "pYriF2MBR4UFGCthKODS",
+    "primary": false,
+    "parents": [
+      "o4riF2MBR4UFGCthKOCY"
+    ],
+    "synonymMapping": [
+      "media",
+      "press"
+    ],
+    "language": {
+      "en": "media & press",
+      "en-us": "media & press",
+      "es-es": "medios y prensa",
+      "fr-fr": "médias et presse",
+      "pt-br": "mídia e imprensa",
+      "ar": "وسائل الاعلام والصحافة",
+      "fa-ir": "رسانه ها و مطبوعات",
+      "zh-cn": "媒體和媒體",
+      "ru-ru": "СМИ и прессы",
+      "id-id": "media & tekan",
+      "ur": "میڈیا اور پریس"
+    }
+  },
+  {
+    "_id": "poriF2MBR4UFGCthKODu",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [
+      "politics",
+      "governance",
+      "democratic governance"
+    ],
+    "language": {
+      "en": "good governance",
+      "en-us": "good governance",
+      "es-es": "buen gobierno",
+      "fr-fr": "Gouvernance",
+      "pt-br": "boa governança",
+      "ar": "الحكم الرشيد",
+      "fa-ir": "حکومت",
+      "zh-cn": "良好治理",
+      "ru-ru": "Эффективное управление",
+      "id-id": "tata kelola pemerintahan yang baik",
+      "ur": "اچھی حکمرانی"
+    }
+  },
+  {
+    "_id": "q4riF2MBR4UFGCthKeDJ",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "policy",
+      "en-us": "policy",
+      "es-es": "política",
+      "fr-fr": "politique",
+      "pt-br": "política",
+      "ar": "سياسات",
+      "fa-ir": "سیاست",
+      "zh-cn": "政策",
+      "ru-ru": "политика",
+      "id-id": "kebijakan",
+      "ur": "پالیسی"
+    }
+  },
+  {
+    "_id": "qIriF2MBR4UFGCthKeBU",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "governance",
+      "en-us": "governance",
+      "es-es": "gobierno",
+      "fr-fr": "Gouvernance",
+      "pt-br": "governança",
+      "ar": "الحكم",
+      "fa-ir": "حکومت داری خوب ",
+      "zh-cn": "治理",
+      "ru-ru": "управление",
+      "id-id": "pemerintahan",
+      "ur": "گورننس"
+    }
+  },
+  {
+    "_id": "qYriF2MBR4UFGCthKeBv",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "government",
+      "en-us": "government",
+      "es-es": "gobierno",
+      "fr-fr": "gouvernement",
+      "pt-br": "governo",
+      "ar": "الحكومي",
+      "fa-ir": "دولت",
+      "zh-cn": "政府",
+      "ru-ru": "правительство",
+      "id-id": "pemerintah",
+      "ur": "حکومت"
+    }
+  },
+  {
+    "_id": "qoriF2MBR4UFGCthKeCd",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "judiciary",
+      "en-us": "judiciary",
+      "es-es": "judicial",
+      "fr-fr": "judiciaire",
+      "pt-br": "Judiciário",
+      "ar": "السلطة القضائية",
+      "fa-ir": "قوه قضاییه",
+      "zh-cn": "司法",
+      "ru-ru": "судебная система",
+      "id-id": "pengadilan",
+      "ur": "عدلیہ"
+    }
+  },
+  {
+    "_id": "r4riF2MBR4UFGCthKuBz",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "religion & values",
+      "en-us": "religion & values",
+      "es-es": "Religión y valores",
+      "fr-fr": "Religion et valeurs",
+      "pt-br": "Religião e Valores",
+      "ar": "الدين والقيم",
+      "fa-ir": "دین و ارزش ها",
+      "zh-cn": "宗教與價值觀",
+      "ru-ru": "Религия и ценности",
+      "id-id": "Agama & Nilai",
+      "ur": "مذہب اور اقدار"
+    }
+  },
+  {
+    "_id": "rIriF2MBR4UFGCthKeDj",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "political crisis",
+      "en-us": "political crisis",
+      "es-es": "Crisis política",
+      "fr-fr": "crise politique",
+      "pt-br": "crise política",
+      "ar": "الأزمة السياسية",
+      "fa-ir": "بحران سیاسی",
+      "zh-cn": "政治危機",
+      "ru-ru": "политический кризис",
+      "id-id": "krisis politik",
+      "ur": "سیاسی بحران"
+    }
+  },
+  {
+    "_id": "rYriF2MBR4UFGCthKeD_",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "political dissent",
+      "en-us": "political dissent",
+      "es-es": "disidencia política",
+      "fr-fr": "dissidence politique",
+      "pt-br": "dissidência política",
+      "ar": "المعارضة السياسية",
+      "fa-ir": "مخالفت سیاسی",
+      "zh-cn": "政治異議",
+      "ru-ru": "политическое несогласие",
+      "id-id": "perbedaan pendapat politik",
+      "ur": "سیاسی اختلافات"
+    }
+  },
+  {
+    "_id": "roriF2MBR4UFGCthKuAa",
+    "primary": false,
+    "parents": [
+      "poriF2MBR4UFGCthKODu"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "political process",
+      "en-us": "political process",
+      "es-es": "proceso político",
+      "fr-fr": "processus politique",
+      "pt-br": "processo político",
+      "ar": "العملية السياسية",
+      "fa-ir": "فرایند سیاسی",
+      "zh-cn": "政治過程",
+      "ru-ru": "политический процесс",
+      "id-id": "proses politik",
+      "ur": "سیاسی عمل"
+    }
+  },
+  {
+    "_id": "s4riF2MBR4UFGCthKuD_",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious event",
+      "en-us": "religious event",
+      "es-es": "evento religioso",
+      "fr-fr": "événement religieux",
+      "pt-br": "evento religioso",
+      "ar": "حدث ديني",
+      "fa-ir": "رویداد مذهبی",
+      "zh-cn": "宗教事件",
+      "ru-ru": "религиозное событие",
+      "id-id": "acara keagamaan",
+      "ur": "مذہبی تقریب"
+    }
+  },
+  {
+    "_id": "sIriF2MBR4UFGCthKuCO",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "interfaith",
+      "en-us": "interfaith",
+      "es-es": "interreligioso",
+      "fr-fr": "interconfessionnel",
+      "pt-br": "interfé",
+      "ar": "الأديان",
+      "fa-ir": "مذهبی",
+      "zh-cn": "信仰",
+      "ru-ru": "межконфессиональный",
+      "id-id": "antaragama",
+      "ur": "انٹرفی"
+    }
+  },
+  {
+    "_id": "sYriF2MBR4UFGCthKuC4",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious belief",
+      "en-us": "religious belief",
+      "es-es": "creencia religiosa",
+      "fr-fr": "croyance religieuse",
+      "pt-br": "crença religiosa",
+      "ar": "معتقد ديني",
+      "fa-ir": "اعتقاد مذهبی",
+      "zh-cn": "宗教信仰",
+      "ru-ru": "религиозное верование",
+      "id-id": "keyakinan agama",
+      "ur": "مذہبی عقیدہ"
+    }
+  },
+  {
+    "_id": "soriF2MBR4UFGCthKuDT",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious conflict",
+      "en-us": "religious conflict",
+      "es-es": "conflicto religioso",
+      "fr-fr": "conflit religieux",
+      "pt-br": "conflito religioso",
+      "ar": "الصراع الديني",
+      "fa-ir": "اختلافات مذهبی",
+      "zh-cn": "宗教衝突",
+      "ru-ru": "религиозный конфликт",
+      "id-id": "konflik agama",
+      "ur": "مذہبی تنازعہ"
+    }
+  },
+  {
+    "_id": "t4riF2MBR4UFGCthLOBv",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious text",
+      "en-us": "religious text",
+      "es-es": "texto religioso",
+      "fr-fr": "texte religieux",
+      "pt-br": "texto religioso",
+      "ar": "النص الديني",
+      "fa-ir": "متن مذهبی",
+      "zh-cn": "宗教文本",
+      "ru-ru": "религиозный текст",
+      "id-id": "teks agama",
+      "ur": "مذہبی متن"
+    }
+  },
+  {
+    "_id": "tIriF2MBR4UFGCthLOAW",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious facilities",
+      "en-us": "religious facilities",
+      "es-es": "instalaciones religiosas",
+      "fr-fr": "installations religieuses",
+      "pt-br": "instalações religiosas",
+      "ar": "المرافق الدينية",
+      "fa-ir": "امکانات مذهبی",
+      "zh-cn": "宗教設施",
+      "ru-ru": "религиозные объекты",
+      "id-id": "fasilitas keagamaan",
+      "ur": "مذہبی سہولیات"
+    }
+  },
+  {
+    "_id": "tYriF2MBR4UFGCthLOA4",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious institutions",
+      "en-us": "religious institutions",
+      "es-es": "instituciones religiosas",
+      "fr-fr": "institutions religieuses",
+      "pt-br": "instituições religiosas",
+      "ar": "المؤسسات الدينية",
+      "fa-ir": "موسسات مذهبی",
+      "zh-cn": "宗教機構",
+      "ru-ru": "религиозные учреждения",
+      "id-id": "institusi agama",
+      "ur": "مذہبی اداروں"
+    }
+  },
+  {
+    "_id": "toriF2MBR4UFGCthLOBT",
+    "primary": false,
+    "parents": [
+      "r4riF2MBR4UFGCthKuBz"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "religious leader",
+      "en-us": "religious leader",
+      "es-es": "líder religioso",
+      "fr-fr": "leader réligieux",
+      "pt-br": "líder religioso",
+      "ar": "قائد ديني",
+      "fa-ir": "رهبر مذهبی",
+      "zh-cn": "宗教領袖",
+      "ru-ru": "религиозный лидер",
+      "id-id": "pemimpin religius",
+      "ur": "مذہبی رہنما"
+    }
+  },
+  {
+    "_id": "u4riF2MBR4UFGCthLeBg",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "competition discipline",
+      "en-us": "competition discipline",
+      "es-es": "disciplina de competencia",
+      "fr-fr": "discipline de la compétition",
+      "pt-br": "disciplina de competição",
+      "ar": "الانضباط المنافسة",
+      "fa-ir": "نظم رقابت",
+      "zh-cn": "競爭紀律",
+      "ru-ru": "дисциплина соревнований",
+      "id-id": "disiplin kompetisi",
+      "ur": "مقابلہ کی نظم و ضبط"
+    }
+  },
+  {
+    "_id": "uIriF2MBR4UFGCthLOCL",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "science & technology",
+      "en-us": "science & technology",
+      "es-es": "ciencia y tecnología",
+      "fr-fr": "Sciences & technologie",
+      "pt-br": "ciência & tecnologia",
+      "ar": "العلوم والتكنولوجيا",
+      "fa-ir": "علم و فناوری",
+      "zh-cn": "科学技术",
+      "ru-ru": "Наука и технологии",
+      "id-id": "IPTEK",
+      "ur": "سائنس اور ٹیکنالوجی"
+    }
+  },
+  {
+    "_id": "uYriF2MBR4UFGCthLeAJ",
+    "primary": false,
+    "parents": [
+      "uIriF2MBR4UFGCthLOCL"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "engineering",
+      "en-us": "engineering",
+      "es-es": "Ingenieria",
+      "fr-fr": "ingénierie",
+      "pt-br": "Engenharia",
+      "ar": "هندسة",
+      "fa-ir": "مهندسی",
+      "zh-cn": "工程",
+      "ru-ru": "инжиниринг",
+      "id-id": "teknik",
+      "ur": "انجینئرنگ"
+    }
+  },
+  {
+    "_id": "uoriF2MBR4UFGCthLeA3",
+    "primary": true,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "sports",
+      "en-us": "sports",
+      "es-es": "Des sports",
+      "fr-fr": "Des sports",
+      "pt-br": "Esportes",
+      "ar": "رياضات",
+      "fa-ir": "ورزش ها",
+      "zh-cn": "體育",
+      "ru-ru": "Olahraga",
+      "id-id": "Olahraga",
+      "ur": "کھیل"
+    }
+  },
+  {
+    "_id": "v4riF2MBR4UFGCthLeDg",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "sport organization",
+      "en-us": "sport organization",
+      "es-es": "organización deportiva",
+      "fr-fr": "organisation sportive",
+      "pt-br": "organização esportiva",
+      "ar": "منظمة رياضية",
+      "fa-ir": "سازمان های ورزشی",
+      "zh-cn": "體育組織",
+      "ru-ru": "спортивная организация",
+      "id-id": "organisasi olahraga",
+      "ur": "کھیل تنظیم"
+    }
+  },
+  {
+    "_id": "vIriF2MBR4UFGCthLeB7",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "disciplinary action in sport",
+      "en-us": "disciplinary action in sport",
+      "es-es": "acción disciplinaria en el deporte",
+      "fr-fr": "action disciplinaire dans le sport",
+      "pt-br": "ação disciplinar no esporte",
+      "ar": "العمل التأديبي في الرياضة",
+      "fa-ir": "اقدام انضباطی در ورزش",
+      "zh-cn": "紀律處分在體育運動",
+      "ru-ru": "дисциплинарные меры в спорте",
+      "id-id": "tindakan disipliner dalam olahraga",
+      "ur": "کھیل میں نظم و ضبط"
+    }
+  },
+  {
+    "_id": "vYriF2MBR4UFGCthLeCV",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "drug use in sport",
+      "en-us": "drug use in sport",
+      "es-es": "uso de drogas en el deporte",
+      "fr-fr": "l'usage de drogues dans le sport",
+      "pt-br": "uso de drogas no esporte",
+      "ar": "تعاطي المخدرات في الرياضة",
+      "fa-ir": "مصرف مواد مخدر در ورزش",
+      "zh-cn": "吸毒在運動中使用",
+      "ru-ru": "употребление наркотиков в спорте",
+      "id-id": "penggunaan narkoba dalam olahraga",
+      "ur": "کھیل میں منشیات کا استعمال"
+    }
+  },
+  {
+    "_id": "voriF2MBR4UFGCthLeDB",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "sport industry",
+      "en-us": "sport industry",
+      "es-es": "industria del deporte",
+      "fr-fr": "industrie du sport",
+      "pt-br": "indústria esportiva",
+      "ar": "صناعة الرياضة",
+      "fa-ir": "صنعت ورزش",
+      "zh-cn": "體育產業",
+      "ru-ru": "спортивная индустрия",
+      "id-id": "industri olahraga",
+      "ur": "کھیل کی صنعت"
+    }
+  },
+  {
+    "_id": "wIriF2MBR4UFGCthLeD9",
+    "primary": false,
+    "parents": [
+      "uoriF2MBR4UFGCthLeA3"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "sport venue",
+      "en-us": "sport venue",
+      "es-es": "complejo deportivo",
+      "fr-fr": "complexe sportif",
+      "pt-br": "Local de esporte",
+      "ar": "مكان الرياضة",
+      "fa-ir": "محل برگزاری مسابقات ورزشی",
+      "zh-cn": "運動場地",
+      "ru-ru": "спортивное место",
+      "id-id": "tempat olahraga",
+      "ur": "کھیل کا مقام"
+    }
+  }
+]

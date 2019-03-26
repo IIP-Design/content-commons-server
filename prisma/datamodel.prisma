@@ -156,13 +156,13 @@ type Dimensions {
 # Full video,promotional teaser, etc
 type VideoUse {
   id: ID! @unique
-  name: String!
+  name: String! @unique
 }
 
 # thumbnail/cover image, email graphic etc
 type ImageUse {
   id: ID! @unique
-  name: String!
+  name: String! @unique
 }
 
 type VideoFile {

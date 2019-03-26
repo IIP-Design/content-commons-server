@@ -156,6 +156,7 @@ input CategoryUpdateManyInput {
   upsert: [CategoryUpsertWithWhereUniqueNestedInput!]
   delete: [CategoryWhereUniqueInput!]
   connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
   disconnect: [CategoryWhereUniqueInput!]
   deleteMany: [CategoryScalarWhereInput!]
 }
@@ -595,6 +596,7 @@ input ImageFileUpdateManyInput {
   upsert: [ImageFileUpsertWithWhereUniqueNestedInput!]
   delete: [ImageFileWhereUniqueInput!]
   connect: [ImageFileWhereUniqueInput!]
+  set: [ImageFileWhereUniqueInput!]
   disconnect: [ImageFileWhereUniqueInput!]
   deleteMany: [ImageFileScalarWhereInput!]
   updateMany: [ImageFileUpdateManyWithWhereNestedInput!]
@@ -862,6 +864,7 @@ input ImageUseWhereInput {
 
 input ImageUseWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type Language {
@@ -1058,6 +1061,7 @@ input LanguageTranslationUpdateManyInput {
   upsert: [LanguageTranslationUpsertWithWhereUniqueNestedInput!]
   delete: [LanguageTranslationWhereUniqueInput!]
   connect: [LanguageTranslationWhereUniqueInput!]
+  set: [LanguageTranslationWhereUniqueInput!]
   disconnect: [LanguageTranslationWhereUniqueInput!]
   deleteMany: [LanguageTranslationScalarWhereInput!]
   updateMany: [LanguageTranslationUpdateManyWithWhereNestedInput!]
@@ -1665,6 +1669,7 @@ input SupportFileUpdateManyInput {
   upsert: [SupportFileUpsertWithWhereUniqueNestedInput!]
   delete: [SupportFileWhereUniqueInput!]
   connect: [SupportFileWhereUniqueInput!]
+  set: [SupportFileWhereUniqueInput!]
   disconnect: [SupportFileWhereUniqueInput!]
   deleteMany: [SupportFileScalarWhereInput!]
   updateMany: [SupportFileUpdateManyWithWhereNestedInput!]
@@ -1873,6 +1878,7 @@ input TagUpdateManyInput {
   upsert: [TagUpsertWithWhereUniqueNestedInput!]
   delete: [TagWhereUniqueInput!]
   connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
   deleteMany: [TagScalarWhereInput!]
 }
@@ -2237,6 +2243,7 @@ input ThumbnailUpdateManyInput {
   upsert: [ThumbnailUpsertWithWhereUniqueNestedInput!]
   delete: [ThumbnailWhereUniqueInput!]
   connect: [ThumbnailWhereUniqueInput!]
+  set: [ThumbnailWhereUniqueInput!]
   disconnect: [ThumbnailWhereUniqueInput!]
   deleteMany: [ThumbnailScalarWhereInput!]
   updateMany: [ThumbnailUpdateManyWithWhereNestedInput!]
@@ -2630,6 +2637,7 @@ input UserUpdateManyWithoutTeamInput {
   create: [UserCreateWithoutTeamInput!]
   delete: [UserWhereUniqueInput!]
   connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
   disconnect: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutTeamInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutTeamInput!]
@@ -3105,6 +3113,7 @@ input VideoFileUpdateManyInput {
   upsert: [VideoFileUpsertWithWhereUniqueNestedInput!]
   delete: [VideoFileWhereUniqueInput!]
   connect: [VideoFileWhereUniqueInput!]
+  set: [VideoFileWhereUniqueInput!]
   disconnect: [VideoFileWhereUniqueInput!]
   deleteMany: [VideoFileScalarWhereInput!]
   updateMany: [VideoFileUpdateManyWithWhereNestedInput!]
@@ -3819,6 +3828,7 @@ input VideoUnitUpdateManyInput {
   upsert: [VideoUnitUpsertWithWhereUniqueNestedInput!]
   delete: [VideoUnitWhereUniqueInput!]
   connect: [VideoUnitWhereUniqueInput!]
+  set: [VideoUnitWhereUniqueInput!]
   disconnect: [VideoUnitWhereUniqueInput!]
   deleteMany: [VideoUnitScalarWhereInput!]
   updateMany: [VideoUnitUpdateManyWithWhereNestedInput!]
@@ -4031,4 +4041,5 @@ input VideoUseWhereInput {
 
 input VideoUseWhereUniqueInput {
   id: ID
+  name: String
 }
