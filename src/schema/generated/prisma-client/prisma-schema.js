@@ -207,6 +207,8 @@ enum ContentType {
   TEACHING_MATERIAL
 }
 
+scalar DateTime
+
 type Dimensions {
   id: ID!
   width: Int
@@ -342,6 +344,8 @@ input DimensionsWhereUniqueInput {
 
 type ImageFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   dimensions: Dimensions
   alt: String
@@ -389,6 +393,10 @@ type ImageFileEdge {
 enum ImageFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   alt_ASC
   alt_DESC
   longdesc_ASC
@@ -403,14 +411,12 @@ enum ImageFileOrderByInput {
   md5_DESC
   url_ASC
   url_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type ImageFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   alt: String
   longdesc: String
   caption: String
@@ -435,6 +441,22 @@ input ImageFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -656,6 +678,22 @@ input ImageFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   dimensions: DimensionsWhereInput
   alt: String
@@ -1471,6 +1509,8 @@ type Subscription {
 
 type SupportFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language!
   url: String
   md5: String
@@ -1507,6 +1547,10 @@ type SupportFileEdge {
 enum SupportFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   url_ASC
   url_DESC
   md5_ASC
@@ -1517,14 +1561,12 @@ enum SupportFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type SupportFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   url: String
   md5: String
   filename: String
@@ -1547,6 +1589,22 @@ input SupportFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   url: String
   url_not: String
   url_in: [String!]
@@ -1710,6 +1768,22 @@ input SupportFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   url: String
   url_not: String
@@ -2843,6 +2917,8 @@ enum VideoBurnedInStatus {
 
 type VideoFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   filetype: String
   filename: String
@@ -2893,6 +2969,10 @@ type VideoFileEdge {
 enum VideoFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   filetype_ASC
   filetype_DESC
   filename_ASC
@@ -2911,14 +2991,12 @@ enum VideoFileOrderByInput {
   bitrate_DESC
   filesize_ASC
   filesize_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type VideoFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   filetype: String
   filename: String
   quality: VideoQuality
@@ -2945,6 +3023,22 @@ input VideoFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   filetype: String
   filetype_not: String
   filetype_in: [String!]
@@ -3154,6 +3248,22 @@ input VideoFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   filetype: String
   filetype_not: String
@@ -3257,6 +3367,8 @@ input VideoFileWhereUniqueInput {
 
 type VideoProject {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   projectType: String!
   projectTitle: String!
   descPublic: String
@@ -3302,6 +3414,10 @@ type VideoProjectEdge {
 enum VideoProjectOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   projectType_ASC
   projectType_DESC
   projectTitle_ASC
@@ -3316,14 +3432,12 @@ enum VideoProjectOrderByInput {
   status_DESC
   visibility_ASC
   visibility_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type VideoProjectPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   projectType: String!
   projectTitle: String!
   descPublic: String
@@ -3392,6 +3506,22 @@ input VideoProjectWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   projectType: String
   projectType_not: String
   projectType_in: [String!]
