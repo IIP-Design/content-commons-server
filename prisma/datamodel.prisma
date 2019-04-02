@@ -124,6 +124,7 @@ type VideoProject {
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility # what is default?
+  protectImages: Boolean
   units: [VideoUnit]
   supportFiles: [SupportFile]
   thumbnails: [ImageFile]

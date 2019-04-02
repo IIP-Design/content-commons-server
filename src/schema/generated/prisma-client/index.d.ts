@@ -760,7 +760,9 @@ export type VideoProjectOrderByInput =
   | "status_ASC"
   | "status_DESC"
   | "visibility_ASC"
-  | "visibility_DESC";
+  | "visibility_DESC"
+  | "protectImages_ASC"
+  | "protectImages_DESC";
 
 export type TeamOrderByInput =
   | "id_ASC"
@@ -1393,6 +1395,7 @@ export interface VideoProjectUpdateManyMutationInput {
   author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
 }
 
 export interface LanguageTranslationUpdateManyWithWhereNestedInput {
@@ -2171,6 +2174,7 @@ export interface VideoProjectUpdateInput {
   team?: TeamUpdateOneInput;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
   units?: VideoUnitUpdateManyInput;
   supportFiles?: SupportFileUpdateManyInput;
   thumbnails?: ImageFileUpdateManyInput;
@@ -2303,6 +2307,8 @@ export interface VideoProjectWhereInput {
   visibility_not?: ProjectVisibility;
   visibility_in?: ProjectVisibility[] | ProjectVisibility;
   visibility_not_in?: ProjectVisibility[] | ProjectVisibility;
+  protectImages?: Boolean;
+  protectImages_not?: Boolean;
   units_every?: VideoUnitWhereInput;
   units_some?: VideoUnitWhereInput;
   units_none?: VideoUnitWhereInput;
@@ -3850,6 +3856,7 @@ export interface VideoProjectCreateInput {
   team?: TeamCreateOneInput;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
   units?: VideoUnitCreateManyInput;
   supportFiles?: SupportFileCreateManyInput;
   thumbnails?: ImageFileCreateManyInput;
@@ -5883,6 +5890,7 @@ export interface VideoProject {
   author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
 }
 
 export interface VideoProjectPromise
@@ -5899,6 +5907,7 @@ export interface VideoProjectPromise
   team: <T = TeamPromise>() => T;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
+  protectImages: () => Promise<Boolean>;
   units: <T = FragmentableArray<VideoUnit>>(args?: {
     where?: VideoUnitWhereInput;
     orderBy?: VideoUnitOrderByInput;
@@ -5960,6 +5969,7 @@ export interface VideoProjectSubscription
   team: <T = TeamSubscription>() => T;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
+  protectImages: () => Promise<AsyncIterator<Boolean>>;
   units: <T = Promise<AsyncIterator<VideoUnitSubscription>>>(args?: {
     where?: VideoUnitWhereInput;
     orderBy?: VideoUnitOrderByInput;
@@ -6331,6 +6341,7 @@ export interface VideoProjectPreviousValues {
   author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
 }
 
 export interface VideoProjectPreviousValuesPromise
@@ -6346,6 +6357,7 @@ export interface VideoProjectPreviousValuesPromise
   author: () => Promise<String>;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
+  protectImages: () => Promise<Boolean>;
 }
 
 export interface VideoProjectPreviousValuesSubscription
@@ -6361,6 +6373,7 @@ export interface VideoProjectPreviousValuesSubscription
   author: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
+  protectImages: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface VideoProjectSubscriptionPayload {
