@@ -198,6 +198,7 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  use: ImageUse
   md5: String
   url: String
 }
