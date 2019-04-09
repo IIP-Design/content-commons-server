@@ -134,6 +134,8 @@ type VideoProject {
 
 type VideoUnit {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   title: String!
   descPublic: String
