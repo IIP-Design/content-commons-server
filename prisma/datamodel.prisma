@@ -184,7 +184,7 @@ type VideoFile {
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
-  stream: VideoStream
+  stream: [VideoStream]
 }
 
 type ImageFile {
