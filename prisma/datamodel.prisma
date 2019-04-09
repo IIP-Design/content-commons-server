@@ -168,6 +168,11 @@ type ImageUse {
   name: String!
 }
 
+type SupportFileUse {
+  id: ID! @unique
+  name: String!
+}
+
 type VideoFile {
   id: ID! @unique
   createdAt: DateTime!
@@ -213,4 +218,5 @@ type SupportFile {
   filename: String
   filetype: String # srt, pdf
   filesize: Float
+  use: SupportFileUse
 }
