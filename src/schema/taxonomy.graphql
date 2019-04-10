@@ -12,8 +12,8 @@ type Mutation {
   deleteCategory(id: ID!): Category
 
   createTag(data: TagCreateInput!): Tag!
-  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag 
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   deleteTag(id: ID!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
-  
+
 }

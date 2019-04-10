@@ -1,11 +1,19 @@
 export default {
   Query: {
-    languages ( parent, args, ctx ) {
+    languages( parent, args, ctx ) {
       return ctx.prisma.languages( { ...args } );
     },
 
     language( parent, args, ctx ) {
-      return ctx.prisma.language( { id: args.id } );
+      return ctx.prisma.language( { ...args } );
+    },
+
+    languageTranslations( parent, args, ctx ) {
+      return ctx.prisma.languageTranslations( { ...args } );
+    },
+
+    languageTranslation( parent, args, ctx ) {
+      return ctx.prisma.languageTranslation( { ...args } );
     }
   },
 
@@ -26,6 +34,12 @@ export default {
         data,
         where: { id }
       } );
+    }
+  },
+
+  LanguageTranslation: {
+    language( parent, args, ctx ) {
+      return ctx.prisma.languageTranslation( { id: parent.id } ).language();
     }
   }
 };

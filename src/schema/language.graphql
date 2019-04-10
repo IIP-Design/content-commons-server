@@ -1,9 +1,15 @@
 type Query {
   languages(where: LanguageWhereInput, orderBy: LanguageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Language]!
   language(id: ID!): Language
+
+  languageTranslations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation]!
+  languageTranslation(id: ID!): LanguageTranslation
 }
 
 type Mutation {
   createLanguage(data: LanguageCreateInput!): Language!
   updateLanguage(data: LanguageUpdateInput!, where: LanguageWhereUniqueInput!): Language
+
+  createLanguageTranslation(data: LanguageTranslationCreateInput!): LanguageTranslation!
+  updateLanguageTranslation(data: LanguageTranslationUpdateInput!, where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
 }
