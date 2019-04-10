@@ -45,13 +45,13 @@ export default {
 
   Category: {
     translations( parent, args, ctx ) {
-      return ctx.prisma.category( { id: parent.id } ).translations();
+      return ctx.prisma.category( { id: parent.id } ).translations( { ...args } );
     }
   },
 
   Tag: {
     translations( parent, args, ctx ) {
-      return ctx.prisma.tag( { id: parent.id } ).translations();
+      return ctx.prisma.tag( { id: parent.id } ).translations( { ...args } );
     }
   },
 };

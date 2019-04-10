@@ -16,4 +16,4 @@ seed:
 hooks:
   post-deploy:
     - prisma generate
-    #- prisma seed
+    - prisma seed

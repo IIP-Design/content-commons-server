@@ -4,7 +4,7 @@ import { importSchema } from 'graphql-import';
 import merge from 'lodash/merge';
 import AuthResolvers from './resolvers/Auth';
 import LanguageResolvers from './resolvers/Language';
-import TaxonomyResolves from './resolvers/Taxonomy';
+import TaxonomyResolvers from './resolvers/Taxonomy';
 import UserResolvers from './resolvers/User';
 import TeamResolvers from './resolvers/Team';
 import VideoResolvers from './resolvers/Video';
@@ -15,7 +15,7 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const resolvers = merge(
   AuthResolvers,
   LanguageResolvers,
-  TaxonomyResolves,
+  TaxonomyResolvers,
   UserResolvers,
   TeamResolvers,
   VideoResolvers
