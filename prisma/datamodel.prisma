@@ -32,6 +32,7 @@ enum ImageQuality {
 
 enum ProjectPublishStatus {
   DRAFT
+  PUBLISHING
   PUBLISHED
   EMBARGOED
 }
@@ -83,7 +84,7 @@ type Language {
   id: ID! @unique
   languageCode: String!
   locale: String! @unique
-  textDirection: String! @default(value: LTR)
+  textDirection: TextDirection! @default(value: LTR)
   displayName: String!
   nativeName: String!
 }
@@ -179,7 +180,7 @@ type VideoFile {
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
-  stream: VideoStream
+  stream: [VideoStream]
 }
 
 type ImageFile {
