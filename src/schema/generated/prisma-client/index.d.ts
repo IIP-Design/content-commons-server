@@ -23,6 +23,7 @@ export interface Exists {
     where?: LanguageTranslationWhereInput
   ) => Promise<boolean>;
   supportFile: (where?: SupportFileWhereInput) => Promise<boolean>;
+  supportFileUse: (where?: SupportFileUseWhereInput) => Promise<boolean>;
   tag: (where?: TagWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   thumbnail: (where?: ThumbnailWhereInput) => Promise<boolean>;
@@ -188,6 +189,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => SupportFileConnectionPromise;
+  supportFileUse: (
+    where: SupportFileUseWhereUniqueInput
+  ) => SupportFileUsePromise;
+  supportFileUses: (args?: {
+    where?: SupportFileUseWhereInput;
+    orderBy?: SupportFileUseOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<SupportFileUse>;
+  supportFileUsesConnection: (args?: {
+    where?: SupportFileUseWhereInput;
+    orderBy?: SupportFileUseOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SupportFileUseConnectionPromise;
   tag: (where: TagWhereUniqueInput) => TagPromise;
   tags: (args?: {
     where?: TagWhereInput;
@@ -481,6 +503,28 @@ export interface Prisma {
   deleteManySupportFiles: (
     where?: SupportFileWhereInput
   ) => BatchPayloadPromise;
+  createSupportFileUse: (
+    data: SupportFileUseCreateInput
+  ) => SupportFileUsePromise;
+  updateSupportFileUse: (args: {
+    data: SupportFileUseUpdateInput;
+    where: SupportFileUseWhereUniqueInput;
+  }) => SupportFileUsePromise;
+  updateManySupportFileUses: (args: {
+    data: SupportFileUseUpdateManyMutationInput;
+    where?: SupportFileUseWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSupportFileUse: (args: {
+    where: SupportFileUseWhereUniqueInput;
+    create: SupportFileUseCreateInput;
+    update: SupportFileUseUpdateInput;
+  }) => SupportFileUsePromise;
+  deleteSupportFileUse: (
+    where: SupportFileUseWhereUniqueInput
+  ) => SupportFileUsePromise;
+  deleteManySupportFileUses: (
+    where?: SupportFileUseWhereInput
+  ) => BatchPayloadPromise;
   createTag: (data: TagCreateInput) => TagPromise;
   updateTag: (args: {
     data: TagUpdateInput;
@@ -657,6 +701,9 @@ export interface Subscription {
   supportFile: (
     where?: SupportFileSubscriptionWhereInput
   ) => SupportFileSubscriptionPayloadSubscription;
+  supportFileUse: (
+    where?: SupportFileUseSubscriptionWhereInput
+  ) => SupportFileUseSubscriptionPayloadSubscription;
   tag: (
     where?: TagSubscriptionWhereInput
   ) => TagSubscriptionPayloadSubscription;
@@ -694,11 +741,23 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type VideoQuality = "WEB" | "BROADCAST";
+export type ThumbnailOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "size_ASC"
+  | "size_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type ImageFileOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
   | "alt_ASC"
   | "alt_DESC"
   | "longdesc_ASC"
@@ -712,51 +771,15 @@ export type ImageFileOrderByInput =
   | "md5_ASC"
   | "md5_DESC"
   | "url_ASC"
-  | "url_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "url_DESC";
 
-export type ThumbnailOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "size_ASC"
-  | "size_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type ThumbnailSize = "SMALL" | "MEDIUM" | "LARGE" | "FULL";
 
 export type VideoUseOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type ThumbnailSize = "SMALL" | "MEDIUM" | "LARGE" | "FULL";
-
-export type VideoProjectOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "projectType_ASC"
-  | "projectType_DESC"
-  | "projectTitle_ASC"
-  | "projectTitle_DESC"
-  | "descPublic_ASC"
-  | "descPublic_DESC"
-  | "descInternal_ASC"
-  | "descInternal_DESC"
-  | "author_ASC"
-  | "author_DESC"
-  | "status_ASC"
-  | "status_DESC"
-  | "visibility_ASC"
-  | "visibility_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -779,14 +802,14 @@ export type TeamOrderByInput =
 export type VideoUnitOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "descPublic_ASC"
-  | "descPublic_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "descPublic_ASC"
+  | "descPublic_DESC";
 
 export type ContentType =
   | "AUDIO"
@@ -795,7 +818,7 @@ export type ContentType =
   | "IMAGE"
   | "TEACHING_MATERIAL";
 
-export type ProjectPublishStatus = "DRAFT" | "PUBLISHED" | "EMBARGOED";
+export type ProjectVisibility = "INTERNAL" | "PUBLIC";
 
 export type Permission =
   | "SUBSCRIBER"
@@ -804,13 +827,31 @@ export type Permission =
   | "TEAM_ADMIN"
   | "ADMIN";
 
-export type CategoryOrderByInput =
+export type VideoFileOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "filetype_ASC"
+  | "filetype_DESC"
+  | "filename_ASC"
+  | "filename_DESC"
+  | "quality_ASC"
+  | "quality_DESC"
+  | "videoBurnedInStatus_ASC"
+  | "videoBurnedInStatus_DESC"
+  | "url_ASC"
+  | "url_DESC"
+  | "md5_ASC"
+  | "md5_DESC"
+  | "duration_ASC"
+  | "duration_DESC"
+  | "bitrate_ASC"
+  | "bitrate_DESC"
+  | "filesize_ASC"
+  | "filesize_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -842,7 +883,13 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type CategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type DimensionsOrderByInput =
   | "id_ASC"
@@ -856,15 +903,39 @@ export type DimensionsOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type LanguageTranslationOrderByInput =
+export type VideoQuality = "WEB" | "BROADCAST";
+
+export type TagOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type VideoProjectOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "projectType_ASC"
+  | "projectType_DESC"
+  | "projectTitle_ASC"
+  | "projectTitle_DESC"
+  | "descPublic_ASC"
+  | "descPublic_DESC"
+  | "descInternal_ASC"
+  | "descInternal_DESC"
+  | "author_ASC"
+  | "author_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "visibility_ASC"
+  | "visibility_DESC"
+  | "protectImages_ASC"
+  | "protectImages_DESC";
 
 export type ImageUseOrderByInput =
   | "id_ASC"
@@ -897,6 +968,10 @@ export type LanguageOrderByInput =
 export type SupportFileOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
   | "url_ASC"
   | "url_DESC"
   | "md5_ASC"
@@ -906,21 +981,31 @@ export type SupportFileOrderByInput =
   | "filetype_ASC"
   | "filetype_DESC"
   | "filesize_ASC"
-  | "filesize_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "filesize_DESC";
 
-export type TagOrderByInput =
+export type SupportFileUseOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type ProjectVisibility = "INTERNAL" | "PUBLIC";
+export type LanguageTranslationOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type VideoBurnedInStatus = "SUBTITLED" | "CAPTIONED" | "CLEAN";
 
 export type VideoStreamOrderByInput =
   | "id_ASC"
@@ -936,63 +1021,221 @@ export type VideoStreamOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type VideoBurnedInStatus = "SUBTITLED" | "CAPTIONED" | "CLEAN";
+export type ProjectPublishStatus = "DRAFT" | "PUBLISHED" | "EMBARGOED";
 
-export type VideoFileOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "filetype_ASC"
-  | "filetype_DESC"
-  | "filename_ASC"
-  | "filename_DESC"
-  | "quality_ASC"
-  | "quality_DESC"
-  | "videoBurnedInStatus_ASC"
-  | "videoBurnedInStatus_DESC"
-  | "url_ASC"
-  | "url_DESC"
-  | "md5_ASC"
-  | "md5_DESC"
-  | "duration_ASC"
-  | "duration_DESC"
-  | "bitrate_ASC"
-  | "bitrate_DESC"
-  | "filesize_ASC"
-  | "filesize_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export interface SupportFileCreateInput {
-  language: LanguageCreateOneInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
+export interface SupportFileUseCreateOneInput {
+  create?: SupportFileUseCreateInput;
+  connect?: SupportFileUseWhereUniqueInput;
 }
 
 export type CategoryWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface UserUpdateWithoutTeamDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
+export interface CategoryCreateInput {
+  translations?: LanguageTranslationCreateManyInput;
 }
 
-export interface ImageFileWhereInput {
+export interface CategoryCreateManyInput {
+  create?: CategoryCreateInput[] | CategoryCreateInput;
+  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+}
+
+export interface LanguageTranslationCreateManyInput {
+  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
+  connect?:
+    | LanguageTranslationWhereUniqueInput[]
+    | LanguageTranslationWhereUniqueInput;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface LanguageTranslationCreateInput {
+  name: String;
+  language: LanguageCreateOneInput;
+}
+
+export interface VideoUseSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoUseWhereInput;
+  AND?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
+  OR?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
+  NOT?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
+}
+
+export interface LanguageCreateOneInput {
+  create?: LanguageCreateInput;
+  connect?: LanguageWhereUniqueInput;
+}
+
+export interface VideoStreamSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoStreamWhereInput;
+  AND?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
+  OR?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
+  NOT?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
+}
+
+export interface LanguageCreateInput {
+  languageCode: String;
+  locale: String;
+  textDirection?: String;
+  displayName: String;
+  nativeName: String;
+}
+
+export type ImageUseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface CategoryUpdateInput {
+  translations?: LanguageTranslationUpdateManyInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface LanguageTranslationUpdateManyInput {
+  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
+  update?:
+    | LanguageTranslationUpdateWithWhereUniqueNestedInput[]
+    | LanguageTranslationUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | LanguageTranslationUpsertWithWhereUniqueNestedInput[]
+    | LanguageTranslationUpsertWithWhereUniqueNestedInput;
+  delete?:
+    | LanguageTranslationWhereUniqueInput[]
+    | LanguageTranslationWhereUniqueInput;
+  connect?:
+    | LanguageTranslationWhereUniqueInput[]
+    | LanguageTranslationWhereUniqueInput;
+  disconnect?:
+    | LanguageTranslationWhereUniqueInput[]
+    | LanguageTranslationWhereUniqueInput;
+  deleteMany?:
+    | LanguageTranslationScalarWhereInput[]
+    | LanguageTranslationScalarWhereInput;
+  updateMany?:
+    | LanguageTranslationUpdateManyWithWhereNestedInput[]
+    | LanguageTranslationUpdateManyWithWhereNestedInput;
+}
+
+export interface TeamSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TeamWhereInput;
+  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
+}
+
+export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  data: LanguageTranslationUpdateDataInput;
+}
+
+export type ImageFileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LanguageTranslationUpdateDataInput {
+  name?: String;
+  language?: LanguageUpdateOneRequiredInput;
+}
+
+export interface SupportFileUseSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SupportFileUseWhereInput;
+  AND?:
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput;
+  OR?:
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput;
+  NOT?:
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput;
+}
+
+export interface LanguageUpdateOneRequiredInput {
+  create?: LanguageCreateInput;
+  update?: LanguageUpdateDataInput;
+  upsert?: LanguageUpsertNestedInput;
+  connect?: LanguageWhereUniqueInput;
+}
+
+export type LanguageTranslationWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LanguageUpdateDataInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: String;
+  displayName?: String;
+  nativeName?: String;
+}
+
+export interface LanguageSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: LanguageWhereInput;
+  AND?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
+  OR?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
+  NOT?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
+}
+
+export interface LanguageUpsertNestedInput {
+  update: LanguageUpdateDataInput;
+  create: LanguageCreateInput;
+}
+
+export type SupportFileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  update: LanguageTranslationUpdateDataInput;
+  create: LanguageTranslationCreateInput;
+}
+
+export interface DimensionsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: DimensionsWhereInput;
+  AND?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+  OR?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+  NOT?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+}
+
+export interface LanguageTranslationScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1007,8 +1250,233 @@ export interface ImageFileWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?:
+    | LanguageTranslationScalarWhereInput[]
+    | LanguageTranslationScalarWhereInput;
+  OR?:
+    | LanguageTranslationScalarWhereInput[]
+    | LanguageTranslationScalarWhereInput;
+  NOT?:
+    | LanguageTranslationScalarWhereInput[]
+    | LanguageTranslationScalarWhereInput;
+}
+
+export interface SupportFileWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   language?: LanguageWhereInput;
-  dimensions?: DimensionsWhereInput;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  md5?: String;
+  md5_not?: String;
+  md5_in?: String[] | String;
+  md5_not_in?: String[] | String;
+  md5_lt?: String;
+  md5_lte?: String;
+  md5_gt?: String;
+  md5_gte?: String;
+  md5_contains?: String;
+  md5_not_contains?: String;
+  md5_starts_with?: String;
+  md5_not_starts_with?: String;
+  md5_ends_with?: String;
+  md5_not_ends_with?: String;
+  filename?: String;
+  filename_not?: String;
+  filename_in?: String[] | String;
+  filename_not_in?: String[] | String;
+  filename_lt?: String;
+  filename_lte?: String;
+  filename_gt?: String;
+  filename_gte?: String;
+  filename_contains?: String;
+  filename_not_contains?: String;
+  filename_starts_with?: String;
+  filename_not_starts_with?: String;
+  filename_ends_with?: String;
+  filename_not_ends_with?: String;
+  filetype?: String;
+  filetype_not?: String;
+  filetype_in?: String[] | String;
+  filetype_not_in?: String[] | String;
+  filetype_lt?: String;
+  filetype_lte?: String;
+  filetype_gt?: String;
+  filetype_gte?: String;
+  filetype_contains?: String;
+  filetype_not_contains?: String;
+  filetype_starts_with?: String;
+  filetype_not_starts_with?: String;
+  filetype_ends_with?: String;
+  filetype_not_ends_with?: String;
+  filesize?: Float;
+  filesize_not?: Float;
+  filesize_in?: Float[] | Float;
+  filesize_not_in?: Float[] | Float;
+  filesize_lt?: Float;
+  filesize_lte?: Float;
+  filesize_gt?: Float;
+  filesize_gte?: Float;
+  use?: SupportFileUseWhereInput;
+  AND?: SupportFileWhereInput[] | SupportFileWhereInput;
+  OR?: SupportFileWhereInput[] | SupportFileWhereInput;
+  NOT?: SupportFileWhereInput[] | SupportFileWhereInput;
+}
+
+export interface LanguageTranslationUpdateManyWithWhereNestedInput {
+  where: LanguageTranslationScalarWhereInput;
+  data: LanguageTranslationUpdateManyDataInput;
+}
+
+export interface VideoUseUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface LanguageTranslationUpdateManyDataInput {
+  name?: String;
+}
+
+export interface VideoUnitUpdateManyMutationInput {
+  title?: String;
+  descPublic?: String;
+}
+
+export interface ImageFileCreateManyInput {
+  create?: ImageFileCreateInput[] | ImageFileCreateInput;
+  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+}
+
+export type SupportFileUseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface SupportFileCreateManyInput {
+  create?: SupportFileCreateInput[] | SupportFileCreateInput;
+  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+}
+
+export interface VideoStreamUpdateInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface DimensionsCreateInput {
+  width?: Int;
+  height?: Int;
+}
+
+export interface ImageFileUpdateManyDataInput {
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  md5?: String;
+  url?: String;
+}
+
+export interface DimensionsUpdateInput {
+  width?: Int;
+  height?: Int;
+}
+
+export interface ImageFileUpdateManyWithWhereNestedInput {
+  where: ImageFileScalarWhereInput;
+  data: ImageFileUpdateManyDataInput;
+}
+
+export interface DimensionsUpdateManyMutationInput {
+  width?: Int;
+  height?: Int;
+}
+
+export interface ImageFileScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   alt?: String;
   alt_not?: String;
   alt_in?: String[] | String;
@@ -1107,462 +1575,9 @@ export interface ImageFileWhereInput {
   url_not_starts_with?: String;
   url_ends_with?: String;
   url_not_ends_with?: String;
-  AND?: ImageFileWhereInput[] | ImageFileWhereInput;
-  OR?: ImageFileWhereInput[] | ImageFileWhereInput;
-  NOT?: ImageFileWhereInput[] | ImageFileWhereInput;
-}
-
-export interface VideoProjectUpdateInput {
-  projectType?: String;
-  projectTitle?: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  team?: TeamUpdateOneInput;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  units?: VideoUnitUpdateManyInput;
-  supportFiles?: SupportFileUpdateManyInput;
-  thumbnails?: ImageFileUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  tags?: TagUpdateManyInput;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface CategoryCreateInput {
-  translations?: LanguageTranslationCreateManyInput;
-}
-
-export type ImageUseWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageTranslationCreateManyInput {
-  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
-  connect?:
-    | LanguageTranslationWhereUniqueInput[]
-    | LanguageTranslationWhereUniqueInput;
-}
-
-export interface ImageUseWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: ImageUseWhereInput[] | ImageUseWhereInput;
-  OR?: ImageUseWhereInput[] | ImageUseWhereInput;
-  NOT?: ImageUseWhereInput[] | ImageUseWhereInput;
-}
-
-export interface LanguageTranslationCreateInput {
-  name: String;
-  language: LanguageCreateOneInput;
-}
-
-export interface VideoStreamSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoStreamWhereInput;
-  AND?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
-  OR?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
-  NOT?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
-}
-
-export interface LanguageCreateOneInput {
-  create?: LanguageCreateInput;
-  connect?: LanguageWhereUniqueInput;
-}
-
-export interface VideoFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoFileWhereInput;
-  AND?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-  OR?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-  NOT?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-}
-
-export interface LanguageCreateInput {
-  languageCode: String;
-  locale: String;
-  textDirection?: String;
-  displayName: String;
-  nativeName: String;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface CategoryUpdateInput {
-  translations?: LanguageTranslationUpdateManyInput;
-}
-
-export interface TeamSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TeamWhereInput;
-  AND?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  OR?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-  NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
-}
-
-export interface LanguageTranslationUpdateManyInput {
-  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
-  update?:
-    | LanguageTranslationUpdateWithWhereUniqueNestedInput[]
-    | LanguageTranslationUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | LanguageTranslationUpsertWithWhereUniqueNestedInput[]
-    | LanguageTranslationUpsertWithWhereUniqueNestedInput;
-  delete?:
-    | LanguageTranslationWhereUniqueInput[]
-    | LanguageTranslationWhereUniqueInput;
-  connect?:
-    | LanguageTranslationWhereUniqueInput[]
-    | LanguageTranslationWhereUniqueInput;
-  disconnect?:
-    | LanguageTranslationWhereUniqueInput[]
-    | LanguageTranslationWhereUniqueInput;
-  deleteMany?:
-    | LanguageTranslationScalarWhereInput[]
-    | LanguageTranslationScalarWhereInput;
-  updateMany?:
-    | LanguageTranslationUpdateManyWithWhereNestedInput[]
-    | LanguageTranslationUpdateManyWithWhereNestedInput;
-}
-
-export type LanguageTranslationWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  data: LanguageTranslationUpdateDataInput;
-}
-
-export interface LanguageTranslationSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: LanguageTranslationWhereInput;
-  AND?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-  OR?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-  NOT?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-}
-
-export interface LanguageTranslationUpdateDataInput {
-  name?: String;
-  language?: LanguageUpdateOneRequiredInput;
-}
-
-export type SupportFileWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageUpdateOneRequiredInput {
-  create?: LanguageCreateInput;
-  update?: LanguageUpdateDataInput;
-  upsert?: LanguageUpsertNestedInput;
-  connect?: LanguageWhereUniqueInput;
-}
-
-export interface ImageFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ImageFileWhereInput;
-  AND?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-  OR?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-  NOT?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-}
-
-export interface LanguageUpdateDataInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: String;
-  displayName?: String;
-  nativeName?: String;
-}
-
-export interface DimensionsSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: DimensionsWhereInput;
-  AND?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
-  OR?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
-  NOT?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
-}
-
-export interface LanguageUpsertNestedInput {
-  update: LanguageUpdateDataInput;
-  create: LanguageCreateInput;
-}
-
-export interface VideoUseUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  update: LanguageTranslationUpdateDataInput;
-  create: LanguageTranslationCreateInput;
-}
-
-export type TagWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageTranslationScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?:
-    | LanguageTranslationScalarWhereInput[]
-    | LanguageTranslationScalarWhereInput;
-  OR?:
-    | LanguageTranslationScalarWhereInput[]
-    | LanguageTranslationScalarWhereInput;
-  NOT?:
-    | LanguageTranslationScalarWhereInput[]
-    | LanguageTranslationScalarWhereInput;
-}
-
-export interface TagWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  translations_every?: LanguageTranslationWhereInput;
-  translations_some?: LanguageTranslationWhereInput;
-  translations_none?: LanguageTranslationWhereInput;
-  AND?: TagWhereInput[] | TagWhereInput;
-  OR?: TagWhereInput[] | TagWhereInput;
-  NOT?: TagWhereInput[] | TagWhereInput;
-}
-
-export interface LanguageTranslationUpdateManyWithWhereNestedInput {
-  where: LanguageTranslationScalarWhereInput;
-  data: LanguageTranslationUpdateManyDataInput;
-}
-
-export interface VideoStreamUpdateManyMutationInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export interface LanguageTranslationUpdateManyDataInput {
-  name?: String;
-}
-
-export interface VideoProjectUpdateManyMutationInput {
-  projectType?: String;
-  projectTitle?: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-}
-
-export interface VideoUnitUpdateWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  data: VideoUnitUpdateDataInput;
-}
-
-export interface ImageFileUpdateManyDataInput {
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export interface VideoUnitUpdateManyInput {
-  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
-  update?:
-    | VideoUnitUpdateWithWhereUniqueNestedInput[]
-    | VideoUnitUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | VideoUnitUpsertWithWhereUniqueNestedInput[]
-    | VideoUnitUpsertWithWhereUniqueNestedInput;
-  delete?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
-  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
-  disconnect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
-  deleteMany?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
-  updateMany?:
-    | VideoUnitUpdateManyWithWhereNestedInput[]
-    | VideoUnitUpdateManyWithWhereNestedInput;
-}
-
-export interface TeamWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  organization?: String;
-  organization_not?: String;
-  organization_in?: String[] | String;
-  organization_not_in?: String[] | String;
-  organization_lt?: String;
-  organization_lte?: String;
-  organization_gt?: String;
-  organization_gte?: String;
-  organization_contains?: String;
-  organization_not_contains?: String;
-  organization_starts_with?: String;
-  organization_not_starts_with?: String;
-  organization_ends_with?: String;
-  organization_not_ends_with?: String;
-  members_every?: UserWhereInput;
-  members_some?: UserWhereInput;
-  members_none?: UserWhereInput;
-  isConfirmed?: Boolean;
-  isConfirmed_not?: Boolean;
-  AND?: TeamWhereInput[] | TeamWhereInput;
-  OR?: TeamWhereInput[] | TeamWhereInput;
-  NOT?: TeamWhereInput[] | TeamWhereInput;
-}
-
-export interface DimensionsCreateInput {
-  width?: Int;
-  height?: Int;
-}
-
-export interface ImageFileUpdateManyWithWhereNestedInput {
-  where: ImageFileScalarWhereInput;
-  data: ImageFileUpdateManyDataInput;
-}
-
-export interface DimensionsUpdateInput {
-  width?: Int;
-  height?: Int;
-}
-
-export type DimensionsWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface DimensionsUpdateManyMutationInput {
-  width?: Int;
-  height?: Int;
-}
-
-export interface ImageFileUpdateWithWhereUniqueNestedInput {
-  where: ImageFileWhereUniqueInput;
-  data: ImageFileUpdateDataInput;
+  AND?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
+  OR?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
+  NOT?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
 }
 
 export interface ImageFileCreateInput {
@@ -1573,16 +1588,14 @@ export interface ImageFileCreateInput {
   caption?: String;
   filename?: String;
   filetype?: String;
+  use?: ImageUseCreateOneInput;
   md5?: String;
   url?: String;
 }
 
-export interface SupportFileUpdateManyDataInput {
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
+export interface ImageFileUpdateWithWhereUniqueNestedInput {
+  where: ImageFileWhereUniqueInput;
+  data: ImageFileUpdateDataInput;
 }
 
 export interface DimensionsCreateOneInput {
@@ -1590,1613 +1603,14 @@ export interface DimensionsCreateOneInput {
   connect?: DimensionsWhereUniqueInput;
 }
 
-export interface SupportFileUpdateManyWithWhereNestedInput {
-  where: SupportFileScalarWhereInput;
-  data: SupportFileUpdateManyDataInput;
-}
-
-export interface ImageFileUpdateInput {
-  language?: LanguageUpdateOneInput;
-  dimensions?: DimensionsUpdateOneInput;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export interface ThumbnailWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  size?: ThumbnailSize;
-  size_not?: ThumbnailSize;
-  size_in?: ThumbnailSize[] | ThumbnailSize;
-  size_not_in?: ThumbnailSize[] | ThumbnailSize;
-  image?: ImageFileWhereInput;
-  AND?: ThumbnailWhereInput[] | ThumbnailWhereInput;
-  OR?: ThumbnailWhereInput[] | ThumbnailWhereInput;
-  NOT?: ThumbnailWhereInput[] | ThumbnailWhereInput;
-}
-
-export interface LanguageUpdateOneInput {
-  create?: LanguageCreateInput;
-  update?: LanguageUpdateDataInput;
-  upsert?: LanguageUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: LanguageWhereUniqueInput;
-}
-
-export interface SupportFileUpdateDataInput {
-  language?: LanguageUpdateOneRequiredInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-}
-
-export interface DimensionsUpdateOneInput {
-  create?: DimensionsCreateInput;
-  update?: DimensionsUpdateDataInput;
-  upsert?: DimensionsUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: DimensionsWhereUniqueInput;
-}
-
-export interface SupportFileUpdateManyInput {
-  create?: SupportFileCreateInput[] | SupportFileCreateInput;
-  update?:
-    | SupportFileUpdateWithWhereUniqueNestedInput[]
-    | SupportFileUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | SupportFileUpsertWithWhereUniqueNestedInput[]
-    | SupportFileUpsertWithWhereUniqueNestedInput;
-  delete?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
-  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
-  disconnect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
-  deleteMany?: SupportFileScalarWhereInput[] | SupportFileScalarWhereInput;
-  updateMany?:
-    | SupportFileUpdateManyWithWhereNestedInput[]
-    | SupportFileUpdateManyWithWhereNestedInput;
-}
-
-export interface DimensionsUpdateDataInput {
-  width?: Int;
-  height?: Int;
-}
-
-export interface VideoUnitUpdateManyDataInput {
-  title?: String;
-  descPublic?: String;
-}
-
-export interface DimensionsUpsertNestedInput {
-  update: DimensionsUpdateDataInput;
-  create: DimensionsCreateInput;
-}
-
-export interface VideoUnitScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  descPublic?: String;
-  descPublic_not?: String;
-  descPublic_in?: String[] | String;
-  descPublic_not_in?: String[] | String;
-  descPublic_lt?: String;
-  descPublic_lte?: String;
-  descPublic_gt?: String;
-  descPublic_gte?: String;
-  descPublic_contains?: String;
-  descPublic_not_contains?: String;
-  descPublic_starts_with?: String;
-  descPublic_not_starts_with?: String;
-  descPublic_ends_with?: String;
-  descPublic_not_ends_with?: String;
-  AND?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
-  OR?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
-  NOT?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
-}
-
-export interface ImageFileUpdateManyMutationInput {
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export interface VideoUnitUpsertWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  update: VideoUnitUpdateDataInput;
-  create: VideoUnitCreateInput;
-}
-
-export interface ImageUseCreateInput {
-  name: String;
-}
-
-export interface ThumbnailUpdateManyWithWhereNestedInput {
-  where: ThumbnailScalarWhereInput;
-  data: ThumbnailUpdateManyDataInput;
-}
-
-export interface ImageUseUpdateInput {
-  name?: String;
-}
-
-export interface ThumbnailUpsertWithWhereUniqueNestedInput {
-  where: ThumbnailWhereUniqueInput;
-  update: ThumbnailUpdateDataInput;
-  create: ThumbnailCreateInput;
-}
-
-export interface ImageUseUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface VideoUseWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: VideoUseWhereInput[] | VideoUseWhereInput;
-  OR?: VideoUseWhereInput[] | VideoUseWhereInput;
-  NOT?: VideoUseWhereInput[] | VideoUseWhereInput;
-}
-
-export interface LanguageUpdateInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: String;
-  displayName?: String;
-  nativeName?: String;
-}
-
-export interface CategoryWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  translations_every?: LanguageTranslationWhereInput;
-  translations_some?: LanguageTranslationWhereInput;
-  translations_none?: LanguageTranslationWhereInput;
-  AND?: CategoryWhereInput[] | CategoryWhereInput;
-  OR?: CategoryWhereInput[] | CategoryWhereInput;
-  NOT?: CategoryWhereInput[] | CategoryWhereInput;
-}
-
-export interface LanguageUpdateManyMutationInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: String;
-  displayName?: String;
-  nativeName?: String;
-}
-
-export interface ThumbnailUpdateWithWhereUniqueNestedInput {
-  where: ThumbnailWhereUniqueInput;
-  data: ThumbnailUpdateDataInput;
-}
-
-export interface LanguageTranslationUpdateInput {
-  name?: String;
-  language?: LanguageUpdateOneRequiredInput;
-}
-
-export type VideoProjectWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageTranslationUpdateManyMutationInput {
-  name?: String;
-}
-
-export interface CategoryUpsertWithWhereUniqueNestedInput {
-  where: CategoryWhereUniqueInput;
-  update: CategoryUpdateDataInput;
-  create: CategoryCreateInput;
-}
-
-export interface TeamUpsertNestedInput {
-  update: TeamUpdateDataInput;
-  create: TeamCreateInput;
-}
-
-export interface VideoUnitWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  language?: LanguageWhereInput;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  descPublic?: String;
-  descPublic_not?: String;
-  descPublic_in?: String[] | String;
-  descPublic_not_in?: String[] | String;
-  descPublic_lt?: String;
-  descPublic_lte?: String;
-  descPublic_gt?: String;
-  descPublic_gte?: String;
-  descPublic_contains?: String;
-  descPublic_not_contains?: String;
-  descPublic_starts_with?: String;
-  descPublic_not_starts_with?: String;
-  descPublic_ends_with?: String;
-  descPublic_not_ends_with?: String;
-  files_every?: VideoFileWhereInput;
-  files_some?: VideoFileWhereInput;
-  files_none?: VideoFileWhereInput;
-  tags_every?: TagWhereInput;
-  tags_some?: TagWhereInput;
-  tags_none?: TagWhereInput;
-  categories_every?: CategoryWhereInput;
-  categories_some?: CategoryWhereInput;
-  categories_none?: CategoryWhereInput;
-  thumbnails_every?: ThumbnailWhereInput;
-  thumbnails_some?: ThumbnailWhereInput;
-  thumbnails_none?: ThumbnailWhereInput;
-  AND?: VideoUnitWhereInput[] | VideoUnitWhereInput;
-  OR?: VideoUnitWhereInput[] | VideoUnitWhereInput;
-  NOT?: VideoUnitWhereInput[] | VideoUnitWhereInput;
-}
-
-export interface SupportFileUpdateInput {
-  language?: LanguageUpdateOneRequiredInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-}
-
-export interface CategoryUpdateManyInput {
-  create?: CategoryCreateInput[] | CategoryCreateInput;
-  update?:
-    | CategoryUpdateWithWhereUniqueNestedInput[]
-    | CategoryUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | CategoryUpsertWithWhereUniqueNestedInput[]
-    | CategoryUpsertWithWhereUniqueNestedInput;
-  delete?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
-  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
-  disconnect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
-  deleteMany?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
-}
-
-export interface SupportFileUpdateManyMutationInput {
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-}
-
-export interface LanguageWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  languageCode?: String;
-  languageCode_not?: String;
-  languageCode_in?: String[] | String;
-  languageCode_not_in?: String[] | String;
-  languageCode_lt?: String;
-  languageCode_lte?: String;
-  languageCode_gt?: String;
-  languageCode_gte?: String;
-  languageCode_contains?: String;
-  languageCode_not_contains?: String;
-  languageCode_starts_with?: String;
-  languageCode_not_starts_with?: String;
-  languageCode_ends_with?: String;
-  languageCode_not_ends_with?: String;
-  locale?: String;
-  locale_not?: String;
-  locale_in?: String[] | String;
-  locale_not_in?: String[] | String;
-  locale_lt?: String;
-  locale_lte?: String;
-  locale_gt?: String;
-  locale_gte?: String;
-  locale_contains?: String;
-  locale_not_contains?: String;
-  locale_starts_with?: String;
-  locale_not_starts_with?: String;
-  locale_ends_with?: String;
-  locale_not_ends_with?: String;
-  textDirection?: String;
-  textDirection_not?: String;
-  textDirection_in?: String[] | String;
-  textDirection_not_in?: String[] | String;
-  textDirection_lt?: String;
-  textDirection_lte?: String;
-  textDirection_gt?: String;
-  textDirection_gte?: String;
-  textDirection_contains?: String;
-  textDirection_not_contains?: String;
-  textDirection_starts_with?: String;
-  textDirection_not_starts_with?: String;
-  textDirection_ends_with?: String;
-  textDirection_not_ends_with?: String;
-  displayName?: String;
-  displayName_not?: String;
-  displayName_in?: String[] | String;
-  displayName_not_in?: String[] | String;
-  displayName_lt?: String;
-  displayName_lte?: String;
-  displayName_gt?: String;
-  displayName_gte?: String;
-  displayName_contains?: String;
-  displayName_not_contains?: String;
-  displayName_starts_with?: String;
-  displayName_not_starts_with?: String;
-  displayName_ends_with?: String;
-  displayName_not_ends_with?: String;
-  nativeName?: String;
-  nativeName_not?: String;
-  nativeName_in?: String[] | String;
-  nativeName_not_in?: String[] | String;
-  nativeName_lt?: String;
-  nativeName_lte?: String;
-  nativeName_gt?: String;
-  nativeName_gte?: String;
-  nativeName_contains?: String;
-  nativeName_not_contains?: String;
-  nativeName_starts_with?: String;
-  nativeName_not_starts_with?: String;
-  nativeName_ends_with?: String;
-  nativeName_not_ends_with?: String;
-  AND?: LanguageWhereInput[] | LanguageWhereInput;
-  OR?: LanguageWhereInput[] | LanguageWhereInput;
-  NOT?: LanguageWhereInput[] | LanguageWhereInput;
-}
-
-export interface TagCreateInput {
-  translations?: LanguageTranslationCreateManyInput;
-}
-
-export interface TagUpsertWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateDataInput;
-  create: TagCreateInput;
-}
-
-export interface TagUpdateInput {
-  translations?: LanguageTranslationUpdateManyInput;
-}
-
-export type VideoStreamWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface TeamCreateInput {
-  name: String;
-  organization: String;
-  members?: UserCreateManyWithoutTeamInput;
-  contentTypes?: TeamCreatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface TagUpdateManyInput {
-  create?: TagCreateInput[] | TagCreateInput;
-  update?:
-    | TagUpdateWithWhereUniqueNestedInput[]
-    | TagUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | TagUpsertWithWhereUniqueNestedInput[]
-    | TagUpsertWithWhereUniqueNestedInput;
-  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  deleteMany?: TagScalarWhereInput[] | TagScalarWhereInput;
-}
-
-export interface UserCreateManyWithoutTeamInput {
-  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-}
-
-export interface VideoFileUpdateManyWithWhereNestedInput {
-  where: VideoFileScalarWhereInput;
-  data: VideoFileUpdateManyDataInput;
-}
-
-export interface UserCreateWithoutTeamInput {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserCreatepermissionsInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoFileScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  filetype?: String;
-  filetype_not?: String;
-  filetype_in?: String[] | String;
-  filetype_not_in?: String[] | String;
-  filetype_lt?: String;
-  filetype_lte?: String;
-  filetype_gt?: String;
-  filetype_gte?: String;
-  filetype_contains?: String;
-  filetype_not_contains?: String;
-  filetype_starts_with?: String;
-  filetype_not_starts_with?: String;
-  filetype_ends_with?: String;
-  filetype_not_ends_with?: String;
-  filename?: String;
-  filename_not?: String;
-  filename_in?: String[] | String;
-  filename_not_in?: String[] | String;
-  filename_lt?: String;
-  filename_lte?: String;
-  filename_gt?: String;
-  filename_gte?: String;
-  filename_contains?: String;
-  filename_not_contains?: String;
-  filename_starts_with?: String;
-  filename_not_starts_with?: String;
-  filename_ends_with?: String;
-  filename_not_ends_with?: String;
-  quality?: VideoQuality;
-  quality_not?: VideoQuality;
-  quality_in?: VideoQuality[] | VideoQuality;
-  quality_not_in?: VideoQuality[] | VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  videoBurnedInStatus_not?: VideoBurnedInStatus;
-  videoBurnedInStatus_in?: VideoBurnedInStatus[] | VideoBurnedInStatus;
-  videoBurnedInStatus_not_in?: VideoBurnedInStatus[] | VideoBurnedInStatus;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  md5?: String;
-  md5_not?: String;
-  md5_in?: String[] | String;
-  md5_not_in?: String[] | String;
-  md5_lt?: String;
-  md5_lte?: String;
-  md5_gt?: String;
-  md5_gte?: String;
-  md5_contains?: String;
-  md5_not_contains?: String;
-  md5_starts_with?: String;
-  md5_not_starts_with?: String;
-  md5_ends_with?: String;
-  md5_not_ends_with?: String;
-  duration?: Float;
-  duration_not?: Float;
-  duration_in?: Float[] | Float;
-  duration_not_in?: Float[] | Float;
-  duration_lt?: Float;
-  duration_lte?: Float;
-  duration_gt?: Float;
-  duration_gte?: Float;
-  bitrate?: Float;
-  bitrate_not?: Float;
-  bitrate_in?: Float[] | Float;
-  bitrate_not_in?: Float[] | Float;
-  bitrate_lt?: Float;
-  bitrate_lte?: Float;
-  bitrate_gt?: Float;
-  bitrate_gte?: Float;
-  filesize?: Float;
-  filesize_not?: Float;
-  filesize_in?: Float[] | Float;
-  filesize_not_in?: Float[] | Float;
-  filesize_lt?: Float;
-  filesize_lte?: Float;
-  filesize_gt?: Float;
-  filesize_gte?: Float;
-  AND?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
-  OR?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
-  NOT?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface VideoFileUpdateDataInput {
-  language?: LanguageUpdateOneInput;
-  filetype?: String;
-  filename?: String;
-  use?: VideoUseUpdateOneInput;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-  dimensions?: DimensionsUpdateOneInput;
-  stream?: VideoStreamUpdateOneInput;
-}
-
-export interface TeamCreatecontentTypesInput {
-  set?: ContentType[] | ContentType;
-}
-
-export interface LanguageTranslationWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  language?: LanguageWhereInput;
-  AND?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
-  OR?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
-  NOT?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
-}
-
-export interface TeamUpdateInput {
-  name?: String;
-  organization?: String;
-  members?: UserUpdateManyWithoutTeamInput;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoFileUpdateManyInput {
-  create?: VideoFileCreateInput[] | VideoFileCreateInput;
-  update?:
-    | VideoFileUpdateWithWhereUniqueNestedInput[]
-    | VideoFileUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | VideoFileUpsertWithWhereUniqueNestedInput[]
-    | VideoFileUpsertWithWhereUniqueNestedInput;
-  delete?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
-  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
-  disconnect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
-  deleteMany?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
-  updateMany?:
-    | VideoFileUpdateManyWithWhereNestedInput[]
-    | VideoFileUpdateManyWithWhereNestedInput;
-}
-
-export interface UserUpdateManyWithoutTeamInput {
-  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  update?:
-    | UserUpdateWithWhereUniqueWithoutTeamInput[]
-    | UserUpdateWithWhereUniqueWithoutTeamInput;
-  upsert?:
-    | UserUpsertWithWhereUniqueWithoutTeamInput[]
-    | UserUpsertWithWhereUniqueWithoutTeamInput;
-  deleteMany?: UserScalarWhereInput[] | UserScalarWhereInput;
-  updateMany?:
-    | UserUpdateManyWithWhereNestedInput[]
-    | UserUpdateManyWithWhereNestedInput;
-}
-
-export interface VideoUseSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoUseWhereInput;
-  AND?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
-  OR?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
-  NOT?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutTeamInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutTeamDataInput;
-}
-
-export type ImageFileWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface TeamUpdateDataInput {
-  name?: String;
-  organization?: String;
-  members?: UserUpdateManyWithoutTeamInput;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export type LanguageWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  locale?: String;
-}>;
-
-export interface TeamUpdateOneInput {
-  create?: TeamCreateInput;
-  update?: TeamUpdateDataInput;
-  upsert?: TeamUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface TagSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TagWhereInput;
-  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-}
-
-export interface UserUpsertWithWhereUniqueWithoutTeamInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutTeamDataInput;
-  create: UserCreateWithoutTeamInput;
-}
-
-export interface LanguageSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: LanguageWhereInput;
-  AND?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
-  OR?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
-  NOT?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
-}
-
-export interface UserScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  firstName?: String;
-  firstName_not?: String;
-  firstName_in?: String[] | String;
-  firstName_not_in?: String[] | String;
-  firstName_lt?: String;
-  firstName_lte?: String;
-  firstName_gt?: String;
-  firstName_gte?: String;
-  firstName_contains?: String;
-  firstName_not_contains?: String;
-  firstName_starts_with?: String;
-  firstName_not_starts_with?: String;
-  firstName_ends_with?: String;
-  firstName_not_ends_with?: String;
-  lastName?: String;
-  lastName_not?: String;
-  lastName_in?: String[] | String;
-  lastName_not_in?: String[] | String;
-  lastName_lt?: String;
-  lastName_lte?: String;
-  lastName_gt?: String;
-  lastName_gte?: String;
-  lastName_contains?: String;
-  lastName_not_contains?: String;
-  lastName_starts_with?: String;
-  lastName_not_starts_with?: String;
-  lastName_ends_with?: String;
-  lastName_not_ends_with?: String;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  password?: String;
-  password_not?: String;
-  password_in?: String[] | String;
-  password_not_in?: String[] | String;
-  password_lt?: String;
-  password_lte?: String;
-  password_gt?: String;
-  password_gte?: String;
-  password_contains?: String;
-  password_not_contains?: String;
-  password_starts_with?: String;
-  password_not_starts_with?: String;
-  password_ends_with?: String;
-  password_not_ends_with?: String;
-  tempToken?: String;
-  tempToken_not?: String;
-  tempToken_in?: String[] | String;
-  tempToken_not_in?: String[] | String;
-  tempToken_lt?: String;
-  tempToken_lte?: String;
-  tempToken_gt?: String;
-  tempToken_gte?: String;
-  tempToken_contains?: String;
-  tempToken_not_contains?: String;
-  tempToken_starts_with?: String;
-  tempToken_not_starts_with?: String;
-  tempToken_ends_with?: String;
-  tempToken_not_ends_with?: String;
-  tempTokenExpiry?: Float;
-  tempTokenExpiry_not?: Float;
-  tempTokenExpiry_in?: Float[] | Float;
-  tempTokenExpiry_not_in?: Float[] | Float;
-  tempTokenExpiry_lt?: Float;
-  tempTokenExpiry_lte?: Float;
-  tempTokenExpiry_gt?: Float;
-  tempTokenExpiry_gte?: Float;
-  jobTitle?: String;
-  jobTitle_not?: String;
-  jobTitle_in?: String[] | String;
-  jobTitle_not_in?: String[] | String;
-  jobTitle_lt?: String;
-  jobTitle_lte?: String;
-  jobTitle_gt?: String;
-  jobTitle_gte?: String;
-  jobTitle_contains?: String;
-  jobTitle_not_contains?: String;
-  jobTitle_starts_with?: String;
-  jobTitle_not_starts_with?: String;
-  jobTitle_ends_with?: String;
-  jobTitle_not_ends_with?: String;
-  country?: String;
-  country_not?: String;
-  country_in?: String[] | String;
-  country_not_in?: String[] | String;
-  country_lt?: String;
-  country_lte?: String;
-  country_gt?: String;
-  country_gte?: String;
-  country_contains?: String;
-  country_not_contains?: String;
-  country_starts_with?: String;
-  country_not_starts_with?: String;
-  country_ends_with?: String;
-  country_not_ends_with?: String;
-  city?: String;
-  city_not?: String;
-  city_in?: String[] | String;
-  city_not_in?: String[] | String;
-  city_lt?: String;
-  city_lte?: String;
-  city_gt?: String;
-  city_gte?: String;
-  city_contains?: String;
-  city_not_contains?: String;
-  city_starts_with?: String;
-  city_not_starts_with?: String;
-  city_ends_with?: String;
-  city_not_ends_with?: String;
-  howHeard?: String;
-  howHeard_not?: String;
-  howHeard_in?: String[] | String;
-  howHeard_not_in?: String[] | String;
-  howHeard_lt?: String;
-  howHeard_lte?: String;
-  howHeard_gt?: String;
-  howHeard_gte?: String;
-  howHeard_contains?: String;
-  howHeard_not_contains?: String;
-  howHeard_starts_with?: String;
-  howHeard_not_starts_with?: String;
-  howHeard_ends_with?: String;
-  howHeard_not_ends_with?: String;
-  isConfirmed?: Boolean;
-  isConfirmed_not?: Boolean;
-  AND?: UserScalarWhereInput[] | UserScalarWhereInput;
-  OR?: UserScalarWhereInput[] | UserScalarWhereInput;
-  NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
-}
-
-export interface SupportFileWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  language?: LanguageWhereInput;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  md5?: String;
-  md5_not?: String;
-  md5_in?: String[] | String;
-  md5_not_in?: String[] | String;
-  md5_lt?: String;
-  md5_lte?: String;
-  md5_gt?: String;
-  md5_gte?: String;
-  md5_contains?: String;
-  md5_not_contains?: String;
-  md5_starts_with?: String;
-  md5_not_starts_with?: String;
-  md5_ends_with?: String;
-  md5_not_ends_with?: String;
-  filename?: String;
-  filename_not?: String;
-  filename_in?: String[] | String;
-  filename_not_in?: String[] | String;
-  filename_lt?: String;
-  filename_lte?: String;
-  filename_gt?: String;
-  filename_gte?: String;
-  filename_contains?: String;
-  filename_not_contains?: String;
-  filename_starts_with?: String;
-  filename_not_starts_with?: String;
-  filename_ends_with?: String;
-  filename_not_ends_with?: String;
-  filetype?: String;
-  filetype_not?: String;
-  filetype_in?: String[] | String;
-  filetype_not_in?: String[] | String;
-  filetype_lt?: String;
-  filetype_lte?: String;
-  filetype_gt?: String;
-  filetype_gte?: String;
-  filetype_contains?: String;
-  filetype_not_contains?: String;
-  filetype_starts_with?: String;
-  filetype_not_starts_with?: String;
-  filetype_ends_with?: String;
-  filetype_not_ends_with?: String;
-  filesize?: Float;
-  filesize_not?: Float;
-  filesize_in?: Float[] | Float;
-  filesize_not_in?: Float[] | Float;
-  filesize_lt?: Float;
-  filesize_lte?: Float;
-  filesize_gt?: Float;
-  filesize_gte?: Float;
-  AND?: SupportFileWhereInput[] | SupportFileWhereInput;
-  OR?: SupportFileWhereInput[] | SupportFileWhereInput;
-  NOT?: SupportFileWhereInput[] | SupportFileWhereInput;
-}
-
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
-}
-
-export interface VideoUseUpdateInput {
-  name?: String;
-}
-
-export interface UserUpdateManyDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoUnitUpdateInput {
-  language?: LanguageUpdateOneInput;
-  title?: String;
-  descPublic?: String;
-  files?: VideoFileUpdateManyInput;
-  tags?: TagUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  thumbnails?: ThumbnailUpdateManyInput;
-}
-
-export interface TeamUpdatecontentTypesInput {
-  set?: ContentType[] | ContentType;
-}
-
 export type TeamWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   name?: String;
 }>;
 
-export interface TeamUpdateManyMutationInput {
-  name?: String;
-  organization?: String;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface DimensionsWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  width?: Int;
-  width_not?: Int;
-  width_in?: Int[] | Int;
-  width_not_in?: Int[] | Int;
-  width_lt?: Int;
-  width_lte?: Int;
-  width_gt?: Int;
-  width_gte?: Int;
-  height?: Int;
-  height_not?: Int;
-  height_in?: Int[] | Int;
-  height_not_in?: Int[] | Int;
-  height_lt?: Int;
-  height_lte?: Int;
-  height_gt?: Int;
-  height_gte?: Int;
-  AND?: DimensionsWhereInput[] | DimensionsWhereInput;
-  OR?: DimensionsWhereInput[] | DimensionsWhereInput;
-  NOT?: DimensionsWhereInput[] | DimensionsWhereInput;
-}
-
-export interface ThumbnailCreateInput {
-  size?: ThumbnailSize;
-  image?: ImageFileCreateOneInput;
-}
-
-export interface ImageFileUpsertWithWhereUniqueNestedInput {
-  where: ImageFileWhereUniqueInput;
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
-}
-
-export interface ImageFileCreateOneInput {
-  create?: ImageFileCreateInput;
-  connect?: ImageFileWhereUniqueInput;
-}
-
-export type ThumbnailWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface ThumbnailUpdateInput {
-  size?: ThumbnailSize;
-  image?: ImageFileUpdateOneInput;
-}
-
-export interface SupportFileUpsertWithWhereUniqueNestedInput {
-  where: SupportFileWhereUniqueInput;
-  update: SupportFileUpdateDataInput;
-  create: SupportFileCreateInput;
-}
-
-export interface ImageFileUpdateOneInput {
-  create?: ImageFileCreateInput;
-  update?: ImageFileUpdateDataInput;
-  upsert?: ImageFileUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: ImageFileWhereUniqueInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
-export interface ImageFileUpdateDataInput {
-  language?: LanguageUpdateOneInput;
-  dimensions?: DimensionsUpdateOneInput;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export type VideoFileWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface ImageFileUpsertNestedInput {
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
-}
-
-export interface ThumbnailScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  size?: ThumbnailSize;
-  size_not?: ThumbnailSize;
-  size_in?: ThumbnailSize[] | ThumbnailSize;
-  size_not_in?: ThumbnailSize[] | ThumbnailSize;
-  AND?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
-  OR?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
-  NOT?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
-}
-
-export interface ThumbnailUpdateManyMutationInput {
-  size?: ThumbnailSize;
-}
-
-export interface VideoStreamWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  site?: String;
-  site_not?: String;
-  site_in?: String[] | String;
-  site_not_in?: String[] | String;
-  site_lt?: String;
-  site_lte?: String;
-  site_gt?: String;
-  site_gte?: String;
-  site_contains?: String;
-  site_not_contains?: String;
-  site_starts_with?: String;
-  site_not_starts_with?: String;
-  site_ends_with?: String;
-  site_not_ends_with?: String;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  embedUrl?: String;
-  embedUrl_not?: String;
-  embedUrl_in?: String[] | String;
-  embedUrl_not_in?: String[] | String;
-  embedUrl_lt?: String;
-  embedUrl_lte?: String;
-  embedUrl_gt?: String;
-  embedUrl_gte?: String;
-  embedUrl_contains?: String;
-  embedUrl_not_contains?: String;
-  embedUrl_starts_with?: String;
-  embedUrl_not_starts_with?: String;
-  embedUrl_ends_with?: String;
-  embedUrl_not_ends_with?: String;
-  AND?: VideoStreamWhereInput[] | VideoStreamWhereInput;
-  OR?: VideoStreamWhereInput[] | VideoStreamWhereInput;
-  NOT?: VideoStreamWhereInput[] | VideoStreamWhereInput;
-}
-
-export interface UserCreateInput {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserCreatepermissionsInput;
-  team?: TeamCreateOneWithoutMembersInput;
-  isConfirmed?: Boolean;
-}
-
-export interface ThumbnailUpdateManyInput {
-  create?: ThumbnailCreateInput[] | ThumbnailCreateInput;
-  update?:
-    | ThumbnailUpdateWithWhereUniqueNestedInput[]
-    | ThumbnailUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | ThumbnailUpsertWithWhereUniqueNestedInput[]
-    | ThumbnailUpsertWithWhereUniqueNestedInput;
-  delete?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
-  connect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
-  disconnect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
-  deleteMany?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
-  updateMany?:
-    | ThumbnailUpdateManyWithWhereNestedInput[]
-    | ThumbnailUpdateManyWithWhereNestedInput;
-}
-
-export interface TeamCreateOneWithoutMembersInput {
-  create?: TeamCreateWithoutMembersInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface CategoryUpdateDataInput {
-  translations?: LanguageTranslationUpdateManyInput;
-}
-
-export interface TeamCreateWithoutMembersInput {
-  name: String;
-  organization: String;
-  contentTypes?: TeamCreatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoProjectWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  projectType?: String;
-  projectType_not?: String;
-  projectType_in?: String[] | String;
-  projectType_not_in?: String[] | String;
-  projectType_lt?: String;
-  projectType_lte?: String;
-  projectType_gt?: String;
-  projectType_gte?: String;
-  projectType_contains?: String;
-  projectType_not_contains?: String;
-  projectType_starts_with?: String;
-  projectType_not_starts_with?: String;
-  projectType_ends_with?: String;
-  projectType_not_ends_with?: String;
-  projectTitle?: String;
-  projectTitle_not?: String;
-  projectTitle_in?: String[] | String;
-  projectTitle_not_in?: String[] | String;
-  projectTitle_lt?: String;
-  projectTitle_lte?: String;
-  projectTitle_gt?: String;
-  projectTitle_gte?: String;
-  projectTitle_contains?: String;
-  projectTitle_not_contains?: String;
-  projectTitle_starts_with?: String;
-  projectTitle_not_starts_with?: String;
-  projectTitle_ends_with?: String;
-  projectTitle_not_ends_with?: String;
-  descPublic?: String;
-  descPublic_not?: String;
-  descPublic_in?: String[] | String;
-  descPublic_not_in?: String[] | String;
-  descPublic_lt?: String;
-  descPublic_lte?: String;
-  descPublic_gt?: String;
-  descPublic_gte?: String;
-  descPublic_contains?: String;
-  descPublic_not_contains?: String;
-  descPublic_starts_with?: String;
-  descPublic_not_starts_with?: String;
-  descPublic_ends_with?: String;
-  descPublic_not_ends_with?: String;
-  descInternal?: String;
-  descInternal_not?: String;
-  descInternal_in?: String[] | String;
-  descInternal_not_in?: String[] | String;
-  descInternal_lt?: String;
-  descInternal_lte?: String;
-  descInternal_gt?: String;
-  descInternal_gte?: String;
-  descInternal_contains?: String;
-  descInternal_not_contains?: String;
-  descInternal_starts_with?: String;
-  descInternal_not_starts_with?: String;
-  descInternal_ends_with?: String;
-  descInternal_not_ends_with?: String;
-  author?: String;
-  author_not?: String;
-  author_in?: String[] | String;
-  author_not_in?: String[] | String;
-  author_lt?: String;
-  author_lte?: String;
-  author_gt?: String;
-  author_gte?: String;
-  author_contains?: String;
-  author_not_contains?: String;
-  author_starts_with?: String;
-  author_not_starts_with?: String;
-  author_ends_with?: String;
-  author_not_ends_with?: String;
-  team?: TeamWhereInput;
-  status?: ProjectPublishStatus;
-  status_not?: ProjectPublishStatus;
-  status_in?: ProjectPublishStatus[] | ProjectPublishStatus;
-  status_not_in?: ProjectPublishStatus[] | ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  visibility_not?: ProjectVisibility;
-  visibility_in?: ProjectVisibility[] | ProjectVisibility;
-  visibility_not_in?: ProjectVisibility[] | ProjectVisibility;
-  units_every?: VideoUnitWhereInput;
-  units_some?: VideoUnitWhereInput;
-  units_none?: VideoUnitWhereInput;
-  supportFiles_every?: SupportFileWhereInput;
-  supportFiles_some?: SupportFileWhereInput;
-  supportFiles_none?: SupportFileWhereInput;
-  thumbnails_every?: ImageFileWhereInput;
-  thumbnails_some?: ImageFileWhereInput;
-  thumbnails_none?: ImageFileWhereInput;
-  categories_every?: CategoryWhereInput;
-  categories_some?: CategoryWhereInput;
-  categories_none?: CategoryWhereInput;
-  tags_every?: TagWhereInput;
-  tags_some?: TagWhereInput;
-  tags_none?: TagWhereInput;
-  AND?: VideoProjectWhereInput[] | VideoProjectWhereInput;
-  OR?: VideoProjectWhereInput[] | VideoProjectWhereInput;
-  NOT?: VideoProjectWhereInput[] | VideoProjectWhereInput;
-}
-
-export interface UserUpdateInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  team?: TeamUpdateOneWithoutMembersInput;
-  isConfirmed?: Boolean;
-}
-
-export interface TagUpdateDataInput {
-  translations?: LanguageTranslationUpdateManyInput;
-}
-
-export interface TeamUpdateOneWithoutMembersInput {
-  create?: TeamCreateWithoutMembersInput;
-  update?: TeamUpdateWithoutMembersDataInput;
-  upsert?: TeamUpsertWithoutMembersInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface VideoFileUpdateManyDataInput {
-  filetype?: String;
-  filename?: String;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-}
-
-export interface TeamUpdateWithoutMembersDataInput {
-  name?: String;
-  organization?: String;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoFileUpsertWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  update: VideoFileUpdateDataInput;
-  create: VideoFileCreateInput;
-}
-
-export interface TeamUpsertWithoutMembersInput {
-  update: TeamUpdateWithoutMembersDataInput;
-  create: TeamCreateWithoutMembersInput;
-}
-
-export interface VideoFileUpdateWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  data: VideoFileUpdateDataInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoUnitSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoUnitWhereInput;
-  AND?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-  OR?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-  NOT?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-}
-
-export interface VideoFileCreateInput {
-  language?: LanguageCreateOneInput;
-  filetype?: String;
-  filename?: String;
-  use?: VideoUseCreateOneInput;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-  dimensions?: DimensionsCreateOneInput;
-  stream?: VideoStreamCreateOneInput;
-}
-
-export interface ThumbnailSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ThumbnailWhereInput;
-  AND?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-  OR?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-  NOT?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-}
-
-export interface VideoUseCreateOneInput {
-  create?: VideoUseCreateInput;
-  connect?: VideoUseWhereUniqueInput;
-}
-
-export interface ImageUseSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ImageUseWhereInput;
-  AND?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-  OR?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-  NOT?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-}
-
-export interface VideoUseCreateInput {
-  name: String;
-}
-
-export interface VideoUnitUpdateManyMutationInput {
-  title?: String;
-  descPublic?: String;
-}
-
-export interface VideoStreamCreateOneInput {
-  create?: VideoStreamCreateInput;
-  connect?: VideoStreamWhereUniqueInput;
+export interface ImageUseCreateOneInput {
+  create?: ImageUseCreateInput;
+  connect?: ImageUseWhereUniqueInput;
 }
 
 export interface UserWhereInput {
@@ -3356,353 +1770,57 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface VideoStreamCreateInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
+export interface ImageUseCreateInput {
+  name: String;
 }
 
-export interface ImageFileUpdateManyInput {
-  create?: ImageFileCreateInput[] | ImageFileCreateInput;
-  update?:
-    | ImageFileUpdateWithWhereUniqueNestedInput[]
-    | ImageFileUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | ImageFileUpsertWithWhereUniqueNestedInput[]
-    | ImageFileUpsertWithWhereUniqueNestedInput;
-  delete?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
-  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
-  disconnect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
-  deleteMany?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
-  updateMany?:
-    | ImageFileUpdateManyWithWhereNestedInput[]
-    | ImageFileUpdateManyWithWhereNestedInput;
+export interface DimensionsWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  width?: Int;
+  width_not?: Int;
+  width_in?: Int[] | Int;
+  width_not_in?: Int[] | Int;
+  width_lt?: Int;
+  width_lte?: Int;
+  width_gt?: Int;
+  width_gte?: Int;
+  height?: Int;
+  height_not?: Int;
+  height_in?: Int[] | Int;
+  height_not_in?: Int[] | Int;
+  height_lt?: Int;
+  height_lte?: Int;
+  height_gt?: Int;
+  height_gte?: Int;
+  AND?: DimensionsWhereInput[] | DimensionsWhereInput;
+  OR?: DimensionsWhereInput[] | DimensionsWhereInput;
+  NOT?: DimensionsWhereInput[] | DimensionsWhereInput;
 }
 
-export interface VideoFileUpdateInput {
+export interface ImageFileUpdateInput {
   language?: LanguageUpdateOneInput;
-  filetype?: String;
-  filename?: String;
-  use?: VideoUseUpdateOneInput;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
   dimensions?: DimensionsUpdateOneInput;
-  stream?: VideoStreamUpdateOneInput;
-}
-
-export interface SupportFileUpdateWithWhereUniqueNestedInput {
-  where: SupportFileWhereUniqueInput;
-  data: SupportFileUpdateDataInput;
-}
-
-export interface VideoUseUpdateOneInput {
-  create?: VideoUseCreateInput;
-  update?: VideoUseUpdateDataInput;
-  upsert?: VideoUseUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: VideoUseWhereUniqueInput;
-}
-
-export interface ThumbnailUpdateManyDataInput {
-  size?: ThumbnailSize;
-}
-
-export interface VideoUseUpdateDataInput {
-  name?: String;
-}
-
-export interface ThumbnailUpdateDataInput {
-  size?: ThumbnailSize;
-  image?: ImageFileUpdateOneInput;
-}
-
-export interface VideoUseUpsertNestedInput {
-  update: VideoUseUpdateDataInput;
-  create: VideoUseCreateInput;
-}
-
-export interface CategoryUpdateWithWhereUniqueNestedInput {
-  where: CategoryWhereUniqueInput;
-  data: CategoryUpdateDataInput;
-}
-
-export interface VideoStreamUpdateOneInput {
-  create?: VideoStreamCreateInput;
-  update?: VideoStreamUpdateDataInput;
-  upsert?: VideoStreamUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: VideoStreamWhereUniqueInput;
-}
-
-export interface TagUpdateWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  data: TagUpdateDataInput;
-}
-
-export interface VideoStreamUpdateDataInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export type VideoUseWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface VideoStreamUpsertNestedInput {
-  update: VideoStreamUpdateDataInput;
-  create: VideoStreamCreateInput;
-}
-
-export interface VideoProjectSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoProjectWhereInput;
-  AND?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-  OR?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-  NOT?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-}
-
-export interface VideoFileUpdateManyMutationInput {
-  filetype?: String;
-  filename?: String;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-}
-
-export interface CategorySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CategoryWhereInput;
-  AND?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-  OR?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-  NOT?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-}
-
-export interface VideoProjectCreateInput {
-  projectType: String;
-  projectTitle: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  team?: TeamCreateOneInput;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  units?: VideoUnitCreateManyInput;
-  supportFiles?: SupportFileCreateManyInput;
-  thumbnails?: ImageFileCreateManyInput;
-  categories?: CategoryCreateManyInput;
-  tags?: TagCreateManyInput;
-}
-
-export interface ImageFileScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
   alt?: String;
-  alt_not?: String;
-  alt_in?: String[] | String;
-  alt_not_in?: String[] | String;
-  alt_lt?: String;
-  alt_lte?: String;
-  alt_gt?: String;
-  alt_gte?: String;
-  alt_contains?: String;
-  alt_not_contains?: String;
-  alt_starts_with?: String;
-  alt_not_starts_with?: String;
-  alt_ends_with?: String;
-  alt_not_ends_with?: String;
   longdesc?: String;
-  longdesc_not?: String;
-  longdesc_in?: String[] | String;
-  longdesc_not_in?: String[] | String;
-  longdesc_lt?: String;
-  longdesc_lte?: String;
-  longdesc_gt?: String;
-  longdesc_gte?: String;
-  longdesc_contains?: String;
-  longdesc_not_contains?: String;
-  longdesc_starts_with?: String;
-  longdesc_not_starts_with?: String;
-  longdesc_ends_with?: String;
-  longdesc_not_ends_with?: String;
   caption?: String;
-  caption_not?: String;
-  caption_in?: String[] | String;
-  caption_not_in?: String[] | String;
-  caption_lt?: String;
-  caption_lte?: String;
-  caption_gt?: String;
-  caption_gte?: String;
-  caption_contains?: String;
-  caption_not_contains?: String;
-  caption_starts_with?: String;
-  caption_not_starts_with?: String;
-  caption_ends_with?: String;
-  caption_not_ends_with?: String;
   filename?: String;
-  filename_not?: String;
-  filename_in?: String[] | String;
-  filename_not_in?: String[] | String;
-  filename_lt?: String;
-  filename_lte?: String;
-  filename_gt?: String;
-  filename_gte?: String;
-  filename_contains?: String;
-  filename_not_contains?: String;
-  filename_starts_with?: String;
-  filename_not_starts_with?: String;
-  filename_ends_with?: String;
-  filename_not_ends_with?: String;
   filetype?: String;
-  filetype_not?: String;
-  filetype_in?: String[] | String;
-  filetype_not_in?: String[] | String;
-  filetype_lt?: String;
-  filetype_lte?: String;
-  filetype_gt?: String;
-  filetype_gte?: String;
-  filetype_contains?: String;
-  filetype_not_contains?: String;
-  filetype_starts_with?: String;
-  filetype_not_starts_with?: String;
-  filetype_ends_with?: String;
-  filetype_not_ends_with?: String;
+  use?: ImageUseUpdateOneInput;
   md5?: String;
-  md5_not?: String;
-  md5_in?: String[] | String;
-  md5_not_in?: String[] | String;
-  md5_lt?: String;
-  md5_lte?: String;
-  md5_gt?: String;
-  md5_gte?: String;
-  md5_contains?: String;
-  md5_not_contains?: String;
-  md5_starts_with?: String;
-  md5_not_starts_with?: String;
-  md5_ends_with?: String;
-  md5_not_ends_with?: String;
   url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  AND?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
-  OR?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
-  NOT?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
-}
-
-export interface TeamCreateOneInput {
-  create?: TeamCreateInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface VideoUnitUpdateManyWithWhereNestedInput {
-  where: VideoUnitScalarWhereInput;
-  data: VideoUnitUpdateManyDataInput;
-}
-
-export interface VideoUnitCreateManyInput {
-  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
-  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
-}
-
-export interface CategoryScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  AND?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
-  OR?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
-  NOT?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
-}
-
-export interface VideoUnitCreateInput {
-  language?: LanguageCreateOneInput;
-  title: String;
-  descPublic?: String;
-  files?: VideoFileCreateManyInput;
-  tags?: TagCreateManyInput;
-  categories?: CategoryCreateManyInput;
-  thumbnails?: ThumbnailCreateManyInput;
-}
-
-export type VideoUnitWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface VideoFileCreateManyInput {
-  create?: VideoFileCreateInput[] | VideoFileCreateInput;
-  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
-}
-
-export interface SupportFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: SupportFileWhereInput;
-  AND?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-  OR?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-  NOT?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-}
-
-export interface TagCreateManyInput {
-  create?: TagCreateInput[] | TagCreateInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
 }
 
 export interface SupportFileScalarWhereInput {
@@ -3720,6 +1838,22 @@ export interface SupportFileScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   url?: String;
   url_not?: String;
   url_in?: String[] | String;
@@ -3789,24 +1923,238 @@ export interface SupportFileScalarWhereInput {
   NOT?: SupportFileScalarWhereInput[] | SupportFileScalarWhereInput;
 }
 
-export interface ImageFileCreateManyInput {
-  create?: ImageFileCreateInput[] | ImageFileCreateInput;
-  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+export interface LanguageUpdateOneInput {
+  create?: LanguageCreateInput;
+  update?: LanguageUpdateDataInput;
+  upsert?: LanguageUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: LanguageWhereUniqueInput;
 }
 
-export interface SupportFileCreateManyInput {
-  create?: SupportFileCreateInput[] | SupportFileCreateInput;
-  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+export interface SupportFileUpsertWithWhereUniqueNestedInput {
+  where: SupportFileWhereUniqueInput;
+  update: SupportFileUpdateDataInput;
+  create: SupportFileCreateInput;
 }
 
-export interface ThumbnailCreateManyInput {
+export interface DimensionsUpdateOneInput {
+  create?: DimensionsCreateInput;
+  update?: DimensionsUpdateDataInput;
+  upsert?: DimensionsUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: DimensionsWhereUniqueInput;
+}
+
+export interface SupportFileUpdateWithWhereUniqueNestedInput {
+  where: SupportFileWhereUniqueInput;
+  data: SupportFileUpdateDataInput;
+}
+
+export interface DimensionsUpdateDataInput {
+  width?: Int;
+  height?: Int;
+}
+
+export type ThumbnailWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface DimensionsUpsertNestedInput {
+  update: DimensionsUpdateDataInput;
+  create: DimensionsCreateInput;
+}
+
+export interface VideoUnitUpdateManyWithWhereNestedInput {
+  where: VideoUnitScalarWhereInput;
+  data: VideoUnitUpdateManyDataInput;
+}
+
+export interface ImageUseUpdateOneInput {
+  create?: ImageUseCreateInput;
+  update?: ImageUseUpdateDataInput;
+  upsert?: ImageUseUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ImageUseWhereUniqueInput;
+}
+
+export interface VideoUnitScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  descPublic?: String;
+  descPublic_not?: String;
+  descPublic_in?: String[] | String;
+  descPublic_not_in?: String[] | String;
+  descPublic_lt?: String;
+  descPublic_lte?: String;
+  descPublic_gt?: String;
+  descPublic_gte?: String;
+  descPublic_contains?: String;
+  descPublic_not_contains?: String;
+  descPublic_starts_with?: String;
+  descPublic_not_starts_with?: String;
+  descPublic_ends_with?: String;
+  descPublic_not_ends_with?: String;
+  AND?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
+  OR?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
+  NOT?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
+}
+
+export interface ImageUseUpdateDataInput {
+  name?: String;
+}
+
+export interface ThumbnailUpdateManyDataInput {
+  size?: ThumbnailSize;
+}
+
+export interface ImageUseUpsertNestedInput {
+  update: ImageUseUpdateDataInput;
+  create: ImageUseCreateInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface ImageFileUpdateManyMutationInput {
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  md5?: String;
+  url?: String;
+}
+
+export interface ThumbnailUpsertWithWhereUniqueNestedInput {
+  where: ThumbnailWhereUniqueInput;
+  update: ThumbnailUpdateDataInput;
+  create: ThumbnailCreateInput;
+}
+
+export interface ImageUseUpdateInput {
+  name?: String;
+}
+
+export type VideoFileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ImageUseUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface ThumbnailUpdateManyInput {
   create?: ThumbnailCreateInput[] | ThumbnailCreateInput;
+  update?:
+    | ThumbnailUpdateWithWhereUniqueNestedInput[]
+    | ThumbnailUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | ThumbnailUpsertWithWhereUniqueNestedInput[]
+    | ThumbnailUpsertWithWhereUniqueNestedInput;
+  delete?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
   connect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
+  disconnect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
+  deleteMany?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
+  updateMany?:
+    | ThumbnailUpdateManyWithWhereNestedInput[]
+    | ThumbnailUpdateManyWithWhereNestedInput;
 }
 
-export interface CategoryCreateManyInput {
-  create?: CategoryCreateInput[] | CategoryCreateInput;
-  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+export interface LanguageUpdateInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: String;
+  displayName?: String;
+  nativeName?: String;
+}
+
+export interface CategoryUpsertWithWhereUniqueNestedInput {
+  where: CategoryWhereUniqueInput;
+  update: CategoryUpdateDataInput;
+  create: CategoryCreateInput;
+}
+
+export interface LanguageUpdateManyMutationInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: String;
+  displayName?: String;
+  nativeName?: String;
+}
+
+export interface CategoryWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  translations_every?: LanguageTranslationWhereInput;
+  translations_some?: LanguageTranslationWhereInput;
+  translations_none?: LanguageTranslationWhereInput;
+  AND?: CategoryWhereInput[] | CategoryWhereInput;
+  OR?: CategoryWhereInput[] | CategoryWhereInput;
+  NOT?: CategoryWhereInput[] | CategoryWhereInput;
+}
+
+export interface LanguageTranslationUpdateInput {
+  name?: String;
+  language?: LanguageUpdateOneRequiredInput;
 }
 
 export interface VideoFileWhereInput {
@@ -3824,6 +2172,22 @@ export interface VideoFileWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
   language?: LanguageWhereInput;
   filetype?: String;
   filetype_not?: String;
@@ -3915,26 +2279,31 @@ export interface VideoFileWhereInput {
   filesize_gt?: Float;
   filesize_gte?: Float;
   dimensions?: DimensionsWhereInput;
-  stream?: VideoStreamWhereInput;
+  stream_every?: VideoStreamWhereInput;
+  stream_some?: VideoStreamWhereInput;
+  stream_none?: VideoStreamWhereInput;
   AND?: VideoFileWhereInput[] | VideoFileWhereInput;
   OR?: VideoFileWhereInput[] | VideoFileWhereInput;
   NOT?: VideoFileWhereInput[] | VideoFileWhereInput;
 }
 
-export interface VideoStreamUpdateInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
+export interface LanguageTranslationUpdateManyMutationInput {
+  name?: String;
 }
 
-export interface VideoUnitUpdateDataInput {
-  language?: LanguageUpdateOneInput;
-  title?: String;
-  descPublic?: String;
-  files?: VideoFileUpdateManyInput;
-  tags?: TagUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  thumbnails?: ThumbnailUpdateManyInput;
+export interface CategoryUpdateWithWhereUniqueNestedInput {
+  where: CategoryWhereUniqueInput;
+  data: CategoryUpdateDataInput;
+}
+
+export interface SupportFileCreateInput {
+  language: LanguageCreateOneInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseCreateOneInput;
 }
 
 export interface TagScalarWhereInput {
@@ -3955,6 +2324,2058 @@ export interface TagScalarWhereInput {
   AND?: TagScalarWhereInput[] | TagScalarWhereInput;
   OR?: TagScalarWhereInput[] | TagScalarWhereInput;
   NOT?: TagScalarWhereInput[] | TagScalarWhereInput;
+}
+
+export interface ThumbnailCreateManyInput {
+  create?: ThumbnailCreateInput[] | ThumbnailCreateInput;
+  connect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
+}
+
+export type VideoProjectWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface SupportFileUseCreateInput {
+  name: String;
+}
+
+export interface TagUpdateWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  data: TagUpdateDataInput;
+}
+
+export interface SupportFileUpdateInput {
+  language?: LanguageUpdateOneRequiredInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseUpdateOneInput;
+}
+
+export interface VideoUnitWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  language?: LanguageWhereInput;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  descPublic?: String;
+  descPublic_not?: String;
+  descPublic_in?: String[] | String;
+  descPublic_not_in?: String[] | String;
+  descPublic_lt?: String;
+  descPublic_lte?: String;
+  descPublic_gt?: String;
+  descPublic_gte?: String;
+  descPublic_contains?: String;
+  descPublic_not_contains?: String;
+  descPublic_starts_with?: String;
+  descPublic_not_starts_with?: String;
+  descPublic_ends_with?: String;
+  descPublic_not_ends_with?: String;
+  files_every?: VideoFileWhereInput;
+  files_some?: VideoFileWhereInput;
+  files_none?: VideoFileWhereInput;
+  tags_every?: TagWhereInput;
+  tags_some?: TagWhereInput;
+  tags_none?: TagWhereInput;
+  categories_every?: CategoryWhereInput;
+  categories_some?: CategoryWhereInput;
+  categories_none?: CategoryWhereInput;
+  thumbnails_every?: ThumbnailWhereInput;
+  thumbnails_some?: ThumbnailWhereInput;
+  thumbnails_none?: ThumbnailWhereInput;
+  AND?: VideoUnitWhereInput[] | VideoUnitWhereInput;
+  OR?: VideoUnitWhereInput[] | VideoUnitWhereInput;
+  NOT?: VideoUnitWhereInput[] | VideoUnitWhereInput;
+}
+
+export interface SupportFileUseUpdateOneInput {
+  create?: SupportFileUseCreateInput;
+  update?: SupportFileUseUpdateDataInput;
+  upsert?: SupportFileUseUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: SupportFileUseWhereUniqueInput;
+}
+
+export interface VideoFileUpdateManyDataInput {
+  filetype?: String;
+  filename?: String;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+}
+
+export interface SupportFileUseUpdateDataInput {
+  name?: String;
+}
+
+export interface VideoFileUpdateManyWithWhereNestedInput {
+  where: VideoFileScalarWhereInput;
+  data: VideoFileUpdateManyDataInput;
+}
+
+export interface SupportFileUseUpsertNestedInput {
+  update: SupportFileUseUpdateDataInput;
+  create: SupportFileUseCreateInput;
+}
+
+export interface VideoFileUpsertWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  update: VideoFileUpdateDataInput;
+  create: VideoFileCreateInput;
+}
+
+export interface SupportFileUpdateManyMutationInput {
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+}
+
+export type VideoStreamWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface SupportFileUseUpdateInput {
+  name?: String;
+}
+
+export interface VideoFileUpdateManyInput {
+  create?: VideoFileCreateInput[] | VideoFileCreateInput;
+  update?:
+    | VideoFileUpdateWithWhereUniqueNestedInput[]
+    | VideoFileUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | VideoFileUpsertWithWhereUniqueNestedInput[]
+    | VideoFileUpsertWithWhereUniqueNestedInput;
+  delete?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
+  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
+  disconnect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
+  deleteMany?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
+  updateMany?:
+    | VideoFileUpdateManyWithWhereNestedInput[]
+    | VideoFileUpdateManyWithWhereNestedInput;
+}
+
+export interface SupportFileUseUpdateManyMutationInput {
+  name?: String;
+}
+
+export type VideoUnitWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface TagCreateInput {
+  translations?: LanguageTranslationCreateManyInput;
+}
+
+export interface VideoUnitUpdateManyInput {
+  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
+  update?:
+    | VideoUnitUpdateWithWhereUniqueNestedInput[]
+    | VideoUnitUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | VideoUnitUpsertWithWhereUniqueNestedInput[]
+    | VideoUnitUpsertWithWhereUniqueNestedInput;
+  delete?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
+  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
+  disconnect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
+  deleteMany?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
+  updateMany?:
+    | VideoUnitUpdateManyWithWhereNestedInput[]
+    | VideoUnitUpdateManyWithWhereNestedInput;
+}
+
+export interface TagUpdateInput {
+  translations?: LanguageTranslationUpdateManyInput;
+}
+
+export type VideoUseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface TeamCreateInput {
+  name: String;
+  organization: String;
+  members?: UserCreateManyWithoutTeamInput;
+  contentTypes?: TeamCreatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface TeamUpdateDataInput {
+  name?: String;
+  organization?: String;
+  members?: UserUpdateManyWithoutTeamInput;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface UserCreateManyWithoutTeamInput {
+  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+}
+
+export interface VideoProjectUpdateInput {
+  projectType?: String;
+  projectTitle?: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: String;
+  team?: TeamUpdateOneInput;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+  units?: VideoUnitUpdateManyInput;
+  supportFiles?: SupportFileUpdateManyInput;
+  thumbnails?: ImageFileUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  tags?: TagUpdateManyInput;
+}
+
+export interface UserCreateWithoutTeamInput {
+  firstName: String;
+  lastName: String;
+  email: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserCreatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface ImageUseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: ImageUseWhereInput[] | ImageUseWhereInput;
+  OR?: ImageUseWhereInput[] | ImageUseWhereInput;
+  NOT?: ImageUseWhereInput[] | ImageUseWhereInput;
+}
+
+export interface ImageFileWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  language?: LanguageWhereInput;
+  dimensions?: DimensionsWhereInput;
+  alt?: String;
+  alt_not?: String;
+  alt_in?: String[] | String;
+  alt_not_in?: String[] | String;
+  alt_lt?: String;
+  alt_lte?: String;
+  alt_gt?: String;
+  alt_gte?: String;
+  alt_contains?: String;
+  alt_not_contains?: String;
+  alt_starts_with?: String;
+  alt_not_starts_with?: String;
+  alt_ends_with?: String;
+  alt_not_ends_with?: String;
+  longdesc?: String;
+  longdesc_not?: String;
+  longdesc_in?: String[] | String;
+  longdesc_not_in?: String[] | String;
+  longdesc_lt?: String;
+  longdesc_lte?: String;
+  longdesc_gt?: String;
+  longdesc_gte?: String;
+  longdesc_contains?: String;
+  longdesc_not_contains?: String;
+  longdesc_starts_with?: String;
+  longdesc_not_starts_with?: String;
+  longdesc_ends_with?: String;
+  longdesc_not_ends_with?: String;
+  caption?: String;
+  caption_not?: String;
+  caption_in?: String[] | String;
+  caption_not_in?: String[] | String;
+  caption_lt?: String;
+  caption_lte?: String;
+  caption_gt?: String;
+  caption_gte?: String;
+  caption_contains?: String;
+  caption_not_contains?: String;
+  caption_starts_with?: String;
+  caption_not_starts_with?: String;
+  caption_ends_with?: String;
+  caption_not_ends_with?: String;
+  filename?: String;
+  filename_not?: String;
+  filename_in?: String[] | String;
+  filename_not_in?: String[] | String;
+  filename_lt?: String;
+  filename_lte?: String;
+  filename_gt?: String;
+  filename_gte?: String;
+  filename_contains?: String;
+  filename_not_contains?: String;
+  filename_starts_with?: String;
+  filename_not_starts_with?: String;
+  filename_ends_with?: String;
+  filename_not_ends_with?: String;
+  filetype?: String;
+  filetype_not?: String;
+  filetype_in?: String[] | String;
+  filetype_not_in?: String[] | String;
+  filetype_lt?: String;
+  filetype_lte?: String;
+  filetype_gt?: String;
+  filetype_gte?: String;
+  filetype_contains?: String;
+  filetype_not_contains?: String;
+  filetype_starts_with?: String;
+  filetype_not_starts_with?: String;
+  filetype_ends_with?: String;
+  filetype_not_ends_with?: String;
+  use?: ImageUseWhereInput;
+  md5?: String;
+  md5_not?: String;
+  md5_in?: String[] | String;
+  md5_not_in?: String[] | String;
+  md5_lt?: String;
+  md5_lte?: String;
+  md5_gt?: String;
+  md5_gte?: String;
+  md5_contains?: String;
+  md5_not_contains?: String;
+  md5_starts_with?: String;
+  md5_not_starts_with?: String;
+  md5_ends_with?: String;
+  md5_not_ends_with?: String;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  AND?: ImageFileWhereInput[] | ImageFileWhereInput;
+  OR?: ImageFileWhereInput[] | ImageFileWhereInput;
+  NOT?: ImageFileWhereInput[] | ImageFileWhereInput;
+}
+
+export interface VideoProjectSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoProjectWhereInput;
+  AND?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+  OR?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+  NOT?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+}
+
+export interface TeamCreatecontentTypesInput {
+  set?: ContentType[] | ContentType;
+}
+
+export interface ThumbnailSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ThumbnailWhereInput;
+  AND?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+  OR?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+  NOT?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+}
+
+export interface TeamUpdateInput {
+  name?: String;
+  organization?: String;
+  members?: UserUpdateManyWithoutTeamInput;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TagWhereInput;
+  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+}
+
+export interface UserUpdateManyWithoutTeamInput {
+  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  update?:
+    | UserUpdateWithWhereUniqueWithoutTeamInput[]
+    | UserUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | UserUpsertWithWhereUniqueWithoutTeamInput[]
+    | UserUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: UserScalarWhereInput[] | UserScalarWhereInput;
+  updateMany?:
+    | UserUpdateManyWithWhereNestedInput[]
+    | UserUpdateManyWithWhereNestedInput;
+}
+
+export interface LanguageTranslationSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: LanguageTranslationWhereInput;
+  AND?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
+  OR?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
+  NOT?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutTeamDataInput;
+}
+
+export interface ImageFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ImageFileWhereInput;
+  AND?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
+  OR?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
+  NOT?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithoutTeamDataInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface SupportFileUseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+  OR?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+  NOT?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface VideoUnitUpdateInput {
+  language?: LanguageUpdateOneInput;
+  title?: String;
+  descPublic?: String;
+  files?: VideoFileUpdateManyInput;
+  tags?: TagUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  thumbnails?: ThumbnailUpdateManyInput;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutTeamDataInput;
+  create: UserCreateWithoutTeamInput;
+}
+
+export interface VideoProjectUpdateManyMutationInput {
+  projectType?: String;
+  projectTitle?: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: String;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+}
+
+export interface UserScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  firstName?: String;
+  firstName_not?: String;
+  firstName_in?: String[] | String;
+  firstName_not_in?: String[] | String;
+  firstName_lt?: String;
+  firstName_lte?: String;
+  firstName_gt?: String;
+  firstName_gte?: String;
+  firstName_contains?: String;
+  firstName_not_contains?: String;
+  firstName_starts_with?: String;
+  firstName_not_starts_with?: String;
+  firstName_ends_with?: String;
+  firstName_not_ends_with?: String;
+  lastName?: String;
+  lastName_not?: String;
+  lastName_in?: String[] | String;
+  lastName_not_in?: String[] | String;
+  lastName_lt?: String;
+  lastName_lte?: String;
+  lastName_gt?: String;
+  lastName_gte?: String;
+  lastName_contains?: String;
+  lastName_not_contains?: String;
+  lastName_starts_with?: String;
+  lastName_not_starts_with?: String;
+  lastName_ends_with?: String;
+  lastName_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
+  tempToken?: String;
+  tempToken_not?: String;
+  tempToken_in?: String[] | String;
+  tempToken_not_in?: String[] | String;
+  tempToken_lt?: String;
+  tempToken_lte?: String;
+  tempToken_gt?: String;
+  tempToken_gte?: String;
+  tempToken_contains?: String;
+  tempToken_not_contains?: String;
+  tempToken_starts_with?: String;
+  tempToken_not_starts_with?: String;
+  tempToken_ends_with?: String;
+  tempToken_not_ends_with?: String;
+  tempTokenExpiry?: Float;
+  tempTokenExpiry_not?: Float;
+  tempTokenExpiry_in?: Float[] | Float;
+  tempTokenExpiry_not_in?: Float[] | Float;
+  tempTokenExpiry_lt?: Float;
+  tempTokenExpiry_lte?: Float;
+  tempTokenExpiry_gt?: Float;
+  tempTokenExpiry_gte?: Float;
+  jobTitle?: String;
+  jobTitle_not?: String;
+  jobTitle_in?: String[] | String;
+  jobTitle_not_in?: String[] | String;
+  jobTitle_lt?: String;
+  jobTitle_lte?: String;
+  jobTitle_gt?: String;
+  jobTitle_gte?: String;
+  jobTitle_contains?: String;
+  jobTitle_not_contains?: String;
+  jobTitle_starts_with?: String;
+  jobTitle_not_starts_with?: String;
+  jobTitle_ends_with?: String;
+  jobTitle_not_ends_with?: String;
+  country?: String;
+  country_not?: String;
+  country_in?: String[] | String;
+  country_not_in?: String[] | String;
+  country_lt?: String;
+  country_lte?: String;
+  country_gt?: String;
+  country_gte?: String;
+  country_contains?: String;
+  country_not_contains?: String;
+  country_starts_with?: String;
+  country_not_starts_with?: String;
+  country_ends_with?: String;
+  country_not_ends_with?: String;
+  city?: String;
+  city_not?: String;
+  city_in?: String[] | String;
+  city_not_in?: String[] | String;
+  city_lt?: String;
+  city_lte?: String;
+  city_gt?: String;
+  city_gte?: String;
+  city_contains?: String;
+  city_not_contains?: String;
+  city_starts_with?: String;
+  city_not_starts_with?: String;
+  city_ends_with?: String;
+  city_not_ends_with?: String;
+  howHeard?: String;
+  howHeard_not?: String;
+  howHeard_in?: String[] | String;
+  howHeard_not_in?: String[] | String;
+  howHeard_lt?: String;
+  howHeard_lte?: String;
+  howHeard_gt?: String;
+  howHeard_gte?: String;
+  howHeard_contains?: String;
+  howHeard_not_contains?: String;
+  howHeard_starts_with?: String;
+  howHeard_not_starts_with?: String;
+  howHeard_ends_with?: String;
+  howHeard_not_ends_with?: String;
+  isConfirmed?: Boolean;
+  isConfirmed_not?: Boolean;
+  AND?: UserScalarWhereInput[] | UserScalarWhereInput;
+  OR?: UserScalarWhereInput[] | UserScalarWhereInput;
+  NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
+}
+
+export interface TagWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  translations_every?: LanguageTranslationWhereInput;
+  translations_some?: LanguageTranslationWhereInput;
+  translations_none?: LanguageTranslationWhereInput;
+  AND?: TagWhereInput[] | TagWhereInput;
+  OR?: TagWhereInput[] | TagWhereInput;
+  NOT?: TagWhereInput[] | TagWhereInput;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
+}
+
+export interface ImageFileUpdateManyInput {
+  create?: ImageFileCreateInput[] | ImageFileCreateInput;
+  update?:
+    | ImageFileUpdateWithWhereUniqueNestedInput[]
+    | ImageFileUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | ImageFileUpsertWithWhereUniqueNestedInput[]
+    | ImageFileUpsertWithWhereUniqueNestedInput;
+  delete?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+  disconnect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+  deleteMany?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
+  updateMany?:
+    | ImageFileUpdateManyWithWhereNestedInput[]
+    | ImageFileUpdateManyWithWhereNestedInput;
+}
+
+export interface UserUpdateManyDataInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface TeamWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  organization?: String;
+  organization_not?: String;
+  organization_in?: String[] | String;
+  organization_not_in?: String[] | String;
+  organization_lt?: String;
+  organization_lte?: String;
+  organization_gt?: String;
+  organization_gte?: String;
+  organization_contains?: String;
+  organization_not_contains?: String;
+  organization_starts_with?: String;
+  organization_not_starts_with?: String;
+  organization_ends_with?: String;
+  organization_not_ends_with?: String;
+  members_every?: UserWhereInput;
+  members_some?: UserWhereInput;
+  members_none?: UserWhereInput;
+  isConfirmed?: Boolean;
+  isConfirmed_not?: Boolean;
+  AND?: TeamWhereInput[] | TeamWhereInput;
+  OR?: TeamWhereInput[] | TeamWhereInput;
+  NOT?: TeamWhereInput[] | TeamWhereInput;
+}
+
+export interface TeamUpdatecontentTypesInput {
+  set?: ContentType[] | ContentType;
+}
+
+export type DimensionsWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface TeamUpdateManyMutationInput {
+  name?: String;
+  organization?: String;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface SupportFileUpdateManyInput {
+  create?: SupportFileCreateInput[] | SupportFileCreateInput;
+  update?:
+    | SupportFileUpdateWithWhereUniqueNestedInput[]
+    | SupportFileUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | SupportFileUpsertWithWhereUniqueNestedInput[]
+    | SupportFileUpsertWithWhereUniqueNestedInput;
+  delete?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+  disconnect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+  deleteMany?: SupportFileScalarWhereInput[] | SupportFileScalarWhereInput;
+  updateMany?:
+    | SupportFileUpdateManyWithWhereNestedInput[]
+    | SupportFileUpdateManyWithWhereNestedInput;
+}
+
+export interface ThumbnailCreateInput {
+  size?: ThumbnailSize;
+  image?: ImageFileCreateOneInput;
+}
+
+export interface ThumbnailWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  size?: ThumbnailSize;
+  size_not?: ThumbnailSize;
+  size_in?: ThumbnailSize[] | ThumbnailSize;
+  size_not_in?: ThumbnailSize[] | ThumbnailSize;
+  image?: ImageFileWhereInput;
+  AND?: ThumbnailWhereInput[] | ThumbnailWhereInput;
+  OR?: ThumbnailWhereInput[] | ThumbnailWhereInput;
+  NOT?: ThumbnailWhereInput[] | ThumbnailWhereInput;
+}
+
+export interface ImageFileCreateOneInput {
+  create?: ImageFileCreateInput;
+  connect?: ImageFileWhereUniqueInput;
+}
+
+export interface ThumbnailUpdateManyWithWhereNestedInput {
+  where: ThumbnailScalarWhereInput;
+  data: ThumbnailUpdateManyDataInput;
+}
+
+export interface ThumbnailUpdateInput {
+  size?: ThumbnailSize;
+  image?: ImageFileUpdateOneInput;
+}
+
+export interface ThumbnailUpdateDataInput {
+  size?: ThumbnailSize;
+  image?: ImageFileUpdateOneInput;
+}
+
+export interface ImageFileUpdateOneInput {
+  create?: ImageFileCreateInput;
+  update?: ImageFileUpdateDataInput;
+  upsert?: ImageFileUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ImageFileWhereUniqueInput;
+}
+
+export interface CategoryScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  AND?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
+  OR?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
+  NOT?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
+}
+
+export interface ImageFileUpdateDataInput {
+  language?: LanguageUpdateOneInput;
+  dimensions?: DimensionsUpdateOneInput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  use?: ImageUseUpdateOneInput;
+  md5?: String;
+  url?: String;
+}
+
+export interface CategoryUpdateDataInput {
+  translations?: LanguageTranslationUpdateManyInput;
+}
+
+export interface ImageFileUpsertNestedInput {
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
+}
+
+export interface CategoryUpdateManyInput {
+  create?: CategoryCreateInput[] | CategoryCreateInput;
+  update?:
+    | CategoryUpdateWithWhereUniqueNestedInput[]
+    | CategoryUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | CategoryUpsertWithWhereUniqueNestedInput[]
+    | CategoryUpsertWithWhereUniqueNestedInput;
+  delete?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+  disconnect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+  deleteMany?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
+}
+
+export interface ThumbnailUpdateManyMutationInput {
+  size?: ThumbnailSize;
+}
+
+export interface TagUpdateDataInput {
+  translations?: LanguageTranslationUpdateManyInput;
+}
+
+export interface UserCreateInput {
+  firstName: String;
+  lastName: String;
+  email: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserCreatepermissionsInput;
+  team?: TeamCreateOneWithoutMembersInput;
+  isConfirmed?: Boolean;
+}
+
+export interface LanguageWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  languageCode?: String;
+  languageCode_not?: String;
+  languageCode_in?: String[] | String;
+  languageCode_not_in?: String[] | String;
+  languageCode_lt?: String;
+  languageCode_lte?: String;
+  languageCode_gt?: String;
+  languageCode_gte?: String;
+  languageCode_contains?: String;
+  languageCode_not_contains?: String;
+  languageCode_starts_with?: String;
+  languageCode_not_starts_with?: String;
+  languageCode_ends_with?: String;
+  languageCode_not_ends_with?: String;
+  locale?: String;
+  locale_not?: String;
+  locale_in?: String[] | String;
+  locale_not_in?: String[] | String;
+  locale_lt?: String;
+  locale_lte?: String;
+  locale_gt?: String;
+  locale_gte?: String;
+  locale_contains?: String;
+  locale_not_contains?: String;
+  locale_starts_with?: String;
+  locale_not_starts_with?: String;
+  locale_ends_with?: String;
+  locale_not_ends_with?: String;
+  textDirection?: String;
+  textDirection_not?: String;
+  textDirection_in?: String[] | String;
+  textDirection_not_in?: String[] | String;
+  textDirection_lt?: String;
+  textDirection_lte?: String;
+  textDirection_gt?: String;
+  textDirection_gte?: String;
+  textDirection_contains?: String;
+  textDirection_not_contains?: String;
+  textDirection_starts_with?: String;
+  textDirection_not_starts_with?: String;
+  textDirection_ends_with?: String;
+  textDirection_not_ends_with?: String;
+  displayName?: String;
+  displayName_not?: String;
+  displayName_in?: String[] | String;
+  displayName_not_in?: String[] | String;
+  displayName_lt?: String;
+  displayName_lte?: String;
+  displayName_gt?: String;
+  displayName_gte?: String;
+  displayName_contains?: String;
+  displayName_not_contains?: String;
+  displayName_starts_with?: String;
+  displayName_not_starts_with?: String;
+  displayName_ends_with?: String;
+  displayName_not_ends_with?: String;
+  nativeName?: String;
+  nativeName_not?: String;
+  nativeName_in?: String[] | String;
+  nativeName_not_in?: String[] | String;
+  nativeName_lt?: String;
+  nativeName_lte?: String;
+  nativeName_gt?: String;
+  nativeName_gte?: String;
+  nativeName_contains?: String;
+  nativeName_not_contains?: String;
+  nativeName_starts_with?: String;
+  nativeName_not_starts_with?: String;
+  nativeName_ends_with?: String;
+  nativeName_not_ends_with?: String;
+  AND?: LanguageWhereInput[] | LanguageWhereInput;
+  OR?: LanguageWhereInput[] | LanguageWhereInput;
+  NOT?: LanguageWhereInput[] | LanguageWhereInput;
+}
+
+export interface TeamCreateOneWithoutMembersInput {
+  create?: TeamCreateWithoutMembersInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface VideoFileScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  filetype?: String;
+  filetype_not?: String;
+  filetype_in?: String[] | String;
+  filetype_not_in?: String[] | String;
+  filetype_lt?: String;
+  filetype_lte?: String;
+  filetype_gt?: String;
+  filetype_gte?: String;
+  filetype_contains?: String;
+  filetype_not_contains?: String;
+  filetype_starts_with?: String;
+  filetype_not_starts_with?: String;
+  filetype_ends_with?: String;
+  filetype_not_ends_with?: String;
+  filename?: String;
+  filename_not?: String;
+  filename_in?: String[] | String;
+  filename_not_in?: String[] | String;
+  filename_lt?: String;
+  filename_lte?: String;
+  filename_gt?: String;
+  filename_gte?: String;
+  filename_contains?: String;
+  filename_not_contains?: String;
+  filename_starts_with?: String;
+  filename_not_starts_with?: String;
+  filename_ends_with?: String;
+  filename_not_ends_with?: String;
+  quality?: VideoQuality;
+  quality_not?: VideoQuality;
+  quality_in?: VideoQuality[] | VideoQuality;
+  quality_not_in?: VideoQuality[] | VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  videoBurnedInStatus_not?: VideoBurnedInStatus;
+  videoBurnedInStatus_in?: VideoBurnedInStatus[] | VideoBurnedInStatus;
+  videoBurnedInStatus_not_in?: VideoBurnedInStatus[] | VideoBurnedInStatus;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  md5?: String;
+  md5_not?: String;
+  md5_in?: String[] | String;
+  md5_not_in?: String[] | String;
+  md5_lt?: String;
+  md5_lte?: String;
+  md5_gt?: String;
+  md5_gte?: String;
+  md5_contains?: String;
+  md5_not_contains?: String;
+  md5_starts_with?: String;
+  md5_not_starts_with?: String;
+  md5_ends_with?: String;
+  md5_not_ends_with?: String;
+  duration?: Float;
+  duration_not?: Float;
+  duration_in?: Float[] | Float;
+  duration_not_in?: Float[] | Float;
+  duration_lt?: Float;
+  duration_lte?: Float;
+  duration_gt?: Float;
+  duration_gte?: Float;
+  bitrate?: Float;
+  bitrate_not?: Float;
+  bitrate_in?: Float[] | Float;
+  bitrate_not_in?: Float[] | Float;
+  bitrate_lt?: Float;
+  bitrate_lte?: Float;
+  bitrate_gt?: Float;
+  bitrate_gte?: Float;
+  filesize?: Float;
+  filesize_not?: Float;
+  filesize_in?: Float[] | Float;
+  filesize_not_in?: Float[] | Float;
+  filesize_lt?: Float;
+  filesize_lte?: Float;
+  filesize_gt?: Float;
+  filesize_gte?: Float;
+  AND?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
+  OR?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
+  NOT?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
+}
+
+export interface TeamCreateWithoutMembersInput {
+  name: String;
+  organization: String;
+  contentTypes?: TeamCreatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface VideoFileUpdateWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  data: VideoFileUpdateDataInput;
+}
+
+export interface UserUpdateInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  team?: TeamUpdateOneWithoutMembersInput;
+  isConfirmed?: Boolean;
+}
+
+export interface VideoUnitUpdateWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  data: VideoUnitUpdateDataInput;
+}
+
+export interface TeamUpdateOneWithoutMembersInput {
+  create?: TeamCreateWithoutMembersInput;
+  update?: TeamUpdateWithoutMembersDataInput;
+  upsert?: TeamUpsertWithoutMembersInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface LanguageTranslationWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  language?: LanguageWhereInput;
+  AND?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
+  OR?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
+  NOT?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
+}
+
+export interface TeamUpdateWithoutMembersDataInput {
+  name?: String;
+  organization?: String;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface VideoFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoFileWhereInput;
+  AND?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+  OR?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+  NOT?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+}
+
+export interface TeamUpsertWithoutMembersInput {
+  update: TeamUpdateWithoutMembersDataInput;
+  create: TeamCreateWithoutMembersInput;
+}
+
+export interface SupportFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SupportFileWhereInput;
+  AND?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+  OR?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+  NOT?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface CategorySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CategoryWhereInput;
+  AND?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
+  OR?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
+  NOT?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
+}
+
+export interface VideoFileCreateInput {
+  language?: LanguageCreateOneInput;
+  filetype?: String;
+  filename?: String;
+  use?: VideoUseCreateOneInput;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+  dimensions?: DimensionsCreateOneInput;
+  stream?: VideoStreamCreateManyInput;
+}
+
+export interface VideoStreamUpdateManyMutationInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoUseCreateOneInput {
+  create?: VideoUseCreateInput;
+  connect?: VideoUseWhereUniqueInput;
+}
+
+export interface ImageFileUpsertWithWhereUniqueNestedInput {
+  where: ImageFileWhereUniqueInput;
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
+}
+
+export interface VideoUseCreateInput {
+  name: String;
+}
+
+export interface SupportFileUpdateManyWithWhereNestedInput {
+  where: SupportFileScalarWhereInput;
+  data: SupportFileUpdateManyDataInput;
+}
+
+export interface VideoStreamCreateManyInput {
+  create?: VideoStreamCreateInput[] | VideoStreamCreateInput;
+  connect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+}
+
+export interface VideoUnitUpdateManyDataInput {
+  title?: String;
+  descPublic?: String;
+}
+
+export interface VideoStreamCreateInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface ThumbnailScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  size?: ThumbnailSize;
+  size_not?: ThumbnailSize;
+  size_in?: ThumbnailSize[] | ThumbnailSize;
+  size_not_in?: ThumbnailSize[] | ThumbnailSize;
+  AND?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
+  OR?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
+  NOT?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
+}
+
+export interface VideoFileUpdateInput {
+  language?: LanguageUpdateOneInput;
+  filetype?: String;
+  filename?: String;
+  use?: VideoUseUpdateOneInput;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+  dimensions?: DimensionsUpdateOneInput;
+  stream?: VideoStreamUpdateManyInput;
+}
+
+export interface VideoStreamWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  site?: String;
+  site_not?: String;
+  site_in?: String[] | String;
+  site_not_in?: String[] | String;
+  site_lt?: String;
+  site_lte?: String;
+  site_gt?: String;
+  site_gte?: String;
+  site_contains?: String;
+  site_not_contains?: String;
+  site_starts_with?: String;
+  site_not_starts_with?: String;
+  site_ends_with?: String;
+  site_not_ends_with?: String;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  embedUrl?: String;
+  embedUrl_not?: String;
+  embedUrl_in?: String[] | String;
+  embedUrl_not_in?: String[] | String;
+  embedUrl_lt?: String;
+  embedUrl_lte?: String;
+  embedUrl_gt?: String;
+  embedUrl_gte?: String;
+  embedUrl_contains?: String;
+  embedUrl_not_contains?: String;
+  embedUrl_starts_with?: String;
+  embedUrl_not_starts_with?: String;
+  embedUrl_ends_with?: String;
+  embedUrl_not_ends_with?: String;
+  AND?: VideoStreamWhereInput[] | VideoStreamWhereInput;
+  OR?: VideoStreamWhereInput[] | VideoStreamWhereInput;
+  NOT?: VideoStreamWhereInput[] | VideoStreamWhereInput;
+}
+
+export interface VideoUseUpdateOneInput {
+  create?: VideoUseCreateInput;
+  update?: VideoUseUpdateDataInput;
+  upsert?: VideoUseUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: VideoUseWhereUniqueInput;
+}
+
+export interface TagUpsertWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateDataInput;
+  create: TagCreateInput;
+}
+
+export interface VideoUseUpdateDataInput {
+  name?: String;
+}
+
+export interface VideoProjectWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  projectType?: String;
+  projectType_not?: String;
+  projectType_in?: String[] | String;
+  projectType_not_in?: String[] | String;
+  projectType_lt?: String;
+  projectType_lte?: String;
+  projectType_gt?: String;
+  projectType_gte?: String;
+  projectType_contains?: String;
+  projectType_not_contains?: String;
+  projectType_starts_with?: String;
+  projectType_not_starts_with?: String;
+  projectType_ends_with?: String;
+  projectType_not_ends_with?: String;
+  projectTitle?: String;
+  projectTitle_not?: String;
+  projectTitle_in?: String[] | String;
+  projectTitle_not_in?: String[] | String;
+  projectTitle_lt?: String;
+  projectTitle_lte?: String;
+  projectTitle_gt?: String;
+  projectTitle_gte?: String;
+  projectTitle_contains?: String;
+  projectTitle_not_contains?: String;
+  projectTitle_starts_with?: String;
+  projectTitle_not_starts_with?: String;
+  projectTitle_ends_with?: String;
+  projectTitle_not_ends_with?: String;
+  descPublic?: String;
+  descPublic_not?: String;
+  descPublic_in?: String[] | String;
+  descPublic_not_in?: String[] | String;
+  descPublic_lt?: String;
+  descPublic_lte?: String;
+  descPublic_gt?: String;
+  descPublic_gte?: String;
+  descPublic_contains?: String;
+  descPublic_not_contains?: String;
+  descPublic_starts_with?: String;
+  descPublic_not_starts_with?: String;
+  descPublic_ends_with?: String;
+  descPublic_not_ends_with?: String;
+  descInternal?: String;
+  descInternal_not?: String;
+  descInternal_in?: String[] | String;
+  descInternal_not_in?: String[] | String;
+  descInternal_lt?: String;
+  descInternal_lte?: String;
+  descInternal_gt?: String;
+  descInternal_gte?: String;
+  descInternal_contains?: String;
+  descInternal_not_contains?: String;
+  descInternal_starts_with?: String;
+  descInternal_not_starts_with?: String;
+  descInternal_ends_with?: String;
+  descInternal_not_ends_with?: String;
+  author?: String;
+  author_not?: String;
+  author_in?: String[] | String;
+  author_not_in?: String[] | String;
+  author_lt?: String;
+  author_lte?: String;
+  author_gt?: String;
+  author_gte?: String;
+  author_contains?: String;
+  author_not_contains?: String;
+  author_starts_with?: String;
+  author_not_starts_with?: String;
+  author_ends_with?: String;
+  author_not_ends_with?: String;
+  team?: TeamWhereInput;
+  status?: ProjectPublishStatus;
+  status_not?: ProjectPublishStatus;
+  status_in?: ProjectPublishStatus[] | ProjectPublishStatus;
+  status_not_in?: ProjectPublishStatus[] | ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  visibility_not?: ProjectVisibility;
+  visibility_in?: ProjectVisibility[] | ProjectVisibility;
+  visibility_not_in?: ProjectVisibility[] | ProjectVisibility;
+  protectImages?: Boolean;
+  protectImages_not?: Boolean;
+  units_every?: VideoUnitWhereInput;
+  units_some?: VideoUnitWhereInput;
+  units_none?: VideoUnitWhereInput;
+  supportFiles_every?: SupportFileWhereInput;
+  supportFiles_some?: SupportFileWhereInput;
+  supportFiles_none?: SupportFileWhereInput;
+  thumbnails_every?: ImageFileWhereInput;
+  thumbnails_some?: ImageFileWhereInput;
+  thumbnails_none?: ImageFileWhereInput;
+  categories_every?: CategoryWhereInput;
+  categories_some?: CategoryWhereInput;
+  categories_none?: CategoryWhereInput;
+  tags_every?: TagWhereInput;
+  tags_some?: TagWhereInput;
+  tags_none?: TagWhereInput;
+  AND?: VideoProjectWhereInput[] | VideoProjectWhereInput;
+  OR?: VideoProjectWhereInput[] | VideoProjectWhereInput;
+  NOT?: VideoProjectWhereInput[] | VideoProjectWhereInput;
+}
+
+export interface VideoUseUpsertNestedInput {
+  update: VideoUseUpdateDataInput;
+  create: VideoUseCreateInput;
+}
+
+export interface VideoUnitUpdateDataInput {
+  language?: LanguageUpdateOneInput;
+  title?: String;
+  descPublic?: String;
+  files?: VideoFileUpdateManyInput;
+  tags?: TagUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  thumbnails?: ThumbnailUpdateManyInput;
+}
+
+export interface VideoStreamUpdateManyInput {
+  create?: VideoStreamCreateInput[] | VideoStreamCreateInput;
+  update?:
+    | VideoStreamUpdateWithWhereUniqueNestedInput[]
+    | VideoStreamUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | VideoStreamUpsertWithWhereUniqueNestedInput[]
+    | VideoStreamUpsertWithWhereUniqueNestedInput;
+  delete?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  connect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  disconnect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  deleteMany?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  updateMany?:
+    | VideoStreamUpdateManyWithWhereNestedInput[]
+    | VideoStreamUpdateManyWithWhereNestedInput;
+}
+
+export interface TeamUpdateOneInput {
+  create?: TeamCreateInput;
+  update?: TeamUpdateDataInput;
+  upsert?: TeamUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface VideoStreamUpdateWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput;
+  data: VideoStreamUpdateDataInput;
+}
+
+export type LanguageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  locale?: String;
+}>;
+
+export interface VideoStreamUpdateDataInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoUseUpdateInput {
+  name?: String;
+}
+
+export interface VideoStreamUpsertWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput;
+  update: VideoStreamUpdateDataInput;
+  create: VideoStreamCreateInput;
+}
+
+export interface SupportFileUpdateManyDataInput {
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+}
+
+export interface VideoStreamScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  site?: String;
+  site_not?: String;
+  site_in?: String[] | String;
+  site_not_in?: String[] | String;
+  site_lt?: String;
+  site_lte?: String;
+  site_gt?: String;
+  site_gte?: String;
+  site_contains?: String;
+  site_not_contains?: String;
+  site_starts_with?: String;
+  site_not_starts_with?: String;
+  site_ends_with?: String;
+  site_not_ends_with?: String;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  embedUrl?: String;
+  embedUrl_not?: String;
+  embedUrl_in?: String[] | String;
+  embedUrl_not_in?: String[] | String;
+  embedUrl_lt?: String;
+  embedUrl_lte?: String;
+  embedUrl_gt?: String;
+  embedUrl_gte?: String;
+  embedUrl_contains?: String;
+  embedUrl_not_contains?: String;
+  embedUrl_starts_with?: String;
+  embedUrl_not_starts_with?: String;
+  embedUrl_ends_with?: String;
+  embedUrl_not_ends_with?: String;
+  AND?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  OR?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  NOT?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+}
+
+export interface VideoUnitUpsertWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  update: VideoUnitUpdateDataInput;
+  create: VideoUnitCreateInput;
+}
+
+export interface VideoStreamUpdateManyWithWhereNestedInput {
+  where: VideoStreamScalarWhereInput;
+  data: VideoStreamUpdateManyDataInput;
+}
+
+export interface VideoUseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: VideoUseWhereInput[] | VideoUseWhereInput;
+  OR?: VideoUseWhereInput[] | VideoUseWhereInput;
+  NOT?: VideoUseWhereInput[] | VideoUseWhereInput;
+}
+
+export interface VideoStreamUpdateManyDataInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoFileUpdateDataInput {
+  language?: LanguageUpdateOneInput;
+  filetype?: String;
+  filename?: String;
+  use?: VideoUseUpdateOneInput;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+  dimensions?: DimensionsUpdateOneInput;
+  stream?: VideoStreamUpdateManyInput;
+}
+
+export interface VideoFileUpdateManyMutationInput {
+  filetype?: String;
+  filename?: String;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+}
+
+export interface VideoUnitSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoUnitWhereInput;
+  AND?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
+  OR?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
+  NOT?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
+}
+
+export interface VideoProjectCreateInput {
+  projectType: String;
+  projectTitle: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: String;
+  team?: TeamCreateOneInput;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+  units?: VideoUnitCreateManyInput;
+  supportFiles?: SupportFileCreateManyInput;
+  thumbnails?: ImageFileCreateManyInput;
+  categories?: CategoryCreateManyInput;
+  tags?: TagCreateManyInput;
+}
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface TeamCreateOneInput {
+  create?: TeamCreateInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface ThumbnailUpdateWithWhereUniqueNestedInput {
+  where: ThumbnailWhereUniqueInput;
+  data: ThumbnailUpdateDataInput;
+}
+
+export interface TagCreateManyInput {
+  create?: TagCreateInput[] | TagCreateInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+}
+
+export interface VideoFileCreateManyInput {
+  create?: VideoFileCreateInput[] | VideoFileCreateInput;
+  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
+}
+
+export interface VideoUnitCreateInput {
+  language?: LanguageCreateOneInput;
+  title: String;
+  descPublic?: String;
+  files?: VideoFileCreateManyInput;
+  tags?: TagCreateManyInput;
+  categories?: CategoryCreateManyInput;
+  thumbnails?: ThumbnailCreateManyInput;
+}
+
+export interface VideoUnitCreateManyInput {
+  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
+  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
+}
+
+export interface TagUpdateManyInput {
+  create?: TagCreateInput[] | TagCreateInput;
+  update?:
+    | TagUpdateWithWhereUniqueNestedInput[]
+    | TagUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | TagUpsertWithWhereUniqueNestedInput[]
+    | TagUpsertWithWhereUniqueNestedInput;
+  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  deleteMany?: TagScalarWhereInput[] | TagScalarWhereInput;
+}
+
+export interface SupportFileUpdateDataInput {
+  language?: LanguageUpdateOneRequiredInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseUpdateOneInput;
+}
+
+export interface ImageUseSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ImageUseWhereInput;
+  AND?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
+  OR?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
+  NOT?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
+}
+
+export interface TeamUpsertNestedInput {
+  update: TeamUpdateDataInput;
+  create: TeamCreateInput;
 }
 
 export interface NodeNode {
@@ -3980,96 +4401,6 @@ export interface VideoUsePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Tag {
-  id: ID_Output;
-}
-
-export interface TagPromise extends Promise<Tag>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface TagSubscription
-  extends Promise<AsyncIterator<Tag>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  translations: <
-    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
-  >(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ImageFileConnection {
-  pageInfo: PageInfo;
-  edges: ImageFileEdge[];
-}
-
-export interface ImageFileConnectionPromise
-  extends Promise<ImageFileConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ImageFileEdge>>() => T;
-  aggregate: <T = AggregateImageFilePromise>() => T;
-}
-
-export interface ImageFileConnectionSubscription
-  extends Promise<AsyncIterator<ImageFileConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ImageFileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateImageFileSubscription>() => T;
-}
-
-export interface AggregateSupportFile {
-  count: Int;
-}
-
-export interface AggregateSupportFilePromise
-  extends Promise<AggregateSupportFile>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSupportFileSubscription
-  extends Promise<AsyncIterator<AggregateSupportFile>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ImageFileEdge {
-  node: ImageFile;
-  cursor: String;
-}
-
-export interface ImageFileEdgePromise
-  extends Promise<ImageFileEdge>,
-    Fragmentable {
-  node: <T = ImageFilePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ImageFileEdgeSubscription
-  extends Promise<AsyncIterator<ImageFileEdge>>,
-    Fragmentable {
-  node: <T = ImageFileSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface SupportFileEdge {
   node: SupportFile;
   cursor: String;
@@ -4089,20 +4420,21 @@ export interface SupportFileEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface ImageUse {
+  id: ID_Output;
+  name: String;
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
+export interface ImageUsePromise extends Promise<ImageUse>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
+export interface ImageUseSubscription
+  extends Promise<AsyncIterator<ImageUse>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface SupportFileConnection {
@@ -4126,6 +4458,38 @@ export interface SupportFileConnectionSubscription
   aggregate: <T = AggregateSupportFileSubscription>() => T;
 }
 
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateDimensions {
+  count: Int;
+}
+
+export interface AggregateDimensionsPromise
+  extends Promise<AggregateDimensions>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateDimensionsSubscription
+  extends Promise<AsyncIterator<AggregateDimensions>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface VideoUseEdge {
   node: VideoUse;
   cursor: String;
@@ -4143,6 +4507,41 @@ export interface VideoUseEdgeSubscription
     Fragmentable {
   node: <T = VideoUseSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SupportFileUse {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SupportFileUsePromise
+  extends Promise<SupportFileUse>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SupportFileUseSubscription
+  extends Promise<AsyncIterator<SupportFileUse>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateVideoUnit {
+  count: Int;
+}
+
+export interface AggregateVideoUnitPromise
+  extends Promise<AggregateVideoUnit>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoUnitSubscription
+  extends Promise<AsyncIterator<AggregateVideoUnit>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Category {
@@ -4179,20 +4578,25 @@ export interface CategorySubscription
   }) => T;
 }
 
-export interface AggregateVideoUnit {
-  count: Int;
+export interface VideoUnitConnection {
+  pageInfo: PageInfo;
+  edges: VideoUnitEdge[];
 }
 
-export interface AggregateVideoUnitPromise
-  extends Promise<AggregateVideoUnit>,
+export interface VideoUnitConnectionPromise
+  extends Promise<VideoUnitConnection>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VideoUnitEdge>>() => T;
+  aggregate: <T = AggregateVideoUnitPromise>() => T;
 }
 
-export interface AggregateVideoUnitSubscription
-  extends Promise<AsyncIterator<AggregateVideoUnit>>,
+export interface VideoUnitConnectionSubscription
+  extends Promise<AsyncIterator<VideoUnitConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoUnitEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoUnitSubscription>() => T;
 }
 
 export interface CategorySubscriptionPayload {
@@ -4220,43 +4624,6 @@ export interface CategorySubscriptionPayloadSubscription
   previousValues: <T = CategoryPreviousValuesSubscription>() => T;
 }
 
-export interface VideoUnitConnection {
-  pageInfo: PageInfo;
-  edges: VideoUnitEdge[];
-}
-
-export interface VideoUnitConnectionPromise
-  extends Promise<VideoUnitConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<VideoUnitEdge>>() => T;
-  aggregate: <T = AggregateVideoUnitPromise>() => T;
-}
-
-export interface VideoUnitConnectionSubscription
-  extends Promise<AsyncIterator<VideoUnitConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoUnitEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoUnitSubscription>() => T;
-}
-
-export interface CategoryPreviousValues {
-  id: ID_Output;
-}
-
-export interface CategoryPreviousValuesPromise
-  extends Promise<CategoryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-}
-
-export interface CategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<CategoryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-}
-
 export interface VideoStreamEdge {
   node: VideoStream;
   cursor: String;
@@ -4276,6 +4643,38 @@ export interface VideoStreamEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface CategoryPreviousValues {
+  id: ID_Output;
+}
+
+export interface CategoryPreviousValuesPromise
+  extends Promise<CategoryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface CategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<CategoryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface AggregateVideoProject {
+  count: Int;
+}
+
+export interface AggregateVideoProjectPromise
+  extends Promise<AggregateVideoProject>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoProjectSubscription
+  extends Promise<AsyncIterator<AggregateVideoProject>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface AggregateVideoStream {
   count: Int;
 }
@@ -4292,21 +4691,29 @@ export interface AggregateVideoStreamSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ImageUse {
+export interface VideoStreamPreviousValues {
   id: ID_Output;
-  name: String;
+  site?: String;
+  url?: String;
+  embedUrl?: String;
 }
 
-export interface ImageUsePromise extends Promise<ImageUse>, Fragmentable {
+export interface VideoStreamPreviousValuesPromise
+  extends Promise<VideoStreamPreviousValues>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
 }
 
-export interface ImageUseSubscription
-  extends Promise<AsyncIterator<ImageUse>>,
+export interface VideoStreamPreviousValuesSubscription
+  extends Promise<AsyncIterator<VideoStreamPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  site: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  embedUrl: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoStreamConnection {
@@ -4330,41 +4737,6 @@ export interface VideoStreamConnectionSubscription
   aggregate: <T = AggregateVideoStreamSubscription>() => T;
 }
 
-export interface DimensionsEdge {
-  node: Dimensions;
-  cursor: String;
-}
-
-export interface DimensionsEdgePromise
-  extends Promise<DimensionsEdge>,
-    Fragmentable {
-  node: <T = DimensionsPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DimensionsEdgeSubscription
-  extends Promise<AsyncIterator<DimensionsEdge>>,
-    Fragmentable {
-  node: <T = DimensionsSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateVideoProject {
-  count: Int;
-}
-
-export interface AggregateVideoProjectPromise
-  extends Promise<AggregateVideoProject>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoProjectSubscription
-  extends Promise<AsyncIterator<AggregateVideoProject>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
 export interface VideoProjectConnection {
   pageInfo: PageInfo;
   edges: VideoProjectEdge[];
@@ -4384,6 +4756,209 @@ export interface VideoProjectConnectionSubscription
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<VideoProjectEdgeSubscription>>>() => T;
   aggregate: <T = AggregateVideoProjectSubscription>() => T;
+}
+
+export interface VideoProjectEdge {
+  node: VideoProject;
+  cursor: String;
+}
+
+export interface VideoProjectEdgePromise
+  extends Promise<VideoProjectEdge>,
+    Fragmentable {
+  node: <T = VideoProjectPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface VideoProjectEdgeSubscription
+  extends Promise<AsyncIterator<VideoProjectEdge>>,
+    Fragmentable {
+  node: <T = VideoProjectSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoUseSubscriptionPayload {
+  mutation: MutationType;
+  node: VideoUse;
+  updatedFields: String[];
+  previousValues: VideoUsePreviousValues;
+}
+
+export interface VideoUseSubscriptionPayloadPromise
+  extends Promise<VideoUseSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = VideoUsePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VideoUsePreviousValuesPromise>() => T;
+}
+
+export interface VideoUseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VideoUseSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = VideoUseSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VideoUsePreviousValuesSubscription>() => T;
+}
+
+export interface ImageFileConnection {
+  pageInfo: PageInfo;
+  edges: ImageFileEdge[];
+}
+
+export interface ImageFileConnectionPromise
+  extends Promise<ImageFileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ImageFileEdge>>() => T;
+  aggregate: <T = AggregateImageFilePromise>() => T;
+}
+
+export interface ImageFileConnectionSubscription
+  extends Promise<AsyncIterator<ImageFileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ImageFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateImageFileSubscription>() => T;
+}
+
+export interface VideoProject {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  projectType: String;
+  projectTitle: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: String;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+}
+
+export interface VideoProjectPromise
+  extends Promise<VideoProject>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  projectType: () => Promise<String>;
+  projectTitle: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  descInternal: () => Promise<String>;
+  author: () => Promise<String>;
+  team: <T = TeamPromise>() => T;
+  status: () => Promise<ProjectPublishStatus>;
+  visibility: () => Promise<ProjectVisibility>;
+  protectImages: () => Promise<Boolean>;
+  units: <T = FragmentableArray<VideoUnit>>(args?: {
+    where?: VideoUnitWhereInput;
+    orderBy?: VideoUnitOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoProjectSubscription
+  extends Promise<AsyncIterator<VideoProject>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  projectType: () => Promise<AsyncIterator<String>>;
+  projectTitle: () => Promise<AsyncIterator<String>>;
+  descPublic: () => Promise<AsyncIterator<String>>;
+  descInternal: () => Promise<AsyncIterator<String>>;
+  author: () => Promise<AsyncIterator<String>>;
+  team: <T = TeamSubscription>() => T;
+  status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
+  visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
+  protectImages: () => Promise<AsyncIterator<Boolean>>;
+  units: <T = Promise<AsyncIterator<VideoUnitSubscription>>>(args?: {
+    where?: VideoUnitWhereInput;
+    orderBy?: VideoUnitOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface DimensionsSubscriptionPayload {
@@ -4411,29 +4986,23 @@ export interface DimensionsSubscriptionPayloadSubscription
   previousValues: <T = DimensionsPreviousValuesSubscription>() => T;
 }
 
-export interface VideoUseSubscriptionPayload {
-  mutation: MutationType;
-  node: VideoUse;
-  updatedFields: String[];
-  previousValues: VideoUsePreviousValues;
+export interface VideoFileEdge {
+  node: VideoFile;
+  cursor: String;
 }
 
-export interface VideoUseSubscriptionPayloadPromise
-  extends Promise<VideoUseSubscriptionPayload>,
+export interface VideoFileEdgePromise
+  extends Promise<VideoFileEdge>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = VideoUsePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = VideoUsePreviousValuesPromise>() => T;
+  node: <T = VideoFilePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface VideoUseSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<VideoUseSubscriptionPayload>>,
+export interface VideoFileEdgeSubscription
+  extends Promise<AsyncIterator<VideoFileEdge>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = VideoUseSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = VideoUsePreviousValuesSubscription>() => T;
+  node: <T = VideoFileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface DimensionsPreviousValues {
@@ -4487,45 +5056,64 @@ export interface LanguageSubscription
   nativeName: () => Promise<AsyncIterator<String>>;
 }
 
-export interface VideoUnitSubscriptionPayload {
-  mutation: MutationType;
-  node: VideoUnit;
-  updatedFields: String[];
-  previousValues: VideoUnitPreviousValues;
+export interface SupportFile {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
 }
 
-export interface VideoUnitSubscriptionPayloadPromise
-  extends Promise<VideoUnitSubscriptionPayload>,
+export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  url: () => Promise<String>;
+  md5: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  filesize: () => Promise<Float>;
+  use: <T = SupportFileUsePromise>() => T;
+}
+
+export interface SupportFileSubscription
+  extends Promise<AsyncIterator<SupportFile>>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = VideoUnitPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = VideoUnitPreviousValuesPromise>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  url: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  use: <T = SupportFileUseSubscription>() => T;
 }
 
-export interface VideoUnitSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<VideoUnitSubscriptionPayload>>,
+export interface CategoryConnection {
+  pageInfo: PageInfo;
+  edges: CategoryEdge[];
+}
+
+export interface CategoryConnectionPromise
+  extends Promise<CategoryConnection>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = VideoUnitSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = VideoUnitPreviousValuesSubscription>() => T;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CategoryEdge>>() => T;
+  aggregate: <T = AggregateCategoryPromise>() => T;
 }
 
-export interface AggregateVideoFile {
-  count: Int;
-}
-
-export interface AggregateVideoFilePromise
-  extends Promise<AggregateVideoFile>,
+export interface CategoryConnectionSubscription
+  extends Promise<AsyncIterator<CategoryConnection>>,
     Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoFileSubscription
-  extends Promise<AsyncIterator<AggregateVideoFile>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCategorySubscription>() => T;
 }
 
 export interface ImageFileSubscriptionPayload {
@@ -4553,116 +5141,6 @@ export interface ImageFileSubscriptionPayloadSubscription
   previousValues: <T = ImageFilePreviousValuesSubscription>() => T;
 }
 
-export interface VideoFileConnection {
-  pageInfo: PageInfo;
-  edges: VideoFileEdge[];
-}
-
-export interface VideoFileConnectionPromise
-  extends Promise<VideoFileConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<VideoFileEdge>>() => T;
-  aggregate: <T = AggregateVideoFilePromise>() => T;
-}
-
-export interface VideoFileConnectionSubscription
-  extends Promise<AsyncIterator<VideoFileConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoFileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoFileSubscription>() => T;
-}
-
-export interface ImageFilePreviousValues {
-  id: ID_Output;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export interface ImageFilePreviousValuesPromise
-  extends Promise<ImageFilePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  alt: () => Promise<String>;
-  longdesc: () => Promise<String>;
-  caption: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  md5: () => Promise<String>;
-  url: () => Promise<String>;
-}
-
-export interface ImageFilePreviousValuesSubscription
-  extends Promise<AsyncIterator<ImageFilePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  alt: () => Promise<AsyncIterator<String>>;
-  longdesc: () => Promise<AsyncIterator<String>>;
-  caption: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CategoryConnection {
-  pageInfo: PageInfo;
-  edges: CategoryEdge[];
-}
-
-export interface CategoryConnectionPromise
-  extends Promise<CategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CategoryEdge>>() => T;
-  aggregate: <T = AggregateCategoryPromise>() => T;
-}
-
-export interface CategoryConnectionSubscription
-  extends Promise<AsyncIterator<CategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCategorySubscription>() => T;
-}
-
-export interface SupportFile {
-  id: ID_Output;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-}
-
-export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  language: <T = LanguagePromise>() => T;
-  url: () => Promise<String>;
-  md5: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  filesize: () => Promise<Float>;
-}
-
-export interface SupportFileSubscription
-  extends Promise<AsyncIterator<SupportFile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  language: <T = LanguageSubscription>() => T;
-  url: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  filesize: () => Promise<AsyncIterator<Float>>;
-}
-
 export interface VideoUse {
   id: ID_Output;
   name: String;
@@ -4678,6 +5156,102 @@ export interface VideoUseSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ImageFilePreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  md5?: String;
+  url?: String;
+}
+
+export interface ImageFilePreviousValuesPromise
+  extends Promise<ImageFilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  alt: () => Promise<String>;
+  longdesc: () => Promise<String>;
+  caption: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  md5: () => Promise<String>;
+  url: () => Promise<String>;
+}
+
+export interface ImageFilePreviousValuesSubscription
+  extends Promise<AsyncIterator<ImageFilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  alt: () => Promise<AsyncIterator<String>>;
+  longdesc: () => Promise<AsyncIterator<String>>;
+  caption: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateLanguageTranslation {
+  count: Int;
+}
+
+export interface AggregateLanguageTranslationPromise
+  extends Promise<AggregateLanguageTranslation>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLanguageTranslationSubscription
+  extends Promise<AsyncIterator<AggregateLanguageTranslation>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface ImageUseSubscriptionPayload {
@@ -4705,20 +5279,23 @@ export interface ImageUseSubscriptionPayloadSubscription
   previousValues: <T = ImageUsePreviousValuesSubscription>() => T;
 }
 
-export interface AggregateUser {
-  count: Int;
+export interface ThumbnailEdge {
+  node: Thumbnail;
+  cursor: String;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface ThumbnailEdgePromise
+  extends Promise<ThumbnailEdge>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = ThumbnailPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface ThumbnailEdgeSubscription
+  extends Promise<AsyncIterator<ThumbnailEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = ThumbnailSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ImageUsePreviousValues {
@@ -4740,60 +5317,70 @@ export interface ImageUsePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
+export interface VideoUnitPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  title: String;
+  descPublic?: String;
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface VideoUnitPreviousValuesPromise
+  extends Promise<VideoUnitPreviousValues>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  title: () => Promise<String>;
+  descPublic: () => Promise<String>;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface VideoUnitPreviousValuesSubscription
+  extends Promise<AsyncIterator<VideoUnitPreviousValues>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  title: () => Promise<AsyncIterator<String>>;
+  descPublic: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateLanguageTranslation {
-  count: Int;
-}
-
-export interface AggregateLanguageTranslationPromise
-  extends Promise<AggregateLanguageTranslation>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateLanguageTranslationSubscription
-  extends Promise<AsyncIterator<AggregateLanguageTranslation>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ThumbnailEdge {
-  node: Thumbnail;
+export interface LanguageTranslationEdge {
+  node: LanguageTranslation;
   cursor: String;
 }
 
-export interface ThumbnailEdgePromise
-  extends Promise<ThumbnailEdge>,
+export interface LanguageTranslationEdgePromise
+  extends Promise<LanguageTranslationEdge>,
     Fragmentable {
-  node: <T = ThumbnailPromise>() => T;
+  node: <T = LanguageTranslationPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ThumbnailEdgeSubscription
-  extends Promise<AsyncIterator<ThumbnailEdge>>,
+export interface LanguageTranslationEdgeSubscription
+  extends Promise<AsyncIterator<LanguageTranslationEdge>>,
     Fragmentable {
-  node: <T = ThumbnailSubscription>() => T;
+  node: <T = LanguageTranslationSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Thumbnail {
+  id: ID_Output;
+  size?: ThumbnailSize;
+}
+
+export interface ThumbnailPromise extends Promise<Thumbnail>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+  image: <T = ImageFilePromise>() => T;
+}
+
+export interface ThumbnailSubscription
+  extends Promise<AsyncIterator<Thumbnail>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+  image: <T = ImageFileSubscription>() => T;
 }
 
 export interface LanguageSubscriptionPayload {
@@ -4821,20 +5408,21 @@ export interface LanguageSubscriptionPayloadSubscription
   previousValues: <T = LanguagePreviousValuesSubscription>() => T;
 }
 
-export interface AggregateImageFile {
-  count: Int;
+export interface TeamEdge {
+  node: Team;
+  cursor: String;
 }
 
-export interface AggregateImageFilePromise
-  extends Promise<AggregateImageFile>,
-    Fragmentable {
-  count: () => Promise<Int>;
+export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
+  node: <T = TeamPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateImageFileSubscription
-  extends Promise<AsyncIterator<AggregateImageFile>>,
+export interface TeamEdgeSubscription
+  extends Promise<AsyncIterator<TeamEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = TeamSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface LanguagePreviousValues {
@@ -4868,86 +5456,6 @@ export interface LanguagePreviousValuesSubscription
   nativeName: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Thumbnail {
-  id: ID_Output;
-  size?: ThumbnailSize;
-}
-
-export interface ThumbnailPromise extends Promise<Thumbnail>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  size: () => Promise<ThumbnailSize>;
-  image: <T = ImageFilePromise>() => T;
-}
-
-export interface ThumbnailSubscription
-  extends Promise<AsyncIterator<Thumbnail>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  size: () => Promise<AsyncIterator<ThumbnailSize>>;
-  image: <T = ImageFileSubscription>() => T;
-}
-
-export interface LanguageTranslationEdge {
-  node: LanguageTranslation;
-  cursor: String;
-}
-
-export interface LanguageTranslationEdgePromise
-  extends Promise<LanguageTranslationEdge>,
-    Fragmentable {
-  node: <T = LanguageTranslationPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface LanguageTranslationEdgeSubscription
-  extends Promise<AsyncIterator<LanguageTranslationEdge>>,
-    Fragmentable {
-  node: <T = LanguageTranslationSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TeamEdge {
-  node: Team;
-  cursor: String;
-}
-
-export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
-  node: <T = TeamPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TeamEdgeSubscription
-  extends Promise<AsyncIterator<TeamEdge>>,
-    Fragmentable {
-  node: <T = TeamSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface LanguageTranslationSubscriptionPayload {
-  mutation: MutationType;
-  node: LanguageTranslation;
-  updatedFields: String[];
-  previousValues: LanguageTranslationPreviousValues;
-}
-
-export interface LanguageTranslationSubscriptionPayloadPromise
-  extends Promise<LanguageTranslationSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = LanguageTranslationPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = LanguageTranslationPreviousValuesPromise>() => T;
-}
-
-export interface LanguageTranslationSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<LanguageTranslationSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = LanguageTranslationSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = LanguageTranslationPreviousValuesSubscription>() => T;
-}
-
 export interface AggregateCategory {
   count: Int;
 }
@@ -4964,23 +5472,27 @@ export interface AggregateCategorySubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface LanguageTranslationPreviousValues {
-  id: ID_Output;
-  name: String;
+export interface LanguageTranslationConnection {
+  pageInfo: PageInfo;
+  edges: LanguageTranslationEdge[];
 }
 
-export interface LanguageTranslationPreviousValuesPromise
-  extends Promise<LanguageTranslationPreviousValues>,
+export interface LanguageTranslationConnectionPromise
+  extends Promise<LanguageTranslationConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LanguageTranslationEdge>>() => T;
+  aggregate: <T = AggregateLanguageTranslationPromise>() => T;
 }
 
-export interface LanguageTranslationPreviousValuesSubscription
-  extends Promise<AsyncIterator<LanguageTranslationPreviousValues>>,
+export interface LanguageTranslationConnectionSubscription
+  extends Promise<AsyncIterator<LanguageTranslationConnection>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<LanguageTranslationEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateLanguageTranslationSubscription>() => T;
 }
 
 export interface User {
@@ -5035,27 +5547,29 @@ export interface UserSubscription
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface LanguageTranslationConnection {
-  pageInfo: PageInfo;
-  edges: LanguageTranslationEdge[];
+export interface LanguageTranslationSubscriptionPayload {
+  mutation: MutationType;
+  node: LanguageTranslation;
+  updatedFields: String[];
+  previousValues: LanguageTranslationPreviousValues;
 }
 
-export interface LanguageTranslationConnectionPromise
-  extends Promise<LanguageTranslationConnection>,
+export interface LanguageTranslationSubscriptionPayloadPromise
+  extends Promise<LanguageTranslationSubscriptionPayload>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LanguageTranslationEdge>>() => T;
-  aggregate: <T = AggregateLanguageTranslationPromise>() => T;
+  mutation: () => Promise<MutationType>;
+  node: <T = LanguageTranslationPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LanguageTranslationPreviousValuesPromise>() => T;
 }
 
-export interface LanguageTranslationConnectionSubscription
-  extends Promise<AsyncIterator<LanguageTranslationConnection>>,
+export interface LanguageTranslationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LanguageTranslationSubscriptionPayload>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<LanguageTranslationEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateLanguageTranslationSubscription>() => T;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LanguageTranslationSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LanguageTranslationPreviousValuesSubscription>() => T;
 }
 
 export interface AggregateTag {
@@ -5072,6 +5586,96 @@ export interface AggregateTagSubscription
   extends Promise<AsyncIterator<AggregateTag>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LanguageTranslationPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface LanguageTranslationPreviousValuesPromise
+  extends Promise<LanguageTranslationPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface LanguageTranslationPreviousValuesSubscription
+  extends Promise<AsyncIterator<LanguageTranslationPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagConnection {
+  pageInfo: PageInfo;
+  edges: TagEdge[];
+}
+
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTagPromise>() => T;
+}
+
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
+}
+
+export interface AggregateLanguage {
+  count: Int;
+}
+
+export interface AggregateLanguagePromise
+  extends Promise<AggregateLanguage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLanguageSubscription
+  extends Promise<AsyncIterator<AggregateLanguage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Tag {
+  id: ID_Output;
+}
+
+export interface TagPromise extends Promise<Tag>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  translations: <
+    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
+  >(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface SupportFileSubscriptionPayload {
@@ -5099,29 +5703,29 @@ export interface SupportFileSubscriptionPayloadSubscription
   previousValues: <T = SupportFilePreviousValuesSubscription>() => T;
 }
 
-export interface TagConnection {
-  pageInfo: PageInfo;
-  edges: TagEdge[];
+export interface SupportFileUseEdge {
+  node: SupportFileUse;
+  cursor: String;
 }
 
-export interface TagConnectionPromise
-  extends Promise<TagConnection>,
+export interface SupportFileUseEdgePromise
+  extends Promise<SupportFileUseEdge>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TagEdge>>() => T;
-  aggregate: <T = AggregateTagPromise>() => T;
+  node: <T = SupportFileUsePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface TagConnectionSubscription
-  extends Promise<AsyncIterator<TagConnection>>,
+export interface SupportFileUseEdgeSubscription
+  extends Promise<AsyncIterator<SupportFileUseEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTagSubscription>() => T;
+  node: <T = SupportFileUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface SupportFilePreviousValues {
   id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   url?: String;
   md5?: String;
   filename?: String;
@@ -5133,6 +5737,8 @@ export interface SupportFilePreviousValuesPromise
   extends Promise<SupportFilePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   url: () => Promise<String>;
   md5: () => Promise<String>;
   filename: () => Promise<String>;
@@ -5144,6 +5750,8 @@ export interface SupportFilePreviousValuesSubscription
   extends Promise<AsyncIterator<SupportFilePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   url: () => Promise<AsyncIterator<String>>;
   md5: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
@@ -5151,145 +5759,146 @@ export interface SupportFilePreviousValuesSubscription
   filesize: () => Promise<AsyncIterator<Float>>;
 }
 
-export interface ImageFile {
-  id: ID_Output;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  md5?: String;
-  url?: String;
-}
-
-export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  language: <T = LanguagePromise>() => T;
-  dimensions: <T = DimensionsPromise>() => T;
-  alt: () => Promise<String>;
-  longdesc: () => Promise<String>;
-  caption: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  md5: () => Promise<String>;
-  url: () => Promise<String>;
-}
-
-export interface ImageFileSubscription
-  extends Promise<AsyncIterator<ImageFile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  language: <T = LanguageSubscription>() => T;
-  dimensions: <T = DimensionsSubscription>() => T;
-  alt: () => Promise<AsyncIterator<String>>;
-  longdesc: () => Promise<AsyncIterator<String>>;
-  caption: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateLanguage {
-  count: Int;
-}
-
-export interface AggregateLanguagePromise
-  extends Promise<AggregateLanguage>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateLanguageSubscription
-  extends Promise<AsyncIterator<AggregateLanguage>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateVideoUse {
-  count: Int;
-}
-
-export interface AggregateVideoUsePromise
-  extends Promise<AggregateVideoUse>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoUseSubscription
-  extends Promise<AsyncIterator<AggregateVideoUse>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface TagSubscriptionPayload {
-  mutation: MutationType;
-  node: Tag;
-  updatedFields: String[];
-  previousValues: TagPreviousValues;
-}
-
-export interface TagSubscriptionPayloadPromise
-  extends Promise<TagSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TagPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TagPreviousValuesPromise>() => T;
-}
-
-export interface TagSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TagSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TagPreviousValuesSubscription>() => T;
-}
-
-export interface VideoUnitEdge {
-  node: VideoUnit;
+export interface DimensionsEdge {
+  node: Dimensions;
   cursor: String;
 }
 
-export interface VideoUnitEdgePromise
-  extends Promise<VideoUnitEdge>,
+export interface DimensionsEdgePromise
+  extends Promise<DimensionsEdge>,
     Fragmentable {
-  node: <T = VideoUnitPromise>() => T;
+  node: <T = DimensionsPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface VideoUnitEdgeSubscription
-  extends Promise<AsyncIterator<VideoUnitEdge>>,
+export interface DimensionsEdgeSubscription
+  extends Promise<AsyncIterator<DimensionsEdge>>,
     Fragmentable {
-  node: <T = VideoUnitSubscription>() => T;
+  node: <T = DimensionsSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface TagPreviousValues {
-  id: ID_Output;
+export interface LanguageEdge {
+  node: Language;
+  cursor: String;
 }
 
-export interface TagPreviousValuesPromise
-  extends Promise<TagPreviousValues>,
+export interface LanguageEdgePromise
+  extends Promise<LanguageEdge>,
+    Fragmentable {
+  node: <T = LanguagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LanguageEdgeSubscription
+  extends Promise<AsyncIterator<LanguageEdge>>,
+    Fragmentable {
+  node: <T = LanguageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoUnitSubscriptionPayload {
+  mutation: MutationType;
+  node: VideoUnit;
+  updatedFields: String[];
+  previousValues: VideoUnitPreviousValues;
+}
+
+export interface VideoUnitSubscriptionPayloadPromise
+  extends Promise<VideoUnitSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = VideoUnitPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VideoUnitPreviousValuesPromise>() => T;
+}
+
+export interface VideoUnitSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VideoUnitSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = VideoUnitSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VideoUnitPreviousValuesSubscription>() => T;
+}
+
+export interface SupportFileUseSubscriptionPayload {
+  mutation: MutationType;
+  node: SupportFileUse;
+  updatedFields: String[];
+  previousValues: SupportFileUsePreviousValues;
+}
+
+export interface SupportFileUseSubscriptionPayloadPromise
+  extends Promise<SupportFileUseSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SupportFileUsePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SupportFileUsePreviousValuesPromise>() => T;
+}
+
+export interface SupportFileUseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SupportFileUseSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SupportFileUseSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SupportFileUsePreviousValuesSubscription>() => T;
+}
+
+export interface VideoUseConnection {
+  pageInfo: PageInfo;
+  edges: VideoUseEdge[];
+}
+
+export interface VideoUseConnectionPromise
+  extends Promise<VideoUseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VideoUseEdge>>() => T;
+  aggregate: <T = AggregateVideoUsePromise>() => T;
+}
+
+export interface VideoUseConnectionSubscription
+  extends Promise<AsyncIterator<VideoUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoUseSubscription>() => T;
+}
+
+export interface SupportFileUsePreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SupportFileUsePreviousValuesPromise
+  extends Promise<SupportFileUsePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
-export interface TagPreviousValuesSubscription
-  extends Promise<AsyncIterator<TagPreviousValues>>,
+export interface SupportFileUsePreviousValuesSubscription
+  extends Promise<AsyncIterator<SupportFileUsePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoUnit {
   id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   title: String;
   descPublic?: String;
 }
 
 export interface VideoUnitPromise extends Promise<VideoUnit>, Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   language: <T = LanguagePromise>() => T;
   title: () => Promise<String>;
   descPublic: () => Promise<String>;
@@ -5335,6 +5944,8 @@ export interface VideoUnitSubscription
   extends Promise<AsyncIterator<VideoUnit>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   language: <T = LanguageSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
@@ -5376,152 +5987,208 @@ export interface VideoUnitSubscription
   }) => T;
 }
 
-export interface LanguageEdge {
-  node: Language;
-  cursor: String;
+export interface LanguageConnection {
+  pageInfo: PageInfo;
+  edges: LanguageEdge[];
 }
 
-export interface LanguageEdgePromise
-  extends Promise<LanguageEdge>,
+export interface LanguageConnectionPromise
+  extends Promise<LanguageConnection>,
     Fragmentable {
-  node: <T = LanguagePromise>() => T;
-  cursor: () => Promise<String>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LanguageEdge>>() => T;
+  aggregate: <T = AggregateLanguagePromise>() => T;
 }
 
-export interface LanguageEdgeSubscription
-  extends Promise<AsyncIterator<LanguageEdge>>,
+export interface LanguageConnectionSubscription
+  extends Promise<AsyncIterator<LanguageConnection>>,
     Fragmentable {
-  node: <T = LanguageSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLanguageSubscription>() => T;
 }
 
-export interface VideoProject {
+export interface AggregateVideoFile {
+  count: Int;
+}
+
+export interface AggregateVideoFilePromise
+  extends Promise<AggregateVideoFile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoFileSubscription
+  extends Promise<AsyncIterator<AggregateVideoFile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TagSubscriptionPayload {
+  mutation: MutationType;
+  node: Tag;
+  updatedFields: String[];
+  previousValues: TagPreviousValues;
+}
+
+export interface TagSubscriptionPayloadPromise
+  extends Promise<TagSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TagPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TagPreviousValuesPromise>() => T;
+}
+
+export interface TagSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TagSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TagPreviousValuesSubscription>() => T;
+}
+
+export interface VideoStream {
   id: ID_Output;
-  projectType: String;
-  projectTitle: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
+  site?: String;
+  url?: String;
+  embedUrl?: String;
 }
 
-export interface VideoProjectPromise
-  extends Promise<VideoProject>,
-    Fragmentable {
+export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
   id: () => Promise<ID_Output>;
-  projectType: () => Promise<String>;
-  projectTitle: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  descInternal: () => Promise<String>;
-  author: () => Promise<String>;
-  team: <T = TeamPromise>() => T;
-  status: () => Promise<ProjectPublishStatus>;
-  visibility: () => Promise<ProjectVisibility>;
-  units: <T = FragmentableArray<VideoUnit>>(args?: {
-    where?: VideoUnitWhereInput;
-    orderBy?: VideoUnitOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
-    where?: SupportFileWhereInput;
-    orderBy?: SupportFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  thumbnails: <T = FragmentableArray<ImageFile>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
 }
 
-export interface VideoProjectSubscription
-  extends Promise<AsyncIterator<VideoProject>>,
+export interface VideoStreamSubscription
+  extends Promise<AsyncIterator<VideoStream>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  projectType: () => Promise<AsyncIterator<String>>;
-  projectTitle: () => Promise<AsyncIterator<String>>;
-  descPublic: () => Promise<AsyncIterator<String>>;
-  descInternal: () => Promise<AsyncIterator<String>>;
-  author: () => Promise<AsyncIterator<String>>;
-  team: <T = TeamSubscription>() => T;
-  status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
-  visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
-  units: <T = Promise<AsyncIterator<VideoUnitSubscription>>>(args?: {
-    where?: VideoUnitWhereInput;
-    orderBy?: VideoUnitOrderByInput;
+  site: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  embedUrl: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagPreviousValues {
+  id: ID_Output;
+}
+
+export interface TagPreviousValuesPromise
+  extends Promise<TagPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface TagPreviousValuesSubscription
+  extends Promise<AsyncIterator<TagPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface VideoFile {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  filetype?: String;
+  filename?: String;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+}
+
+export interface VideoFilePromise extends Promise<VideoFile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  filetype: () => Promise<String>;
+  filename: () => Promise<String>;
+  use: <T = VideoUsePromise>() => T;
+  quality: () => Promise<VideoQuality>;
+  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
+  url: () => Promise<String>;
+  md5: () => Promise<String>;
+  duration: () => Promise<Float>;
+  bitrate: () => Promise<Float>;
+  filesize: () => Promise<Float>;
+  dimensions: <T = DimensionsPromise>() => T;
+  stream: <T = FragmentableArray<VideoStream>>(args?: {
+    where?: VideoStreamWhereInput;
+    orderBy?: VideoStreamOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
-  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
-    where?: SupportFileWhereInput;
-    orderBy?: SupportFileOrderByInput;
+}
+
+export interface VideoFileSubscription
+  extends Promise<AsyncIterator<VideoFile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  use: <T = VideoUseSubscription>() => T;
+  quality: () => Promise<AsyncIterator<VideoQuality>>;
+  videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
+  url: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  duration: () => Promise<AsyncIterator<Float>>;
+  bitrate: () => Promise<AsyncIterator<Float>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  dimensions: <T = DimensionsSubscription>() => T;
+  stream: <T = Promise<AsyncIterator<VideoStreamSubscription>>>(args?: {
+    where?: VideoStreamWhereInput;
+    orderBy?: VideoStreamOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
-  thumbnails: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+}
+
+export interface AggregateImageUse {
+  count: Int;
+}
+
+export interface AggregateImageUsePromise
+  extends Promise<AggregateImageUse>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateImageUseSubscription
+  extends Promise<AsyncIterator<AggregateImageUse>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateThumbnail {
+  count: Int;
+}
+
+export interface AggregateThumbnailPromise
+  extends Promise<AggregateThumbnail>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateThumbnailSubscription
+  extends Promise<AsyncIterator<AggregateThumbnail>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface TeamSubscriptionPayload {
@@ -5549,27 +6216,23 @@ export interface TeamSubscriptionPayloadSubscription
   previousValues: <T = TeamPreviousValuesSubscription>() => T;
 }
 
-export interface VideoStream {
-  id: ID_Output;
-  site?: String;
-  url?: String;
-  embedUrl?: String;
+export interface CategoryEdge {
+  node: Category;
+  cursor: String;
 }
 
-export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
-}
-
-export interface VideoStreamSubscription
-  extends Promise<AsyncIterator<VideoStream>>,
+export interface CategoryEdgePromise
+  extends Promise<CategoryEdge>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  site: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  embedUrl: () => Promise<AsyncIterator<String>>;
+  node: <T = CategoryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CategoryEdgeSubscription
+  extends Promise<AsyncIterator<CategoryEdge>>,
+    Fragmentable {
+  node: <T = CategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface TeamPreviousValues {
@@ -5600,155 +6263,6 @@ export interface TeamPreviousValuesSubscription
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface VideoFile {
-  id: ID_Output;
-  filetype?: String;
-  filename?: String;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-}
-
-export interface VideoFilePromise extends Promise<VideoFile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  language: <T = LanguagePromise>() => T;
-  filetype: () => Promise<String>;
-  filename: () => Promise<String>;
-  use: <T = VideoUsePromise>() => T;
-  quality: () => Promise<VideoQuality>;
-  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
-  url: () => Promise<String>;
-  md5: () => Promise<String>;
-  duration: () => Promise<Float>;
-  bitrate: () => Promise<Float>;
-  filesize: () => Promise<Float>;
-  dimensions: <T = DimensionsPromise>() => T;
-  stream: <T = VideoStreamPromise>() => T;
-}
-
-export interface VideoFileSubscription
-  extends Promise<AsyncIterator<VideoFile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  language: <T = LanguageSubscription>() => T;
-  filetype: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  use: <T = VideoUseSubscription>() => T;
-  quality: () => Promise<AsyncIterator<VideoQuality>>;
-  videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
-  url: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  duration: () => Promise<AsyncIterator<Float>>;
-  bitrate: () => Promise<AsyncIterator<Float>>;
-  filesize: () => Promise<AsyncIterator<Float>>;
-  dimensions: <T = DimensionsSubscription>() => T;
-  stream: <T = VideoStreamSubscription>() => T;
-}
-
-export interface LanguageConnection {
-  pageInfo: PageInfo;
-  edges: LanguageEdge[];
-}
-
-export interface LanguageConnectionPromise
-  extends Promise<LanguageConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LanguageEdge>>() => T;
-  aggregate: <T = AggregateLanguagePromise>() => T;
-}
-
-export interface LanguageConnectionSubscription
-  extends Promise<AsyncIterator<LanguageConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateLanguageSubscription>() => T;
-}
-
-export interface AggregateThumbnail {
-  count: Int;
-}
-
-export interface AggregateThumbnailPromise
-  extends Promise<AggregateThumbnail>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateThumbnailSubscription
-  extends Promise<AsyncIterator<AggregateThumbnail>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ThumbnailSubscriptionPayload {
-  mutation: MutationType;
-  node: Thumbnail;
-  updatedFields: String[];
-  previousValues: ThumbnailPreviousValues;
-}
-
-export interface ThumbnailSubscriptionPayloadPromise
-  extends Promise<ThumbnailSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ThumbnailPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ThumbnailPreviousValuesPromise>() => T;
-}
-
-export interface ThumbnailSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ThumbnailSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ThumbnailSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ThumbnailPreviousValuesSubscription>() => T;
-}
-
-export interface CategoryEdge {
-  node: Category;
-  cursor: String;
-}
-
-export interface CategoryEdgePromise
-  extends Promise<CategoryEdge>,
-    Fragmentable {
-  node: <T = CategoryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CategoryEdgeSubscription
-  extends Promise<AsyncIterator<CategoryEdge>>,
-    Fragmentable {
-  node: <T = CategorySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ThumbnailPreviousValues {
-  id: ID_Output;
-  size?: ThumbnailSize;
-}
-
-export interface ThumbnailPreviousValuesPromise
-  extends Promise<ThumbnailPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  size: () => Promise<ThumbnailSize>;
-}
-
-export interface ThumbnailPreviousValuesSubscription
-  extends Promise<AsyncIterator<ThumbnailPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  size: () => Promise<AsyncIterator<ThumbnailSize>>;
-}
-
 export interface TeamConnection {
   pageInfo: PageInfo;
   edges: TeamEdge[];
@@ -5770,20 +6284,23 @@ export interface TeamConnectionSubscription
   aggregate: <T = AggregateTeamSubscription>() => T;
 }
 
-export interface AggregateDimensions {
-  count: Int;
+export interface ImageUseEdge {
+  node: ImageUse;
+  cursor: String;
 }
 
-export interface AggregateDimensionsPromise
-  extends Promise<AggregateDimensions>,
+export interface ImageUseEdgePromise
+  extends Promise<ImageUseEdge>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = ImageUsePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateDimensionsSubscription
-  extends Promise<AsyncIterator<AggregateDimensions>>,
+export interface ImageUseEdgeSubscription
+  extends Promise<AsyncIterator<ImageUseEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = ImageUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Team {
@@ -5830,6 +6347,129 @@ export interface TeamSubscription
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
+export interface ThumbnailSubscriptionPayload {
+  mutation: MutationType;
+  node: Thumbnail;
+  updatedFields: String[];
+  previousValues: ThumbnailPreviousValues;
+}
+
+export interface ThumbnailSubscriptionPayloadPromise
+  extends Promise<ThumbnailSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ThumbnailPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ThumbnailPreviousValuesPromise>() => T;
+}
+
+export interface ThumbnailSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ThumbnailSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ThumbnailSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ThumbnailPreviousValuesSubscription>() => T;
+}
+
+export interface DimensionsConnection {
+  pageInfo: PageInfo;
+  edges: DimensionsEdge[];
+}
+
+export interface DimensionsConnectionPromise
+  extends Promise<DimensionsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
+  aggregate: <T = AggregateDimensionsPromise>() => T;
+}
+
+export interface DimensionsConnectionSubscription
+  extends Promise<AsyncIterator<DimensionsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDimensionsSubscription>() => T;
+}
+
+export interface ThumbnailPreviousValues {
+  id: ID_Output;
+  size?: ThumbnailSize;
+}
+
+export interface ThumbnailPreviousValuesPromise
+  extends Promise<ThumbnailPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+}
+
+export interface ThumbnailPreviousValuesSubscription
+  extends Promise<AsyncIterator<ThumbnailPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+}
+
+export interface SupportFileUseConnection {
+  pageInfo: PageInfo;
+  edges: SupportFileUseEdge[];
+}
+
+export interface SupportFileUseConnectionPromise
+  extends Promise<SupportFileUseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SupportFileUseEdge>>() => T;
+  aggregate: <T = AggregateSupportFileUsePromise>() => T;
+}
+
+export interface SupportFileUseConnectionSubscription
+  extends Promise<AsyncIterator<SupportFileUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SupportFileUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSupportFileUseSubscription>() => T;
+}
+
+export interface ImageUseConnection {
+  pageInfo: PageInfo;
+  edges: ImageUseEdge[];
+}
+
+export interface ImageUseConnectionPromise
+  extends Promise<ImageUseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ImageUseEdge>>() => T;
+  aggregate: <T = AggregateImageUsePromise>() => T;
+}
+
+export interface ImageUseConnectionSubscription
+  extends Promise<AsyncIterator<ImageUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ImageUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateImageUseSubscription>() => T;
+}
+
+export interface AggregateVideoUse {
+  count: Int;
+}
+
+export interface AggregateVideoUsePromise
+  extends Promise<AggregateVideoUse>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoUseSubscription
+  extends Promise<AsyncIterator<AggregateVideoUse>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -5855,25 +6495,25 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface DimensionsConnection {
-  pageInfo: PageInfo;
-  edges: DimensionsEdge[];
+export interface LanguageTranslation {
+  id: ID_Output;
+  name: String;
 }
 
-export interface DimensionsConnectionPromise
-  extends Promise<DimensionsConnection>,
+export interface LanguageTranslationPromise
+  extends Promise<LanguageTranslation>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
-  aggregate: <T = AggregateDimensionsPromise>() => T;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
 }
 
-export interface DimensionsConnectionSubscription
-  extends Promise<AsyncIterator<DimensionsConnection>>,
+export interface LanguageTranslationSubscription
+  extends Promise<AsyncIterator<LanguageTranslation>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDimensionsSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  language: <T = LanguageSubscription>() => T;
 }
 
 export interface UserPreviousValues {
@@ -5928,62 +6568,95 @@ export interface UserPreviousValuesSubscription
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface VideoUseConnection {
-  pageInfo: PageInfo;
-  edges: VideoUseEdge[];
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
 }
 
-export interface VideoUseConnectionPromise
-  extends Promise<VideoUseConnection>,
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<VideoUseEdge>>() => T;
-  aggregate: <T = AggregateVideoUsePromise>() => T;
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface VideoUseConnectionSubscription
-  extends Promise<AsyncIterator<VideoUseConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoUseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoUseSubscription>() => T;
-}
-
-export interface AggregateImageUse {
-  count: Int;
-}
-
-export interface AggregateImageUsePromise
-  extends Promise<AggregateImageUse>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateImageUseSubscription
-  extends Promise<AsyncIterator<AggregateImageUse>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface LanguageTranslation {
+export interface ImageFile {
   id: ID_Output;
-  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  md5?: String;
+  url?: String;
 }
 
-export interface LanguageTranslationPromise
-  extends Promise<LanguageTranslation>,
-    Fragmentable {
+export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   language: <T = LanguagePromise>() => T;
+  dimensions: <T = DimensionsPromise>() => T;
+  alt: () => Promise<String>;
+  longdesc: () => Promise<String>;
+  caption: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  use: <T = ImageUsePromise>() => T;
+  md5: () => Promise<String>;
+  url: () => Promise<String>;
 }
 
-export interface LanguageTranslationSubscription
-  extends Promise<AsyncIterator<LanguageTranslation>>,
+export interface ImageFileSubscription
+  extends Promise<AsyncIterator<ImageFile>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   language: <T = LanguageSubscription>() => T;
+  dimensions: <T = DimensionsSubscription>() => T;
+  alt: () => Promise<AsyncIterator<String>>;
+  longdesc: () => Promise<AsyncIterator<String>>;
+  caption: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  use: <T = ImageUseSubscription>() => T;
+  md5: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ThumbnailConnection {
+  pageInfo: PageInfo;
+  edges: ThumbnailEdge[];
+}
+
+export interface ThumbnailConnectionPromise
+  extends Promise<ThumbnailConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ThumbnailEdge>>() => T;
+  aggregate: <T = AggregateThumbnailPromise>() => T;
+}
+
+export interface ThumbnailConnectionSubscription
+  extends Promise<AsyncIterator<ThumbnailConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ThumbnailEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateThumbnailSubscription>() => T;
 }
 
 export interface VideoFileSubscriptionPayload {
@@ -6011,112 +6684,6 @@ export interface VideoFileSubscriptionPayloadSubscription
   previousValues: <T = VideoFilePreviousValuesSubscription>() => T;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoFilePreviousValues {
-  id: ID_Output;
-  filetype?: String;
-  filename?: String;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-}
-
-export interface VideoFilePreviousValuesPromise
-  extends Promise<VideoFilePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  filetype: () => Promise<String>;
-  filename: () => Promise<String>;
-  quality: () => Promise<VideoQuality>;
-  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
-  url: () => Promise<String>;
-  md5: () => Promise<String>;
-  duration: () => Promise<Float>;
-  bitrate: () => Promise<Float>;
-  filesize: () => Promise<Float>;
-}
-
-export interface VideoFilePreviousValuesSubscription
-  extends Promise<AsyncIterator<VideoFilePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  quality: () => Promise<AsyncIterator<VideoQuality>>;
-  videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
-  url: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  duration: () => Promise<AsyncIterator<Float>>;
-  bitrate: () => Promise<AsyncIterator<Float>>;
-  filesize: () => Promise<AsyncIterator<Float>>;
-}
-
-export interface ThumbnailConnection {
-  pageInfo: PageInfo;
-  edges: ThumbnailEdge[];
-}
-
-export interface ThumbnailConnectionPromise
-  extends Promise<ThumbnailConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ThumbnailEdge>>() => T;
-  aggregate: <T = AggregateThumbnailPromise>() => T;
-}
-
-export interface ThumbnailConnectionSubscription
-  extends Promise<AsyncIterator<ThumbnailConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ThumbnailEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateThumbnailSubscription>() => T;
-}
-
-export interface ImageUseEdge {
-  node: ImageUse;
-  cursor: String;
-}
-
-export interface ImageUseEdgePromise
-  extends Promise<ImageUseEdge>,
-    Fragmentable {
-  node: <T = ImageUsePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ImageUseEdgeSubscription
-  extends Promise<AsyncIterator<ImageUseEdge>>,
-    Fragmentable {
-  node: <T = ImageUseSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface Dimensions {
   id: ID_Output;
   width?: Int;
@@ -6137,95 +6704,121 @@ export interface DimensionsSubscription
   height: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface VideoProjectSubscriptionPayload {
-  mutation: MutationType;
-  node: VideoProject;
-  updatedFields: String[];
-  previousValues: VideoProjectPreviousValues;
-}
-
-export interface VideoProjectSubscriptionPayloadPromise
-  extends Promise<VideoProjectSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = VideoProjectPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = VideoProjectPreviousValuesPromise>() => T;
-}
-
-export interface VideoProjectSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<VideoProjectSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = VideoProjectSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = VideoProjectPreviousValuesSubscription>() => T;
-}
-
-export interface VideoUnitPreviousValues {
+export interface VideoFilePreviousValues {
   id: ID_Output;
-  title: String;
-  descPublic?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  filetype?: String;
+  filename?: String;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
 }
 
-export interface VideoUnitPreviousValuesPromise
-  extends Promise<VideoUnitPreviousValues>,
+export interface VideoFilePreviousValuesPromise
+  extends Promise<VideoFilePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  descPublic: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  filetype: () => Promise<String>;
+  filename: () => Promise<String>;
+  quality: () => Promise<VideoQuality>;
+  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
+  url: () => Promise<String>;
+  md5: () => Promise<String>;
+  duration: () => Promise<Float>;
+  bitrate: () => Promise<Float>;
+  filesize: () => Promise<Float>;
 }
 
-export interface VideoUnitPreviousValuesSubscription
-  extends Promise<AsyncIterator<VideoUnitPreviousValues>>,
+export interface VideoFilePreviousValuesSubscription
+  extends Promise<AsyncIterator<VideoFilePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  descPublic: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  quality: () => Promise<AsyncIterator<VideoQuality>>;
+  videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
+  url: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  duration: () => Promise<AsyncIterator<Float>>;
+  bitrate: () => Promise<AsyncIterator<Float>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
 }
 
-export interface VideoFileEdge {
-  node: VideoFile;
+export interface AggregateSupportFileUse {
+  count: Int;
+}
+
+export interface AggregateSupportFileUsePromise
+  extends Promise<AggregateSupportFileUse>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSupportFileUseSubscription
+  extends Promise<AsyncIterator<AggregateSupportFileUse>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateImageFile {
+  count: Int;
+}
+
+export interface AggregateImageFilePromise
+  extends Promise<AggregateImageFile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateImageFileSubscription
+  extends Promise<AsyncIterator<AggregateImageFile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoUnitEdge {
+  node: VideoUnit;
   cursor: String;
 }
 
-export interface VideoFileEdgePromise
-  extends Promise<VideoFileEdge>,
+export interface VideoUnitEdgePromise
+  extends Promise<VideoUnitEdge>,
     Fragmentable {
-  node: <T = VideoFilePromise>() => T;
+  node: <T = VideoUnitPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface VideoFileEdgeSubscription
-  extends Promise<AsyncIterator<VideoFileEdge>>,
+export interface VideoUnitEdgeSubscription
+  extends Promise<AsyncIterator<VideoUnitEdge>>,
     Fragmentable {
-  node: <T = VideoFileSubscription>() => T;
+  node: <T = VideoUnitSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface VideoStreamPreviousValues {
-  id: ID_Output;
-  site?: String;
-  url?: String;
-  embedUrl?: String;
+export interface UserEdge {
+  node: User;
+  cursor: String;
 }
 
-export interface VideoStreamPreviousValuesPromise
-  extends Promise<VideoStreamPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface VideoStreamPreviousValuesSubscription
-  extends Promise<AsyncIterator<VideoStreamPreviousValues>>,
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  site: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  embedUrl: () => Promise<AsyncIterator<String>>;
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoStreamSubscriptionPayload {
@@ -6253,29 +6846,29 @@ export interface VideoStreamSubscriptionPayloadSubscription
   previousValues: <T = VideoStreamPreviousValuesSubscription>() => T;
 }
 
-export interface ImageUseConnection {
-  pageInfo: PageInfo;
-  edges: ImageUseEdge[];
+export interface ImageFileEdge {
+  node: ImageFile;
+  cursor: String;
 }
 
-export interface ImageUseConnectionPromise
-  extends Promise<ImageUseConnection>,
+export interface ImageFileEdgePromise
+  extends Promise<ImageFileEdge>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ImageUseEdge>>() => T;
-  aggregate: <T = AggregateImageUsePromise>() => T;
+  node: <T = ImageFilePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface ImageUseConnectionSubscription
-  extends Promise<AsyncIterator<ImageUseConnection>>,
+export interface ImageFileEdgeSubscription
+  extends Promise<AsyncIterator<ImageFileEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ImageUseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateImageUseSubscription>() => T;
+  node: <T = ImageFileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoProjectPreviousValues {
   id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
   projectType: String;
   projectTitle: String;
   descPublic?: String;
@@ -6283,12 +6876,15 @@ export interface VideoProjectPreviousValues {
   author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
+  protectImages?: Boolean;
 }
 
 export interface VideoProjectPreviousValuesPromise
   extends Promise<VideoProjectPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
   projectType: () => Promise<String>;
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
@@ -6296,12 +6892,15 @@ export interface VideoProjectPreviousValuesPromise
   author: () => Promise<String>;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
+  protectImages: () => Promise<Boolean>;
 }
 
 export interface VideoProjectPreviousValuesSubscription
   extends Promise<AsyncIterator<VideoProjectPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   projectType: () => Promise<AsyncIterator<String>>;
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
@@ -6309,42 +6908,85 @@ export interface VideoProjectPreviousValuesSubscription
   author: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
+  protectImages: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoProjectEdge {
+export interface VideoProjectSubscriptionPayload {
+  mutation: MutationType;
   node: VideoProject;
-  cursor: String;
+  updatedFields: String[];
+  previousValues: VideoProjectPreviousValues;
 }
 
-export interface VideoProjectEdgePromise
-  extends Promise<VideoProjectEdge>,
+export interface VideoProjectSubscriptionPayloadPromise
+  extends Promise<VideoProjectSubscriptionPayload>,
     Fragmentable {
+  mutation: () => Promise<MutationType>;
   node: <T = VideoProjectPromise>() => T;
-  cursor: () => Promise<String>;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VideoProjectPreviousValuesPromise>() => T;
 }
 
-export interface VideoProjectEdgeSubscription
-  extends Promise<AsyncIterator<VideoProjectEdge>>,
+export interface VideoProjectSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VideoProjectSubscriptionPayload>>,
     Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
   node: <T = VideoProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VideoProjectPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateTeam {
+  count: Int;
+}
+
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTeamSubscription
+  extends Promise<AsyncIterator<AggregateTeam>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoFileConnection {
+  pageInfo: PageInfo;
+  edges: VideoFileEdge[];
+}
+
+export interface VideoFileConnectionPromise
+  extends Promise<VideoFileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VideoFileEdge>>() => T;
+  aggregate: <T = AggregateVideoFilePromise>() => T;
+}
+
+export interface VideoFileConnectionSubscription
+  extends Promise<AsyncIterator<VideoFileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoFileSubscription>() => T;
+}
+
+export interface AggregateSupportFile {
+  count: Int;
+}
+
+export interface AggregateSupportFilePromise
+  extends Promise<AggregateSupportFile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSupportFileSubscription
+  extends Promise<AsyncIterator<AggregateSupportFile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface TagEdge {
@@ -6364,21 +7006,10 @@ export interface TagEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateTeam {
-  count: Int;
-}
-
-export interface AggregateTeamPromise
-  extends Promise<AggregateTeam>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTeamSubscription
-  extends Promise<AsyncIterator<AggregateTeam>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -6387,14 +7018,19 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
+
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -6404,9 +7040,9 @@ export type Boolean = boolean;
 export type Long = string;
 
 /*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type Float = number;
+export type String = string;
 
 /**
  * Model Metadata
@@ -6459,6 +7095,10 @@ export const models: Model[] = [
   },
   {
     name: "SupportFile",
+    embedded: false
+  },
+  {
+    name: "SupportFileUse",
     embedded: false
   },
   {

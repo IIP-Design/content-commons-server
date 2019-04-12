@@ -27,6 +27,10 @@ type AggregateSupportFile {
   count: Int!
 }
 
+type AggregateSupportFileUse {
+  count: Int!
+}
+
 type AggregateTag {
   count: Int!
 }
@@ -207,6 +211,8 @@ enum ContentType {
   TEACHING_MATERIAL
 }
 
+scalar DateTime
+
 type Dimensions {
   id: ID!
   width: Int
@@ -342,6 +348,8 @@ input DimensionsWhereUniqueInput {
 
 type ImageFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   dimensions: Dimensions
   alt: String
@@ -349,6 +357,7 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  use: ImageUse
   md5: String
   url: String
 }
@@ -367,6 +376,7 @@ input ImageFileCreateInput {
   caption: String
   filename: String
   filetype: String
+  use: ImageUseCreateOneInput
   md5: String
   url: String
 }
@@ -389,6 +399,10 @@ type ImageFileEdge {
 enum ImageFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   alt_ASC
   alt_DESC
   longdesc_ASC
@@ -403,14 +417,12 @@ enum ImageFileOrderByInput {
   md5_DESC
   url_ASC
   url_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type ImageFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   alt: String
   longdesc: String
   caption: String
@@ -435,6 +447,22 @@ input ImageFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -564,6 +592,7 @@ input ImageFileUpdateDataInput {
   caption: String
   filename: String
   filetype: String
+  use: ImageUseUpdateOneInput
   md5: String
   url: String
 }
@@ -576,6 +605,7 @@ input ImageFileUpdateInput {
   caption: String
   filename: String
   filetype: String
+  use: ImageUseUpdateOneInput
   md5: String
   url: String
 }
@@ -656,6 +686,22 @@ input ImageFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   dimensions: DimensionsWhereInput
   alt: String
@@ -728,6 +774,7 @@ input ImageFileWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  use: ImageUseWhereInput
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -780,6 +827,11 @@ input ImageUseCreateInput {
   name: String!
 }
 
+input ImageUseCreateOneInput {
+  create: ImageUseCreateInput
+  connect: ImageUseWhereUniqueInput
+}
+
 type ImageUseEdge {
   node: ImageUse!
   cursor: String!
@@ -819,12 +871,30 @@ input ImageUseSubscriptionWhereInput {
   NOT: [ImageUseSubscriptionWhereInput!]
 }
 
+input ImageUseUpdateDataInput {
+  name: String
+}
+
 input ImageUseUpdateInput {
   name: String
 }
 
 input ImageUseUpdateManyMutationInput {
   name: String
+}
+
+input ImageUseUpdateOneInput {
+  create: ImageUseCreateInput
+  update: ImageUseUpdateDataInput
+  upsert: ImageUseUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ImageUseWhereUniqueInput
+}
+
+input ImageUseUpsertNestedInput {
+  update: ImageUseUpdateDataInput!
+  create: ImageUseCreateInput!
 }
 
 input ImageUseWhereInput {
@@ -863,6 +933,7 @@ input ImageUseWhereInput {
 
 input ImageUseWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type Language {
@@ -1307,6 +1378,12 @@ type Mutation {
   upsertSupportFile(where: SupportFileWhereUniqueInput!, create: SupportFileCreateInput!, update: SupportFileUpdateInput!): SupportFile!
   deleteSupportFile(where: SupportFileWhereUniqueInput!): SupportFile
   deleteManySupportFiles(where: SupportFileWhereInput): BatchPayload!
+  createSupportFileUse(data: SupportFileUseCreateInput!): SupportFileUse!
+  updateSupportFileUse(data: SupportFileUseUpdateInput!, where: SupportFileUseWhereUniqueInput!): SupportFileUse
+  updateManySupportFileUses(data: SupportFileUseUpdateManyMutationInput!, where: SupportFileUseWhereInput): BatchPayload!
+  upsertSupportFileUse(where: SupportFileUseWhereUniqueInput!, create: SupportFileUseCreateInput!, update: SupportFileUseUpdateInput!): SupportFileUse!
+  deleteSupportFileUse(where: SupportFileUseWhereUniqueInput!): SupportFileUse
+  deleteManySupportFileUses(where: SupportFileUseWhereInput): BatchPayload!
   createTag(data: TagCreateInput!): Tag!
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
@@ -1420,6 +1497,9 @@ type Query {
   supportFile(where: SupportFileWhereUniqueInput!): SupportFile
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFilesConnection(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileConnection!
+  supportFileUse(where: SupportFileUseWhereUniqueInput!): SupportFileUse
+  supportFileUses(where: SupportFileUseWhereInput, orderBy: SupportFileUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFileUse]!
+  supportFileUsesConnection(where: SupportFileUseWhereInput, orderBy: SupportFileUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileUseConnection!
   tag(where: TagWhereUniqueInput!): Tag
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
@@ -1458,6 +1538,7 @@ type Subscription {
   language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
   languageTranslation(where: LanguageTranslationSubscriptionWhereInput): LanguageTranslationSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
+  supportFileUse(where: SupportFileUseSubscriptionWhereInput): SupportFileUseSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
   thumbnail(where: ThumbnailSubscriptionWhereInput): ThumbnailSubscriptionPayload
@@ -1471,12 +1552,15 @@ type Subscription {
 
 type SupportFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language!
   url: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  use: SupportFileUse
 }
 
 type SupportFileConnection {
@@ -1492,6 +1576,7 @@ input SupportFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  use: SupportFileUseCreateOneInput
 }
 
 input SupportFileCreateManyInput {
@@ -1507,6 +1592,10 @@ type SupportFileEdge {
 enum SupportFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   url_ASC
   url_DESC
   md5_ASC
@@ -1517,14 +1606,12 @@ enum SupportFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type SupportFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   url: String
   md5: String
   filename: String
@@ -1547,6 +1634,22 @@ input SupportFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   url: String
   url_not: String
   url_in: [String!]
@@ -1641,6 +1744,7 @@ input SupportFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  use: SupportFileUseUpdateOneInput
 }
 
 input SupportFileUpdateInput {
@@ -1650,6 +1754,7 @@ input SupportFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  use: SupportFileUseUpdateOneInput
 }
 
 input SupportFileUpdateManyDataInput {
@@ -1695,6 +1800,130 @@ input SupportFileUpsertWithWhereUniqueNestedInput {
   create: SupportFileCreateInput!
 }
 
+type SupportFileUse {
+  id: ID!
+  name: String!
+}
+
+type SupportFileUseConnection {
+  pageInfo: PageInfo!
+  edges: [SupportFileUseEdge]!
+  aggregate: AggregateSupportFileUse!
+}
+
+input SupportFileUseCreateInput {
+  name: String!
+}
+
+input SupportFileUseCreateOneInput {
+  create: SupportFileUseCreateInput
+  connect: SupportFileUseWhereUniqueInput
+}
+
+type SupportFileUseEdge {
+  node: SupportFileUse!
+  cursor: String!
+}
+
+enum SupportFileUseOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SupportFileUsePreviousValues {
+  id: ID!
+  name: String!
+}
+
+type SupportFileUseSubscriptionPayload {
+  mutation: MutationType!
+  node: SupportFileUse
+  updatedFields: [String!]
+  previousValues: SupportFileUsePreviousValues
+}
+
+input SupportFileUseSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SupportFileUseWhereInput
+  AND: [SupportFileUseSubscriptionWhereInput!]
+  OR: [SupportFileUseSubscriptionWhereInput!]
+  NOT: [SupportFileUseSubscriptionWhereInput!]
+}
+
+input SupportFileUseUpdateDataInput {
+  name: String
+}
+
+input SupportFileUseUpdateInput {
+  name: String
+}
+
+input SupportFileUseUpdateManyMutationInput {
+  name: String
+}
+
+input SupportFileUseUpdateOneInput {
+  create: SupportFileUseCreateInput
+  update: SupportFileUseUpdateDataInput
+  upsert: SupportFileUseUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: SupportFileUseWhereUniqueInput
+}
+
+input SupportFileUseUpsertNestedInput {
+  update: SupportFileUseUpdateDataInput!
+  create: SupportFileUseCreateInput!
+}
+
+input SupportFileUseWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [SupportFileUseWhereInput!]
+  OR: [SupportFileUseWhereInput!]
+  NOT: [SupportFileUseWhereInput!]
+}
+
+input SupportFileUseWhereUniqueInput {
+  id: ID
+  name: String
+}
+
 input SupportFileWhereInput {
   id: ID
   id_not: ID
@@ -1710,6 +1939,22 @@ input SupportFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   url: String
   url_not: String
@@ -1775,6 +2020,7 @@ input SupportFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  use: SupportFileUseWhereInput
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
   NOT: [SupportFileWhereInput!]
@@ -2843,6 +3089,8 @@ enum VideoBurnedInStatus {
 
 type VideoFile {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   filetype: String
   filename: String
@@ -2855,7 +3103,7 @@ type VideoFile {
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
-  stream: VideoStream
+  stream(where: VideoStreamWhereInput, orderBy: VideoStreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoStream!]
 }
 
 type VideoFileConnection {
@@ -2877,7 +3125,7 @@ input VideoFileCreateInput {
   bitrate: Float
   filesize: Float
   dimensions: DimensionsCreateOneInput
-  stream: VideoStreamCreateOneInput
+  stream: VideoStreamCreateManyInput
 }
 
 input VideoFileCreateManyInput {
@@ -2893,6 +3141,10 @@ type VideoFileEdge {
 enum VideoFileOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   filetype_ASC
   filetype_DESC
   filename_ASC
@@ -2911,14 +3163,12 @@ enum VideoFileOrderByInput {
   bitrate_DESC
   filesize_ASC
   filesize_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type VideoFilePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   filetype: String
   filename: String
   quality: VideoQuality
@@ -2945,6 +3195,22 @@ input VideoFileScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   filetype: String
   filetype_not: String
   filetype_in: [String!]
@@ -3069,7 +3335,7 @@ input VideoFileUpdateDataInput {
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
-  stream: VideoStreamUpdateOneInput
+  stream: VideoStreamUpdateManyInput
 }
 
 input VideoFileUpdateInput {
@@ -3085,7 +3351,7 @@ input VideoFileUpdateInput {
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
-  stream: VideoStreamUpdateOneInput
+  stream: VideoStreamUpdateManyInput
 }
 
 input VideoFileUpdateManyDataInput {
@@ -3154,6 +3420,22 @@ input VideoFileWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   filetype: String
   filetype_not: String
@@ -3245,7 +3527,9 @@ input VideoFileWhereInput {
   filesize_gt: Float
   filesize_gte: Float
   dimensions: DimensionsWhereInput
-  stream: VideoStreamWhereInput
+  stream_every: VideoStreamWhereInput
+  stream_some: VideoStreamWhereInput
+  stream_none: VideoStreamWhereInput
   AND: [VideoFileWhereInput!]
   OR: [VideoFileWhereInput!]
   NOT: [VideoFileWhereInput!]
@@ -3257,6 +3541,8 @@ input VideoFileWhereUniqueInput {
 
 type VideoProject {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   projectType: String!
   projectTitle: String!
   descPublic: String
@@ -3265,6 +3551,7 @@ type VideoProject {
   team: Team
   status: ProjectPublishStatus
   visibility: ProjectVisibility
+  protectImages: Boolean
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -3287,6 +3574,7 @@ input VideoProjectCreateInput {
   team: TeamCreateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
+  protectImages: Boolean
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
@@ -3302,6 +3590,10 @@ type VideoProjectEdge {
 enum VideoProjectOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   projectType_ASC
   projectType_DESC
   projectTitle_ASC
@@ -3316,14 +3608,14 @@ enum VideoProjectOrderByInput {
   status_DESC
   visibility_ASC
   visibility_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+  protectImages_ASC
+  protectImages_DESC
 }
 
 type VideoProjectPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   projectType: String!
   projectTitle: String!
   descPublic: String
@@ -3331,6 +3623,7 @@ type VideoProjectPreviousValues {
   author: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
+  protectImages: Boolean
 }
 
 type VideoProjectSubscriptionPayload {
@@ -3360,6 +3653,7 @@ input VideoProjectUpdateInput {
   team: TeamUpdateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
+  protectImages: Boolean
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
@@ -3375,6 +3669,7 @@ input VideoProjectUpdateManyMutationInput {
   author: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
+  protectImages: Boolean
 }
 
 input VideoProjectWhereInput {
@@ -3392,6 +3687,22 @@ input VideoProjectWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   projectType: String
   projectType_not: String
   projectType_in: [String!]
@@ -3471,6 +3782,8 @@ input VideoProjectWhereInput {
   visibility_not: ProjectVisibility
   visibility_in: [ProjectVisibility!]
   visibility_not_in: [ProjectVisibility!]
+  protectImages: Boolean
+  protectImages_not: Boolean
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput
@@ -3519,9 +3832,9 @@ input VideoStreamCreateInput {
   embedUrl: String
 }
 
-input VideoStreamCreateOneInput {
-  create: VideoStreamCreateInput
-  connect: VideoStreamWhereUniqueInput
+input VideoStreamCreateManyInput {
+  create: [VideoStreamCreateInput!]
+  connect: [VideoStreamWhereUniqueInput!]
 }
 
 type VideoStreamEdge {
@@ -3549,6 +3862,68 @@ type VideoStreamPreviousValues {
   site: String
   url: String
   embedUrl: String
+}
+
+input VideoStreamScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  site: String
+  site_not: String
+  site_in: [String!]
+  site_not_in: [String!]
+  site_lt: String
+  site_lte: String
+  site_gt: String
+  site_gte: String
+  site_contains: String
+  site_not_contains: String
+  site_starts_with: String
+  site_not_starts_with: String
+  site_ends_with: String
+  site_not_ends_with: String
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  embedUrl: String
+  embedUrl_not: String
+  embedUrl_in: [String!]
+  embedUrl_not_in: [String!]
+  embedUrl_lt: String
+  embedUrl_lte: String
+  embedUrl_gt: String
+  embedUrl_gte: String
+  embedUrl_contains: String
+  embedUrl_not_contains: String
+  embedUrl_starts_with: String
+  embedUrl_not_starts_with: String
+  embedUrl_ends_with: String
+  embedUrl_not_ends_with: String
+  AND: [VideoStreamScalarWhereInput!]
+  OR: [VideoStreamScalarWhereInput!]
+  NOT: [VideoStreamScalarWhereInput!]
 }
 
 type VideoStreamSubscriptionPayload {
@@ -3581,22 +3956,41 @@ input VideoStreamUpdateInput {
   embedUrl: String
 }
 
+input VideoStreamUpdateManyDataInput {
+  site: String
+  url: String
+  embedUrl: String
+}
+
+input VideoStreamUpdateManyInput {
+  create: [VideoStreamCreateInput!]
+  update: [VideoStreamUpdateWithWhereUniqueNestedInput!]
+  upsert: [VideoStreamUpsertWithWhereUniqueNestedInput!]
+  delete: [VideoStreamWhereUniqueInput!]
+  connect: [VideoStreamWhereUniqueInput!]
+  disconnect: [VideoStreamWhereUniqueInput!]
+  deleteMany: [VideoStreamScalarWhereInput!]
+  updateMany: [VideoStreamUpdateManyWithWhereNestedInput!]
+}
+
 input VideoStreamUpdateManyMutationInput {
   site: String
   url: String
   embedUrl: String
 }
 
-input VideoStreamUpdateOneInput {
-  create: VideoStreamCreateInput
-  update: VideoStreamUpdateDataInput
-  upsert: VideoStreamUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: VideoStreamWhereUniqueInput
+input VideoStreamUpdateManyWithWhereNestedInput {
+  where: VideoStreamScalarWhereInput!
+  data: VideoStreamUpdateManyDataInput!
 }
 
-input VideoStreamUpsertNestedInput {
+input VideoStreamUpdateWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput!
+  data: VideoStreamUpdateDataInput!
+}
+
+input VideoStreamUpsertWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput!
   update: VideoStreamUpdateDataInput!
   create: VideoStreamCreateInput!
 }
@@ -3669,6 +4063,8 @@ input VideoStreamWhereUniqueInput {
 
 type VideoUnit {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   title: String!
   descPublic: String
@@ -3707,18 +4103,20 @@ type VideoUnitEdge {
 enum VideoUnitOrderByInput {
   id_ASC
   id_DESC
-  title_ASC
-  title_DESC
-  descPublic_ASC
-  descPublic_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  title_ASC
+  title_DESC
+  descPublic_ASC
+  descPublic_DESC
 }
 
 type VideoUnitPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   title: String!
   descPublic: String
 }
@@ -3738,6 +4136,22 @@ input VideoUnitScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   title: String
   title_not: String
   title_in: [String!]
@@ -3861,6 +4275,22 @@ input VideoUnitWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   language: LanguageWhereInput
   title: String
   title_not: String
@@ -4032,6 +4462,7 @@ input VideoUseWhereInput {
 
 input VideoUseWhereUniqueInput {
   id: ID
+  name: String
 }
 `
       }

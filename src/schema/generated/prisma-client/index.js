@@ -53,6 +53,10 @@ var models = [
     embedded: false
   },
   {
+    name: "SupportFileUse",
+    embedded: false
+  },
+  {
     name: "Tag",
     embedded: false
   },
