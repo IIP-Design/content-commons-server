@@ -5,7 +5,7 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Category",
+    name: "Permission",
     embedded: false
   },
   {
@@ -13,31 +13,15 @@ var models = [
     embedded: false
   },
   {
-    name: "Dimensions",
+    name: "VideoBurnedInStatus",
     embedded: false
   },
   {
-    name: "ImageFile",
+    name: "VideoQuality",
     embedded: false
   },
   {
     name: "ImageQuality",
-    embedded: false
-  },
-  {
-    name: "ImageUse",
-    embedded: false
-  },
-  {
-    name: "Language",
-    embedded: false
-  },
-  {
-    name: "LanguageTranslation",
-    embedded: false
-  },
-  {
-    name: "Permission",
     embedded: false
   },
   {
@@ -49,27 +33,7 @@ var models = [
     embedded: false
   },
   {
-    name: "SupportFile",
-    embedded: false
-  },
-  {
-    name: "SupportFileUse",
-    embedded: false
-  },
-  {
-    name: "Tag",
-    embedded: false
-  },
-  {
-    name: "Team",
-    embedded: false
-  },
-  {
     name: "TextDirection",
-    embedded: false
-  },
-  {
-    name: "Thumbnail",
     embedded: false
   },
   {
@@ -81,11 +45,27 @@ var models = [
     embedded: false
   },
   {
-    name: "VideoBurnedInStatus",
+    name: "Team",
     embedded: false
   },
   {
-    name: "VideoFile",
+    name: "Language",
+    embedded: false
+  },
+  {
+    name: "Category",
+    embedded: false
+  },
+  {
+    name: "Tag",
+    embedded: false
+  },
+  {
+    name: "LanguageTranslation",
+    embedded: false
+  },
+  {
+    name: "Thumbnail",
     embedded: false
   },
   {
@@ -93,7 +73,7 @@ var models = [
     embedded: false
   },
   {
-    name: "VideoQuality",
+    name: "VideoUnit",
     embedded: false
   },
   {
@@ -101,11 +81,31 @@ var models = [
     embedded: false
   },
   {
-    name: "VideoUnit",
+    name: "Dimensions",
     embedded: false
   },
   {
     name: "VideoUse",
+    embedded: false
+  },
+  {
+    name: "ImageUse",
+    embedded: false
+  },
+  {
+    name: "SupportFileUse",
+    embedded: false
+  },
+  {
+    name: "VideoFile",
+    embedded: false
+  },
+  {
+    name: "ImageFile",
+    embedded: false
+  },
+  {
+    name: "SupportFile",
     embedded: false
   }
 ];

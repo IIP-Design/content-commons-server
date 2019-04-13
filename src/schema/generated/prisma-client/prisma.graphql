@@ -160,6 +160,7 @@ input CategoryUpdateManyInput {
   upsert: [CategoryUpsertWithWhereUniqueNestedInput!]
   delete: [CategoryWhereUniqueInput!]
   connect: [CategoryWhereUniqueInput!]
+  set: [CategoryWhereUniqueInput!]
   disconnect: [CategoryWhereUniqueInput!]
   deleteMany: [CategoryScalarWhereInput!]
 }
@@ -625,6 +626,7 @@ input ImageFileUpdateManyInput {
   upsert: [ImageFileUpsertWithWhereUniqueNestedInput!]
   delete: [ImageFileWhereUniqueInput!]
   connect: [ImageFileWhereUniqueInput!]
+  set: [ImageFileWhereUniqueInput!]
   disconnect: [ImageFileWhereUniqueInput!]
   deleteMany: [ImageFileScalarWhereInput!]
   updateMany: [ImageFileUpdateManyWithWhereNestedInput!]
@@ -939,7 +941,7 @@ type Language {
   id: ID!
   languageCode: String!
   locale: String!
-  textDirection: String!
+  textDirection: TextDirection!
   displayName: String!
   nativeName: String!
 }
@@ -953,7 +955,7 @@ type LanguageConnection {
 input LanguageCreateInput {
   languageCode: String!
   locale: String!
-  textDirection: String
+  textDirection: TextDirection
   displayName: String!
   nativeName: String!
 }
@@ -991,7 +993,7 @@ type LanguagePreviousValues {
   id: ID!
   languageCode: String!
   locale: String!
-  textDirection: String!
+  textDirection: TextDirection!
   displayName: String!
   nativeName: String!
 }
@@ -1129,6 +1131,7 @@ input LanguageTranslationUpdateManyInput {
   upsert: [LanguageTranslationUpsertWithWhereUniqueNestedInput!]
   delete: [LanguageTranslationWhereUniqueInput!]
   connect: [LanguageTranslationWhereUniqueInput!]
+  set: [LanguageTranslationWhereUniqueInput!]
   disconnect: [LanguageTranslationWhereUniqueInput!]
   deleteMany: [LanguageTranslationScalarWhereInput!]
   updateMany: [LanguageTranslationUpdateManyWithWhereNestedInput!]
@@ -1196,7 +1199,7 @@ input LanguageTranslationWhereUniqueInput {
 input LanguageUpdateDataInput {
   languageCode: String
   locale: String
-  textDirection: String
+  textDirection: TextDirection
   displayName: String
   nativeName: String
 }
@@ -1204,7 +1207,7 @@ input LanguageUpdateDataInput {
 input LanguageUpdateInput {
   languageCode: String
   locale: String
-  textDirection: String
+  textDirection: TextDirection
   displayName: String
   nativeName: String
 }
@@ -1212,7 +1215,7 @@ input LanguageUpdateInput {
 input LanguageUpdateManyMutationInput {
   languageCode: String
   locale: String
-  textDirection: String
+  textDirection: TextDirection
   displayName: String
   nativeName: String
 }
@@ -1281,20 +1284,10 @@ input LanguageWhereInput {
   locale_not_starts_with: String
   locale_ends_with: String
   locale_not_ends_with: String
-  textDirection: String
-  textDirection_not: String
-  textDirection_in: [String!]
-  textDirection_not_in: [String!]
-  textDirection_lt: String
-  textDirection_lte: String
-  textDirection_gt: String
-  textDirection_gte: String
-  textDirection_contains: String
-  textDirection_not_contains: String
-  textDirection_starts_with: String
-  textDirection_not_starts_with: String
-  textDirection_ends_with: String
-  textDirection_not_ends_with: String
+  textDirection: TextDirection
+  textDirection_not: TextDirection
+  textDirection_in: [TextDirection!]
+  textDirection_not_in: [TextDirection!]
   displayName: String
   displayName_not: String
   displayName_in: [String!]
@@ -1465,6 +1458,7 @@ enum Permission {
 
 enum ProjectPublishStatus {
   DRAFT
+  PUBLISHING
   PUBLISHED
   EMBARGOED
 }
@@ -1770,6 +1764,7 @@ input SupportFileUpdateManyInput {
   upsert: [SupportFileUpsertWithWhereUniqueNestedInput!]
   delete: [SupportFileWhereUniqueInput!]
   connect: [SupportFileWhereUniqueInput!]
+  set: [SupportFileWhereUniqueInput!]
   disconnect: [SupportFileWhereUniqueInput!]
   deleteMany: [SupportFileScalarWhereInput!]
   updateMany: [SupportFileUpdateManyWithWhereNestedInput!]
@@ -2119,6 +2114,7 @@ input TagUpdateManyInput {
   upsert: [TagUpsertWithWhereUniqueNestedInput!]
   delete: [TagWhereUniqueInput!]
   connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
   deleteMany: [TagScalarWhereInput!]
 }
@@ -2371,6 +2367,11 @@ input TeamWhereUniqueInput {
   name: String
 }
 
+enum TextDirection {
+  LTR
+  RTL
+}
+
 type Thumbnail {
   id: ID!
   size: ThumbnailSize
@@ -2483,6 +2484,7 @@ input ThumbnailUpdateManyInput {
   upsert: [ThumbnailUpsertWithWhereUniqueNestedInput!]
   delete: [ThumbnailWhereUniqueInput!]
   connect: [ThumbnailWhereUniqueInput!]
+  set: [ThumbnailWhereUniqueInput!]
   disconnect: [ThumbnailWhereUniqueInput!]
   deleteMany: [ThumbnailScalarWhereInput!]
   updateMany: [ThumbnailUpdateManyWithWhereNestedInput!]
@@ -2876,6 +2878,7 @@ input UserUpdateManyWithoutTeamInput {
   create: [UserCreateWithoutTeamInput!]
   delete: [UserWhereUniqueInput!]
   connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
   disconnect: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutTeamInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutTeamInput!]
@@ -3371,6 +3374,7 @@ input VideoFileUpdateManyInput {
   upsert: [VideoFileUpsertWithWhereUniqueNestedInput!]
   delete: [VideoFileWhereUniqueInput!]
   connect: [VideoFileWhereUniqueInput!]
+  set: [VideoFileWhereUniqueInput!]
   disconnect: [VideoFileWhereUniqueInput!]
   deleteMany: [VideoFileScalarWhereInput!]
   updateMany: [VideoFileUpdateManyWithWhereNestedInput!]
@@ -3967,6 +3971,7 @@ input VideoStreamUpdateManyInput {
   upsert: [VideoStreamUpsertWithWhereUniqueNestedInput!]
   delete: [VideoStreamWhereUniqueInput!]
   connect: [VideoStreamWhereUniqueInput!]
+  set: [VideoStreamWhereUniqueInput!]
   disconnect: [VideoStreamWhereUniqueInput!]
   deleteMany: [VideoStreamScalarWhereInput!]
   updateMany: [VideoStreamUpdateManyWithWhereNestedInput!]
@@ -4233,6 +4238,7 @@ input VideoUnitUpdateManyInput {
   upsert: [VideoUnitUpsertWithWhereUniqueNestedInput!]
   delete: [VideoUnitWhereUniqueInput!]
   connect: [VideoUnitWhereUniqueInput!]
+  set: [VideoUnitWhereUniqueInput!]
   disconnect: [VideoUnitWhereUniqueInput!]
   deleteMany: [VideoUnitScalarWhereInput!]
   updateMany: [VideoUnitUpdateManyWithWhereNestedInput!]
