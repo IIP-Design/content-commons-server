@@ -3,7 +3,7 @@ import csv from 'csv-parser';
 
 export const ucfirst = string => String( string ).charAt( 0 ).toUpperCase() + string.slice( 1 );
 export const lcfirst = string => String( string ).charAt( 0 ).toLowerCase() + string.slice( 1 );
-export const printError = ( err ) => typeof err === 'string' ? err : JSON.stringify( err, null, 2 );
+export const printError = err => (typeof err === 'string' ? err : JSON.stringify( err, null, 2 ));
 
 /**
  * Print error messages from a Prisma error object.

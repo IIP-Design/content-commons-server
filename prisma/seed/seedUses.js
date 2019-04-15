@@ -1,4 +1,4 @@
-import { prisma } from '../src/schema/generated/prisma-client';
+import { prisma } from '../../src/schema/generated/prisma-client';
 import { files } from './seed.js';
 import {
   forEach, getCsvRows, prismaErrors

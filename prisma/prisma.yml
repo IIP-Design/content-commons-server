@@ -11,7 +11,7 @@ generate:
 
 # seed your service with initial data from seed.graphql. Runs once on start up
 seed:
-  run: babel-node seed/seed.js
+  run: babel-node prisma/seed/seed.js
 
 hooks:
   post-deploy:

@@ -6,11 +6,11 @@ import seedTeams from './seedTeams';
 import seedUses from './seedUses';
 
 export const files = {
-  teams: './data/teams.csv',
-  languages: './data/languages.csv',
-  categories: './data/categories.csv',
-  tags: './data/tags.csv',
-  uses: './data/uses.csv'
+  teams: './prisma/data/teams.csv',
+  languages: './prisma/data/languages.csv',
+  categories: './prisma/data/categories.csv',
+  tags: './prisma/data/tags.csv',
+  uses: './prisma/data/uses.csv'
 };
 
 /**
