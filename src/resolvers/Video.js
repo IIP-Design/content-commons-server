@@ -472,89 +472,127 @@ export default {
 
   VideoProject: {
     team( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).team();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .team( { ...args } );
     },
 
     tags( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).tags();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .tags( { ...args } );
     },
 
     categories( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).categories();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .categories( { ...args } );
     },
 
     units( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).units();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .units( { ...args } );
     },
 
     supportFiles( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).supportFiles();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .supportFiles( { ...args } );
     },
 
     thumbnails( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: parent.id } ).thumbnails();
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .thumbnails( { ...args } );
     },
   },
 
   VideoUnit: {
     language( parent, args, ctx ) {
-      return ctx.prisma.videoUnit( { id: parent.id } ).language();
+      return ctx.prisma
+        .videoUnit( { id: parent.id } )
+        .language( { ...args } );
     },
 
     files( parent, args, ctx ) {
-      return ctx.prisma.videoUnit( { id: parent.id } ).files();
+      return ctx.prisma
+        .videoUnit( { id: parent.id } )
+        .files( { ...args } );
     },
 
     tags( parent, args, ctx ) {
-      return ctx.prisma.videoUnit( { id: parent.id } ).tags();
+      return ctx.prisma
+        .videoUnit( { id: parent.id } )
+        .tags( { ...args } );
     },
 
     categories( parent, args, ctx ) {
-      return ctx.prisma.videoUnit( { id: parent.id } ).categories();
+      return ctx.prisma
+        .videoUnit( { id: parent.id } )
+        .categories( { ...args } );
     },
 
     thumbnails( parent, args, ctx ) {
-      return ctx.prisma.videoUnit( { id: parent.id } ).thumbnails();
+      return ctx.prisma
+        .videoUnit( { id: parent.id } )
+        .thumbnails( { ...args } );
     },
   },
 
   VideoFile: {
     language( parent, args, ctx ) {
-      return ctx.prisma.videoFile( { id: parent.id } ).language();
+      return ctx.prisma
+        .videoFile( { id: parent.id } )
+        .language( { ...args } );
     },
 
     use( parent, args, ctx ) {
-      return ctx.prisma.videoFile( { id: parent.id } ).use();
+      return ctx.prisma
+        .videoFile( { id: parent.id } )
+        .use( { ...args } );
     },
 
     dimensions( parent, args, ctx ) {
-      return ctx.prisma.videoFile( { id: parent.id } ).dimensions();
+      return ctx.prisma
+        .videoFile( { id: parent.id } )
+        .dimensions( { ...args } );
     },
 
     stream( parent, args, ctx ) {
-      return ctx.prisma.videoFile( { id: parent.id } ).stream();
+      return ctx.prisma
+        .videoFile( { id: parent.id } )
+        .stream( { ...args } );
     }
   },
 
   SupportFile: {
     language( parent, args, ctx ) {
-      return ctx.prisma.supportFile( { id: parent.id } ).language();
+      return ctx.prisma
+        .supportFile( { id: parent.id } )
+        .language( { ...args } );
     }
   },
 
   ImageFile: {
     language( parent, args, ctx ) {
-      return ctx.prisma.imageFile( { id: parent.id } ).language();
+      return ctx.prisma
+        .imageFile( { id: parent.id } )
+        .language( { ...args } );
     },
 
     dimensions( parent, args, ctx ) {
-      return ctx.prisma.imageFile( { id: parent.id } ).dimensions();
+      return ctx.prisma
+        .imageFile( { id: parent.id } )
+        .dimensions( { ...args } );
     }
   },
 
   Thumbnail: {
     image( parent, args, ctx ) {
-      return ctx.prisma.thumbnail( { id: parent.id } ).image();
+      return ctx.prisma
+        .thumbnail( { id: parent.id } )
+        .image( { ...args } );
     }
   },
 

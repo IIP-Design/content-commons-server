@@ -32,6 +32,7 @@ enum ImageQuality {
 
 enum ProjectPublishStatus {
   DRAFT
+  PUBLISHING
   PUBLISHED
   EMBARGOED
 }
@@ -83,7 +84,7 @@ type Language {
   id: ID! @unique
   languageCode: String!
   locale: String! @unique
-  textDirection: String! @default(value: LTR)
+  textDirection: TextDirection! @default(value: LTR)
   displayName: String!
   nativeName: String!
 }
@@ -114,6 +115,8 @@ type Thumbnail {
 
 type VideoProject {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   projectType: String! # How are the units related? LANGUAGE_TRANSLATION, SERIES, etc
   projectTitle: String!
   descPublic: String
@@ -122,6 +125,7 @@ type VideoProject {
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility # what is default?
+  protectImages: Boolean
   units: [VideoUnit]
   supportFiles: [SupportFile]
   thumbnails: [ImageFile]
@@ -131,6 +135,8 @@ type VideoProject {
 
 type VideoUnit {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   title: String!
   descPublic: String
@@ -165,8 +171,15 @@ type ImageUse {
   name: String! @unique
 }
 
+type SupportFileUse {
+  id: ID! @unique
+  name: String! @unique
+}
+
 type VideoFile {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   filetype: String
   filename: String
@@ -179,11 +192,13 @@ type VideoFile {
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
-  stream: VideoStream
+  stream: [VideoStream]
 }
 
 type ImageFile {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language
   dimensions: Dimensions
   alt: String
@@ -191,16 +206,20 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  use: ImageUse
   md5: String
   url: String
 }
 
 type SupportFile {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   language: Language!
   url: String
   md5: String
   filename: String
   filetype: String # srt, pdf
   filesize: Float
+  use: SupportFileUse
 }

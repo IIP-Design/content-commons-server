@@ -93,6 +93,7 @@ var models = [
     embedded: false
   },
   {
+<<<<<<< HEAD
     name: "VideoFile",
     embedded: false
   },
@@ -101,6 +102,20 @@ var models = [
     embedded: false
   },
   {
+=======
+    name: "SupportFileUse",
+    embedded: false
+  },
+  {
+    name: "VideoFile",
+    embedded: false
+  },
+  {
+    name: "ImageFile",
+    embedded: false
+  },
+  {
+>>>>>>> develop
     name: "SupportFile",
     embedded: false
   }
