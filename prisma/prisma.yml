@@ -10,10 +10,10 @@ generate:
     output: ../src/schema/generated/prisma-client/prisma.graphql
 
 # seed your service with initial data from seed.graphql. Runs once on start up
-seed:
-  run: babel-node prisma/seed/seed.js
+# seed:
+#   run: babel-node prisma/seed/seed.js
 
 hooks:
   post-deploy:
     - prisma generate
-    - prisma seed
+    # - prisma seed
