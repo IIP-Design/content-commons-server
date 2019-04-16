@@ -25,6 +25,7 @@ const resolvers = merge(
 const createServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
+  introspection: true,
   context: req => ( { ...req, prisma } )
 } );
 
