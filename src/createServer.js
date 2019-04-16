@@ -26,6 +26,7 @@ const createServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
+  playground: true,
   context: req => ( { ...req, prisma } )
 } );
 
