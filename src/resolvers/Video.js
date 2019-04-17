@@ -471,6 +471,12 @@ export default {
   },
 
   VideoProject: {
+    author( parent, args, ctx ) {
+      return ctx.prisma
+        .videoProject( { id: parent.id } )
+        .author( { ...args } );
+    },
+
     team( parent, args, ctx ) {
       return ctx.prisma
         .videoProject( { id: parent.id } )

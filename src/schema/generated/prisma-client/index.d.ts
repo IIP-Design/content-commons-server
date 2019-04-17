@@ -1022,8 +1022,6 @@ export type VideoProjectOrderByInput =
   | "descPublic_DESC"
   | "descInternal_ASC"
   | "descInternal_DESC"
-  | "author_ASC"
-  | "author_DESC"
   | "status_ASC"
   | "status_DESC"
   | "visibility_ASC"
@@ -1135,38 +1133,49 @@ export type CategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface SupportFileUseCreateOneInput {
-  create?: SupportFileUseCreateInput;
-  connect?: SupportFileUseWhereUniqueInput;
+export interface SupportFileUpdateInput {
+  language?: LanguageUpdateOneRequiredInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseUpdateOneInput;
 }
 
 export type CategoryWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface CategoryCreateInput {
-  translations?: LanguageTranslationCreateManyInput;
-}
-
-export interface CategoryCreateManyInput {
-  create?: CategoryCreateInput[] | CategoryCreateInput;
-  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
-}
-
-export interface LanguageTranslationCreateManyInput {
-  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
-  connect?:
-    | LanguageTranslationWhereUniqueInput[]
-    | LanguageTranslationWhereUniqueInput;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
 export interface LanguageTranslationCreateInput {
   name: String;
   language: LanguageCreateOneInput;
+}
+
+export interface ImageFileCreateManyInput {
+  create?: ImageFileCreateInput[] | ImageFileCreateInput;
+  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+}
+
+export interface LanguageCreateOneInput {
+  create?: LanguageCreateInput;
+  connect?: LanguageWhereUniqueInput;
+}
+
+export interface TeamUpdateInput {
+  name?: String;
+  organization?: String;
+  members?: UserUpdateManyWithoutTeamInput;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface LanguageCreateInput {
+  languageCode: String;
+  locale: String;
+  textDirection?: TextDirection;
+  displayName: String;
+  nativeName: String;
 }
 
 export interface VideoUseSubscriptionWhereInput {
@@ -1180,9 +1189,8 @@ export interface VideoUseSubscriptionWhereInput {
   NOT?: VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput;
 }
 
-export interface LanguageCreateOneInput {
-  create?: LanguageCreateInput;
-  connect?: LanguageWhereUniqueInput;
+export interface CategoryUpdateInput {
+  translations?: LanguageTranslationUpdateManyInput;
 }
 
 export interface VideoStreamSubscriptionWhereInput {
@@ -1194,34 +1202,6 @@ export interface VideoStreamSubscriptionWhereInput {
   AND?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
   OR?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
   NOT?: VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput;
-}
-
-export interface LanguageCreateInput {
-  languageCode: String;
-  locale: String;
-  textDirection?: TextDirection;
-  displayName: String;
-  nativeName: String;
-}
-
-export type ImageUseWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  name?: String;
-}>;
-
-export interface CategoryUpdateInput {
-  translations?: LanguageTranslationUpdateManyInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface LanguageTranslationUpdateManyInput {
@@ -1252,6 +1232,32 @@ export interface LanguageTranslationUpdateManyInput {
     | LanguageTranslationUpdateManyWithWhereNestedInput;
 }
 
+export type ImageUseWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  data: LanguageTranslationUpdateDataInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface LanguageTranslationUpdateDataInput {
+  name?: String;
+  language?: LanguageUpdateOneRequiredInput;
+}
+
 export interface TeamSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -1263,18 +1269,23 @@ export interface TeamSubscriptionWhereInput {
   NOT?: TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput;
 }
 
-export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  data: LanguageTranslationUpdateDataInput;
+export interface LanguageUpdateOneRequiredInput {
+  create?: LanguageCreateInput;
+  update?: LanguageUpdateDataInput;
+  upsert?: LanguageUpsertNestedInput;
+  connect?: LanguageWhereUniqueInput;
 }
 
 export type ImageFileWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface LanguageTranslationUpdateDataInput {
-  name?: String;
-  language?: LanguageUpdateOneRequiredInput;
+export interface LanguageUpdateDataInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: TextDirection;
+  displayName?: String;
+  nativeName?: String;
 }
 
 export interface SupportFileUseSubscriptionWhereInput {
@@ -1294,23 +1305,19 @@ export interface SupportFileUseSubscriptionWhereInput {
     | SupportFileUseSubscriptionWhereInput;
 }
 
-export interface LanguageUpdateOneRequiredInput {
-  create?: LanguageCreateInput;
-  update?: LanguageUpdateDataInput;
-  upsert?: LanguageUpsertNestedInput;
-  connect?: LanguageWhereUniqueInput;
+export interface LanguageUpsertNestedInput {
+  update: LanguageUpdateDataInput;
+  create: LanguageCreateInput;
 }
 
 export type LanguageTranslationWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface LanguageUpdateDataInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: TextDirection;
-  displayName?: String;
-  nativeName?: String;
+export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  update: LanguageTranslationUpdateDataInput;
+  create: LanguageTranslationCreateInput;
 }
 
 export interface LanguageSubscriptionWhereInput {
@@ -1322,32 +1329,6 @@ export interface LanguageSubscriptionWhereInput {
   AND?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
   OR?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
   NOT?: LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput;
-}
-
-export interface LanguageUpsertNestedInput {
-  update: LanguageUpdateDataInput;
-  create: LanguageCreateInput;
-}
-
-export type SupportFileWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  update: LanguageTranslationUpdateDataInput;
-  create: LanguageTranslationCreateInput;
-}
-
-export interface DimensionsSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: DimensionsWhereInput;
-  AND?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
-  OR?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
-  NOT?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
 }
 
 export interface LanguageTranslationScalarWhereInput {
@@ -1388,6 +1369,30 @@ export interface LanguageTranslationScalarWhereInput {
   NOT?:
     | LanguageTranslationScalarWhereInput[]
     | LanguageTranslationScalarWhereInput;
+}
+
+export type SupportFileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LanguageTranslationUpdateManyWithWhereNestedInput {
+  where: LanguageTranslationScalarWhereInput;
+  data: LanguageTranslationUpdateManyDataInput;
+}
+
+export interface DimensionsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: DimensionsWhereInput;
+  AND?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+  OR?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+  NOT?: DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput;
+}
+
+export interface LanguageTranslationUpdateManyDataInput {
+  name?: String;
 }
 
 export interface SupportFileWhereInput {
@@ -1492,17 +1497,33 @@ export interface SupportFileWhereInput {
   NOT?: SupportFileWhereInput[] | SupportFileWhereInput;
 }
 
-export interface LanguageTranslationUpdateManyWithWhereNestedInput {
-  where: LanguageTranslationScalarWhereInput;
-  data: LanguageTranslationUpdateManyDataInput;
+export interface UserUpdateDataInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  team?: TeamUpdateOneWithoutMembersInput;
+  isConfirmed?: Boolean;
 }
 
 export interface VideoUseUpdateManyMutationInput {
   name?: String;
 }
 
-export interface LanguageTranslationUpdateManyDataInput {
-  name?: String;
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface VideoUnitUpdateManyMutationInput {
@@ -1510,9 +1531,9 @@ export interface VideoUnitUpdateManyMutationInput {
   descPublic?: String;
 }
 
-export interface ImageFileCreateManyInput {
-  create?: ImageFileCreateInput[] | ImageFileCreateInput;
-  connect?: ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput;
+export interface DimensionsCreateInput {
+  width?: Int;
+  height?: Int;
 }
 
 export type SupportFileUseWhereUniqueInput = AtLeastOne<{
@@ -1520,9 +1541,9 @@ export type SupportFileUseWhereUniqueInput = AtLeastOne<{
   name?: String;
 }>;
 
-export interface SupportFileCreateManyInput {
-  create?: SupportFileCreateInput[] | SupportFileCreateInput;
-  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
+export interface DimensionsUpdateInput {
+  width?: Int;
+  height?: Int;
 }
 
 export interface VideoStreamUpdateInput {
@@ -1531,7 +1552,7 @@ export interface VideoStreamUpdateInput {
   embedUrl?: String;
 }
 
-export interface DimensionsCreateInput {
+export interface DimensionsUpdateManyMutationInput {
   width?: Int;
   height?: Int;
 }
@@ -1546,9 +1567,17 @@ export interface ImageFileUpdateManyDataInput {
   url?: String;
 }
 
-export interface DimensionsUpdateInput {
-  width?: Int;
-  height?: Int;
+export interface ImageFileCreateInput {
+  language?: LanguageCreateOneInput;
+  dimensions?: DimensionsCreateOneInput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  use?: ImageUseCreateOneInput;
+  md5?: String;
+  url?: String;
 }
 
 export interface ImageFileUpdateManyWithWhereNestedInput {
@@ -1556,9 +1585,9 @@ export interface ImageFileUpdateManyWithWhereNestedInput {
   data: ImageFileUpdateManyDataInput;
 }
 
-export interface DimensionsUpdateManyMutationInput {
-  width?: Int;
-  height?: Int;
+export interface DimensionsCreateOneInput {
+  create?: DimensionsCreateInput;
+  connect?: DimensionsWhereUniqueInput;
 }
 
 export interface ImageFileScalarWhereInput {
@@ -1695,17 +1724,9 @@ export interface ImageFileScalarWhereInput {
   NOT?: ImageFileScalarWhereInput[] | ImageFileScalarWhereInput;
 }
 
-export interface ImageFileCreateInput {
-  language?: LanguageCreateOneInput;
-  dimensions?: DimensionsCreateOneInput;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  use?: ImageUseCreateOneInput;
-  md5?: String;
-  url?: String;
+export interface ImageUseCreateOneInput {
+  create?: ImageUseCreateInput;
+  connect?: ImageUseWhereUniqueInput;
 }
 
 export interface ImageFileUpdateWithWhereUniqueNestedInput {
@@ -1713,9 +1734,8 @@ export interface ImageFileUpdateWithWhereUniqueNestedInput {
   data: ImageFileUpdateDataInput;
 }
 
-export interface DimensionsCreateOneInput {
-  create?: DimensionsCreateInput;
-  connect?: DimensionsWhereUniqueInput;
+export interface ImageUseCreateInput {
+  name: String;
 }
 
 export type TeamWhereUniqueInput = AtLeastOne<{
@@ -1723,9 +1743,17 @@ export type TeamWhereUniqueInput = AtLeastOne<{
   name?: String;
 }>;
 
-export interface ImageUseCreateOneInput {
-  create?: ImageUseCreateInput;
-  connect?: ImageUseWhereUniqueInput;
+export interface ImageFileUpdateInput {
+  language?: LanguageUpdateOneInput;
+  dimensions?: DimensionsUpdateOneInput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  use?: ImageUseUpdateOneInput;
+  md5?: String;
+  url?: String;
 }
 
 export interface UserWhereInput {
@@ -1885,8 +1913,13 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface ImageUseCreateInput {
-  name: String;
+export interface LanguageUpdateOneInput {
+  create?: LanguageCreateInput;
+  update?: LanguageUpdateDataInput;
+  upsert?: LanguageUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: LanguageWhereUniqueInput;
 }
 
 export interface DimensionsWhereInput {
@@ -1925,17 +1958,13 @@ export interface DimensionsWhereInput {
   NOT?: DimensionsWhereInput[] | DimensionsWhereInput;
 }
 
-export interface ImageFileUpdateInput {
-  language?: LanguageUpdateOneInput;
-  dimensions?: DimensionsUpdateOneInput;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  use?: ImageUseUpdateOneInput;
-  md5?: String;
-  url?: String;
+export interface DimensionsUpdateOneInput {
+  create?: DimensionsCreateInput;
+  update?: DimensionsUpdateDataInput;
+  upsert?: DimensionsUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: DimensionsWhereUniqueInput;
 }
 
 export interface SupportFileScalarWhereInput {
@@ -2038,13 +2067,9 @@ export interface SupportFileScalarWhereInput {
   NOT?: SupportFileScalarWhereInput[] | SupportFileScalarWhereInput;
 }
 
-export interface LanguageUpdateOneInput {
-  create?: LanguageCreateInput;
-  update?: LanguageUpdateDataInput;
-  upsert?: LanguageUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: LanguageWhereUniqueInput;
+export interface DimensionsUpdateDataInput {
+  width?: Int;
+  height?: Int;
 }
 
 export interface SupportFileUpsertWithWhereUniqueNestedInput {
@@ -2053,37 +2078,14 @@ export interface SupportFileUpsertWithWhereUniqueNestedInput {
   create: SupportFileCreateInput;
 }
 
-export interface DimensionsUpdateOneInput {
-  create?: DimensionsCreateInput;
-  update?: DimensionsUpdateDataInput;
-  upsert?: DimensionsUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: DimensionsWhereUniqueInput;
-}
-
-export interface SupportFileUpdateWithWhereUniqueNestedInput {
-  where: SupportFileWhereUniqueInput;
-  data: SupportFileUpdateDataInput;
-}
-
-export interface DimensionsUpdateDataInput {
-  width?: Int;
-  height?: Int;
-}
-
-export type ThumbnailWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
 export interface DimensionsUpsertNestedInput {
   update: DimensionsUpdateDataInput;
   create: DimensionsCreateInput;
 }
 
-export interface VideoUnitUpdateManyWithWhereNestedInput {
-  where: VideoUnitScalarWhereInput;
-  data: VideoUnitUpdateManyDataInput;
+export interface SupportFileUpdateWithWhereUniqueNestedInput {
+  where: SupportFileWhereUniqueInput;
+  data: SupportFileUpdateDataInput;
 }
 
 export interface ImageUseUpdateOneInput {
@@ -2093,6 +2095,24 @@ export interface ImageUseUpdateOneInput {
   delete?: Boolean;
   disconnect?: Boolean;
   connect?: ImageUseWhereUniqueInput;
+}
+
+export type ThumbnailWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ImageUseUpdateDataInput {
+  name?: String;
+}
+
+export interface VideoUnitUpdateManyWithWhereNestedInput {
+  where: VideoUnitScalarWhereInput;
+  data: VideoUnitUpdateManyDataInput;
+}
+
+export interface ImageUseUpsertNestedInput {
+  update: ImageUseUpdateDataInput;
+  create: ImageUseCreateInput;
 }
 
 export interface VideoUnitScalarWhereInput {
@@ -2159,24 +2179,6 @@ export interface VideoUnitScalarWhereInput {
   NOT?: VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput;
 }
 
-export interface ImageUseUpdateDataInput {
-  name?: String;
-}
-
-export interface ThumbnailUpdateManyDataInput {
-  size?: ThumbnailSize;
-}
-
-export interface ImageUseUpsertNestedInput {
-  update: ImageUseUpdateDataInput;
-  create: ImageUseCreateInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
 export interface ImageFileUpdateManyMutationInput {
   alt?: String;
   longdesc?: String;
@@ -2187,22 +2189,47 @@ export interface ImageFileUpdateManyMutationInput {
   url?: String;
 }
 
-export interface ThumbnailUpsertWithWhereUniqueNestedInput {
-  where: ThumbnailWhereUniqueInput;
-  update: ThumbnailUpdateDataInput;
-  create: ThumbnailCreateInput;
+export interface ThumbnailUpdateManyDataInput {
+  size?: ThumbnailSize;
 }
 
 export interface ImageUseUpdateInput {
   name?: String;
 }
 
-export type VideoFileWhereUniqueInput = AtLeastOne<{
+export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  email?: String;
 }>;
 
 export interface ImageUseUpdateManyMutationInput {
   name?: String;
+}
+
+export interface ThumbnailUpsertWithWhereUniqueNestedInput {
+  where: ThumbnailWhereUniqueInput;
+  update: ThumbnailUpdateDataInput;
+  create: ThumbnailCreateInput;
+}
+
+export interface LanguageUpdateInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: TextDirection;
+  displayName?: String;
+  nativeName?: String;
+}
+
+export type VideoFileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LanguageUpdateManyMutationInput {
+  languageCode?: String;
+  locale?: String;
+  textDirection?: TextDirection;
+  displayName?: String;
+  nativeName?: String;
 }
 
 export interface ThumbnailUpdateManyInput {
@@ -2223,12 +2250,9 @@ export interface ThumbnailUpdateManyInput {
     | ThumbnailUpdateManyWithWhereNestedInput;
 }
 
-export interface LanguageUpdateInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: TextDirection;
-  displayName?: String;
-  nativeName?: String;
+export interface LanguageTranslationUpdateInput {
+  name?: String;
+  language?: LanguageUpdateOneRequiredInput;
 }
 
 export interface CategoryUpsertWithWhereUniqueNestedInput {
@@ -2237,12 +2261,8 @@ export interface CategoryUpsertWithWhereUniqueNestedInput {
   create: CategoryCreateInput;
 }
 
-export interface LanguageUpdateManyMutationInput {
-  languageCode?: String;
-  locale?: String;
-  textDirection?: TextDirection;
-  displayName?: String;
-  nativeName?: String;
+export interface LanguageTranslationUpdateManyMutationInput {
+  name?: String;
 }
 
 export interface CategoryWhereInput {
@@ -2268,9 +2288,14 @@ export interface CategoryWhereInput {
   NOT?: CategoryWhereInput[] | CategoryWhereInput;
 }
 
-export interface LanguageTranslationUpdateInput {
-  name?: String;
-  language?: LanguageUpdateOneRequiredInput;
+export interface SupportFileCreateInput {
+  language: LanguageCreateOneInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseCreateOneInput;
 }
 
 export interface VideoFileWhereInput {
@@ -2403,8 +2428,9 @@ export interface VideoFileWhereInput {
   NOT?: VideoFileWhereInput[] | VideoFileWhereInput;
 }
 
-export interface LanguageTranslationUpdateManyMutationInput {
-  name?: String;
+export interface SupportFileUseCreateOneInput {
+  create?: SupportFileUseCreateInput;
+  connect?: SupportFileUseWhereUniqueInput;
 }
 
 export interface CategoryUpdateWithWhereUniqueNestedInput {
@@ -2412,14 +2438,8 @@ export interface CategoryUpdateWithWhereUniqueNestedInput {
   data: CategoryUpdateDataInput;
 }
 
-export interface SupportFileCreateInput {
-  language: LanguageCreateOneInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-  use?: SupportFileUseCreateOneInput;
+export interface SupportFileUseCreateInput {
+  name: String;
 }
 
 export interface TagScalarWhereInput {
@@ -2442,17 +2462,34 @@ export interface TagScalarWhereInput {
   NOT?: TagScalarWhereInput[] | TagScalarWhereInput;
 }
 
-export interface ThumbnailCreateManyInput {
-  create?: ThumbnailCreateInput[] | ThumbnailCreateInput;
-  connect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
+export interface VideoProjectUpdateInput {
+  projectType?: String;
+  projectTitle?: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: UserUpdateOneInput;
+  team?: TeamUpdateOneInput;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+  units?: VideoUnitUpdateManyInput;
+  supportFiles?: SupportFileUpdateManyInput;
+  thumbnails?: ImageFileUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  tags?: TagUpdateManyInput;
 }
 
 export type VideoProjectWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface SupportFileUseCreateInput {
-  name: String;
+export interface SupportFileUseUpdateOneInput {
+  create?: SupportFileUseCreateInput;
+  update?: SupportFileUseUpdateDataInput;
+  upsert?: SupportFileUseUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: SupportFileUseWhereUniqueInput;
 }
 
 export interface TagUpdateWithWhereUniqueNestedInput {
@@ -2460,14 +2497,8 @@ export interface TagUpdateWithWhereUniqueNestedInput {
   data: TagUpdateDataInput;
 }
 
-export interface SupportFileUpdateInput {
-  language?: LanguageUpdateOneRequiredInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-  use?: SupportFileUseUpdateOneInput;
+export interface SupportFileUseUpdateDataInput {
+  name?: String;
 }
 
 export interface VideoUnitWhereInput {
@@ -2547,13 +2578,9 @@ export interface VideoUnitWhereInput {
   NOT?: VideoUnitWhereInput[] | VideoUnitWhereInput;
 }
 
-export interface SupportFileUseUpdateOneInput {
-  create?: SupportFileUseCreateInput;
-  update?: SupportFileUseUpdateDataInput;
-  upsert?: SupportFileUseUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: SupportFileUseWhereUniqueInput;
+export interface SupportFileUseUpsertNestedInput {
+  update: SupportFileUseUpdateDataInput;
+  create: SupportFileUseCreateInput;
 }
 
 export interface VideoFileUpdateManyDataInput {
@@ -2568,26 +2595,6 @@ export interface VideoFileUpdateManyDataInput {
   filesize?: Float;
 }
 
-export interface SupportFileUseUpdateDataInput {
-  name?: String;
-}
-
-export interface VideoFileUpdateManyWithWhereNestedInput {
-  where: VideoFileScalarWhereInput;
-  data: VideoFileUpdateManyDataInput;
-}
-
-export interface SupportFileUseUpsertNestedInput {
-  update: SupportFileUseUpdateDataInput;
-  create: SupportFileUseCreateInput;
-}
-
-export interface VideoFileUpsertWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  update: VideoFileUpdateDataInput;
-  create: VideoFileCreateInput;
-}
-
 export interface SupportFileUpdateManyMutationInput {
   url?: String;
   md5?: String;
@@ -2596,12 +2603,31 @@ export interface SupportFileUpdateManyMutationInput {
   filesize?: Float;
 }
 
+export interface VideoFileUpdateManyWithWhereNestedInput {
+  where: VideoFileScalarWhereInput;
+  data: VideoFileUpdateManyDataInput;
+}
+
+export interface SupportFileUseUpdateInput {
+  name?: String;
+}
+
+export interface VideoFileUpsertWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  update: VideoFileUpdateDataInput;
+  create: VideoFileCreateInput;
+}
+
+export interface SupportFileUseUpdateManyMutationInput {
+  name?: String;
+}
+
 export type VideoStreamWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface SupportFileUseUpdateInput {
-  name?: String;
+export interface TagCreateInput {
+  translations?: LanguageTranslationCreateManyInput;
 }
 
 export interface VideoFileUpdateManyInput {
@@ -2622,16 +2648,20 @@ export interface VideoFileUpdateManyInput {
     | VideoFileUpdateManyWithWhereNestedInput;
 }
 
-export interface SupportFileUseUpdateManyMutationInput {
-  name?: String;
+export interface TagUpdateInput {
+  translations?: LanguageTranslationUpdateManyInput;
 }
 
 export type VideoUnitWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface TagCreateInput {
-  translations?: LanguageTranslationCreateManyInput;
+export interface TeamCreateInput {
+  name: String;
+  organization: String;
+  members?: UserCreateManyWithoutTeamInput;
+  contentTypes?: TeamCreatecontentTypesInput;
+  isConfirmed?: Boolean;
 }
 
 export interface VideoUnitUpdateManyInput {
@@ -2652,52 +2682,15 @@ export interface VideoUnitUpdateManyInput {
     | VideoUnitUpdateManyWithWhereNestedInput;
 }
 
-export interface TagUpdateInput {
-  translations?: LanguageTranslationUpdateManyInput;
+export interface UserCreateManyWithoutTeamInput {
+  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
 }
 
 export type VideoUseWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   name?: String;
 }>;
-
-export interface TeamCreateInput {
-  name: String;
-  organization: String;
-  members?: UserCreateManyWithoutTeamInput;
-  contentTypes?: TeamCreatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface TeamUpdateDataInput {
-  name?: String;
-  organization?: String;
-  members?: UserUpdateManyWithoutTeamInput;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface UserCreateManyWithoutTeamInput {
-  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-}
-
-export interface VideoProjectUpdateInput {
-  projectType?: String;
-  projectTitle?: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  team?: TeamUpdateOneInput;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  protectImages?: Boolean;
-  units?: VideoUnitUpdateManyInput;
-  supportFiles?: SupportFileUpdateManyInput;
-  thumbnails?: ImageFileUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  tags?: TagUpdateManyInput;
-}
 
 export interface UserCreateWithoutTeamInput {
   firstName: String;
@@ -2714,38 +2707,29 @@ export interface UserCreateWithoutTeamInput {
   isConfirmed?: Boolean;
 }
 
-export interface ImageUseWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
+export interface TeamUpdateDataInput {
   name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: ImageUseWhereInput[] | ImageUseWhereInput;
-  OR?: ImageUseWhereInput[] | ImageUseWhereInput;
-  NOT?: ImageUseWhereInput[] | ImageUseWhereInput;
+  organization?: String;
+  members?: UserUpdateManyWithoutTeamInput;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface TeamCreatecontentTypesInput {
+  set?: ContentType[] | ContentType;
+}
+
+export interface CategoryCreateInput {
+  translations?: LanguageTranslationCreateManyInput;
 }
 
 export interface ImageFileWhereInput {
@@ -2885,124 +2869,7 @@ export interface ImageFileWhereInput {
   NOT?: ImageFileWhereInput[] | ImageFileWhereInput;
 }
 
-export interface VideoProjectSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoProjectWhereInput;
-  AND?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-  OR?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-  NOT?:
-    | VideoProjectSubscriptionWhereInput[]
-    | VideoProjectSubscriptionWhereInput;
-}
-
-export interface TeamCreatecontentTypesInput {
-  set?: ContentType[] | ContentType;
-}
-
-export interface ThumbnailSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ThumbnailWhereInput;
-  AND?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-  OR?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-  NOT?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
-}
-
-export interface TeamUpdateInput {
-  name?: String;
-  organization?: String;
-  members?: UserUpdateManyWithoutTeamInput;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface TagSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TagWhereInput;
-  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-}
-
-export interface UserUpdateManyWithoutTeamInput {
-  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
-  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  set?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
-  update?:
-    | UserUpdateWithWhereUniqueWithoutTeamInput[]
-    | UserUpdateWithWhereUniqueWithoutTeamInput;
-  upsert?:
-    | UserUpsertWithWhereUniqueWithoutTeamInput[]
-    | UserUpsertWithWhereUniqueWithoutTeamInput;
-  deleteMany?: UserScalarWhereInput[] | UserScalarWhereInput;
-  updateMany?:
-    | UserUpdateManyWithWhereNestedInput[]
-    | UserUpdateManyWithWhereNestedInput;
-}
-
-export interface LanguageTranslationSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: LanguageTranslationWhereInput;
-  AND?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-  OR?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-  NOT?:
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput;
-}
-
-export interface UserUpdateWithWhereUniqueWithoutTeamInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutTeamDataInput;
-}
-
-export interface ImageFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ImageFileWhereInput;
-  AND?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-  OR?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-  NOT?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
-}
-
-export interface UserUpdateWithoutTeamDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
-}
-
-export interface SupportFileUseWhereInput {
+export interface ImageUseWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -3031,23 +2898,107 @@ export interface SupportFileUseWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  AND?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
-  OR?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
-  NOT?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+  AND?: ImageUseWhereInput[] | ImageUseWhereInput;
+  OR?: ImageUseWhereInput[] | ImageUseWhereInput;
+  NOT?: ImageUseWhereInput[] | ImageUseWhereInput;
+}
+
+export interface UserUpdateManyWithoutTeamInput {
+  create?: UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput;
+  delete?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  connect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  set?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  disconnect?: UserWhereUniqueInput[] | UserWhereUniqueInput;
+  update?:
+    | UserUpdateWithWhereUniqueWithoutTeamInput[]
+    | UserUpdateWithWhereUniqueWithoutTeamInput;
+  upsert?:
+    | UserUpsertWithWhereUniqueWithoutTeamInput[]
+    | UserUpsertWithWhereUniqueWithoutTeamInput;
+  deleteMany?: UserScalarWhereInput[] | UserScalarWhereInput;
+  updateMany?:
+    | UserUpdateManyWithWhereNestedInput[]
+    | UserUpdateManyWithWhereNestedInput;
+}
+
+export interface VideoProjectSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoProjectWhereInput;
+  AND?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+  OR?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+  NOT?:
+    | VideoProjectSubscriptionWhereInput[]
+    | VideoProjectSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutTeamDataInput;
+}
+
+export interface ThumbnailSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ThumbnailWhereInput;
+  AND?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+  OR?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+  NOT?: ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput;
+}
+
+export interface UserUpdateWithoutTeamDataInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TagWhereInput;
+  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
 }
 
 export interface UserUpdatepermissionsInput {
   set?: Permission[] | Permission;
 }
 
-export interface VideoUnitUpdateInput {
-  language?: LanguageUpdateOneInput;
-  title?: String;
-  descPublic?: String;
-  files?: VideoFileUpdateManyInput;
-  tags?: TagUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  thumbnails?: ThumbnailUpdateManyInput;
+export interface LanguageTranslationSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: LanguageTranslationWhereInput;
+  AND?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
+  OR?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
+  NOT?:
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput;
 }
 
 export interface UserUpsertWithWhereUniqueWithoutTeamInput {
@@ -3056,15 +3007,15 @@ export interface UserUpsertWithWhereUniqueWithoutTeamInput {
   create: UserCreateWithoutTeamInput;
 }
 
-export interface VideoProjectUpdateManyMutationInput {
-  projectType?: String;
-  projectTitle?: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  protectImages?: Boolean;
+export interface ImageFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ImageFileWhereInput;
+  AND?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
+  OR?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
+  NOT?: ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput;
 }
 
 export interface UserScalarWhereInput {
@@ -3223,6 +3174,84 @@ export interface UserScalarWhereInput {
   NOT?: UserScalarWhereInput[] | UserScalarWhereInput;
 }
 
+export interface SupportFileUseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+  OR?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+  NOT?: SupportFileUseWhereInput[] | SupportFileUseWhereInput;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
+}
+
+export interface VideoUnitUpdateInput {
+  language?: LanguageUpdateOneInput;
+  title?: String;
+  descPublic?: String;
+  files?: VideoFileUpdateManyInput;
+  tags?: TagUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  thumbnails?: ThumbnailUpdateManyInput;
+}
+
+export interface UserUpdateManyDataInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserUpdatepermissionsInput;
+  isConfirmed?: Boolean;
+}
+
+export interface VideoProjectUpdateManyMutationInput {
+  projectType?: String;
+  projectTitle?: String;
+  descPublic?: String;
+  descInternal?: String;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+}
+
+export interface TeamUpdatecontentTypesInput {
+  set?: ContentType[] | ContentType;
+}
+
 export interface TagWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -3246,9 +3275,11 @@ export interface TagWhereInput {
   NOT?: TagWhereInput[] | TagWhereInput;
 }
 
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
+export interface TeamUpdateManyMutationInput {
+  name?: String;
+  organization?: String;
+  contentTypes?: TeamUpdatecontentTypesInput;
+  isConfirmed?: Boolean;
 }
 
 export interface ImageFileUpdateManyInput {
@@ -3269,19 +3300,9 @@ export interface ImageFileUpdateManyInput {
     | ImageFileUpdateManyWithWhereNestedInput;
 }
 
-export interface UserUpdateManyDataInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
+export interface ThumbnailCreateInput {
+  size?: ThumbnailSize;
+  image?: ImageFileCreateOneInput;
 }
 
 export interface TeamWhereInput {
@@ -3337,19 +3358,18 @@ export interface TeamWhereInput {
   NOT?: TeamWhereInput[] | TeamWhereInput;
 }
 
-export interface TeamUpdatecontentTypesInput {
-  set?: ContentType[] | ContentType;
+export interface ImageFileCreateOneInput {
+  create?: ImageFileCreateInput;
+  connect?: ImageFileWhereUniqueInput;
 }
 
 export type DimensionsWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface TeamUpdateManyMutationInput {
-  name?: String;
-  organization?: String;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
+export interface ThumbnailUpdateInput {
+  size?: ThumbnailSize;
+  image?: ImageFileUpdateOneInput;
 }
 
 export interface SupportFileUpdateManyInput {
@@ -3370,9 +3390,13 @@ export interface SupportFileUpdateManyInput {
     | SupportFileUpdateManyWithWhereNestedInput;
 }
 
-export interface ThumbnailCreateInput {
-  size?: ThumbnailSize;
-  image?: ImageFileCreateOneInput;
+export interface ImageFileUpdateOneInput {
+  create?: ImageFileCreateInput;
+  update?: ImageFileUpdateDataInput;
+  upsert?: ImageFileUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ImageFileWhereUniqueInput;
 }
 
 export interface ThumbnailWhereInput {
@@ -3400,9 +3424,17 @@ export interface ThumbnailWhereInput {
   NOT?: ThumbnailWhereInput[] | ThumbnailWhereInput;
 }
 
-export interface ImageFileCreateOneInput {
-  create?: ImageFileCreateInput;
-  connect?: ImageFileWhereUniqueInput;
+export interface ImageFileUpdateDataInput {
+  language?: LanguageUpdateOneInput;
+  dimensions?: DimensionsUpdateOneInput;
+  alt?: String;
+  longdesc?: String;
+  caption?: String;
+  filename?: String;
+  filetype?: String;
+  use?: ImageUseUpdateOneInput;
+  md5?: String;
+  url?: String;
 }
 
 export interface ThumbnailUpdateManyWithWhereNestedInput {
@@ -3410,9 +3442,9 @@ export interface ThumbnailUpdateManyWithWhereNestedInput {
   data: ThumbnailUpdateManyDataInput;
 }
 
-export interface ThumbnailUpdateInput {
-  size?: ThumbnailSize;
-  image?: ImageFileUpdateOneInput;
+export interface ImageFileUpsertNestedInput {
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
 }
 
 export interface ThumbnailUpdateDataInput {
@@ -3420,13 +3452,8 @@ export interface ThumbnailUpdateDataInput {
   image?: ImageFileUpdateOneInput;
 }
 
-export interface ImageFileUpdateOneInput {
-  create?: ImageFileCreateInput;
-  update?: ImageFileUpdateDataInput;
-  upsert?: ImageFileUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: ImageFileWhereUniqueInput;
+export interface ThumbnailUpdateManyMutationInput {
+  size?: ThumbnailSize;
 }
 
 export interface CategoryScalarWhereInput {
@@ -3449,26 +3476,29 @@ export interface CategoryScalarWhereInput {
   NOT?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
 }
 
-export interface ImageFileUpdateDataInput {
-  language?: LanguageUpdateOneInput;
-  dimensions?: DimensionsUpdateOneInput;
-  alt?: String;
-  longdesc?: String;
-  caption?: String;
-  filename?: String;
-  filetype?: String;
-  use?: ImageUseUpdateOneInput;
-  md5?: String;
-  url?: String;
+export interface UserCreateInput {
+  firstName: String;
+  lastName: String;
+  email: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions?: UserCreatepermissionsInput;
+  team?: TeamCreateOneWithoutMembersInput;
+  isConfirmed?: Boolean;
 }
 
 export interface CategoryUpdateDataInput {
   translations?: LanguageTranslationUpdateManyInput;
 }
 
-export interface ImageFileUpsertNestedInput {
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
+export interface TeamCreateOneWithoutMembersInput {
+  create?: TeamCreateWithoutMembersInput;
+  connect?: TeamWhereUniqueInput;
 }
 
 export interface CategoryUpdateManyInput {
@@ -3486,18 +3516,21 @@ export interface CategoryUpdateManyInput {
   deleteMany?: CategoryScalarWhereInput[] | CategoryScalarWhereInput;
 }
 
-export interface ThumbnailUpdateManyMutationInput {
-  size?: ThumbnailSize;
+export interface TeamCreateWithoutMembersInput {
+  name: String;
+  organization: String;
+  contentTypes?: TeamCreatecontentTypesInput;
+  isConfirmed?: Boolean;
 }
 
 export interface TagUpdateDataInput {
   translations?: LanguageTranslationUpdateManyInput;
 }
 
-export interface UserCreateInput {
-  firstName: String;
-  lastName: String;
-  email: String;
+export interface UserUpdateInput {
+  firstName?: String;
+  lastName?: String;
+  email?: String;
   password?: String;
   tempToken?: String;
   tempTokenExpiry?: Float;
@@ -3505,8 +3538,8 @@ export interface UserCreateInput {
   country?: String;
   city?: String;
   howHeard?: String;
-  permissions?: UserCreatepermissionsInput;
-  team?: TeamCreateOneWithoutMembersInput;
+  permissions?: UserUpdatepermissionsInput;
+  team?: TeamUpdateOneWithoutMembersInput;
   isConfirmed?: Boolean;
 }
 
@@ -3590,8 +3623,12 @@ export interface LanguageWhereInput {
   NOT?: LanguageWhereInput[] | LanguageWhereInput;
 }
 
-export interface TeamCreateOneWithoutMembersInput {
+export interface TeamUpdateOneWithoutMembersInput {
   create?: TeamCreateWithoutMembersInput;
+  update?: TeamUpdateWithoutMembersDataInput;
+  upsert?: TeamUpsertWithoutMembersInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
   connect?: TeamWhereUniqueInput;
 }
 
@@ -3719,10 +3756,10 @@ export interface VideoFileScalarWhereInput {
   NOT?: VideoFileScalarWhereInput[] | VideoFileScalarWhereInput;
 }
 
-export interface TeamCreateWithoutMembersInput {
-  name: String;
-  organization: String;
-  contentTypes?: TeamCreatecontentTypesInput;
+export interface TeamUpdateWithoutMembersDataInput {
+  name?: String;
+  organization?: String;
+  contentTypes?: TeamUpdatecontentTypesInput;
   isConfirmed?: Boolean;
 }
 
@@ -3731,7 +3768,17 @@ export interface VideoFileUpdateWithWhereUniqueNestedInput {
   data: VideoFileUpdateDataInput;
 }
 
-export interface UserUpdateInput {
+export interface TeamUpsertWithoutMembersInput {
+  update: TeamUpdateWithoutMembersDataInput;
+  create: TeamCreateWithoutMembersInput;
+}
+
+export interface VideoUnitUpdateWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  data: VideoUnitUpdateDataInput;
+}
+
+export interface UserUpdateManyMutationInput {
   firstName?: String;
   lastName?: String;
   email?: String;
@@ -3743,22 +3790,7 @@ export interface UserUpdateInput {
   city?: String;
   howHeard?: String;
   permissions?: UserUpdatepermissionsInput;
-  team?: TeamUpdateOneWithoutMembersInput;
   isConfirmed?: Boolean;
-}
-
-export interface VideoUnitUpdateWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  data: VideoUnitUpdateDataInput;
-}
-
-export interface TeamUpdateOneWithoutMembersInput {
-  create?: TeamCreateWithoutMembersInput;
-  update?: TeamUpdateWithoutMembersDataInput;
-  upsert?: TeamUpsertWithoutMembersInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: TeamWhereUniqueInput;
 }
 
 export interface LanguageTranslationWhereInput {
@@ -3796,66 +3828,6 @@ export interface LanguageTranslationWhereInput {
   NOT?: LanguageTranslationWhereInput[] | LanguageTranslationWhereInput;
 }
 
-export interface TeamUpdateWithoutMembersDataInput {
-  name?: String;
-  organization?: String;
-  contentTypes?: TeamUpdatecontentTypesInput;
-  isConfirmed?: Boolean;
-}
-
-export interface VideoFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoFileWhereInput;
-  AND?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-  OR?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-  NOT?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
-}
-
-export interface TeamUpsertWithoutMembersInput {
-  update: TeamUpdateWithoutMembersDataInput;
-  create: TeamCreateWithoutMembersInput;
-}
-
-export interface SupportFileSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: SupportFileWhereInput;
-  AND?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-  OR?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-  NOT?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: String;
-  lastName?: String;
-  email?: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions?: UserUpdatepermissionsInput;
-  isConfirmed?: Boolean;
-}
-
-export interface CategorySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CategoryWhereInput;
-  AND?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-  OR?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-  NOT?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
-}
-
 export interface VideoFileCreateInput {
   language?: LanguageCreateOneInput;
   filetype?: String;
@@ -3872,10 +3844,15 @@ export interface VideoFileCreateInput {
   stream?: VideoStreamCreateManyInput;
 }
 
-export interface VideoStreamUpdateManyMutationInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
+export interface VideoUnitSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoUnitWhereInput;
+  AND?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
+  OR?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
+  NOT?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
 }
 
 export interface VideoUseCreateOneInput {
@@ -3883,19 +3860,24 @@ export interface VideoUseCreateOneInput {
   connect?: VideoUseWhereUniqueInput;
 }
 
-export interface ImageFileUpsertWithWhereUniqueNestedInput {
-  where: ImageFileWhereUniqueInput;
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
-}
+export type LanguageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  locale?: String;
+}>;
 
 export interface VideoUseCreateInput {
   name: String;
 }
 
-export interface SupportFileUpdateManyWithWhereNestedInput {
-  where: SupportFileScalarWhereInput;
-  data: SupportFileUpdateManyDataInput;
+export interface ImageUseSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ImageUseWhereInput;
+  AND?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
+  OR?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
+  NOT?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
 }
 
 export interface VideoStreamCreateManyInput {
@@ -3903,15 +3885,317 @@ export interface VideoStreamCreateManyInput {
   connect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
 }
 
-export interface VideoUnitUpdateManyDataInput {
-  title?: String;
-  descPublic?: String;
+export interface VideoUseUpdateInput {
+  name?: String;
 }
 
 export interface VideoStreamCreateInput {
   site?: String;
   url?: String;
   embedUrl?: String;
+}
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface VideoFileUpdateInput {
+  language?: LanguageUpdateOneInput;
+  filetype?: String;
+  filename?: String;
+  use?: VideoUseUpdateOneInput;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+  dimensions?: DimensionsUpdateOneInput;
+  stream?: VideoStreamUpdateManyInput;
+}
+
+export interface SupportFileUpdateManyDataInput {
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+}
+
+export interface VideoUseUpdateOneInput {
+  create?: VideoUseCreateInput;
+  update?: VideoUseUpdateDataInput;
+  upsert?: VideoUseUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: VideoUseWhereUniqueInput;
+}
+
+export interface SupportFileUpdateDataInput {
+  language?: LanguageUpdateOneRequiredInput;
+  url?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  use?: SupportFileUseUpdateOneInput;
+}
+
+export interface VideoUseUpdateDataInput {
+  name?: String;
+}
+
+export interface VideoUnitUpsertWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  update: VideoUnitUpdateDataInput;
+  create: VideoUnitCreateInput;
+}
+
+export interface VideoUseUpsertNestedInput {
+  update: VideoUseUpdateDataInput;
+  create: VideoUseCreateInput;
+}
+
+export interface ThumbnailUpdateWithWhereUniqueNestedInput {
+  where: ThumbnailWhereUniqueInput;
+  data: ThumbnailUpdateDataInput;
+}
+
+export interface VideoStreamUpdateManyInput {
+  create?: VideoStreamCreateInput[] | VideoStreamCreateInput;
+  update?:
+    | VideoStreamUpdateWithWhereUniqueNestedInput[]
+    | VideoStreamUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | VideoStreamUpsertWithWhereUniqueNestedInput[]
+    | VideoStreamUpsertWithWhereUniqueNestedInput;
+  delete?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  connect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  set?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  disconnect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
+  deleteMany?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  updateMany?:
+    | VideoStreamUpdateManyWithWhereNestedInput[]
+    | VideoStreamUpdateManyWithWhereNestedInput;
+}
+
+export interface VideoUseWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: VideoUseWhereInput[] | VideoUseWhereInput;
+  OR?: VideoUseWhereInput[] | VideoUseWhereInput;
+  NOT?: VideoUseWhereInput[] | VideoUseWhereInput;
+}
+
+export interface VideoStreamUpdateWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput;
+  data: VideoStreamUpdateDataInput;
+}
+
+export interface TagUpdateManyInput {
+  create?: TagCreateInput[] | TagCreateInput;
+  update?:
+    | TagUpdateWithWhereUniqueNestedInput[]
+    | TagUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | TagUpsertWithWhereUniqueNestedInput[]
+    | TagUpsertWithWhereUniqueNestedInput;
+  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  set?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  deleteMany?: TagScalarWhereInput[] | TagScalarWhereInput;
+}
+
+export interface VideoStreamUpdateDataInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoFileUpdateDataInput {
+  language?: LanguageUpdateOneInput;
+  filetype?: String;
+  filename?: String;
+  use?: VideoUseUpdateOneInput;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+  dimensions?: DimensionsUpdateOneInput;
+  stream?: VideoStreamUpdateManyInput;
+}
+
+export interface VideoStreamUpsertWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput;
+  update: VideoStreamUpdateDataInput;
+  create: VideoStreamCreateInput;
+}
+
+export interface TeamUpsertNestedInput {
+  update: TeamUpdateDataInput;
+  create: TeamCreateInput;
+}
+
+export interface VideoStreamScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  site?: String;
+  site_not?: String;
+  site_in?: String[] | String;
+  site_not_in?: String[] | String;
+  site_lt?: String;
+  site_lte?: String;
+  site_gt?: String;
+  site_gte?: String;
+  site_contains?: String;
+  site_not_contains?: String;
+  site_starts_with?: String;
+  site_not_starts_with?: String;
+  site_ends_with?: String;
+  site_not_ends_with?: String;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  embedUrl?: String;
+  embedUrl_not?: String;
+  embedUrl_in?: String[] | String;
+  embedUrl_not_in?: String[] | String;
+  embedUrl_lt?: String;
+  embedUrl_lte?: String;
+  embedUrl_gt?: String;
+  embedUrl_gte?: String;
+  embedUrl_contains?: String;
+  embedUrl_not_contains?: String;
+  embedUrl_starts_with?: String;
+  embedUrl_not_starts_with?: String;
+  embedUrl_ends_with?: String;
+  embedUrl_not_ends_with?: String;
+  AND?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  OR?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+  NOT?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
+}
+
+export interface LanguageTranslationCreateManyInput {
+  create?: LanguageTranslationCreateInput[] | LanguageTranslationCreateInput;
+  connect?:
+    | LanguageTranslationWhereUniqueInput[]
+    | LanguageTranslationWhereUniqueInput;
+}
+
+export interface VideoStreamUpdateManyWithWhereNestedInput {
+  where: VideoStreamScalarWhereInput;
+  data: VideoStreamUpdateManyDataInput;
+}
+
+export interface SupportFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SupportFileWhereInput;
+  AND?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+  OR?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+  NOT?: SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput;
+}
+
+export interface VideoStreamUpdateManyDataInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoStreamUpdateManyMutationInput {
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoFileUpdateManyMutationInput {
+  filetype?: String;
+  filename?: String;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+}
+
+export interface SupportFileUpdateManyWithWhereNestedInput {
+  where: SupportFileScalarWhereInput;
+  data: SupportFileUpdateManyDataInput;
+}
+
+export interface VideoProjectCreateInput {
+  projectType: String;
+  projectTitle: String;
+  descPublic?: String;
+  descInternal?: String;
+  author?: UserCreateOneInput;
+  team?: TeamCreateOneInput;
+  status?: ProjectPublishStatus;
+  visibility?: ProjectVisibility;
+  protectImages?: Boolean;
+  units?: VideoUnitCreateManyInput;
+  supportFiles?: SupportFileCreateManyInput;
+  thumbnails?: ImageFileCreateManyInput;
+  categories?: CategoryCreateManyInput;
+  tags?: TagCreateManyInput;
 }
 
 export interface ThumbnailScalarWhereInput {
@@ -3938,20 +4222,67 @@ export interface ThumbnailScalarWhereInput {
   NOT?: ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput;
 }
 
-export interface VideoFileUpdateInput {
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface TagUpsertWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateDataInput;
+  create: TagCreateInput;
+}
+
+export interface TeamCreateOneInput {
+  create?: TeamCreateInput;
+  connect?: TeamWhereUniqueInput;
+}
+
+export interface VideoUnitUpdateDataInput {
   language?: LanguageUpdateOneInput;
-  filetype?: String;
-  filename?: String;
-  use?: VideoUseUpdateOneInput;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-  dimensions?: DimensionsUpdateOneInput;
-  stream?: VideoStreamUpdateManyInput;
+  title?: String;
+  descPublic?: String;
+  files?: VideoFileUpdateManyInput;
+  tags?: TagUpdateManyInput;
+  categories?: CategoryUpdateManyInput;
+  thumbnails?: ThumbnailUpdateManyInput;
+}
+
+export interface VideoUnitCreateManyInput {
+  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
+  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
+}
+
+export interface VideoFileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VideoFileWhereInput;
+  AND?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+  OR?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+  NOT?: VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput;
+}
+
+export interface VideoUnitCreateInput {
+  language?: LanguageCreateOneInput;
+  title: String;
+  descPublic?: String;
+  files?: VideoFileCreateManyInput;
+  tags?: TagCreateManyInput;
+  categories?: CategoryCreateManyInput;
+  thumbnails?: ThumbnailCreateManyInput;
+}
+
+export interface ImageFileUpsertWithWhereUniqueNestedInput {
+  where: ImageFileWhereUniqueInput;
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
+}
+
+export interface VideoFileCreateManyInput {
+  create?: VideoFileCreateInput[] | VideoFileCreateInput;
+  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
 }
 
 export interface VideoStreamWhereInput {
@@ -4016,23 +4347,24 @@ export interface VideoStreamWhereInput {
   NOT?: VideoStreamWhereInput[] | VideoStreamWhereInput;
 }
 
-export interface VideoUseUpdateOneInput {
-  create?: VideoUseCreateInput;
-  update?: VideoUseUpdateDataInput;
-  upsert?: VideoUseUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: VideoUseWhereUniqueInput;
+export interface SupportFileCreateManyInput {
+  create?: SupportFileCreateInput[] | SupportFileCreateInput;
+  connect?: SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput;
 }
 
-export interface TagUpsertWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateDataInput;
-  create: TagCreateInput;
+export interface ThumbnailCreateManyInput {
+  create?: ThumbnailCreateInput[] | ThumbnailCreateInput;
+  connect?: ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput;
 }
 
-export interface VideoUseUpdateDataInput {
-  name?: String;
+export interface CategoryCreateManyInput {
+  create?: CategoryCreateInput[] | CategoryCreateInput;
+  connect?: CategoryWhereUniqueInput[] | CategoryWhereUniqueInput;
+}
+
+export interface TagCreateManyInput {
+  create?: TagCreateInput[] | TagCreateInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
 }
 
 export interface VideoProjectWhereInput {
@@ -4122,20 +4454,7 @@ export interface VideoProjectWhereInput {
   descInternal_not_starts_with?: String;
   descInternal_ends_with?: String;
   descInternal_not_ends_with?: String;
-  author?: String;
-  author_not?: String;
-  author_in?: String[] | String;
-  author_not_in?: String[] | String;
-  author_lt?: String;
-  author_lte?: String;
-  author_gt?: String;
-  author_gte?: String;
-  author_contains?: String;
-  author_not_contains?: String;
-  author_starts_with?: String;
-  author_not_starts_with?: String;
-  author_ends_with?: String;
-  author_not_ends_with?: String;
+  author?: UserWhereInput;
   team?: TeamWhereInput;
   status?: ProjectPublishStatus;
   status_not?: ProjectPublishStatus;
@@ -4167,37 +4486,20 @@ export interface VideoProjectWhereInput {
   NOT?: VideoProjectWhereInput[] | VideoProjectWhereInput;
 }
 
-export interface VideoUseUpsertNestedInput {
-  update: VideoUseUpdateDataInput;
-  create: VideoUseCreateInput;
-}
-
-export interface VideoUnitUpdateDataInput {
-  language?: LanguageUpdateOneInput;
+export interface VideoUnitUpdateManyDataInput {
   title?: String;
   descPublic?: String;
-  files?: VideoFileUpdateManyInput;
-  tags?: TagUpdateManyInput;
-  categories?: CategoryUpdateManyInput;
-  thumbnails?: ThumbnailUpdateManyInput;
 }
 
-export interface VideoStreamUpdateManyInput {
-  create?: VideoStreamCreateInput[] | VideoStreamCreateInput;
-  update?:
-    | VideoStreamUpdateWithWhereUniqueNestedInput[]
-    | VideoStreamUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | VideoStreamUpsertWithWhereUniqueNestedInput[]
-    | VideoStreamUpsertWithWhereUniqueNestedInput;
-  delete?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
-  connect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
-  set?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
-  disconnect?: VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput;
-  deleteMany?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
-  updateMany?:
-    | VideoStreamUpdateManyWithWhereNestedInput[]
-    | VideoStreamUpdateManyWithWhereNestedInput;
+export interface CategorySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CategoryWhereInput;
+  AND?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
+  OR?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
+  NOT?: CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput;
 }
 
 export interface TeamUpdateOneInput {
@@ -4207,289 +4509,6 @@ export interface TeamUpdateOneInput {
   delete?: Boolean;
   disconnect?: Boolean;
   connect?: TeamWhereUniqueInput;
-}
-
-export interface VideoStreamUpdateWithWhereUniqueNestedInput {
-  where: VideoStreamWhereUniqueInput;
-  data: VideoStreamUpdateDataInput;
-}
-
-export type LanguageWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  locale?: String;
-}>;
-
-export interface VideoStreamUpdateDataInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export interface VideoUseUpdateInput {
-  name?: String;
-}
-
-export interface VideoStreamUpsertWithWhereUniqueNestedInput {
-  where: VideoStreamWhereUniqueInput;
-  update: VideoStreamUpdateDataInput;
-  create: VideoStreamCreateInput;
-}
-
-export interface SupportFileUpdateManyDataInput {
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-}
-
-export interface VideoStreamScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  site?: String;
-  site_not?: String;
-  site_in?: String[] | String;
-  site_not_in?: String[] | String;
-  site_lt?: String;
-  site_lte?: String;
-  site_gt?: String;
-  site_gte?: String;
-  site_contains?: String;
-  site_not_contains?: String;
-  site_starts_with?: String;
-  site_not_starts_with?: String;
-  site_ends_with?: String;
-  site_not_ends_with?: String;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  embedUrl?: String;
-  embedUrl_not?: String;
-  embedUrl_in?: String[] | String;
-  embedUrl_not_in?: String[] | String;
-  embedUrl_lt?: String;
-  embedUrl_lte?: String;
-  embedUrl_gt?: String;
-  embedUrl_gte?: String;
-  embedUrl_contains?: String;
-  embedUrl_not_contains?: String;
-  embedUrl_starts_with?: String;
-  embedUrl_not_starts_with?: String;
-  embedUrl_ends_with?: String;
-  embedUrl_not_ends_with?: String;
-  AND?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
-  OR?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
-  NOT?: VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput;
-}
-
-export interface VideoUnitUpsertWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  update: VideoUnitUpdateDataInput;
-  create: VideoUnitCreateInput;
-}
-
-export interface VideoStreamUpdateManyWithWhereNestedInput {
-  where: VideoStreamScalarWhereInput;
-  data: VideoStreamUpdateManyDataInput;
-}
-
-export interface VideoUseWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: VideoUseWhereInput[] | VideoUseWhereInput;
-  OR?: VideoUseWhereInput[] | VideoUseWhereInput;
-  NOT?: VideoUseWhereInput[] | VideoUseWhereInput;
-}
-
-export interface VideoStreamUpdateManyDataInput {
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export interface VideoFileUpdateDataInput {
-  language?: LanguageUpdateOneInput;
-  filetype?: String;
-  filename?: String;
-  use?: VideoUseUpdateOneInput;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-  dimensions?: DimensionsUpdateOneInput;
-  stream?: VideoStreamUpdateManyInput;
-}
-
-export interface VideoFileUpdateManyMutationInput {
-  filetype?: String;
-  filename?: String;
-  quality?: VideoQuality;
-  videoBurnedInStatus?: VideoBurnedInStatus;
-  url?: String;
-  md5?: String;
-  duration?: Float;
-  bitrate?: Float;
-  filesize?: Float;
-}
-
-export interface VideoUnitSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: VideoUnitWhereInput;
-  AND?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-  OR?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-  NOT?: VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput;
-}
-
-export interface VideoProjectCreateInput {
-  projectType: String;
-  projectTitle: String;
-  descPublic?: String;
-  descInternal?: String;
-  author?: String;
-  team?: TeamCreateOneInput;
-  status?: ProjectPublishStatus;
-  visibility?: ProjectVisibility;
-  protectImages?: Boolean;
-  units?: VideoUnitCreateManyInput;
-  supportFiles?: SupportFileCreateManyInput;
-  thumbnails?: ImageFileCreateManyInput;
-  categories?: CategoryCreateManyInput;
-  tags?: TagCreateManyInput;
-}
-
-export type TagWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface TeamCreateOneInput {
-  create?: TeamCreateInput;
-  connect?: TeamWhereUniqueInput;
-}
-
-export interface ThumbnailUpdateWithWhereUniqueNestedInput {
-  where: ThumbnailWhereUniqueInput;
-  data: ThumbnailUpdateDataInput;
-}
-
-export interface TagCreateManyInput {
-  create?: TagCreateInput[] | TagCreateInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-}
-
-export interface VideoFileCreateManyInput {
-  create?: VideoFileCreateInput[] | VideoFileCreateInput;
-  connect?: VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput;
-}
-
-export interface VideoUnitCreateInput {
-  language?: LanguageCreateOneInput;
-  title: String;
-  descPublic?: String;
-  files?: VideoFileCreateManyInput;
-  tags?: TagCreateManyInput;
-  categories?: CategoryCreateManyInput;
-  thumbnails?: ThumbnailCreateManyInput;
-}
-
-export interface VideoUnitCreateManyInput {
-  create?: VideoUnitCreateInput[] | VideoUnitCreateInput;
-  connect?: VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput;
-}
-
-export interface TagUpdateManyInput {
-  create?: TagCreateInput[] | TagCreateInput;
-  update?:
-    | TagUpdateWithWhereUniqueNestedInput[]
-    | TagUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | TagUpsertWithWhereUniqueNestedInput[]
-    | TagUpsertWithWhereUniqueNestedInput;
-  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  set?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
-  deleteMany?: TagScalarWhereInput[] | TagScalarWhereInput;
-}
-
-export interface SupportFileUpdateDataInput {
-  language?: LanguageUpdateOneRequiredInput;
-  url?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-  use?: SupportFileUseUpdateOneInput;
-}
-
-export interface ImageUseSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ImageUseWhereInput;
-  AND?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-  OR?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-  NOT?: ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput;
-}
-
-export interface TeamUpsertNestedInput {
-  update: TeamUpdateDataInput;
-  create: TeamCreateInput;
 }
 
 export interface NodeNode {
@@ -4947,7 +4966,6 @@ export interface VideoProject {
   projectTitle: String;
   descPublic?: String;
   descInternal?: String;
-  author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
   protectImages?: Boolean;
@@ -4963,7 +4981,7 @@ export interface VideoProjectPromise
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
   descInternal: () => Promise<String>;
-  author: () => Promise<String>;
+  author: <T = UserPromise>() => T;
   team: <T = TeamPromise>() => T;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
@@ -5035,7 +5053,7 @@ export interface VideoProjectSubscription
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
   descInternal: () => Promise<AsyncIterator<String>>;
-  author: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
   team: <T = TeamSubscription>() => T;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
@@ -7035,7 +7053,6 @@ export interface VideoProjectPreviousValues {
   projectTitle: String;
   descPublic?: String;
   descInternal?: String;
-  author?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
   protectImages?: Boolean;
@@ -7051,7 +7068,6 @@ export interface VideoProjectPreviousValuesPromise
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
   descInternal: () => Promise<String>;
-  author: () => Promise<String>;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
   protectImages: () => Promise<Boolean>;
@@ -7067,7 +7083,6 @@ export interface VideoProjectPreviousValuesSubscription
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
   descInternal: () => Promise<AsyncIterator<String>>;
-  author: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
   protectImages: () => Promise<AsyncIterator<Boolean>>;

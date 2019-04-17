@@ -2588,6 +2588,11 @@ input UserCreateManyWithoutTeamInput {
   connect: [UserWhereUniqueInput!]
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreatepermissionsInput {
   set: [Permission!]
 }
@@ -2833,6 +2838,22 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  tempToken: String
+  tempTokenExpiry: Float
+  jobTitle: String
+  country: String
+  city: String
+  howHeard: String
+  permissions: UserUpdatepermissionsInput
+  team: TeamUpdateOneWithoutMembersInput
+  isConfirmed: Boolean
+}
+
 input UserUpdateInput {
   firstName: String
   lastName: String
@@ -2896,6 +2917,15 @@ input UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput!
 }
 
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdatepermissionsInput {
   set: [Permission!]
 }
@@ -2918,6 +2948,11 @@ input UserUpdateWithoutTeamDataInput {
 input UserUpdateWithWhereUniqueWithoutTeamInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutTeamDataInput!
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutTeamInput {
@@ -3555,7 +3590,7 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  author: String
+  author: User
   team: Team
   status: ProjectPublishStatus
   visibility: ProjectVisibility
@@ -3578,7 +3613,7 @@ input VideoProjectCreateInput {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  author: String
+  author: UserCreateOneInput
   team: TeamCreateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
@@ -3610,8 +3645,6 @@ enum VideoProjectOrderByInput {
   descPublic_DESC
   descInternal_ASC
   descInternal_DESC
-  author_ASC
-  author_DESC
   status_ASC
   status_DESC
   visibility_ASC
@@ -3628,7 +3661,6 @@ type VideoProjectPreviousValues {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  author: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
   protectImages: Boolean
@@ -3657,7 +3689,7 @@ input VideoProjectUpdateInput {
   projectTitle: String
   descPublic: String
   descInternal: String
-  author: String
+  author: UserUpdateOneInput
   team: TeamUpdateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
@@ -3674,7 +3706,6 @@ input VideoProjectUpdateManyMutationInput {
   projectTitle: String
   descPublic: String
   descInternal: String
-  author: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
   protectImages: Boolean
@@ -3767,20 +3798,7 @@ input VideoProjectWhereInput {
   descInternal_not_starts_with: String
   descInternal_ends_with: String
   descInternal_not_ends_with: String
-  author: String
-  author_not: String
-  author_in: [String!]
-  author_not_in: [String!]
-  author_lt: String
-  author_lte: String
-  author_gt: String
-  author_gte: String
-  author_contains: String
-  author_not_contains: String
-  author_starts_with: String
-  author_not_starts_with: String
-  author_ends_with: String
-  author_not_ends_with: String
+  author: UserWhereInput
   team: TeamWhereInput
   status: ProjectPublishStatus
   status_not: ProjectPublishStatus

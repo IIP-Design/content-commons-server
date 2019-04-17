@@ -121,7 +121,7 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  author: String
+  author: User
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility # what is default?
