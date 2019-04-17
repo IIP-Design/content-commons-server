@@ -249,5 +249,13 @@ export default {
         // throw new ApolloError( 'There is already a user with that email in the system.' );
       }
     }
+  },
+
+  User: {
+    team( parent, args, ctx ) {
+      return ctx.prisma
+        .user( { id: parent.id } )
+        .team( { ...args } );
+    }
   }
 };
