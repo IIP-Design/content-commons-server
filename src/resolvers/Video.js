@@ -577,6 +577,11 @@ export default {
       return ctx.prisma
         .supportFile( { id: parent.id } )
         .language( { ...args } );
+    },
+    use( parent, args, ctx ) {
+      return ctx.prisma
+        .supportFile( { id: parent.id } )
+        .use( { ...args } );
     }
   },
 
