@@ -37,7 +37,7 @@ export default {
     async googleSignin( parent, { token }, ctx ) {
       // 1. Was a google token sent?
       if ( !token ) {
-        throw new AuthenticationError( 'A vaid Google token is not available' );
+        throw new AuthenticationError( 'A valid Google token is not available' );
       }
 
       // 2. Verify that the google token sent is vaild
