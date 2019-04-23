@@ -37,7 +37,7 @@ export default {
     async googleSignin( parent, { token }, ctx ) {
       // 1. Was a google token sent?
       if ( !token ) {
-        throw new AuthenticationError( 'A vaid Google token is not avaialble' );
+        throw new AuthenticationError( 'A vaid Google token is not available' );
       }
 
       // 2. Verify that the google token sent is vaild
@@ -213,10 +213,14 @@ export default {
         email, subject, body, link, reply, page
       } = args;
       try {
-        // 1. check if there is a user with that email
+        // 1. check if there is a user with that email and if they are confirmed.
         const user = await ctx.prisma.user( { email } );
         if ( !user ) {
           throw new AuthenticationError( `No such user found for email ${email}` );
+        }
+
+        if ( !user.isConfirmed ) {
+          throw new AuthenticationError( 'You must confirm your account. Please check your email to confirm your account.' );
         }
 
         // 2. Set a temporary token and expiry on that user for confirmation purposes
