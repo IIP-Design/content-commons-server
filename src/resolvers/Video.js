@@ -1,3 +1,6 @@
+import transformVideo from '../services/es/transform';
+import { VideoProjectFull } from '../schema/fragments.graphql';
+
 export default {
   Query: {
     videoProjects ( parent, args, ctx ) {
@@ -113,6 +116,17 @@ export default {
       return ctx.prisma.updateVideoProject( {
         data,
         where: { id }
+      } );
+    },
+
+    async publishVideoProject( parent, args, ctx ) {
+      const videoProject = await ctx.prisma.videoProject( args ).$fragment( VideoProjectFull );
+      if ( !videoProject ) return { error: 'Video Project not found.' };
+      const esData = transformVideo( videoProject );
+      // TODO: Send transformed data to the public API
+      return ctx.prisma.updateVideoProject( {
+        data: { status: 'PUBLISHING' },
+        where: args
       } );
     },
 
@@ -512,13 +526,17 @@ export default {
         .videoProject( { id: parent.id } )
         .thumbnails( { ...args } );
     },
+
+    createdAt( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: parent.id } ).createdAt();
+    }
   },
 
   VideoUnit: {
     language( parent, args, ctx ) {
       return ctx.prisma
         .videoUnit( { id: parent.id } )
-        .language( { ...args } );
+        .language();
     },
 
     files( parent, args, ctx ) {
@@ -550,7 +568,7 @@ export default {
     language( parent, args, ctx ) {
       return ctx.prisma
         .videoFile( { id: parent.id } )
-        .language( { ...args } );
+        .language();
     },
 
     use( parent, args, ctx ) {
@@ -562,7 +580,7 @@ export default {
     dimensions( parent, args, ctx ) {
       return ctx.prisma
         .videoFile( { id: parent.id } )
-        .dimensions( { ...args } );
+        .dimensions();
     },
 
     stream( parent, args, ctx ) {
@@ -576,12 +594,12 @@ export default {
     language( parent, args, ctx ) {
       return ctx.prisma
         .supportFile( { id: parent.id } )
-        .language( { ...args } );
+        .language();
     },
     use( parent, args, ctx ) {
       return ctx.prisma
         .supportFile( { id: parent.id } )
-        .use( { ...args } );
+        .use();
     }
   },
 
@@ -589,13 +607,13 @@ export default {
     language( parent, args, ctx ) {
       return ctx.prisma
         .imageFile( { id: parent.id } )
-        .language( { ...args } );
+        .language();
     },
 
     dimensions( parent, args, ctx ) {
       return ctx.prisma
         .imageFile( { id: parent.id } )
-        .dimensions( { ...args } );
+        .dimensions();
     },
 
     use( parent, args, ctx ) {
@@ -609,7 +627,7 @@ export default {
     image( parent, args, ctx ) {
       return ctx.prisma
         .thumbnail( { id: parent.id } )
-        .image( { ...args } );
+        .image();
     }
   },
 

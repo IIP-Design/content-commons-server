@@ -21,6 +21,7 @@ type Mutation {
   updateManyVideoProjects(data: VideoProjectUpdateManyMutationInput!, where: VideoProjectWhereInput): BatchPayload!
   deleteVideoProject(id: ID!): VideoProject!
   deleteManyVideoProjects(where: VideoProjectWhereInput): BatchPayload!
+  publishVideoProject(id: ID!): VideoProject
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(data: VideoUnitUpdateInput!, where: VideoUnitWhereUniqueInput!): VideoUnit!

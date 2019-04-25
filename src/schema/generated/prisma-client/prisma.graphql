@@ -72,6 +72,7 @@ type BatchPayload {
 
 type Category {
   id: ID!
+  esId: String
   translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
@@ -82,7 +83,7 @@ type CategoryConnection {
 }
 
 input CategoryCreateInput {
-  id: ID
+  esId: String
   translations: LanguageTranslationCreateManyInput
 }
 
@@ -99,10 +100,13 @@ type CategoryEdge {
 enum CategoryOrderByInput {
   id_ASC
   id_DESC
+  esId_ASC
+  esId_DESC
 }
 
 type CategoryPreviousValues {
   id: ID!
+  esId: String
 }
 
 input CategoryScalarWhereInput {
@@ -120,6 +124,20 @@ input CategoryScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  esId: String
+  esId_not: String
+  esId_in: [String!]
+  esId_not_in: [String!]
+  esId_lt: String
+  esId_lte: String
+  esId_gt: String
+  esId_gte: String
+  esId_contains: String
+  esId_not_contains: String
+  esId_starts_with: String
+  esId_not_starts_with: String
+  esId_ends_with: String
+  esId_not_ends_with: String
   AND: [CategoryScalarWhereInput!]
   OR: [CategoryScalarWhereInput!]
   NOT: [CategoryScalarWhereInput!]
@@ -144,11 +162,17 @@ input CategorySubscriptionWhereInput {
 }
 
 input CategoryUpdateDataInput {
+  esId: String
   translations: LanguageTranslationUpdateManyInput
 }
 
 input CategoryUpdateInput {
+  esId: String
   translations: LanguageTranslationUpdateManyInput
+}
+
+input CategoryUpdateManyDataInput {
+  esId: String
 }
 
 input CategoryUpdateManyInput {
@@ -160,6 +184,16 @@ input CategoryUpdateManyInput {
   set: [CategoryWhereUniqueInput!]
   disconnect: [CategoryWhereUniqueInput!]
   deleteMany: [CategoryScalarWhereInput!]
+  updateMany: [CategoryUpdateManyWithWhereNestedInput!]
+}
+
+input CategoryUpdateManyMutationInput {
+  esId: String
+}
+
+input CategoryUpdateManyWithWhereNestedInput {
+  where: CategoryScalarWhereInput!
+  data: CategoryUpdateManyDataInput!
 }
 
 input CategoryUpdateWithWhereUniqueNestedInput {
@@ -188,6 +222,20 @@ input CategoryWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  esId: String
+  esId_not: String
+  esId_in: [String!]
+  esId_not_in: [String!]
+  esId_lt: String
+  esId_lte: String
+  esId_gt: String
+  esId_gte: String
+  esId_contains: String
+  esId_not_contains: String
+  esId_starts_with: String
+  esId_not_starts_with: String
+  esId_ends_with: String
+  esId_not_ends_with: String
   translations_every: LanguageTranslationWhereInput
   translations_some: LanguageTranslationWhereInput
   translations_none: LanguageTranslationWhereInput
@@ -223,7 +271,6 @@ type DimensionsConnection {
 }
 
 input DimensionsCreateInput {
-  id: ID
   width: Int
   height: Int
 }
@@ -351,7 +398,6 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   use: ImageUse
   md5: String
   url: String
@@ -364,7 +410,6 @@ type ImageFileConnection {
 }
 
 input ImageFileCreateInput {
-  id: ID
   language: LanguageCreateOneInput
   dimensions: DimensionsCreateOneInput
   alt: String
@@ -372,7 +417,6 @@ input ImageFileCreateInput {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   use: ImageUseCreateOneInput
   md5: String
   url: String
@@ -410,8 +454,6 @@ enum ImageFileOrderByInput {
   filename_DESC
   filetype_ASC
   filetype_DESC
-  filesize_ASC
-  filesize_DESC
   md5_ASC
   md5_DESC
   url_ASC
@@ -427,7 +469,6 @@ type ImageFilePreviousValues {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   md5: String
   url: String
 }
@@ -533,14 +574,6 @@ input ImageFileScalarWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
-  filesize: Float
-  filesize_not: Float
-  filesize_in: [Float!]
-  filesize_not_in: [Float!]
-  filesize_lt: Float
-  filesize_lte: Float
-  filesize_gt: Float
-  filesize_gte: Float
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -600,7 +633,6 @@ input ImageFileUpdateDataInput {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -614,7 +646,6 @@ input ImageFileUpdateInput {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -626,7 +657,6 @@ input ImageFileUpdateManyDataInput {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   md5: String
   url: String
 }
@@ -649,7 +679,6 @@ input ImageFileUpdateManyMutationInput {
   caption: String
   filename: String
   filetype: String
-  filesize: Float
   md5: String
   url: String
 }
@@ -787,14 +816,6 @@ input ImageFileWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
-  filesize: Float
-  filesize_not: Float
-  filesize_in: [Float!]
-  filesize_not_in: [Float!]
-  filesize_lt: Float
-  filesize_lte: Float
-  filesize_gt: Float
-  filesize_gte: Float
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -845,7 +866,6 @@ type ImageUseConnection {
 }
 
 input ImageUseCreateInput {
-  id: ID
   name: String!
 }
 
@@ -970,7 +990,6 @@ type LanguageConnection {
 }
 
 input LanguageCreateInput {
-  id: ID
   languageCode: String!
   locale: String!
   textDirection: TextDirection
@@ -1043,7 +1062,6 @@ type LanguageTranslationConnection {
 }
 
 input LanguageTranslationCreateInput {
-  id: ID
   name: String!
   language: LanguageCreateOneInput!
 }
@@ -1342,6 +1360,7 @@ scalar Long
 type Mutation {
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
@@ -1389,6 +1408,7 @@ type Mutation {
   deleteManySupportFileUses(where: SupportFileUseWhereInput): BatchPayload!
   createTag(data: TagCreateInput!): Tag!
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
@@ -1472,10 +1492,6 @@ enum ProjectPublishStatus {
   PUBLISHING
   PUBLISHED
   EMBARGOED
-}
-
-enum ProjectType {
-  LANGUAGE
 }
 
 enum ProjectVisibility {
@@ -1578,7 +1594,6 @@ type SupportFileConnection {
 }
 
 input SupportFileCreateInput {
-  id: ID
   language: LanguageCreateOneInput!
   url: String
   md5: String
@@ -1822,7 +1837,6 @@ type SupportFileUseConnection {
 }
 
 input SupportFileUseCreateInput {
-  id: ID
   name: String!
 }
 
@@ -2039,6 +2053,7 @@ input SupportFileWhereUniqueInput {
 
 type Tag {
   id: ID!
+  esId: String
   translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
@@ -2049,7 +2064,7 @@ type TagConnection {
 }
 
 input TagCreateInput {
-  id: ID
+  esId: String
   translations: LanguageTranslationCreateManyInput
 }
 
@@ -2066,10 +2081,13 @@ type TagEdge {
 enum TagOrderByInput {
   id_ASC
   id_DESC
+  esId_ASC
+  esId_DESC
 }
 
 type TagPreviousValues {
   id: ID!
+  esId: String
 }
 
 input TagScalarWhereInput {
@@ -2087,6 +2105,20 @@ input TagScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  esId: String
+  esId_not: String
+  esId_in: [String!]
+  esId_not_in: [String!]
+  esId_lt: String
+  esId_lte: String
+  esId_gt: String
+  esId_gte: String
+  esId_contains: String
+  esId_not_contains: String
+  esId_starts_with: String
+  esId_not_starts_with: String
+  esId_ends_with: String
+  esId_not_ends_with: String
   AND: [TagScalarWhereInput!]
   OR: [TagScalarWhereInput!]
   NOT: [TagScalarWhereInput!]
@@ -2111,11 +2143,17 @@ input TagSubscriptionWhereInput {
 }
 
 input TagUpdateDataInput {
+  esId: String
   translations: LanguageTranslationUpdateManyInput
 }
 
 input TagUpdateInput {
+  esId: String
   translations: LanguageTranslationUpdateManyInput
+}
+
+input TagUpdateManyDataInput {
+  esId: String
 }
 
 input TagUpdateManyInput {
@@ -2127,6 +2165,16 @@ input TagUpdateManyInput {
   set: [TagWhereUniqueInput!]
   disconnect: [TagWhereUniqueInput!]
   deleteMany: [TagScalarWhereInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+}
+
+input TagUpdateManyMutationInput {
+  esId: String
+}
+
+input TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyDataInput!
 }
 
 input TagUpdateWithWhereUniqueNestedInput {
@@ -2155,6 +2203,20 @@ input TagWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  esId: String
+  esId_not: String
+  esId_in: [String!]
+  esId_not_in: [String!]
+  esId_lt: String
+  esId_lte: String
+  esId_gt: String
+  esId_gte: String
+  esId_contains: String
+  esId_not_contains: String
+  esId_starts_with: String
+  esId_not_starts_with: String
+  esId_ends_with: String
+  esId_not_ends_with: String
   translations_every: LanguageTranslationWhereInput
   translations_some: LanguageTranslationWhereInput
   translations_none: LanguageTranslationWhereInput
@@ -2187,7 +2249,6 @@ input TeamCreatecontentTypesInput {
 }
 
 input TeamCreateInput {
-  id: ID
   name: String!
   organization: String!
   members: UserCreateManyWithoutTeamInput
@@ -2206,7 +2267,6 @@ input TeamCreateOneWithoutMembersInput {
 }
 
 input TeamCreateWithoutMembersInput {
-  id: ID
   name: String!
   organization: String!
   contentTypes: TeamCreatecontentTypesInput
@@ -2393,7 +2453,6 @@ type ThumbnailConnection {
 }
 
 input ThumbnailCreateInput {
-  id: ID
   size: ThumbnailSize
   image: ImageFileCreateOneInput
 }
@@ -2568,7 +2627,6 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  id: ID
   firstName: String!
   lastName: String!
   email: String!
@@ -2599,7 +2657,6 @@ input UserCreatepermissionsInput {
 }
 
 input UserCreateWithoutTeamInput {
-  id: ID
   firstName: String!
   lastName: String!
   email: String!
@@ -3153,7 +3210,6 @@ type VideoFileConnection {
 }
 
 input VideoFileCreateInput {
-  id: ID
   language: LanguageCreateOneInput
   filetype: String
   filename: String
@@ -3585,7 +3641,7 @@ type VideoProject {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: ProjectType!
+  projectType: String!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3608,8 +3664,7 @@ type VideoProjectConnection {
 }
 
 input VideoProjectCreateInput {
-  id: ID
-  projectType: ProjectType
+  projectType: String!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3657,7 +3712,7 @@ type VideoProjectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: ProjectType!
+  projectType: String!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3685,7 +3740,7 @@ input VideoProjectSubscriptionWhereInput {
 }
 
 input VideoProjectUpdateInput {
-  projectType: ProjectType
+  projectType: String
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3702,7 +3757,7 @@ input VideoProjectUpdateInput {
 }
 
 input VideoProjectUpdateManyMutationInput {
-  projectType: ProjectType
+  projectType: String
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3742,10 +3797,20 @@ input VideoProjectWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  projectType: ProjectType
-  projectType_not: ProjectType
-  projectType_in: [ProjectType!]
-  projectType_not_in: [ProjectType!]
+  projectType: String
+  projectType_not: String
+  projectType_in: [String!]
+  projectType_not_in: [String!]
+  projectType_lt: String
+  projectType_lte: String
+  projectType_gt: String
+  projectType_gte: String
+  projectType_contains: String
+  projectType_not_contains: String
+  projectType_starts_with: String
+  projectType_not_starts_with: String
+  projectType_ends_with: String
+  projectType_not_ends_with: String
   projectTitle: String
   projectTitle_not: String
   projectTitle_in: [String!]
@@ -3843,7 +3908,6 @@ type VideoStreamConnection {
 }
 
 input VideoStreamCreateInput {
-  id: ID
   site: String
   url: String
   embedUrl: String
@@ -4095,7 +4159,6 @@ type VideoUnitConnection {
 }
 
 input VideoUnitCreateInput {
-  id: ID
   language: LanguageCreateOneInput
   title: String!
   descPublic: String
@@ -4369,7 +4432,6 @@ type VideoUseConnection {
 }
 
 input VideoUseCreateInput {
-  id: ID
   name: String!
 }
 

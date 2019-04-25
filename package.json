@@ -4,13 +4,14 @@
   "description": "Commons administrative backend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -e js,graphql -x babel-node --inspect src/index.js",
+    "dev": "npm run cc && nodemon -e js,graphql -x babel-node --inspect src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear": "rimraf build",
-    "build": "npm run clear && babel src --out-dir build --source-maps",
+    "build": "npm run clear && npm run cc && babel src --out-dir build --source-maps",
     "start": "node build/index.js",
     "deploy": "npm run build && npm run start",
-    "prisma-deploy": "prisma deploy"
+    "prisma-deploy": "prisma deploy",
+    "cc": "rm -rf ./node_modules/.cache/@babel"
   },
   "author": "",
   "license": "ISC",
@@ -38,6 +39,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-import-graphql": "^2.7.0",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.3.0",
