@@ -18,6 +18,7 @@ const translationFragment = `
 const categoryFragment = `
   fragment CategoryWithTranslations on Category {
     id
+    esId
     translations {
       id
       name
@@ -31,6 +32,7 @@ const categoryFragment = `
 const tagFragment = `
   fragment TagWithTranslations on Tag {
     id
+    esId
     translations {
       id
       name
@@ -49,7 +51,7 @@ const getLanguages = async () => {
   }, {} );
 };
 
-const processTerm = async ( type, translations ) => {
+const processTerm = async ( type, { esId, translations } ) => {
   if ( !translations.length ) return 'No translations provided.';
   let fragment;
   let prismaCreateTerm;
@@ -98,6 +100,7 @@ const processTerm = async ( type, translations ) => {
         connect: transIds.map( id => ( { id } ) )
       }
     };
+    if ( esId ) dataArg.esId = esId;
     if ( diff.length > 0 ) dataArg.translations.disconnect = diff.map( trans => ( { id: trans.id } ) );
     return prismaUpdateTerm( {
       data: dataArg,
@@ -111,6 +114,7 @@ const processTerm = async ( type, translations ) => {
       } );
   }
   return prismaCreateTerm( {
+    esId,
     translations: {
       connect: translations.map( trans => ( { id: trans.id } ) )
     }
@@ -135,8 +139,13 @@ const seedTaxonomies = async () => {
     const terms = [];
     await forEachSync( rows, async data => {
       const translations = [];
+      let esId = null;
       await forEachSync( data, async ( name, key ) => {
-        if ( key === 'id' ) return;
+        if ( key === 'id' ) {
+          esId = name;
+          return;
+        }
+
         if ( !name || name === '' ) {
           printError( 'Empty translation for: ', key );
           return;
@@ -171,7 +180,7 @@ const seedTaxonomies = async () => {
         }
         if ( trans ) translations.push( trans );
       } );
-      if ( translations.length ) terms.push( translations );
+      if ( translations.length ) terms.push( { esId, translations } );
     } );
     return terms;
   };
@@ -186,7 +195,7 @@ const seedTaxonomies = async () => {
    */
   const processTerms = ( type, terms ) => {
     if ( terms === null ) return [];
-    return Promise.all( terms.map( translations => processTerm( type, translations ) ) )
+    return Promise.all( terms.map( term => processTerm( type, term ) ) )
       .then( results => results.filter( result => result ) );
   };
 

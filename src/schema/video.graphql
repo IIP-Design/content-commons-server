@@ -48,3 +48,4 @@ type Mutation {
   deleteVideoStream(id: ID!): VideoStream
   deleteManyVideoStreams(where: VideoStreamWhereInput): BatchPayload!
 }
+
