@@ -22,6 +22,7 @@ type Mutation {
   deleteVideoProject(id: ID!): VideoProject!
   deleteManyVideoProjects(where: VideoProjectWhereInput): BatchPayload!
   publishVideoProject(id: ID!): VideoProject
+  unpublishVideoProject(id: ID!): VideoProject
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(data: VideoUnitUpdateInput!, where: VideoUnitWhereUniqueInput!): VideoUnit!
