@@ -119,8 +119,15 @@ const transformVideoUnit = publisherUnit => {
     tags: [],
     source: [],
     thumbnail: null,
-    transcript: null,
-    srt: null,
+    transcript: {
+      srcUrl: null,
+      md5: null,
+      text: null
+    },
+    srt: {
+      srcUrl: null,
+      md5: null
+    },
   };
   if ( publisherUnit.categories ) {
     esUnit.categories = transformTaxonomy( publisherUnit.categories, publisherUnit.language );
@@ -156,9 +163,9 @@ const transformVideo = videoProject => {
     type: 'video',
     published: now,
     modified: now,
-    owner: null,
-    author: null,
-    thumbnail: null,
+    // owner: null,
+    // author: null,
+    // thumbnail: null,
     unit: [],
   };
   if ( videoProject.team ) {

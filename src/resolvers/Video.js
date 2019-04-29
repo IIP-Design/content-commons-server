@@ -3,6 +3,8 @@ import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParse
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
+import { prisma } from '../schema/generated/prisma-client';
+import socket from '../services/es/socket';
 import transformVideo from '../services/es/transform';
 import { VideoProjectFull } from '../schema/fragments.graphql';
 
@@ -124,14 +126,75 @@ export default {
       } );
     },
 
-    /** Placeholder for full implementation */
-    publishVideoProject( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: args.id } );
+    async publishVideoProject( parent, args, ctx ) {
+      const videoProject = await ctx.prisma.videoProject( args ).$fragment( VideoProjectFull );
+      if ( !videoProject ) return { error: 'Video Project not found.' };
+      // In case of failure, we will need to know which status to fallback to
+      const wasDraft = videoProject.status === 'DRAFT';
+      const esData = transformVideo( videoProject );
+      socket.index( 'video', esData )
+        .then( () => {
+          prisma.updateVideoProject( {
+            data: {
+              status: 'PUBLISHED'
+            },
+            where: { id: videoProject.id }
+          } ).then( result => {
+            console.log( 'VideoProject published successfully!' );
+            console.log( JSON.stringify( result, null, 2 ) );
+          } );
+        } )
+        .catch( err => {
+          const status = wasDraft ? 'DRAFT' : 'PUBLISHED_MODIFIED';
+          prisma.updateVideoProject( {
+            data: {
+              status
+            },
+            where: { id: videoProject.id }
+          } ).catch( err2 => {
+            console.error( `VideoProject status could not be updated to ${status} with error:\r\n${err2.toString()}` );
+          } ).finally( () => {
+            console.error( `${err}\r\nVideoProject publish failed.` );
+          } );
+        } );
+      return ctx.prisma.updateVideoProject( {
+        data: { status: 'PUBLISHING' },
+        where: args
+      } );
     },
 
-    /** Placeholder for full implementation */
-    unpublishVideoProject( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: args.id } );
+    async unpublishVideoProject( parent, args, ctx ) {
+      const videoProject = await ctx.prisma.videoProject( args ).$fragment( `{ id status }` );
+      if ( !videoProject ) return { error: 'Video Project not found.' };
+      const { id, status } = videoProject;
+      socket.delete( 'video', id )
+        .then( () => {
+          prisma.updateVideoProject( {
+            data: {
+              status: 'DRAFT'
+            },
+            where: { id }
+          } ).then( result => {
+            console.log( 'VideoProject unpublished successfully!' );
+            console.log( JSON.stringify( result, null, 2 ) );
+          } );
+        } )
+        .catch( result => {
+          prisma.updateVideoProject( {
+            data: {
+              status
+            },
+            where: { id: videoProject.id }
+          } ).catch( err2 => {
+            console.error( `VideoProject status could not be updated to ${status} with error:\r\n${err2.toString()}` );
+          } ).finally( () => {
+            console.error( `${result.error}\r\nVideoProject unpublish failed.` );
+          } );
+        } );
+      return ctx.prisma.updateVideoProject( {
+        data: { status: 'PUBLISHING' },
+        where: args
+      } );
     },
 
     updateManyVideoProjects ( parent, args, ctx ) {
