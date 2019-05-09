@@ -5,7 +5,7 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Permission",
+    name: "Category",
     embedded: false
   },
   {
@@ -13,11 +13,11 @@ var models = [
     embedded: false
   },
   {
-    name: "VideoBurnedInStatus",
+    name: "Dimensions",
     embedded: false
   },
   {
-    name: "VideoQuality",
+    name: "ImageFile",
     embedded: false
   },
   {
@@ -25,7 +25,27 @@ var models = [
     embedded: false
   },
   {
+    name: "ImageUse",
+    embedded: false
+  },
+  {
+    name: "Language",
+    embedded: false
+  },
+  {
+    name: "LanguageTranslation",
+    embedded: false
+  },
+  {
+    name: "Permission",
+    embedded: false
+  },
+  {
     name: "ProjectPublishStatus",
+    embedded: false
+  },
+  {
+    name: "ProjectType",
     embedded: false
   },
   {
@@ -33,7 +53,27 @@ var models = [
     embedded: false
   },
   {
+    name: "SupportFile",
+    embedded: false
+  },
+  {
+    name: "SupportFileUse",
+    embedded: false
+  },
+  {
+    name: "Tag",
+    embedded: false
+  },
+  {
+    name: "Team",
+    embedded: false
+  },
+  {
     name: "TextDirection",
+    embedded: false
+  },
+  {
+    name: "Thumbnail",
     embedded: false
   },
   {
@@ -45,55 +85,7 @@ var models = [
     embedded: false
   },
   {
-    name: "Team",
-    embedded: false
-  },
-  {
-    name: "Language",
-    embedded: false
-  },
-  {
-    name: "Category",
-    embedded: false
-  },
-  {
-    name: "Tag",
-    embedded: false
-  },
-  {
-    name: "LanguageTranslation",
-    embedded: false
-  },
-  {
-    name: "Thumbnail",
-    embedded: false
-  },
-  {
-    name: "VideoProject",
-    embedded: false
-  },
-  {
-    name: "VideoUnit",
-    embedded: false
-  },
-  {
-    name: "VideoStream",
-    embedded: false
-  },
-  {
-    name: "Dimensions",
-    embedded: false
-  },
-  {
-    name: "VideoUse",
-    embedded: false
-  },
-  {
-    name: "ImageUse",
-    embedded: false
-  },
-  {
-    name: "SupportFileUse",
+    name: "VideoBurnedInStatus",
     embedded: false
   },
   {
@@ -101,11 +93,23 @@ var models = [
     embedded: false
   },
   {
-    name: "ImageFile",
+    name: "VideoProject",
     embedded: false
   },
   {
-    name: "SupportFile",
+    name: "VideoQuality",
+    embedded: false
+  },
+  {
+    name: "VideoStream",
+    embedded: false
+  },
+  {
+    name: "VideoUnit",
+    embedded: false
+  },
+  {
+    name: "VideoUse",
     embedded: false
   }
 ];

@@ -14,6 +14,10 @@ enum ContentType {
   TEACHING_MATERIAL
 }
 
+enum ProjectType {
+  LANGUAGE
+}
+
 enum VideoBurnedInStatus {
   SUBTITLED
   CAPTIONED
@@ -117,14 +121,14 @@ type VideoProject {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: String! # How are the units related? LANGUAGE_TRANSLATION, SERIES, etc
+  projectType: ProjectType! @default(value: LANGUAGE)
   projectTitle: String!
   descPublic: String
   descInternal: String
   author: User
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
-  visibility: ProjectVisibility # what is default?
+  visibility: ProjectVisibility @default(value: PUBLIC)
   protectImages: Boolean
   units: [VideoUnit]
   supportFiles: [SupportFile]
