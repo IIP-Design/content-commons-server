@@ -223,6 +223,10 @@ export default {
           throw new AuthenticationError( 'You must confirm your account. Please check your email to confirm your account.' );
         }
 
+        if ( page === 'confirm' && user.isConfirmed ) {
+          throw new AuthenticationError( 'Your account has already been confirmed!' );
+        }
+
         // 2. Set a temporary token and expiry on that user for confirmation purposes
         const { tempToken, tempTokenExpiry } = await createToken();
         const userWithToken = { tempToken, tempTokenExpiry };
