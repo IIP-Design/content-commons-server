@@ -50,17 +50,17 @@ export default {
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
-        throw new AuthenticationError( 'You must use an america.gov email address.' );
+        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
       }
 
       // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
-        throw new AuthenticationError( 'You must first create an account before using Google sign in.' );
+        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
       }
 
       if ( !user.isConfirmed ) {
-        throw new AuthenticationError( 'You must confirm your account before using Google sign in. Please check your email.' );
+        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
       }
 
       // 5.Create user's JWT token
@@ -84,8 +84,17 @@ export default {
     async signIn( parent, { email, password }, ctx ) {
       // 1. check if there is a user with that email
       const user = await ctx.prisma.user( { email } );
+
+      if ( !user && email.includes('america.gov') ) {
+        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
+      }
+
       if ( !user ) {
-        throw new AuthenticationError( `No such user found for email ${email}` );
+        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
+      }
+
+      if ( !user.isConfirmed ) {
+        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
       }
 
       // 2. Check if their password is correct
@@ -216,11 +225,11 @@ export default {
         // 1. check if there is a user with that email and if they are confirmed.
         const user = await ctx.prisma.user( { email } );
         if ( !user ) {
-          throw new AuthenticationError( `No such user found for email ${email}` );
+          throw new AuthenticationError( `No user found for email ${email}` );
         }
 
-        if ( !user.isConfirmed ) {
-          throw new AuthenticationError( 'You must confirm your account. Please check your email to confirm your account.' );
+        if ( page === 'passwordreset' && !user.isConfirmed ) {
+          throw new AuthenticationError( 'You must confirm your account before you can reset your password.' );
         }
 
         if ( page === 'confirm' && user.isConfirmed ) {
