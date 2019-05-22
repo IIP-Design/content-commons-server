@@ -129,13 +129,14 @@ export default {
         const userWithToken = { ...args.data, tempToken, tempTokenExpiry };
 
         // 2. Create an unconfirmed user in the db
-        const user = await ctx.prisma.createUser( userWithToken );
+        const user = await ctx.prisma.createUser( userWithToken ).$fragment( `fragment UserSignUp on User { id email team { name } }` );
 
         // 3. Email the user
         if ( user ) {
+          const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}`;
-          const body = confirmationEmail( confirmLink );
-          const subject = 'Please confirm your account';
+          const body = confirmationEmail( confirmLink, team.name );
+          const subject = 'Complete your registration';
           const params = setSesParams( user.email, body, subject );
 
           await sendSesEmail( params );
@@ -223,7 +224,8 @@ export default {
       } = args;
       try {
         // 1. check if there is a user with that email and if they are confirmed.
-        const user = await ctx.prisma.user( { email } );
+        const user = await ctx.prisma.user( { email } ).$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
+
         if ( !user ) {
           throw new AuthenticationError( `No user found for email ${email}` );
         }
@@ -251,8 +253,9 @@ export default {
 
         // 4. Email the user
         if ( updatedUser ) {
+          const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}`;
-          const htmlEmail = passwordResetEmail( body, confirmLink, link );
+          const htmlEmail = ( page === 'confirm' ) ? confirmationEmail( confirmLink, team.name ) : passwordResetEmail( body, confirmLink, link );
           const params = setSesParams( user.email, htmlEmail, subject );
 
           await sendSesEmail( params );
