@@ -11,3 +11,8 @@ type User {
   permissions: [Permission!]!
   team: Team
 }
+
+type Query {
+  authenticatedUser: User
+  users: [User]!
+}

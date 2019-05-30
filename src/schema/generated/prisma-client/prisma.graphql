@@ -357,6 +357,7 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUse
   md5: String
   url: String
@@ -376,6 +377,7 @@ input ImageFileCreateInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseCreateOneInput
   md5: String
   url: String
@@ -413,6 +415,8 @@ enum ImageFileOrderByInput {
   filename_DESC
   filetype_ASC
   filetype_DESC
+  filesize_ASC
+  filesize_DESC
   md5_ASC
   md5_DESC
   url_ASC
@@ -428,6 +432,7 @@ type ImageFilePreviousValues {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -533,6 +538,14 @@ input ImageFileScalarWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -592,6 +605,7 @@ input ImageFileUpdateDataInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -605,6 +619,7 @@ input ImageFileUpdateInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -616,6 +631,7 @@ input ImageFileUpdateManyDataInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -638,6 +654,7 @@ input ImageFileUpdateManyMutationInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -775,6 +792,14 @@ input ImageFileWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -1461,6 +1486,10 @@ enum ProjectPublishStatus {
   PUBLISHING
   PUBLISHED
   EMBARGOED
+}
+
+enum ProjectType {
+  LANGUAGE
 }
 
 enum ProjectVisibility {
@@ -3581,7 +3610,7 @@ type VideoProject {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: String!
+  projectType: ProjectType!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3604,7 +3633,7 @@ type VideoProjectConnection {
 }
 
 input VideoProjectCreateInput {
-  projectType: String!
+  projectType: ProjectType
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3652,7 +3681,7 @@ type VideoProjectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: String!
+  projectType: ProjectType!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3680,7 +3709,7 @@ input VideoProjectSubscriptionWhereInput {
 }
 
 input VideoProjectUpdateInput {
-  projectType: String
+  projectType: ProjectType
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3697,7 +3726,7 @@ input VideoProjectUpdateInput {
 }
 
 input VideoProjectUpdateManyMutationInput {
-  projectType: String
+  projectType: ProjectType
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3737,20 +3766,10 @@ input VideoProjectWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  projectType: String
-  projectType_not: String
-  projectType_in: [String!]
-  projectType_not_in: [String!]
-  projectType_lt: String
-  projectType_lte: String
-  projectType_gt: String
-  projectType_gte: String
-  projectType_contains: String
-  projectType_not_contains: String
-  projectType_starts_with: String
-  projectType_not_starts_with: String
-  projectType_ends_with: String
-  projectType_not_ends_with: String
+  projectType: ProjectType
+  projectType_not: ProjectType
+  projectType_in: [ProjectType!]
+  projectType_not_in: [ProjectType!]
   projectTitle: String
   projectTitle_not: String
   projectTitle_in: [String!]

@@ -3,6 +3,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import merge from 'lodash/merge';
 import AuthResolvers from './resolvers/Auth';
+import UtilResolvers from './resolvers/Util';
 import LanguageResolvers from './resolvers/Language';
 import TaxonomyResolvers from './resolvers/Taxonomy';
 import UserResolvers from './resolvers/User';
@@ -14,6 +15,7 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 
 const resolvers = merge(
   AuthResolvers,
+  UtilResolvers,
   LanguageResolvers,
   TaxonomyResolvers,
   UserResolvers,

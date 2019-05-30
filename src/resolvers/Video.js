@@ -596,6 +596,12 @@ export default {
       return ctx.prisma
         .imageFile( { id: parent.id } )
         .dimensions( { ...args } );
+    },
+
+    use( parent, args, ctx ) {
+      return ctx.prisma
+        .imageFile( { id: parent.id } )
+        .use( { ...args } );
     }
   },
 

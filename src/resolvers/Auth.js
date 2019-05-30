@@ -6,6 +6,7 @@ import { promisify } from 'util';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { verifyGoogleToken } from '../services/googleAuth';
+import { getSignedUrlPromise } from '../services/aws/s3';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
 
@@ -20,15 +21,7 @@ const createToken = async () => {
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
 
 export default {
-  Query: {
-    authenticatedUser( parent, args, ctx ) {
-      // Check for current user id
-      if ( !ctx.req.userId ) {
-        return null;
-      }
-      return ctx.prisma.user( { id: ctx.req.userId } );
-    }
-  },
+  Query: {},
 
   Mutation: {
   /**
@@ -252,14 +245,24 @@ export default {
         throw new ApolloError( err ); // debugging
         // throw new ApolloError( 'There is already a user with that email in the system.' );
       }
-    }
-  },
+    },
 
-  User: {
-    team( parent, args, ctx ) {
-      return ctx.prisma
-        .user( { id: parent.id } )
-        .team( { ...args } );
+    async getSignedS3Url( parent, args ) {
+      const {
+        contentType, filename, projectId
+      } = args;
+
+      if ( !contentType || !filename || !projectId ) {
+        throw new ApolloError( 'A valid contentType, filename or project id is not available' );
+      }
+
+      try {
+        const res = await getSignedUrlPromise( { contentType, filename, projectId } );
+        return { key: res.key, url: res.url };
+      } catch ( err ) {
+        throw new ApolloError( err );
+      }
     }
   }
+
 };

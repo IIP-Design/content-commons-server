@@ -1,5 +1,7 @@
-type Query {
-  authenticatedUser: User
+
+type SignedS3Url {
+  key: String
+  url: String 
 }
 
 type Mutation {
@@ -20,4 +22,9 @@ type Mutation {
     reply: String!
     page: String!
   ): Message
+  getSignedS3Url(
+    contentType: String!
+    filename: String!
+    projectId: String!
+  ):SignedS3Url
 }

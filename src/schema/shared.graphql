@@ -3,12 +3,21 @@ type Message {
   text: String
 }
 
+type FileInfo {
+  duration: Float
+  bitrate: Float
+  size: Float
+  width: Float
+  height: Float
+}
+
+
 type Query {
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFile(id: ID!): SupportFile
 
   dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
-  dimensions(id: ID!): Dimensions
+  dimensions(id: ID!): Dimensions 
 }
 
 type Mutation {
@@ -23,4 +32,6 @@ type Mutation {
   updateManyDimensionses(data: DimensionsUpdateManyMutationInput!, where: DimensionsWhereInput): BatchPayload!
   deleteDimensions(id: ID!): Dimensions
   deleteManyDimensionses(where: DimensionsWhereInput): BatchPayload!
+
+  getFileInfo( path: String!):FileInfo
 }

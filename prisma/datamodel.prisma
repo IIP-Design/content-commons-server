@@ -125,7 +125,7 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  author: User
+  author: User #[User|Author] # more than 1 author?
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility @default(value: PUBLIC)
@@ -191,7 +191,7 @@ type VideoFile {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
-  md5: String
+  md5: String # may not need
   duration: Float
   bitrate: Float
   filesize: Float
@@ -210,6 +210,7 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUse
   md5: String
   url: String
