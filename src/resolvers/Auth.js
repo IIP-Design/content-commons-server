@@ -43,17 +43,17 @@ export default {
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
-        throw new AuthenticationError( 'You must use an america.gov email address.' );
+        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
       }
 
       // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
-        throw new AuthenticationError( 'You must first create an account before using Google sign in.' );
+        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
       }
 
       if ( !user.isConfirmed ) {
-        throw new AuthenticationError( 'You must confirm your account before using Google sign in. Please check your email.' );
+        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
       }
 
       // 5.Create user's JWT token
@@ -77,8 +77,17 @@ export default {
     async signIn( parent, { email, password }, ctx ) {
       // 1. check if there is a user with that email
       const user = await ctx.prisma.user( { email } );
+
+      if ( !user && email.includes('america.gov') ) {
+        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
+      }
+
       if ( !user ) {
-        throw new AuthenticationError( `No such user found for email ${email}` );
+        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
+      }
+
+      if ( !user.isConfirmed ) {
+        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
       }
 
       // 2. Check if their password is correct
@@ -113,13 +122,14 @@ export default {
         const userWithToken = { ...args.data, tempToken, tempTokenExpiry };
 
         // 2. Create an unconfirmed user in the db
-        const user = await ctx.prisma.createUser( userWithToken );
+        const user = await ctx.prisma.createUser( userWithToken ).$fragment( `fragment UserSignUp on User { id email team { name } }` );
 
         // 3. Email the user
         if ( user ) {
+          const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/confirm?tempToken=${tempToken}`;
-          const body = confirmationEmail( confirmLink );
-          const subject = 'Please confirm your account';
+          const body = confirmationEmail( confirmLink, team.name );
+          const subject = 'Complete your registration';
           const params = setSesParams( user.email, body, subject );
 
           await sendSesEmail( params );
@@ -207,13 +217,18 @@ export default {
       } = args;
       try {
         // 1. check if there is a user with that email and if they are confirmed.
-        const user = await ctx.prisma.user( { email } );
+        const user = await ctx.prisma.user( { email } ).$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
+
         if ( !user ) {
-          throw new AuthenticationError( `No such user found for email ${email}` );
+          throw new AuthenticationError( `No user found for email ${email}` );
         }
 
-        if ( !user.isConfirmed ) {
-          throw new AuthenticationError( 'You must confirm your account. Please check your email to confirm your account.' );
+        if ( page === 'passwordreset' && !user.isConfirmed ) {
+          throw new AuthenticationError( 'You must confirm your account before you can reset your password.' );
+        }
+
+        if ( page === 'confirm' && user.isConfirmed ) {
+          throw new AuthenticationError( 'Your account has already been confirmed!' );
         }
 
         // 2. Set a temporary token and expiry on that user for confirmation purposes
@@ -231,8 +246,9 @@ export default {
 
         // 4. Email the user
         if ( updatedUser ) {
+          const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}`;
-          const htmlEmail = passwordResetEmail( body, confirmLink, link );
+          const htmlEmail = ( page === 'confirm' ) ? confirmationEmail( confirmLink, team.name ) : passwordResetEmail( body, confirmLink, link );
           const params = setSesParams( user.email, htmlEmail, subject );
 
           await sendSesEmail( params );
