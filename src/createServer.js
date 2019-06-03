@@ -1,14 +1,14 @@
-import path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
-import merge from 'lodash/merge';
 import AuthResolvers from './resolvers/Auth';
-import UtilResolvers from './resolvers/Util';
 import LanguageResolvers from './resolvers/Language';
 import TaxonomyResolvers from './resolvers/Taxonomy';
-import UserResolvers from './resolvers/User';
 import TeamResolvers from './resolvers/Team';
+import UserResolvers from './resolvers/User';
+import UtilResolvers from './resolvers/Util';
 import VideoResolvers from './resolvers/Video';
+import merge from 'lodash/merge';
+import path from 'path';
 import { prisma } from './schema/generated/prisma-client';
 
 const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
@@ -28,6 +28,7 @@ const createServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
+  playground: true,
   context: req => ( { ...req, prisma } )
 } );
 
