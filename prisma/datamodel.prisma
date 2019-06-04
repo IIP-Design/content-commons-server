@@ -59,7 +59,7 @@ enum ThumbnailSize {
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @id
   firstName: String!
   lastName: String!
   email: String! @unique
@@ -70,22 +70,22 @@ type User {
   country: String
   city: String
   howHeard: String
-  permissions: [Permission!]!
+  permissions: [Permission!]! @scalarList(strategy: RELATION)
   team: Team
-  isConfirmed: Boolean! @default(value: "false")
+  isConfirmed: Boolean! @default(value: false)
 }
 
 type Team {
-  id: ID! @unique
+  id: ID! @id
   name: String! @unique
   organization: String!
   members: [User]
-  contentTypes: [ContentType]
-  isConfirmed: Boolean! @default(value: "false")
+  contentTypes: [ContentType] @scalarList(strategy: RELATION)
+  isConfirmed: Boolean! @default(value: false)
 }
 
 type Language {
-  id: ID! @unique
+  id: ID! @id
   languageCode: String!
   locale: String! @unique
   textDirection: TextDirection! @default(value: LTR)
@@ -95,32 +95,32 @@ type Language {
 
 # translations prop required as we need at least the English translation to create a category
 type Category {
-  id: ID! @unique
+  id: ID! @id
   translations: [LanguageTranslation!]!
 }
 
 # translations prop required as we need at least the English translation to create a category
 type Tag {
-  id: ID! @unique
+  id: ID! @id
   translations: [LanguageTranslation!]!
 }
 
 type LanguageTranslation {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   language: Language!
 }
 
 type Thumbnail {
-  id: ID! @unique
+  id: ID! @id
   size: ThumbnailSize @default(value: FULL)
   image: ImageFile
 }
 
 type VideoProject {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   projectType: ProjectType! @default(value: LANGUAGE)
   projectTitle: String!
   descPublic: String
@@ -130,60 +130,60 @@ type VideoProject {
   status: ProjectPublishStatus @default(value: DRAFT)
   visibility: ProjectVisibility @default(value: PUBLIC)
   protectImages: Boolean
-  units: [VideoUnit]
-  supportFiles: [SupportFile]
-  thumbnails: [ImageFile]
+  units: [VideoUnit] @relation(onDelete: CASCADE)
+  supportFiles: [SupportFile] @relation(onDelete: CASCADE)
+  thumbnails: [ImageFile] @relation(onDelete: CASCADE)
   categories: [Category]
   tags: [Tag]
 }
 
 type VideoUnit {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   language: Language
   title: String!
   descPublic: String
-  files: [VideoFile]
+  files: [VideoFile] @relation(onDelete: CASCADE)
   tags: [Tag]
   categories: [Category]
   thumbnails: [Thumbnail]
 }
 
 type VideoStream {
-  id: ID! @unique
+  id: ID! @id
   site: String # You Tube, Vimeo
   url: String
   embedUrl: String # verify that this is needed
 }
 
 type Dimensions {
-  id: ID! @unique
+  id: ID! @id
   width: Int
   height: Int
 }
 
 # Full video,promotional teaser, etc
 type VideoUse {
-  id: ID! @unique
+  id: ID! @id
   name: String! @unique
 }
 
 # thumbnail/cover image, email graphic etc
 type ImageUse {
-  id: ID! @unique
+  id: ID! @id
   name: String! @unique
 }
 
 type SupportFileUse {
-  id: ID! @unique
+  id: ID! @id
   name: String! @unique
 }
 
 type VideoFile {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   language: Language
   filetype: String
   filename: String
@@ -196,13 +196,13 @@ type VideoFile {
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
-  stream: [VideoStream]
+  stream: [VideoStream] @relation(onDelete: CASCADE)
 }
 
 type ImageFile {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   language: Language
   dimensions: Dimensions
   alt: String
@@ -217,9 +217,9 @@ type ImageFile {
 }
 
 type SupportFile {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   language: Language!
   url: String
   md5: String

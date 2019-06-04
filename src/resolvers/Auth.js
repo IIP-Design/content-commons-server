@@ -1,19 +1,19 @@
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
-import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
-import { sendSesEmail, setSesParams } from '../services/aws/ses';
-import { verifyGoogleToken } from '../services/googleAuth';
+import { randomBytes } from 'crypto';
 import { getSignedUrlPromise } from '../services/aws/s3';
+import { sendSesEmail, setSesParams } from '../services/aws/ses';
+import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
+import { verifyGoogleToken } from '../services/googleAuth';
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
 
 const createToken = async () => {
   const randomBytesPromiseified = promisify( randomBytes );
   const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
-  const tempTokenExpiry = Date.now() + 3600000; // 1 hour from now
+  const tempTokenExpiry = Date.now() + 86400000; // 1 hour from now
   return {
     tempToken, tempTokenExpiry
   };
@@ -78,7 +78,7 @@ export default {
       // 1. check if there is a user with that email
       const user = await ctx.prisma.user( { email } );
 
-      if ( !user && email.includes('america.gov') ) {
+      if ( !user && email.includes( 'america.gov' ) ) {
         throw new AuthenticationError( 'You must first register your account before you can sign in.' );
       }
 
