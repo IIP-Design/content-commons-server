@@ -15,15 +15,14 @@ app.use( cookieParser() );
 
 // Decode the JWT token on cookie so we can put the userId on each request
 app.use( ( req, res, next ) => {
-  // const { americaCommonsToken } = req.cookies;
+  const { americaCommonsToken } = req.cookies;
 
-  // if ( americaCommonsToken ) {
-  //   const { userId } = jwt.verify( americaCommonsToken, process.env.PUBLISHER_APP_SECRET );
+  if ( americaCommonsToken ) {
+    const { userId } = jwt.verify( americaCommonsToken, process.env.PUBLISHER_APP_SECRET );
 
-  //   // put the userId onto the req for future requests to access
-  //   req.userId = userId;
-  // }
-  req.userId = 'cjwi6c3bn0de50733td8f970k'; // temi's
+    // put the userId onto the req for future requests to access
+    req.userId = userId;
+  }
   next();
 } );
 
