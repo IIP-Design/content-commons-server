@@ -61,7 +61,6 @@ export default {
 
       // 6.Set the jwt as a cookie on the response
       ctx.res.cookie( 'americaCommonsToken', jwtToken, {
-        domain: '.dev.america.gov',
         httpOnly: true,
         maxAge: COOKIE_MAX_AGE
       } );
