@@ -30,7 +30,7 @@ app.use( ( req, res, next ) => {
 server.applyMiddleware( {
   app,
   cors: {
-    origin: '*', // process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL,
     credentials: true
   }
 } );
