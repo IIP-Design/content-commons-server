@@ -61,6 +61,8 @@ enum ThumbnailSize {
 
 type User {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   firstName: String!
   lastName: String!
   email: String! @unique
@@ -78,6 +80,8 @@ type User {
 
 type Team {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String! @unique
   organization: String!
   members: [User]
@@ -87,6 +91,8 @@ type Team {
 
 type Language {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   languageCode: String!
   locale: String! @unique
   textDirection: TextDirection! @default(value: LTR)
@@ -97,23 +103,33 @@ type Language {
 # translations prop required as we need at least the English translation to create a category
 type Category {
   id: ID! @id
+  esId: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   translations: [LanguageTranslation!]!
 }
 
 # translations prop required as we need at least the English translation to create a category
 type Tag {
   id: ID! @id
+  esId: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   translations: [LanguageTranslation!]!
 }
 
 type LanguageTranslation {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String!
   language: Language!
 }
 
 type Thumbnail {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   size: ThumbnailSize @default(value: FULL)
   image: ImageFile
 }
@@ -152,6 +168,8 @@ type VideoUnit {
 
 type VideoStream {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   site: String # You Tube, Vimeo
   url: String
   embedUrl: String # verify that this is needed
@@ -159,6 +177,8 @@ type VideoStream {
 
 type Dimensions {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   width: Int
   height: Int
 }
@@ -166,17 +186,23 @@ type Dimensions {
 # Full video,promotional teaser, etc
 type VideoUse {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String! @unique
 }
 
 # thumbnail/cover image, email graphic etc
 type ImageUse {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String! @unique
 }
 
 type SupportFileUse {
   id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   name: String! @unique
 }
 
