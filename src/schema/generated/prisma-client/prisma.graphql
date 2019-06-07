@@ -73,6 +73,8 @@ type BatchPayload {
 type Category {
   id: ID!
   esId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
   translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
@@ -83,6 +85,7 @@ type CategoryConnection {
 }
 
 input CategoryCreateInput {
+  id: ID
   esId: String
   translations: LanguageTranslationCreateManyInput
 }
@@ -102,11 +105,17 @@ enum CategoryOrderByInput {
   id_DESC
   esId_ASC
   esId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type CategoryPreviousValues {
   id: ID!
   esId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input CategoryScalarWhereInput {
@@ -138,6 +147,22 @@ input CategoryScalarWhereInput {
   esId_not_starts_with: String
   esId_ends_with: String
   esId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [CategoryScalarWhereInput!]
   OR: [CategoryScalarWhereInput!]
   NOT: [CategoryScalarWhereInput!]
@@ -236,6 +261,22 @@ input CategoryWhereInput {
   esId_not_starts_with: String
   esId_ends_with: String
   esId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   translations_every: LanguageTranslationWhereInput
   translations_some: LanguageTranslationWhereInput
   translations_none: LanguageTranslationWhereInput
@@ -260,6 +301,8 @@ scalar DateTime
 
 type Dimensions {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   width: Int
   height: Int
 }
@@ -271,6 +314,7 @@ type DimensionsConnection {
 }
 
 input DimensionsCreateInput {
+  id: ID
   width: Int
   height: Int
 }
@@ -288,6 +332,10 @@ type DimensionsEdge {
 enum DimensionsOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   width_ASC
   width_DESC
   height_ASC
@@ -296,6 +344,8 @@ enum DimensionsOrderByInput {
 
 type DimensionsPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   width: Int
   height: Int
 }
@@ -362,6 +412,22 @@ input DimensionsWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   width: Int
   width_not: Int
   width_in: [Int!]
@@ -398,6 +464,7 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUse
   md5: String
   url: String
@@ -410,6 +477,7 @@ type ImageFileConnection {
 }
 
 input ImageFileCreateInput {
+  id: ID
   language: LanguageCreateOneInput
   dimensions: DimensionsCreateOneInput
   alt: String
@@ -417,6 +485,7 @@ input ImageFileCreateInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseCreateOneInput
   md5: String
   url: String
@@ -454,6 +523,8 @@ enum ImageFileOrderByInput {
   filename_DESC
   filetype_ASC
   filetype_DESC
+  filesize_ASC
+  filesize_DESC
   md5_ASC
   md5_DESC
   url_ASC
@@ -469,6 +540,7 @@ type ImageFilePreviousValues {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -574,6 +646,14 @@ input ImageFileScalarWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -633,6 +713,7 @@ input ImageFileUpdateDataInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -646,6 +727,7 @@ input ImageFileUpdateInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -657,6 +739,7 @@ input ImageFileUpdateManyDataInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -679,6 +762,7 @@ input ImageFileUpdateManyMutationInput {
   caption: String
   filename: String
   filetype: String
+  filesize: Float
   md5: String
   url: String
 }
@@ -816,6 +900,14 @@ input ImageFileWhereInput {
   filetype_not_starts_with: String
   filetype_ends_with: String
   filetype_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -856,6 +948,8 @@ input ImageFileWhereUniqueInput {
 
 type ImageUse {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -866,6 +960,7 @@ type ImageUseConnection {
 }
 
 input ImageUseCreateInput {
+  id: ID
   name: String!
 }
 
@@ -882,12 +977,18 @@ type ImageUseEdge {
 enum ImageUseOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   name_ASC
   name_DESC
 }
 
 type ImageUsePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -950,6 +1051,22 @@ input ImageUseWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -976,6 +1093,8 @@ input ImageUseWhereUniqueInput {
 
 type Language {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   languageCode: String!
   locale: String!
   textDirection: TextDirection!
@@ -990,6 +1109,7 @@ type LanguageConnection {
 }
 
 input LanguageCreateInput {
+  id: ID
   languageCode: String!
   locale: String!
   textDirection: TextDirection
@@ -1010,6 +1130,10 @@ type LanguageEdge {
 enum LanguageOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   languageCode_ASC
   languageCode_DESC
   locale_ASC
@@ -1024,6 +1148,8 @@ enum LanguageOrderByInput {
 
 type LanguagePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   languageCode: String!
   locale: String!
   textDirection: TextDirection!
@@ -1051,6 +1177,8 @@ input LanguageSubscriptionWhereInput {
 
 type LanguageTranslation {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
   language: Language!
 }
@@ -1062,6 +1190,7 @@ type LanguageTranslationConnection {
 }
 
 input LanguageTranslationCreateInput {
+  id: ID
   name: String!
   language: LanguageCreateOneInput!
 }
@@ -1079,12 +1208,18 @@ type LanguageTranslationEdge {
 enum LanguageTranslationOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   name_ASC
   name_DESC
 }
 
 type LanguageTranslationPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -1103,6 +1238,22 @@ input LanguageTranslationScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -1201,6 +1352,22 @@ input LanguageTranslationWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -1285,6 +1452,22 @@ input LanguageWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   languageCode: String
   languageCode_not: String
   languageCode_in: [String!]
@@ -1495,6 +1678,10 @@ enum ProjectPublishStatus {
   EMBARGOED
 }
 
+enum ProjectType {
+  LANGUAGE
+}
+
 enum ProjectVisibility {
   INTERNAL
   PUBLIC
@@ -1595,6 +1782,7 @@ type SupportFileConnection {
 }
 
 input SupportFileCreateInput {
+  id: ID
   language: LanguageCreateOneInput!
   url: String
   md5: String
@@ -1828,6 +2016,8 @@ input SupportFileUpsertWithWhereUniqueNestedInput {
 
 type SupportFileUse {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -1838,6 +2028,7 @@ type SupportFileUseConnection {
 }
 
 input SupportFileUseCreateInput {
+  id: ID
   name: String!
 }
 
@@ -1854,12 +2045,18 @@ type SupportFileUseEdge {
 enum SupportFileUseOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   name_ASC
   name_DESC
 }
 
 type SupportFileUsePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -1922,6 +2119,22 @@ input SupportFileUseWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -2055,6 +2268,8 @@ input SupportFileWhereUniqueInput {
 type Tag {
   id: ID!
   esId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
   translations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation!]
 }
 
@@ -2065,6 +2280,7 @@ type TagConnection {
 }
 
 input TagCreateInput {
+  id: ID
   esId: String
   translations: LanguageTranslationCreateManyInput
 }
@@ -2084,11 +2300,17 @@ enum TagOrderByInput {
   id_DESC
   esId_ASC
   esId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type TagPreviousValues {
   id: ID!
   esId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input TagScalarWhereInput {
@@ -2120,6 +2342,22 @@ input TagScalarWhereInput {
   esId_not_starts_with: String
   esId_ends_with: String
   esId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [TagScalarWhereInput!]
   OR: [TagScalarWhereInput!]
   NOT: [TagScalarWhereInput!]
@@ -2218,6 +2456,22 @@ input TagWhereInput {
   esId_not_starts_with: String
   esId_ends_with: String
   esId_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   translations_every: LanguageTranslationWhereInput
   translations_some: LanguageTranslationWhereInput
   translations_none: LanguageTranslationWhereInput
@@ -2232,6 +2486,8 @@ input TagWhereUniqueInput {
 
 type Team {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
   organization: String!
   members(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
@@ -2250,6 +2506,7 @@ input TeamCreatecontentTypesInput {
 }
 
 input TeamCreateInput {
+  id: ID
   name: String!
   organization: String!
   members: UserCreateManyWithoutTeamInput
@@ -2268,6 +2525,7 @@ input TeamCreateOneWithoutMembersInput {
 }
 
 input TeamCreateWithoutMembersInput {
+  id: ID
   name: String!
   organization: String!
   contentTypes: TeamCreatecontentTypesInput
@@ -2282,6 +2540,10 @@ type TeamEdge {
 enum TeamOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   name_ASC
   name_DESC
   organization_ASC
@@ -2292,6 +2554,8 @@ enum TeamOrderByInput {
 
 type TeamPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
   organization: String!
   contentTypes: [ContentType!]!
@@ -2393,6 +2657,22 @@ input TeamWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
@@ -2443,6 +2723,8 @@ enum TextDirection {
 
 type Thumbnail {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   size: ThumbnailSize
   image: ImageFile
 }
@@ -2454,6 +2736,7 @@ type ThumbnailConnection {
 }
 
 input ThumbnailCreateInput {
+  id: ID
   size: ThumbnailSize
   image: ImageFileCreateOneInput
 }
@@ -2471,12 +2754,18 @@ type ThumbnailEdge {
 enum ThumbnailOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   size_ASC
   size_DESC
 }
 
 type ThumbnailPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   size: ThumbnailSize
 }
 
@@ -2495,6 +2784,22 @@ input ThumbnailScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   size: ThumbnailSize
   size_not: ThumbnailSize
   size_in: [ThumbnailSize!]
@@ -2590,6 +2895,22 @@ input ThumbnailWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   size: ThumbnailSize
   size_not: ThumbnailSize
   size_in: [ThumbnailSize!]
@@ -2606,6 +2927,8 @@ input ThumbnailWhereUniqueInput {
 
 type User {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
@@ -2628,6 +2951,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
   firstName: String!
   lastName: String!
   email: String!
@@ -2658,6 +2982,7 @@ input UserCreatepermissionsInput {
 }
 
 input UserCreateWithoutTeamInput {
+  id: ID
   firstName: String!
   lastName: String!
   email: String!
@@ -2680,6 +3005,10 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   firstName_ASC
   firstName_DESC
   lastName_ASC
@@ -2706,6 +3035,8 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
@@ -2735,6 +3066,22 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   firstName: String
   firstName_not: String
   firstName_in: [String!]
@@ -3032,6 +3379,22 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   firstName: String
   firstName_not: String
   firstName_in: [String!]
@@ -3211,6 +3574,7 @@ type VideoFileConnection {
 }
 
 input VideoFileCreateInput {
+  id: ID
   language: LanguageCreateOneInput
   filetype: String
   filename: String
@@ -3642,7 +4006,7 @@ type VideoProject {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: String!
+  projectType: ProjectType!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3665,7 +4029,8 @@ type VideoProjectConnection {
 }
 
 input VideoProjectCreateInput {
-  projectType: String!
+  id: ID
+  projectType: ProjectType
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3713,7 +4078,7 @@ type VideoProjectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  projectType: String!
+  projectType: ProjectType!
   projectTitle: String!
   descPublic: String
   descInternal: String
@@ -3741,7 +4106,7 @@ input VideoProjectSubscriptionWhereInput {
 }
 
 input VideoProjectUpdateInput {
-  projectType: String
+  projectType: ProjectType
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3758,7 +4123,7 @@ input VideoProjectUpdateInput {
 }
 
 input VideoProjectUpdateManyMutationInput {
-  projectType: String
+  projectType: ProjectType
   projectTitle: String
   descPublic: String
   descInternal: String
@@ -3798,20 +4163,10 @@ input VideoProjectWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  projectType: String
-  projectType_not: String
-  projectType_in: [String!]
-  projectType_not_in: [String!]
-  projectType_lt: String
-  projectType_lte: String
-  projectType_gt: String
-  projectType_gte: String
-  projectType_contains: String
-  projectType_not_contains: String
-  projectType_starts_with: String
-  projectType_not_starts_with: String
-  projectType_ends_with: String
-  projectType_not_ends_with: String
+  projectType: ProjectType
+  projectType_not: ProjectType
+  projectType_in: [ProjectType!]
+  projectType_not_in: [ProjectType!]
   projectTitle: String
   projectTitle_not: String
   projectTitle_in: [String!]
@@ -3897,6 +4252,8 @@ enum VideoQuality {
 
 type VideoStream {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   site: String
   url: String
   embedUrl: String
@@ -3909,6 +4266,7 @@ type VideoStreamConnection {
 }
 
 input VideoStreamCreateInput {
+  id: ID
   site: String
   url: String
   embedUrl: String
@@ -3927,6 +4285,10 @@ type VideoStreamEdge {
 enum VideoStreamOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   site_ASC
   site_DESC
   url_ASC
@@ -3937,6 +4299,8 @@ enum VideoStreamOrderByInput {
 
 type VideoStreamPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   site: String
   url: String
   embedUrl: String
@@ -3957,6 +4321,22 @@ input VideoStreamScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   site: String
   site_not: String
   site_in: [String!]
@@ -4089,6 +4469,22 @@ input VideoStreamWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   site: String
   site_not: String
   site_in: [String!]
@@ -4160,6 +4556,7 @@ type VideoUnitConnection {
 }
 
 input VideoUnitCreateInput {
+  id: ID
   language: LanguageCreateOneInput
   title: String!
   descPublic: String
@@ -4423,6 +4820,8 @@ input VideoUnitWhereUniqueInput {
 
 type VideoUse {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -4433,6 +4832,7 @@ type VideoUseConnection {
 }
 
 input VideoUseCreateInput {
+  id: ID
   name: String!
 }
 
@@ -4449,12 +4849,18 @@ type VideoUseEdge {
 enum VideoUseOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   name_ASC
   name_DESC
 }
 
 type VideoUsePreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   name: String!
 }
 
@@ -4517,6 +4923,22 @@ input VideoUseWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   name: String
   name_not: String
   name_in: [String!]
