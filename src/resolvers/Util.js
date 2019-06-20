@@ -1,10 +1,17 @@
-import ffprobe from 'remote-ffprobe';
+import ffmpeg from 'fluent-ffmpeg';
 
 const exists = prop => ( !prop || prop === 'N/A' ? null : prop );
 
+const ffprobe = url => new Promise( ( resolve, reject ) => {
+  ffmpeg.ffprobe( url, ( err, meta ) => {
+    if ( err ) return reject( err );
+    resolve( meta );
+  } );
+} );
+
 export default {
   Mutation: {
-    async getFileInfo  ( parent, args, ctx ) {
+    async getFileInfo  ( parent, args ) {
       let { path } = args;
 
       if ( !path ) {
@@ -13,11 +20,9 @@ export default {
 
       path = `https://s3.amazonaws.com/${process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${path}`;
 
-      // @todo- adjust, if possible what ffprobe return to possibly speed things up
-      const metadata = await ffprobe( path, { format: 'stream=video' } ).catch( err => {
+      const metadata = await ffprobe( path ).catch( err => {
         throw new Error( `An error occurred: ${err}` );
       } );
-
 
       if ( metadata && metadata.streams ) {
         const info = metadata.streams.find( stream => stream.codec_type === 'video' );
