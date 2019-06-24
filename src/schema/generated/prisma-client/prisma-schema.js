@@ -3598,7 +3598,6 @@ type VideoProject {
   team: Team
   status: ProjectPublishStatus
   visibility: ProjectVisibility
-  protectImages: Boolean
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -3622,7 +3621,6 @@ input VideoProjectCreateInput {
   team: TeamCreateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
-  protectImages: Boolean
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
@@ -3654,8 +3652,6 @@ enum VideoProjectOrderByInput {
   status_DESC
   visibility_ASC
   visibility_DESC
-  protectImages_ASC
-  protectImages_DESC
 }
 
 type VideoProjectPreviousValues {
@@ -3668,7 +3664,6 @@ type VideoProjectPreviousValues {
   descInternal: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
-  protectImages: Boolean
 }
 
 type VideoProjectSubscriptionPayload {
@@ -3698,7 +3693,6 @@ input VideoProjectUpdateInput {
   team: TeamUpdateOneInput
   status: ProjectPublishStatus
   visibility: ProjectVisibility
-  protectImages: Boolean
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
@@ -3713,7 +3707,6 @@ input VideoProjectUpdateManyMutationInput {
   descInternal: String
   status: ProjectPublishStatus
   visibility: ProjectVisibility
-  protectImages: Boolean
 }
 
 input VideoProjectWhereInput {
@@ -3803,8 +3796,6 @@ input VideoProjectWhereInput {
   visibility_not: ProjectVisibility
   visibility_in: [ProjectVisibility!]
   visibility_not_in: [ProjectVisibility!]
-  protectImages: Boolean
-  protectImages_not: Boolean
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput

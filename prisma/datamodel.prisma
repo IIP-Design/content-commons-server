@@ -128,8 +128,7 @@ type VideoProject {
   author: User #[User|Author] # more than 1 author?
   team: Team
   status: ProjectPublishStatus @default(value: DRAFT)
-  visibility: ProjectVisibility @default(value: PUBLIC)
-  protectImages: Boolean
+  visibility: ProjectVisibility @default(value: PUBLIC) 
   units: [VideoUnit] @relation(onDelete: CASCADE)
   supportFiles: [SupportFile] @relation(onDelete: CASCADE)
   thumbnails: [ImageFile] @relation(onDelete: CASCADE)
