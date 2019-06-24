@@ -116,6 +116,16 @@ export default {
       } );
     },
 
+    /** Placeholder for full implementation */
+    publishVideoProject( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: args.id } );
+    },
+
+    /** Placeholder for full implementation */
+    unpublishVideoProject( parent, args, ctx ) {
+      return ctx.prisma.videoProject( { id: args.id } );
+    },
+
     updateManyVideoProjects ( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
