@@ -22,7 +22,7 @@
     "csv-parser": "^2.2.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "ffprobe-static": "^3.0.0",
+    "ffprobe-static": "^2.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "0.0.1-security",
     "google-auth-library": "^2.0.2",
