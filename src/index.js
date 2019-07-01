@@ -1,9 +1,12 @@
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
+import http from 'http';
 import express from 'express';
+import cors from 'cors';
 import createServer from './createServer';
 import socket from './services/es/socket';
+import pubsub from './services/subscriptions/pubsub';
 
 // Create Apollo server
 const server = createServer();
@@ -39,7 +42,22 @@ server.applyMiddleware( {
 // Connect socket to public API
 socket.connect();
 
+// Create server for PubSub socket
+const pubsubApp = express();
+pubsubApp.use( cors( {
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+} ) );
+
+const pubsubServer = http.createServer( pubsubApp );
+
+pubsub.connect( pubsubServer );
+
 // Start listening...
 app.listen( { port: 4000 }, () => {
   console.log( `🚀 Server ready at http://localhost:4000${server.graphqlPath}` );
+} );
+
+pubsubServer.listen( { port: 5000 }, () => {
+  console.log( '   PubSub ready at http://localhost:5000' );
 } );

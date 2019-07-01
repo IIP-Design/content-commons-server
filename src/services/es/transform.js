@@ -65,7 +65,7 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
-    downloadUrl: file.url,
+    downloadUrl: `https://s3.amazonaws.com/${process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${file.url}`,
     streamUrl: [],
     stream: null,
     duration: file.duration,

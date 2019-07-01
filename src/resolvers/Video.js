@@ -4,9 +4,11 @@ import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
 import { prisma } from '../schema/generated/prisma-client';
+import pubsub from '../services/subscriptions/pubsub';
 import socket from '../services/es/socket';
 import transformVideo from '../services/es/transform';
 import { VideoProjectFull } from '../schema/fragments.graphql';
+import { VIDEO_PUBLISHED, VIDEO_PUBLISHING, VIDEO_UNPUBLISHED } from '../services/subscriptions/types';
 
 export default {
   Query: {
@@ -140,6 +142,7 @@ export default {
             },
             where: { id: videoProject.id }
           } ).then( result => {
+            pubsub.push( VIDEO_PUBLISHED, result );
             console.log( 'VideoProject published successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -160,7 +163,11 @@ export default {
       return ctx.prisma.updateVideoProject( {
         data: { status: 'PUBLISHING' },
         where: args
-      } );
+      } )
+        .then( result => {
+          pubsub.push( VIDEO_PUBLISHING, result );
+          return result;
+        } );
     },
 
     async unpublishVideoProject( parent, args, ctx ) {
@@ -175,6 +182,7 @@ export default {
             },
             where: { id }
           } ).then( result => {
+            pubsub.push( VIDEO_UNPUBLISHED, result );
             console.log( 'VideoProject unpublished successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -194,7 +202,11 @@ export default {
       return ctx.prisma.updateVideoProject( {
         data: { status: 'PUBLISHING' },
         where: args
-      } );
+      } )
+        .then( result => {
+          pubsub.push( VIDEO_PUBLISHING, result );
+          return result;
+        } );
     },
 
     updateManyVideoProjects ( parent, args, ctx ) {
