@@ -63,3 +63,12 @@ export const deleteAllFromS3 = async dir => {
   // If more than a page of files, delete next batch
   if ( listedObjects.IsTruncated ) await deleteAllFromS3( dir );
 };
+
+export const deleteFromS3 = key => {
+  const params = {
+    Bucket: PUBLISHER_BUCKET,
+    Key: key
+  };
+
+  return s3.deleteObject( params ).promise();
+};

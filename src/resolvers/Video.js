@@ -1,8 +1,8 @@
 import { UserInputError } from 'apollo-server-express';
-import { getFilesToDelete } from '../lib/projectParser';
-import { deleteAllFromVimeo } from '../services/vimeo';
-import { deleteAllFromS3 } from '../services/aws/s3';
-import { VIDEO_UNIT_VIMEO_FILES } from '../fragments/video.js';
+import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParser';
+import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
+import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
+import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
 
 export default {
   Query: {
@@ -138,6 +138,7 @@ export default {
       return ctx.prisma.updateManyVideoProjects( { data, where } );
     },
 
+    // NOTE: Consider moving some of this delete logic to another file
     async deleteVideoProject( parent, { id }, ctx ) {
       // 1. Verify we have a valid project before contnuing
       const doesProjectExist = await ctx.prisma.$exists.videoProject( { id } );
@@ -148,11 +149,11 @@ export default {
       }
 
       // 2. Fetch files that need to be removed from s3/vimeo
-      const units = await ctx.prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIMEO_FILES );
+      const units = await ctx.prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIDEO_FILES );
 
       // 3. Delete vimeo files if they exist
       if ( units.length ) {
-        let emptyS3;
+        let deleteS3;
         const filesToDelete = getFilesToDelete( units );
 
         // 3a. Delete from vimeo
@@ -160,12 +161,13 @@ export default {
 
         // 3b. Delete files from S3
         if ( filesToDelete.s3Dir ) {
-          emptyS3 = deleteAllFromS3( filesToDelete.s3Dir ).catch( err => console.dir( err ) );
+          deleteS3 = deleteAllFromS3( filesToDelete.s3Dir ).catch( err => console.dir( err ) );
         }
 
+        // execute in paralel
         await deleteVimeo;
-        if ( emptyS3 ) {
-          await emptyS3;
+        if ( deleteS3 ) {
+          await deleteS3;
         }
       }
 
@@ -233,7 +235,42 @@ export default {
       return ctx.prisma.updateManyVideoFiles( { data, where } );
     },
 
-    deleteVideoFile ( parent, { id }, ctx ) {
+    // NOTE: Consider moving some of this delete logic to another file
+    async deleteVideoFile ( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before contnuing
+      const doesVideoFileExist = await ctx.prisma.$exists.videoFile( { id } );
+      if ( !doesVideoFileExist ) {
+        throw new UserInputError( 'A video file with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch video file that needs to be removed from s3/vimeo
+      const videoFile = await ctx.prisma.videoFile( { id } ).$fragment( VIDEO_FILE_FILES );
+      const { url, stream } = videoFile;
+      let deleteS3;
+      let deleteVimeo;
+
+      // 3a. Delete from vimeo if vimeo
+      if ( stream && stream.length ) {
+        if ( hasValidValue( stream[0].url ) ) {
+          deleteVimeo = deleteFromVimeo( getVimeoId( stream[0].url ) );
+        }
+      }
+
+      // 3b. Delete from s3
+      if ( hasValidValue( url ) ) {
+        deleteS3 = deleteFromS3( url );
+      }
+
+      // execute in paralel
+      if ( deleteS3 ) {
+        await deleteS3;
+      }
+      if ( deleteVimeo ) {
+        await deleteVimeo;
+      }
+
       return ctx.prisma.deleteVideoFile( { id } );
     },
 

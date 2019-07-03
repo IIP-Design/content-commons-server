@@ -1,5 +1,5 @@
-export const VIDEO_UNIT_VIMEO_FILES = `
-  fragment VIDEO_PROJECT_VIMEO_FILES on VideoUnit {
+export const VIDEO_UNIT_VIDEO_FILES = `
+  fragment VIDEO_UNIT_VIDEO_FILES on VideoUnit {
     files {
       url
       stream(
@@ -11,4 +11,17 @@ export const VIDEO_UNIT_VIMEO_FILES = `
       }
     }
   }
+`;
+
+export const VIDEO_FILE_FILES = `
+  fragment VIDEO_FILE_FILES on VideoFile { 
+    url
+    stream(
+      where: { 
+        site: "vimeo"
+      },
+    ) {
+      url
+    }
+  } 
 `;

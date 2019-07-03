@@ -1,9 +1,25 @@
 
-const hasValidValue = value => value && value.trim() !== '';
+
+const getS3Dir = value => value.substring( 0, value.lastIndexOf( '/' ) );
+
+export const getVimeoId = value => value.substr( value.lastIndexOf( '/' ) + 1 );
+export const hasValidValue = value => value && value.trim() !== '';
+
+export const getVimeoIds = stream => {
+  const vimeo = [];
+  if ( stream && stream.length ) {
+    stream.forEach( s => {
+      if ( hasValidValue( s.url ) ) {
+        vimeo.push( getVimeoId( s.url ) );
+      }
+    } );
+  }
+  return vimeo;
+};
 
 export const getFilesToDelete = units => {
-  const vimeo = [];
   let s3Dir = null;
+  let vimeo = [];
 
   units.forEach( unit => {
     if ( unit.files && unit.files.length ) {
@@ -11,18 +27,12 @@ export const getFilesToDelete = units => {
         // makes the assumption that all files to be deleted reside in same s3 subdir
         if ( !s3Dir ) {
           if ( hasValidValue( file.url ) ) {
-            s3Dir = file.url.substring( 0, file.url.lastIndexOf( '/' ) );
+            s3Dir = getS3Dir( file.url );
           }
         }
 
         const { stream } = file;
-        if ( stream && stream.length ) {
-          stream.forEach( s => {
-            if ( hasValidValue( s.url ) ) {
-              vimeo.push( s.url.substr( s.url.lastIndexOf( '/' ) + 1 ) );
-            }
-          } );
-        }
+        vimeo = getVimeoIds( stream );
       } );
     }
   } );
