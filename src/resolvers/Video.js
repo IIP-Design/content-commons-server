@@ -1,3 +1,9 @@
+import { UserInputError } from 'apollo-server-express';
+import { getFilesToDelete } from '../lib/projectParser';
+import { deleteAllFromVimeo } from '../services/vimeo';
+import { deleteAllFromS3 } from '../services/aws/s3';
+import { VIDEO_UNIT_VIMEO_FILES } from '../fragments/video.js';
+
 export default {
   Query: {
     videoProjects ( parent, args, ctx ) {
@@ -132,7 +138,38 @@ export default {
       return ctx.prisma.updateManyVideoProjects( { data, where } );
     },
 
-    deleteVideoProject( parent, { id }, ctx ) {
+    async deleteVideoProject( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before contnuing
+      const doesProjectExist = await ctx.prisma.$exists.videoProject( { id } );
+      if ( !doesProjectExist ) {
+        throw new UserInputError( 'A project with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch files that need to be removed from s3/vimeo
+      const units = await ctx.prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIMEO_FILES );
+
+      // 3. Delete vimeo files if they exist
+      if ( units.length ) {
+        let emptyS3;
+        const filesToDelete = getFilesToDelete( units );
+
+        // 3a. Delete from vimeo
+        const deleteVimeo = deleteAllFromVimeo( filesToDelete.vimeo );
+
+        // 3b. Delete files from S3
+        if ( filesToDelete.s3Dir ) {
+          emptyS3 = deleteAllFromS3( filesToDelete.s3Dir ).catch( err => console.dir( err ) );
+        }
+
+        await deleteVimeo;
+        if ( emptyS3 ) {
+          await emptyS3;
+        }
+      }
+
+      // 4. Delete project from db  and return id of deleted project
       return ctx.prisma.deleteVideoProject( { id } );
     },
 

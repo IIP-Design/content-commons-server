@@ -1,5 +1,7 @@
 const AWS = require( 'aws-sdk' );
 
+const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET;
+
 // Pulls in configs from .env
 AWS.config.update( {
   accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
@@ -26,7 +28,7 @@ export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) =>
   const key = getKey( filename, projectId );
 
   s3.getSignedUrl( 'putObject', {
-    Bucket: process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET,
+    Bucket: PUBLISHER_BUCKET,
     ContentType: contentType,
     Key: key
   }, ( err, url ) => {
@@ -37,3 +39,27 @@ export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) =>
     }
   } );
 } );
+
+export const deleteAllFromS3 = async dir => {
+  const listParams = {
+    Bucket: PUBLISHER_BUCKET,
+    Prefix: dir
+  };
+
+  const listedObjects = await s3.listObjectsV2( listParams ).promise();
+  if ( listedObjects.Contents.length === 0 ) return;
+
+  const deleteParams = {
+    Bucket: PUBLISHER_BUCKET,
+    Delete: { Objects: [] }
+  };
+
+  listedObjects.Contents.forEach( ( { Key } ) => {
+    deleteParams.Delete.Objects.push( { Key } );
+  } );
+
+  await s3.deleteObjects( deleteParams ).promise();
+
+  // If more than a page of files, delete next batch
+  if ( listedObjects.IsTruncated ) await deleteAllFromS3( dir );
+};
