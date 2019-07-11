@@ -3,6 +3,8 @@ import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParse
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
+import transformVideo from '../services/es/video/transform';
+import { publishCreate } from '../services/rabbitmq';
 
 export default {
   Query: {
@@ -123,8 +125,13 @@ export default {
     },
 
     /** Placeholder for full implementation */
-    publishVideoProject( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: args.id } );
+    async publishVideoProject( parent, args, ctx ) {
+      const videoProject = ctx.prisma.videoProject( { id: args.id } );
+      const esData = transformVideo( videoProject );
+      await publishCreate( args.id, esData );
+
+      // await publishToQueue( 'elastic', esData );
+      return videoProject;
     },
 
     /** Placeholder for full implementation */

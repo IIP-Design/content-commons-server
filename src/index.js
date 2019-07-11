@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import express from 'express';
 import createServer from './createServer';
+import { start } from './services/rabbitmq';
 
 // Create Apollo server
 const server = createServer();
@@ -34,6 +35,9 @@ server.applyMiddleware( {
     credentials: true
   }
 } );
+
+// initialize rabbitmq
+start();
 
 // Start listening...
 app.listen( { port: 4000 }, () => {
