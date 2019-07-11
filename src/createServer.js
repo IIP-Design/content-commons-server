@@ -11,7 +11,7 @@ import UtilResolvers from './resolvers/Util';
 import VideoResolvers from './resolvers/Video';
 import { prisma } from './schema/generated/prisma-client';
 
-const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
+export const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 
 const resolvers = merge(
   AuthResolvers,
@@ -28,7 +28,24 @@ const createServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
-  context: req => ( { ...req, prisma } )
+  tracing: true,
+  context: async ctx => {
+    if ( ctx.connection ) {
+      return { ...ctx.connection.context, prisma };
+    }
+    return { ...ctx.req, prisma };
+  },
+  subscriptions: {
+    onConnect: async ( connectionParams, webSocket, context ) => {
+      console.log( 'on connect' );
+      return Promise.resolve( { ...context, prisma } );
+    },
+    onDisconnect: connectionParams => {
+      console.log( 'client disconnected' );
+      console.log( Object.keys( connectionParams ) );
+      return { ...connectionParams, prisma };
+    },
+  }
 } );
 
 export default createServer;

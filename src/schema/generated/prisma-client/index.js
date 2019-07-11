@@ -111,6 +111,10 @@ var models = [
   {
     name: "SupportFile",
     embedded: false
+  },
+  {
+    name: "Subscription",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

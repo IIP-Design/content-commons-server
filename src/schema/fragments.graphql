@@ -77,7 +77,6 @@ fragment VideoProjectFull on VideoProject {
   }
   status
   visibility
-  protectImages
   units {
     id
     language { id languageCode locale textDirection displayName nativeName }

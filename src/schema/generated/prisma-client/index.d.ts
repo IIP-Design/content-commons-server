@@ -1030,9 +1030,7 @@ export type VideoProjectOrderByInput =
   | "status_ASC"
   | "status_DESC"
   | "visibility_ASC"
-  | "visibility_DESC"
-  | "protectImages_ASC"
-  | "protectImages_DESC";
+  | "visibility_DESC";
 
 export type VideoBurnedInStatus = "SUBTITLED" | "CAPTIONED" | "CLEAN";
 
@@ -3829,8 +3827,6 @@ export interface VideoProjectWhereInput {
   visibility_not?: Maybe<ProjectVisibility>;
   visibility_in?: Maybe<ProjectVisibility[] | ProjectVisibility>;
   visibility_not_in?: Maybe<ProjectVisibility[] | ProjectVisibility>;
-  protectImages?: Maybe<Boolean>;
-  protectImages_not?: Maybe<Boolean>;
   units_every?: Maybe<VideoUnitWhereInput>;
   units_some?: Maybe<VideoUnitWhereInput>;
   units_none?: Maybe<VideoUnitWhereInput>;
@@ -4211,7 +4207,6 @@ export interface VideoProjectUpdateManyMutationInput {
   descInternal?: Maybe<String>;
   status?: Maybe<ProjectPublishStatus>;
   visibility?: Maybe<ProjectVisibility>;
-  protectImages?: Maybe<Boolean>;
 }
 
 export interface VideoStreamUpdateManyInput {
@@ -4628,7 +4623,6 @@ export interface VideoProjectCreateInput {
   team?: Maybe<TeamCreateOneInput>;
   status?: Maybe<ProjectPublishStatus>;
   visibility?: Maybe<ProjectVisibility>;
-  protectImages?: Maybe<Boolean>;
   units?: Maybe<VideoUnitCreateManyInput>;
   supportFiles?: Maybe<SupportFileCreateManyInput>;
   thumbnails?: Maybe<ImageFileCreateManyInput>;
@@ -4908,7 +4902,6 @@ export interface VideoProjectUpdateInput {
   team?: Maybe<TeamUpdateOneInput>;
   status?: Maybe<ProjectPublishStatus>;
   visibility?: Maybe<ProjectVisibility>;
-  protectImages?: Maybe<Boolean>;
   units?: Maybe<VideoUnitUpdateManyInput>;
   supportFiles?: Maybe<SupportFileUpdateManyInput>;
   thumbnails?: Maybe<ImageFileUpdateManyInput>;
@@ -6760,7 +6753,6 @@ export interface VideoProject {
   descInternal?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
-  protectImages?: Boolean;
 }
 
 export interface VideoProjectPromise
@@ -6777,7 +6769,6 @@ export interface VideoProjectPromise
   team: <T = TeamPromise>() => T;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
-  protectImages: () => Promise<Boolean>;
   units: <T = FragmentableArray<VideoUnit>>(args?: {
     where?: VideoUnitWhereInput;
     orderBy?: VideoUnitOrderByInput;
@@ -6839,7 +6830,6 @@ export interface VideoProjectSubscription
   team: <T = TeamSubscription>() => T;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
-  protectImages: () => Promise<AsyncIterator<Boolean>>;
   units: <T = Promise<AsyncIterator<VideoUnitSubscription>>>(args?: {
     where?: VideoUnitWhereInput;
     orderBy?: VideoUnitOrderByInput;
@@ -6901,7 +6891,6 @@ export interface VideoProjectNullablePromise
   team: <T = TeamPromise>() => T;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
-  protectImages: () => Promise<Boolean>;
   units: <T = FragmentableArray<VideoUnit>>(args?: {
     where?: VideoUnitWhereInput;
     orderBy?: VideoUnitOrderByInput;
@@ -7916,7 +7905,6 @@ export interface VideoProjectPreviousValues {
   descInternal?: String;
   status?: ProjectPublishStatus;
   visibility?: ProjectVisibility;
-  protectImages?: Boolean;
 }
 
 export interface VideoProjectPreviousValuesPromise
@@ -7931,7 +7919,6 @@ export interface VideoProjectPreviousValuesPromise
   descInternal: () => Promise<String>;
   status: () => Promise<ProjectPublishStatus>;
   visibility: () => Promise<ProjectVisibility>;
-  protectImages: () => Promise<Boolean>;
 }
 
 export interface VideoProjectPreviousValuesSubscription
@@ -7946,7 +7933,6 @@ export interface VideoProjectPreviousValuesSubscription
   descInternal: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<ProjectPublishStatus>>;
   visibility: () => Promise<AsyncIterator<ProjectVisibility>>;
-  protectImages: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface VideoProjectSubscriptionPayload {

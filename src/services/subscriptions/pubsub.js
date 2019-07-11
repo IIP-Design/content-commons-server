@@ -1,10 +1,27 @@
-import socketio from 'socket.io';
+import { AmqpPubSub } from 'graphql-rabbitmq-subscriptions';
+import { ConsoleLogger } from '@cdm-logger/server';
+// import socketio from 'socket.io';
+
 import createRabbit from './createRabbit';
+
 
 const exchange = process.env.RABBITMQ_EXCHANGE || 'publisher';
 
 let rabbit = null;
-let io = null;
+// let io = null;
+
+const settings = {
+  level: 'info', // Optional: default 'info' ('trace'|'info'|'debug'|'warn'|'error'|'fatal')
+  mode: 'short' // Optional: default 'short' ('short'|'long'|'dev'|'raw')
+};
+
+const logger = ConsoleLogger.create( 'PublisherServer', settings );
+const pubsub = new AmqpPubSub( {
+  config: {
+    host: process.env.RABBITMQ_ENDPOINT
+  },
+  logger
+} );
 
 /**
  * Handler for messages received from RabbitMQ.
@@ -13,43 +30,47 @@ let io = null;
  * @param msg
  */
 const rabbitConsumer = msg => {
-  if ( !io ) return;
+  if ( !pubsub ) return;
 
   const obj = JSON.parse( msg );
   if ( 'event' in obj ) {
     console.info( `[PubSub][Rabbit] Received ${obj.type} event with ID: `, obj.event.id );
-    io.to( obj.type ).emit( obj.type, obj.event );
+    pubsub.publish( obj.type, { [obj.type]: obj.event } );
   } else {
     console.warn( '[PubSub][Rabbit] Received non event', obj );
   }
 };
 
-const createSocket = server => {
-  if ( io ) io.close();
-  io = socketio( server );
-  io.on( 'connection', client => {
-    console.info( '[PubSub][Socket] Client connected %s', client.id );
-    client.on( 'disconnect', () => {
-      console.info( '[PubSub][Socket] Client disconnected %s', client.id );
-    } );
-
-    client.on( 'join', type => {
-      client.join( type );
-    } );
-  } );
-};
+// const createSocket = server => {
+//   if ( io ) io.close();
+//   io = socketio( server );
+//   io.on( 'connection', client => {
+//     console.info( '[PubSub][Socket] Client connected %s', client.id );
+//     client.on( 'disconnect', () => {
+//       console.info( '[PubSub][Socket] Client disconnected %s', client.id );
+//     } );
+//
+//     client.on( 'join', type => {
+//       client.join( type );
+//       console.log( '[PubSub][Socket] Client joined: %s', type );
+//     } );
+//   } );
+// };
 
 /**
  * Connect to the RabbitMQ instance, and set the consumer function.
  */
-const connectRabbit = () => {
+export const connectRabbit = () => {
   rabbit = null;
   createRabbit( rabbitConsumer )
     .then( result => {
       rabbit = result;
       console.info( '[PubSub][Rabbit] Connected' );
     } )
-    .catch( err => console.error( err ) );
+    .catch( err => {
+      console.error( err );
+      console.log( '[PubSub][Rabbit] Connection failed: %s', err.toString() );
+    } );
 };
 
 /**
@@ -57,7 +78,7 @@ const connectRabbit = () => {
  * @param type
  * @param event
  */
-const push = ( type, event ) => {
+export const push = ( type, event ) => {
   if ( !rabbit ) {
     console.error( '[PubSub][Rabbit] Message failed to send. Rabbit is not connected.' );
     return;
@@ -74,11 +95,6 @@ const push = ( type, event ) => {
 const connect = server => {
   createSocket( server );
   connectRabbit();
-};
-
-const pubsub = {
-  push,
-  connect
 };
 
 export default pubsub;

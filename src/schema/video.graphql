@@ -49,3 +49,8 @@ type Mutation {
   deleteManyVideoStreams(where: VideoStreamWhereInput): BatchPayload!
 }
 
+type Subscription {
+  videoPublished: VideoProject
+  videoUnpublished: VideoProject
+  videoPublishing: VideoProject
+}

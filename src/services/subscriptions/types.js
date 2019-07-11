@@ -1,6 +1,6 @@
-export const VIDEO_PUBLISHED = 'video.published';
-export const VIDEO_PUBLISHING = 'video.publishing';
-export const VIDEO_UNPUBLISHED = 'video.unpublished';
+export const VIDEO_PUBLISHED = 'videoPublished';
+export const VIDEO_PUBLISHING = 'videoPublishing';
+export const VIDEO_UNPUBLISHED = 'videoUnpublished';
 
 const SubscriptionTypes = {
   VIDEO_PUBLISHED,
