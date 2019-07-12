@@ -28,23 +28,15 @@ const createServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
-  tracing: true,
-  context: async ctx => {
-    if ( ctx.connection ) {
-      return { ...ctx.connection.context, prisma };
+  context: async ( { connection, ...other } ) => {
+    if ( connection ) {
+      return { ...connection.context, prisma };
     }
-    return { ...ctx.req, prisma };
+    return { ...other, prisma };
   },
   subscriptions: {
-    onConnect: async ( connectionParams, webSocket, context ) => {
-      console.log( 'on connect' );
-      return Promise.resolve( { ...context, prisma } );
-    },
-    onDisconnect: connectionParams => {
-      console.log( 'client disconnected' );
-      console.log( Object.keys( connectionParams ) );
-      return { ...connectionParams, prisma };
-    },
+    onConnect: async ( connectionParams, webSocket, context ) => Promise.resolve( { ...context, prisma } ),
+    onDisconnect: connectionParams => ( { ...connectionParams, prisma } ),
   }
 } );
 

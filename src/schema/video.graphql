@@ -50,6 +50,7 @@ type Mutation {
 }
 
 type Subscription {
+  videoStatus: VideoProject
   videoPublished: VideoProject
   videoUnpublished: VideoProject
   videoPublishing: VideoProject

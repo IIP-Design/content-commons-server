@@ -4,22 +4,33 @@ import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
 import { prisma } from '../schema/generated/prisma-client';
-import pubsub, { push } from '../services/subscriptions/pubsub';
+import pubsub, { VIDEO_PUBLISHED, VIDEO_PUBLISHING, VIDEO_UNPUBLISHED } from '../services/pubsub';
 import socket from '../services/es/socket';
 import transformVideo from '../services/es/transform';
 import { VideoProjectFull } from '../schema/fragments.graphql';
-import { VIDEO_PUBLISHED, VIDEO_PUBLISHING, VIDEO_UNPUBLISHED } from '../services/subscriptions/types';
+
+const resolveSubscription = ( type = null ) => payload => {
+  if ( !type ) return payload;
+  return { [type]: payload };
+};
 
 export default {
   Subscription: {
+    videoStatus: {
+      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHING, VIDEO_PUBLISHED, VIDEO_UNPUBLISHED] ),
+      resolve: resolveSubscription()
+    },
     videoPublished: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHED] )
+      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHED] ),
+      resolve: resolveSubscription( VIDEO_PUBLISHED )
     },
     videoUnpublished: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_UNPUBLISHED] )
+      subscribe: () => pubsub.asyncIterator( [VIDEO_UNPUBLISHED] ),
+      resolve: resolveSubscription( VIDEO_UNPUBLISHED )
     },
     videoPublishing: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHING] )
+      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHING] ),
+      resolve: resolveSubscription( VIDEO_PUBLISHING )
     },
   },
 
@@ -154,7 +165,7 @@ export default {
             },
             where: { id: videoProject.id }
           } ).then( result => {
-            push( VIDEO_PUBLISHED, result );
+            pubsub.publish( VIDEO_PUBLISHED, result );
             console.log( 'VideoProject published successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -177,7 +188,7 @@ export default {
         where: args
       } )
         .then( result => {
-          push( VIDEO_PUBLISHING, result );
+          pubsub.publish( VIDEO_PUBLISHING, result );
           return result;
         } );
     },
@@ -194,7 +205,7 @@ export default {
             },
             where: { id }
           } ).then( result => {
-            push( VIDEO_UNPUBLISHED, result );
+            pubsub.publish( VIDEO_UNPUBLISHED, result );
             console.log( 'VideoProject unpublished successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -216,7 +227,7 @@ export default {
         where: args
       } )
         .then( result => {
-          push( VIDEO_PUBLISHING, result );
+          pubsub.publish( VIDEO_PUBLISHING, result );
           return result;
         } );
     },
