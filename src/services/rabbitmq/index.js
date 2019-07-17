@@ -1,5 +1,6 @@
 import amqp from 'amqplib';
 import initialize from './initialize';
+import { prisma } from '../../schema/generated/prisma-client';
 
 // RabbitMQ connection string
 const messageQueueConnectionString = process.env.RABBITMQ_ENDPOINT;
@@ -20,7 +21,7 @@ const publishToChannel = ( channel, { routingKey, exchangeName, data } ) => new 
 } );
 
 // funcion name is [exchange][routing key]
-export const publishCreate = async ( id, data ) => {
+export const publishCreate = async ( id, data, status ) => {
   // connect to Rabbit MQ and create a channel
   const connection = await amqp.connect( messageQueueConnectionString );
   const channel = await connection.createConfirmChannel();
@@ -32,7 +33,26 @@ export const publishCreate = async ( id, data ) => {
     routingKey: 'create',
     data: {
       projectId: id,
-      projectData: JSON.stringify( data )
+      projectJson: JSON.stringify( data ),
+      projectStatus: status
+    }
+  } );
+};
+
+export const publishDelete = async ( id, data ) => {
+  // connect to Rabbit MQ and create a channel
+  const connection = await amqp.connect( messageQueueConnectionString );
+  const channel = await connection.createConfirmChannel();
+
+  console.log( '[x] PUBLISHING a publish delete request' );
+
+  await publishToChannel( channel, {
+    exchangeName: 'publish',
+    routingKey: 'delete',
+    data: {
+      projectId: id,
+      projectJson: JSON.stringify( data ),
+      projectStatus: data.status
     }
   } );
 };
@@ -43,11 +63,39 @@ const consume = ( { connection, channel, resultsChannel } ) => new Promise( ( re
     // parse message
     const msgBody = msg.content.toString();
     const data = JSON.parse( msgBody );
-    const { projectId } = data;
+    const { projectId, projectStatus, resultType } = data;
 
     // 1. on successful result, update db with status = PUBLISHED using the returned projectId
     // 2. notify the client
-    console.log( `[x] RECEIVED a publish result for project ${projectId}` );
+    console.log( `[x] RECEIVED a publish ${resultType} result for project ${projectId}`, data );
+    switch ( resultType ) {
+      case 'create':
+        if ( !data.error ) {
+          await prisma.updateVideoProject( { data: { status: 'PUBLISHED' }, where: { id: projectId } } )
+            .then( () => console.log( 'Video project published', projectId ) )
+            .catch( err => console.error( err ) );
+        } else {
+          await prisma.updateVideoProject( { data: { status: projectStatus }, where: { id: projectId } } )
+            .then( () => console.log( 'Video project was NOT published', projectId ) )
+            .catch( err => console.error( err ) );
+        }
+        break;
+      case 'delete':
+        if ( !data.error ) {
+          await prisma.updateVideoProject( { data: { status: 'DRAFT' }, where: { id: projectId } } )
+            .then( () => console.log( 'Video project unpublished', projectId ) )
+            .catch( err => console.error( err ) );
+        } else {
+          const status = projectStatus === 'DRAFT' ? 'DRAFT' : 'PUBLISHED_MODIFIED';
+          await prisma.updateVideoProject( { data: { status }, where: { id: projectId } } )
+            .then( () => console.log( 'Video project published', projectId ) )
+            .catch( err => console.error( err ) );
+        }
+        break;
+      default:
+        console.log( `Invalid result type: ${data.resultType}` );
+        break;
+    }
 
     // acknowledge message as received
     await channel.ack( msg );
@@ -81,5 +129,5 @@ export const start = async () => {
   await initialize().catch( err => console.error( err.cause ) );
 
   // listen for results on RabbitMQc
-  listenForResults();
+  listenForResults().then();
 };

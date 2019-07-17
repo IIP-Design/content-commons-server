@@ -28,5 +28,14 @@ services:
       - mysql:/var/lib/mysql
     ports:
       - "3333:3306"
+  rabbitmq:
+    restart: always
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq"
 volumes:
   mysql:

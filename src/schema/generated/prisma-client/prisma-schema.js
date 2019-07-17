@@ -1476,6 +1476,7 @@ enum ProjectPublishStatus {
   DRAFT
   PUBLISHING
   PUBLISHED
+  PUBLISHED_MODIFIED
   EMBARGOED
 }
 

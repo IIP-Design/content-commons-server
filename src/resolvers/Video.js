@@ -2,9 +2,9 @@ import { UserInputError } from 'apollo-server-express';
 import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
-import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
+import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 import transformVideo from '../services/es/video/transform';
-import { publishCreate } from '../services/rabbitmq';
+import { publishCreate, publishDelete } from '../services/rabbitmq';
 
 export default {
   Query: {
@@ -126,17 +126,27 @@ export default {
 
     /** Placeholder for full implementation */
     async publishVideoProject( parent, args, ctx ) {
-      const videoProject = ctx.prisma.videoProject( { id: args.id } );
+      const videoProject = await ctx.prisma.videoProject( { id: args.id } ).$fragment( VIDEO_PROJECT_FULL );
       const esData = transformVideo( videoProject );
-      await publishCreate( args.id, esData );
-
-      // await publishToQueue( 'elastic', esData );
+      await publishCreate( args.id, esData, videoProject.status );
       return videoProject;
     },
 
     /** Placeholder for full implementation */
-    unpublishVideoProject( parent, args, ctx ) {
-      return ctx.prisma.videoProject( { id: args.id } );
+    async unpublishVideoProject( parent, args, ctx ) {
+      const videoProject = await ctx.prisma.videoProject( args ).$fragment( VIDEO_PROJECT_FULL );
+      if ( !videoProject ) {
+        throw new UserInputError( 'A project with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+      const { id, status } = videoProject;
+      await ctx.prisma.updateVideoProject( {
+        data: { status: 'PUBLISHING' },
+        where: args
+      } ).catch( err => err );
+      await publishDelete( id, { id, status } );
+      return videoProject;
     },
 
     updateManyVideoProjects ( parent, args, ctx ) {
