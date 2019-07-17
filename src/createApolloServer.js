@@ -24,11 +24,11 @@ const resolvers = merge(
 );
 
 // Create Apollo server
-const createServer = () => new ApolloServer( {
+const createApolloServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
   context: req => ( { ...req, prisma } )
 } );
 
-export default createServer;
+export default createApolloServer;

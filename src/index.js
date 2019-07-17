@@ -1,31 +1,13 @@
 import 'dotenv/config';
-import cookieParser from 'cookie-parser';
-import jwt from 'jsonwebtoken';
-import express from 'express';
-import createServer from './createServer';
+import http from 'http';
+import createApolloServer from './createApolloServer';
+import app from './app';
 import { start } from './services/rabbitmq';
 
 // Create Apollo server
-const server = createServer();
+const server = createApolloServer();
 
-// Create Express server
-const app = express();
-
-// Mount middleware to run before Apollo.
-app.use( cookieParser() );
-
-// Decode the JWT token on cookie so we can put the userId on each request
-app.use( ( req, res, next ) => {
-  const { americaCommonsToken } = req.cookies;
-
-  if ( americaCommonsToken ) {
-    const { userId } = jwt.verify( americaCommonsToken, process.env.PUBLISHER_APP_SECRET );
-
-    // put the userId onto the req for future requests to access
-    req.userId = userId;
-  }
-  next();
-} );
+const PORT = process.env.PORT || 4000;
 
 // Apply middleware to Apollo
 server.applyMiddleware( {
@@ -36,10 +18,19 @@ server.applyMiddleware( {
   }
 } );
 
+const httpServer = http.createServer( app );
+server.installSubscriptionHandlers( httpServer );
+
 // initialize rabbitmq
 start();
 
 // Start listening...
-app.listen( { port: 4000 }, () => {
-  console.log( `🚀 Server ready at http://localhost:4000${server.graphqlPath}` );
+// app.listen( { port: 4000 }, () => {
+//   console.log( `🚀 Server ready at http://localhost:4000${server.graphqlPath}` );
+// } );
+
+//  We are calling `listen` on the http server variable, and not on `app`.
+httpServer.listen( { port: PORT }, () => {
+  console.log( `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}` );
+  console.log( `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}` );
 } );
