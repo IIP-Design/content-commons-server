@@ -23,6 +23,7 @@ type Mutation {
   deleteManyVideoProjects(where: VideoProjectWhereInput): BatchPayload!
   publishVideoProject(id: ID!): VideoProject
   unpublishVideoProject(id: ID!): VideoProject
+  unpublishManyVideoProjects(where: VideoProjectWhereInput): BatchPayload!
 
   createVideoUnit(data: VideoUnitCreateInput!): VideoUnit!
   updateVideoUnit(data: VideoUnitUpdateInput!, where: VideoUnitWhereUniqueInput!): VideoUnit!
@@ -47,11 +48,4 @@ type Mutation {
   updateManyVideoStreams(data: VideoStreamUpdateManyMutationInput!, where: VideoStreamWhereInput): BatchPayload!
   deleteVideoStream(id: ID!): VideoStream
   deleteManyVideoStreams(where: VideoStreamWhereInput): BatchPayload!
-}
-
-type Subscription {
-  videoStatus: VideoProject
-  videoPublished: VideoProject
-  videoUnpublished: VideoProject
-  videoPublishing: VideoProject
 }

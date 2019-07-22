@@ -2,38 +2,13 @@ import { UserInputError } from 'apollo-server-express';
 import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
-import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES } from '../fragments/video.js';
+import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 import { prisma } from '../schema/generated/prisma-client';
-import pubsub, { VIDEO_PUBLISHED, VIDEO_PUBLISHING, VIDEO_UNPUBLISHED } from '../services/pubsub';
+import pubsub, { PROJECT_STATUS } from '../services/pubsub';
 import socket from '../services/es/socket';
 import transformVideo from '../services/es/transform';
-import { VideoProjectFull } from '../schema/fragments.graphql';
-
-const resolveSubscription = ( type = null ) => payload => {
-  if ( !type ) return payload;
-  return { [type]: payload };
-};
 
 export default {
-  Subscription: {
-    videoStatus: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHING, VIDEO_PUBLISHED, VIDEO_UNPUBLISHED] ),
-      resolve: resolveSubscription()
-    },
-    videoPublished: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHED] ),
-      resolve: resolveSubscription( VIDEO_PUBLISHED )
-    },
-    videoUnpublished: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_UNPUBLISHED] ),
-      resolve: resolveSubscription( VIDEO_UNPUBLISHED )
-    },
-    videoPublishing: {
-      subscribe: () => pubsub.asyncIterator( [VIDEO_PUBLISHING] ),
-      resolve: resolveSubscription( VIDEO_PUBLISHING )
-    },
-  },
-
   Query: {
     videoProjects ( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
@@ -152,7 +127,7 @@ export default {
     },
 
     async publishVideoProject( parent, args, ctx ) {
-      const videoProject = await ctx.prisma.videoProject( args ).$fragment( VideoProjectFull );
+      const videoProject = await ctx.prisma.videoProject( args ).$fragment( VIDEO_PROJECT_FULL );
       if ( !videoProject ) return { error: 'Video Project not found.' };
       // In case of failure, we will need to know which status to fallback to
       const wasDraft = videoProject.status === 'DRAFT';
@@ -165,7 +140,7 @@ export default {
             },
             where: { id: videoProject.id }
           } ).then( result => {
-            pubsub.publish( VIDEO_PUBLISHED, result );
+            pubsub.publish( PROJECT_STATUS, [result] );
             console.log( 'VideoProject published successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -188,7 +163,7 @@ export default {
         where: args
       } )
         .then( result => {
-          pubsub.publish( VIDEO_PUBLISHING, result );
+          pubsub.publish( PROJECT_STATUS, [result] );
           return result;
         } );
     },
@@ -205,7 +180,7 @@ export default {
             },
             where: { id }
           } ).then( result => {
-            pubsub.publish( VIDEO_UNPUBLISHED, result );
+            pubsub.publish( PROJECT_STATUS, [result] );
             console.log( 'VideoProject unpublished successfully!' );
             console.log( JSON.stringify( result, null, 2 ) );
           } );
@@ -227,7 +202,54 @@ export default {
         where: args
       } )
         .then( result => {
-          pubsub.publish( VIDEO_PUBLISHING, result );
+          pubsub.publish( PROJECT_STATUS, [result] );
+          return result;
+        } );
+    },
+
+    async unpublishManyVideoProjects( parent, args, ctx ) {
+      const videoProjects = await ctx.prisma.videoProjects( args ).$fragment( `{ id status }` );
+
+      const promises = [];
+      videoProjects.forEach( ( { id, status } ) => {
+        promises.push( socket.delete( 'video', id )
+          .then( () => prisma.updateVideoProject( {
+            data: {
+              status: 'DRAFT'
+            },
+            where: { id }
+          } ).$fragment( `{ id status }` ) )
+          .then( result => {
+            console.log( 'VideoProject unpublished successfully!' );
+            console.log( JSON.stringify( result, null, 2 ) );
+            return result;
+          } )
+          .catch( result => prisma.updateVideoProject( {
+            data: {
+              status
+            },
+            where: { id }
+          } ).$fragment( `{ id status }` )
+            .then( result2 => result2 )
+            .catch( err2 => {
+              console.error( `VideoProject status could not be updated to ${status} with error:\r\n${err2.toString()}` );
+              return { id, status: 'PUBLISHING' };
+            } )
+            .finally( () => {
+              console.error( `${result.error}\r\nVideoProject unpublish failed.` );
+            } ) ) );
+      } );
+      Promise.all( promises ).then( results => {
+        pubsub.publish( PROJECT_STATUS, results );
+      } );
+      return ctx.prisma.updateManyVideoProjects( {
+        data: { status: 'PUBLISHING' },
+        where: {
+          id_in: videoProjects.map( p => p.id )
+        }
+      } )
+        .then( result => {
+          pubsub.publish( PROJECT_STATUS, videoProjects.map( p => ( { id: p.id, status: 'PUBLISHING' } ) ) );
           return result;
         } );
     },

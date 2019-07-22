@@ -1,0 +1,8 @@
+type ProjectStatusPayload {
+  id: ID!
+  status: ProjectPublishStatus
+}
+
+type Subscription {
+  projectStatus: [ProjectStatusPayload]
+}

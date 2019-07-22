@@ -30,6 +30,7 @@ services:
       - "3333:3306"
   rabbitmq:
     image: "rabbitmq:3-management"
+    restart: always
     hostname: "rabbit"
     ports:
       - "15672:15672"

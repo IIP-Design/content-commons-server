@@ -9,6 +9,7 @@ import TeamResolvers from './resolvers/Team';
 import UserResolvers from './resolvers/User';
 import UtilResolvers from './resolvers/Util';
 import VideoResolvers from './resolvers/Video';
+import SubscriptionResolvers from './resolvers/Subscription';
 import { prisma } from './schema/generated/prisma-client';
 
 export const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
@@ -20,7 +21,8 @@ const resolvers = merge(
   TaxonomyResolvers,
   UserResolvers,
   TeamResolvers,
-  VideoResolvers
+  VideoResolvers,
+  SubscriptionResolvers
 );
 
 // Create Apollo server
