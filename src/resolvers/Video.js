@@ -1,10 +1,19 @@
-import { UserInputError } from 'apollo-server-express';
-import { getFilesToDelete, hasValidValue, getVimeoId } from '../lib/projectParser';
+import {
+  UserInputError, PubSub, withFilter, ApolloError
+} from 'apollo-server-express';
+import {
+  getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
+} from '../lib/projectParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
-import { deleteAllFromS3, deleteFromS3 } from '../services/aws/s3';
-import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
+import { deleteAllS3Assets, deleteS3Asset } from '../services/aws/s3';
 import transformVideo from '../services/es/video/transform';
-import { publishCreate, publishDelete } from '../services/rabbitmq';
+import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
+import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
+
+// const pubsub = new PubSub();
+
+// const PROJECT_PUBLISHED = 'PROJECT_PUBLISHED';
+const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
 
 export default {
   Query: {
@@ -124,15 +133,38 @@ export default {
       } );
     },
 
-    /** Placeholder for full implementation */
+
     async publishVideoProject( parent, args, ctx ) {
+      // 1. Get data for project to publish from db
       const videoProject = await ctx.prisma.videoProject( { id: args.id } ).$fragment( VIDEO_PROJECT_FULL );
+      if ( !videoProject ) {
+        throw new UserInputError( 'A project with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Transform it into thw acceptable elasticsearch data structure
       const esData = transformVideo( videoProject );
-      await publishCreate( args.id, esData, videoProject.status );
+      const { status } = videoProject;
+
+      // 3. Put on the queue for processing ( not sure we need to await here )
+      if ( status === 'DRAFT' ) {
+        publishCreate( args.id, esData, status );
+      } else {
+        publishUpdate( args.id, esData, status );
+      }
+
+      // 4. Update the project status
+      await ctx.prisma.updateVideoProject( {
+        data: { status: 'PUBLISHING' },
+        where: args
+      } ).catch( err => {
+        throw new ApolloError( err );
+      } );
+
       return videoProject;
     },
 
-    /** Placeholder for full implementation */
     async unpublishVideoProject( parent, args, ctx ) {
       const videoProject = await ctx.prisma.videoProject( args ).$fragment( VIDEO_PROJECT_FULL );
       if ( !videoProject ) {
@@ -140,12 +172,9 @@ export default {
           invalidArgs: 'id'
         } );
       }
-      const { id, status } = videoProject;
-      await ctx.prisma.updateVideoProject( {
-        data: { status: 'PUBLISHING' },
-        where: args
-      } ).catch( err => err );
-      await publishDelete( id, { id, status } );
+      const { id } = videoProject;
+
+      publishDelete( id );
       return videoProject;
     },
 
@@ -171,14 +200,15 @@ export default {
       // 3. Delete vimeo files if they exist
       if ( units.length ) {
         let deleteS3;
-        const filesToDelete = getFilesToDelete( units );
+        const s3DirToDelete = getS3ProjectDirectory( units );
+        const vimeoFilesToDelete = getVimeoFiles( units );
 
         // 3a. Delete from vimeo
-        const deleteVimeo = deleteAllFromVimeo( filesToDelete.vimeo );
+        const deleteVimeo = deleteAllFromVimeo( vimeoFilesToDelete );
 
         // 3b. Delete files from S3
-        if ( filesToDelete.s3Dir ) {
-          deleteS3 = deleteAllFromS3( filesToDelete.s3Dir ).catch( err => console.dir( err ) );
+        if ( s3DirToDelete ) {
+          deleteS3 = deleteAllS3Assets( s3DirToDelete, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
         }
 
         // execute in paralel
@@ -277,7 +307,7 @@ export default {
 
       // 3b. Delete from s3
       if ( hasValidValue( url ) ) {
-        deleteS3 = deleteFromS3( url );
+        deleteS3 = deleteS3Asset( url, PUBLISHER_BUCKET );
       }
 
       // execute in paralel
@@ -570,6 +600,17 @@ export default {
       return ctx.prisma.deleteManyVideoStreams( { ...where } );
     }
   },
+
+  // Subscription: {
+  // statusUpdated: {
+  //   subscribe: withFilter( () => pubsub.asyncIterator( [STATUS_UPDATED] ),
+  //     ( payload, variables ) => payload.statusUpdated.id === variables.id )
+  // },
+
+  // projectPublished: {
+  //   subscribe: withFilter( () => pubsub.asyncIterator( [PROJECT_PUBLISHED] ), ( payload, variables ) => payload.projectPublished.id === variables.id )
+  // }
+  // },
 
   VideoProject: {
     author( parent, args, ctx ) {

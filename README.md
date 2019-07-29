@@ -41,7 +41,8 @@ Install the following if not already installed
 
   - **AWS_S3_ACCESS_KEY_ID** : AWS IAM programmatic access key with full S3 permissions
   - **AWS_S3_SECRET_ACCESS_KEY** : Secret key corresponding to the above access key
-  - **AWS_S3_PUBLISHER_UPLOAD_BUCKET**: S3 bucket for authoring uploads
+  - **AWS_S3_PUBLISHER_BUCKET**: S3 bucket for authoring uploads
+  - **AWS_S3_PRODUCTION_BUCKET**: S3 bucket that houses published assets
 
 - Deploy prisma schema, install dependencies and start development server
 

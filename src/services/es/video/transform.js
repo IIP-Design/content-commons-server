@@ -65,7 +65,7 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
-    downloadUrl: `https://s3.amazonaws.com/${process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET}/${file.url}`,
+    downloadUrl: file.url,
     streamUrl: [],
     stream: null,
     duration: file.duration,
@@ -159,7 +159,7 @@ const transformVideo = videoProject => {
 
   const esData = {
     post_id: videoProject.id,
-    site: 'publisher',
+    site: 'commons.america.gov',
     type: 'video',
     published: now,
     modified: now,
@@ -168,6 +168,7 @@ const transformVideo = videoProject => {
     // thumbnail: null,
     unit: [],
   };
+
   if ( videoProject.team ) {
     esData.owner = videoProject.team.name;
   }
@@ -175,35 +176,35 @@ const transformVideo = videoProject => {
     esData.author = `${videoProject.author.firstName} ${videoProject.author.lastName}`.trim();
   }
 
-  // videoProject.units.forEach( gunit => {
-  //   const unit = transformVideoUnit( gunit );
+  videoProject.units.forEach( gunit => {
+    const unit = transformVideoUnit( gunit );
 
-  //   // Assign SRTs and Transcripts based on language
-  //   // TODO: Allow for user assigned SRT/Transcript in future
-  //   if ( videoProject.supportFiles ) {
-  //     videoProject.supportFiles.forEach( file => {
-  //       if ( file.language.id !== gunit.language.id ) return;
-  //       const supportFile = {
-  //         srcUrl: file.url,
-  //         md5: file.md5
-  //       };
-  //       if ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) {
-  //         unit.srt = supportFile;
-  //       } else {
-  //         unit.transcript = supportFile;
-  //       }
-  //     } );
-  //   }
-  //   esData.unit.push( unit );
+    // Assign SRTs and Transcripts based on language
+    // TODO: Allow for user assigned SRT/Transcript in future
+    if ( videoProject.supportFiles ) {
+      videoProject.supportFiles.forEach( file => {
+        if ( file.language.id !== gunit.language.id ) return;
+        const supportFile = {
+          srcUrl: file.url,
+          md5: file.md5
+        };
+        if ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) {
+          unit.srt = supportFile;
+        } else {
+          unit.transcript = supportFile;
+        }
+      } );
+    }
+    esData.unit.push( unit );
 
-  //   // Set the project thumbnail if:
-  //   //  it does not yet exist
-  //   //  the unit thumbnail has a non null full size
-  //   //  and the language is english
-  //   if ( !esData.thumbnail && unit.thumbnail.full && gunit.language.locale === ENGLISH_LOCALE ) {
-  //     esData.thumbnail = unit.thumbnail;
-  //   }
-  // } );
+    // Set the project thumbnail if:
+    //  it does not yet exist
+    //  the unit thumbnail has a non null full size
+    //  and the language is english
+    if ( !esData.thumbnail && unit.thumbnail.full && gunit.language.locale === ENGLISH_LOCALE ) {
+      esData.thumbnail = unit.thumbnail;
+    }
+  } );
   return esData;
 };
 

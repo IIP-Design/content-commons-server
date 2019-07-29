@@ -3591,6 +3591,7 @@ type VideoProject {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  publishedAt: DateTime
   projectType: ProjectType!
   projectTitle: String!
   descPublic: String
@@ -3614,6 +3615,7 @@ type VideoProjectConnection {
 
 input VideoProjectCreateInput {
   id: ID
+  publishedAt: DateTime
   projectType: ProjectType
   projectTitle: String!
   descPublic: String
@@ -3641,6 +3643,8 @@ enum VideoProjectOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  publishedAt_ASC
+  publishedAt_DESC
   projectType_ASC
   projectType_DESC
   projectTitle_ASC
@@ -3659,6 +3663,7 @@ type VideoProjectPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  publishedAt: DateTime
   projectType: ProjectType!
   projectTitle: String!
   descPublic: String
@@ -3686,6 +3691,7 @@ input VideoProjectSubscriptionWhereInput {
 }
 
 input VideoProjectUpdateInput {
+  publishedAt: DateTime
   projectType: ProjectType
   projectTitle: String
   descPublic: String
@@ -3702,6 +3708,7 @@ input VideoProjectUpdateInput {
 }
 
 input VideoProjectUpdateManyMutationInput {
+  publishedAt: DateTime
   projectType: ProjectType
   projectTitle: String
   descPublic: String
@@ -3741,6 +3748,14 @@ input VideoProjectWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
   projectType: ProjectType
   projectType_not: ProjectType
   projectType_in: [ProjectType!]

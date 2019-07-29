@@ -1,6 +1,6 @@
 const AWS = require( 'aws-sdk' );
 
-const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_UPLOAD_BUCKET;
+const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
 
 // Pulls in configs from .env
 AWS.config.update( {
@@ -19,7 +19,7 @@ const getKey = ( filename, projectId ) => {
   let month = date.getMonth() + 1;
   month = month < 10 ? `0${month}` : month;
 
-  return `${year}/${month}/${projectId}/${fn}`;
+  return `${year}/${month}/commons.america.gov_${projectId}/${fn}`;
 };
 
 export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) => {
@@ -40,9 +40,9 @@ export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) =>
   } );
 } );
 
-export const deleteAllFromS3 = async dir => {
+export const deleteAllS3Assets = async ( dir, bucket ) => {
   const listParams = {
-    Bucket: PUBLISHER_BUCKET,
+    Bucket: bucket,
     Prefix: dir
   };
 
@@ -50,7 +50,7 @@ export const deleteAllFromS3 = async dir => {
   if ( listedObjects.Contents.length === 0 ) return;
 
   const deleteParams = {
-    Bucket: PUBLISHER_BUCKET,
+    Bucket: bucket,
     Delete: { Objects: [] }
   };
 
@@ -61,14 +61,42 @@ export const deleteAllFromS3 = async dir => {
   await s3.deleteObjects( deleteParams ).promise();
 
   // If more than a page of files, delete next batch
-  if ( listedObjects.IsTruncated ) await deleteAllFromS3( dir );
+  if ( listedObjects.IsTruncated ) await deleteAllS3Assets( dir, bucket );
 };
 
-export const deleteFromS3 = key => {
+export const deleteS3Asset = ( key, bucket ) => {
   const params = {
-    Bucket: PUBLISHER_BUCKET,
+    Bucket: bucket,
     Key: key
   };
 
   return s3.deleteObject( params ).promise();
+};
+
+export const copyS3Asset = async ( key, fromBucket, toBucket ) => {
+  const copyParams = {
+    Bucket: toBucket,
+    CopySource: `/${fromBucket}/${key}`,
+    Key: key
+  };
+  return s3.copyObject( copyParams ).promise();
+};
+
+// This is currently executing in a worker in the cdp-api repo
+// So may be able to remove here
+export const copyS3AllAssets = async ( dir, fromBucket, toBucket ) => {
+  const listParams = {
+    Bucket: fromBucket,
+    Prefix: dir
+  };
+
+  const listedObjects = await s3.listObjectsV2( listParams ).promise();
+  if ( listedObjects.Contents.length === 0 ) return;
+
+  listedObjects.Contents.forEach( ( { Key } ) => {
+    copyS3Asset( Key, fromBucket, toBucket );
+  } );
+
+  // If more than a page of files, copy next batch
+  if ( listedObjects.IsTruncated ) await copyS3AllAssets( dir );
 };

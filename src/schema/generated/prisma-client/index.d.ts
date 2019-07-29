@@ -967,6 +967,8 @@ export type VideoProjectOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
+  | "publishedAt_ASC"
+  | "publishedAt_DESC"
   | "projectType_ASC"
   | "projectType_DESC"
   | "projectTitle_ASC"
@@ -2150,6 +2152,7 @@ export interface CategoryUpdateWithWhereUniqueNestedInput {
 }
 
 export interface VideoProjectUpdateInput {
+  publishedAt?: Maybe<DateTimeInput>;
   projectType?: Maybe<ProjectType>;
   projectTitle?: Maybe<String>;
   descPublic?: Maybe<String>;
@@ -2961,6 +2964,7 @@ export interface UserUpdateManyDataInput {
 }
 
 export interface VideoProjectUpdateManyMutationInput {
+  publishedAt?: Maybe<DateTimeInput>;
   projectType?: Maybe<ProjectType>;
   projectTitle?: Maybe<String>;
   descPublic?: Maybe<String>;
@@ -4138,6 +4142,7 @@ export interface DimensionsWhereInput {
 
 export interface VideoProjectCreateInput {
   id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
   projectType?: Maybe<ProjectType>;
   projectTitle: String;
   descPublic?: Maybe<String>;
@@ -4302,6 +4307,14 @@ export interface VideoProjectWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  publishedAt_not?: Maybe<DateTimeInput>;
+  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_lt?: Maybe<DateTimeInput>;
+  publishedAt_lte?: Maybe<DateTimeInput>;
+  publishedAt_gt?: Maybe<DateTimeInput>;
+  publishedAt_gte?: Maybe<DateTimeInput>;
   projectType?: Maybe<ProjectType>;
   projectType_not?: Maybe<ProjectType>;
   projectType_in?: Maybe<ProjectType[] | ProjectType>;
@@ -5138,6 +5151,7 @@ export interface VideoProject {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
   projectType: ProjectType;
   projectTitle: String;
   descPublic?: String;
@@ -5152,6 +5166,7 @@ export interface VideoProjectPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
   projectType: () => Promise<ProjectType>;
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
@@ -5213,6 +5228,7 @@ export interface VideoProjectSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   projectType: () => Promise<AsyncIterator<ProjectType>>;
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
@@ -5274,6 +5290,7 @@ export interface VideoProjectNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
   projectType: () => Promise<ProjectType>;
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
@@ -7281,6 +7298,7 @@ export interface VideoProjectPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
   projectType: ProjectType;
   projectTitle: String;
   descPublic?: String;
@@ -7295,6 +7313,7 @@ export interface VideoProjectPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
   projectType: () => Promise<ProjectType>;
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
@@ -7309,6 +7328,7 @@ export interface VideoProjectPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   projectType: () => Promise<AsyncIterator<ProjectType>>;
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;

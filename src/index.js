@@ -2,7 +2,7 @@ import 'dotenv/config';
 import http from 'http';
 import createApolloServer from './createApolloServer';
 import app from './app';
-import { start } from './services/rabbitmq';
+import { initQueueAndStartListening } from './services/rabbitmq';
 
 // Create Apollo server
 const server = createApolloServer();
@@ -19,15 +19,10 @@ server.applyMiddleware( {
 } );
 
 const httpServer = http.createServer( app );
-server.installSubscriptionHandlers( httpServer );
+// server.installSubscriptionHandlers( httpServer );
 
-// initialize rabbitmq
-start();
-
-// Start listening...
-// app.listen( { port: 4000 }, () => {
-//   console.log( `🚀 Server ready at http://localhost:4000${server.graphqlPath}` );
-// } );
+// initialize rabbitmq (move to sep worker?)
+initQueueAndStartListening();
 
 //  We are calling `listen` on the http server variable, and not on `app`.
 httpServer.listen( { port: PORT }, () => {

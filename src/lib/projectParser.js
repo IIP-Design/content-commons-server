@@ -17,9 +17,8 @@ export const getVimeoIds = stream => {
   return vimeo;
 };
 
-export const getFilesToDelete = units => {
+export const getS3ProjectDirectory = units => {
   let s3Dir = null;
-  let vimeo = [];
 
   units.forEach( unit => {
     if ( unit.files && unit.files.length ) {
@@ -30,12 +29,24 @@ export const getFilesToDelete = units => {
             s3Dir = getS3Dir( file.url );
           }
         }
+      } );
+    }
+  } );
 
+  return s3Dir;
+};
+
+export const getVimeoFiles = units => {
+  let vimeo = [];
+
+  units.forEach( unit => {
+    if ( unit.files && unit.files.length ) {
+      unit.files.forEach( file => {
         const { stream } = file;
         vimeo = getVimeoIds( stream );
       } );
     }
   } );
 
-  return { s3Dir, vimeo };
+  return vimeo;
 };

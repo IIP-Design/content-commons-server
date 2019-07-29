@@ -77,8 +77,7 @@ export const VIDEO_PROJECT_FULL = `
         }
       }
       tags {
-        id
-        esId
+        id 
         translations {
           name
           language {
@@ -87,8 +86,7 @@ export const VIDEO_PROJECT_FULL = `
         }
       }
       categories {
-        id
-        esId
+        id 
         translations {
           name
           language {
@@ -150,8 +148,7 @@ export const VIDEO_PROJECT_FULL = `
       url
     }
     categories {
-      id
-      esId
+      id 
       translations {
         name
         language {

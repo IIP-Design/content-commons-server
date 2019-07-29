@@ -122,6 +122,7 @@ type VideoProject {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime 
   projectType: ProjectType! @default(value: LANGUAGE)
   projectTitle: String!
   descPublic: String
