@@ -28,7 +28,12 @@ const createApolloServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
-  context: req => ( { ...req, prisma } )
+  context: async ( { connection, ...other } ) => {
+    if ( connection ) {
+      return { ...connection.context, prisma };
+    }
+    return { ...other, prisma };
+  }
 } );
 
 export default createApolloServer;

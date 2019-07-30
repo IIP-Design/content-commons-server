@@ -1,11 +1,13 @@
 import amqp from 'amqplib';
+import pubsub from '../pubsub';
 import { publishToChannel } from './index';
 import { getS3ProjectDirectory } from '../../lib/projectParser';
 import { prisma } from '../../schema/generated/prisma-client';
 
-
 // Need to abstract video specific stuff so this file can remain generic
 import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
+
+const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 
 // RabbitMQ connection string
 const messageQueueConnectionString = process.env.RABBITMQ_ENDPOINT;
@@ -139,6 +141,7 @@ export const consumeSuccess = async ( channel, msg ) => {
   const msgBody = msg.content.toString();
   const data = JSON.parse( msgBody );
   const { projectId } = data;
+  let status;
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
@@ -146,19 +149,26 @@ export const consumeSuccess = async ( channel, msg ) => {
   switch ( routingKey ) {
     case 'result.create.video':
       onPublishCreate( projectId );
+      status = 'PUBLISHED';
       break;
+
     case 'result.update.video':
       onPublishUpdate( projectId );
+      status = 'PUBLISHED_MODIFIED';
       break;
+
     case 'result.delete.video':
       onPublishDelete( projectId );
+      status = 'DRAFT';
       break;
+
     default:
       console.log( `Invalid result type: ${routingKey}` );
       break;
   }
 
   // 2. notify the react client
+  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { status } } );
 
   // 3. acknowledge message as received
   await channel.ack( msg );

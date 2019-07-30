@@ -19,7 +19,7 @@ server.applyMiddleware( {
 } );
 
 const httpServer = http.createServer( app );
-// server.installSubscriptionHandlers( httpServer );
+server.installSubscriptionHandlers( httpServer );
 
 // initialize rabbitmq (move to sep worker?)
 initQueueAndStartListening();

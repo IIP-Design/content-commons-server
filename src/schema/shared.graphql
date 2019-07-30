@@ -11,6 +11,13 @@ type FileInfo {
   height: Float
 }
 
+type ProjectStatus { 
+  status: ProjectPublishStatus 
+}
+
+type Subscription { 
+  projectStatusChange(id: ID!): ProjectStatus 
+}
 
 type Query {
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!

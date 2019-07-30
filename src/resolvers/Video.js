@@ -1,6 +1,7 @@
 import {
-  UserInputError, PubSub, withFilter, ApolloError
+  UserInputError, ApolloError
 } from 'apollo-server-express';
+import pubsub from '../services/pubsub';
 import {
   getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
 } from '../lib/projectParser';
@@ -10,12 +11,17 @@ import transformVideo from '../services/es/video/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 
-// const pubsub = new PubSub();
-
-// const PROJECT_PUBLISHED = 'PROJECT_PUBLISHED';
+const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
 
 export default {
+  Subscription: {
+    projectStatusChange: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
+    },
+  },
+
   Query: {
     videoProjects ( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
@@ -175,6 +181,7 @@ export default {
       const { id } = videoProject;
 
       publishDelete( id );
+
       return videoProject;
     },
 

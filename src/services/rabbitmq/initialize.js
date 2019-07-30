@@ -49,7 +49,7 @@ const initalize = async () => {
   // bind queues - a message goes to the queues whose binding key exactly matches the routing key of the message
   bindExhangesToQueues( channel );
 
-  console.log( 'Initialization Complete' );
+  console.log( 'RabbitMQ initialization Complete' );
 };
 
 export default initalize;
