@@ -3,6 +3,27 @@ import amqp from 'amqplib';
 // RabbitMQ connection string
 const messageQueueConnectionString = process.env.RABBITMQ_ENDPOINT;
 
+let consumerConnection = null;
+let publisherConnection = null;
+
+const connect = async () => amqp.connect( messageQueueConnectionString );
+
+export const getConnection = async type => {
+  if ( type === 'consumer' ) {
+    if ( consumerConnection ) {
+      return consumerConnection;
+    }
+    consumerConnection = connect();
+    return consumerConnection;
+  }
+
+  if ( publisherConnection ) {
+    return publisherConnection;
+  }
+  publisherConnection = connect();
+  return publisherConnection;
+};
+
 const setUpExchanges = async channel => {
   await Promise.all( [
     channel.assertExchange( 'publish', 'topic', { durable: true } ),
@@ -41,13 +62,16 @@ const initalize = async () => {
   const channel = await connection.createChannel();
 
   // create exchange
-  setUpExchanges( channel );
+  await setUpExchanges( channel );
 
   // create queues
-  setUpQueues( channel );
+  await setUpQueues( channel );
 
   // bind queues - a message goes to the queues whose binding key exactly matches the routing key of the message
-  bindExhangesToQueues( channel );
+  await bindExhangesToQueues( channel );
+
+  await channel.close();
+  await connection.close();
 
   console.log( 'RabbitMQ initialization Complete' );
 };

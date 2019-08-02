@@ -1,5 +1,6 @@
 import amqp from 'amqplib';
 import pubsub from '../pubsub';
+import { getConnection } from './initialize';
 import { publishToChannel } from './index';
 import { getS3ProjectDirectory } from '../../lib/projectParser';
 import { prisma } from '../../schema/generated/prisma-client';
@@ -9,11 +10,8 @@ import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
 
 const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 
-// RabbitMQ connection string
-const messageQueueConnectionString = process.env.RABBITMQ_ENDPOINT;
-
 const createChannel = async () => {
-  const connection = await amqp.connect( messageQueueConnectionString );
+  const connection = await getConnection( 'publisher' );
   const channel = await connection.createConfirmChannel();
   return channel;
 };
@@ -54,6 +52,8 @@ export const publishCreate = async ( id, data, status ) => {
       projectDirectory
     }
   } );
+
+  channel.close();
 };
 
 const onPublishCreate = async projectId => {
@@ -90,6 +90,8 @@ export const publishDelete = async id => {
       projectDirectory
     }
   } );
+
+  channel.close();
 };
 
 const onPublishDelete = async projectId => {
@@ -122,6 +124,8 @@ export const publishUpdate = async ( id, data, status ) => {
       projectDirectory
     }
   } );
+
+  channel.close();
 };
 
 const onPublishUpdate = async projectId => {
@@ -168,7 +172,7 @@ export const consumeSuccess = async ( channel, msg ) => {
   }
 
   // 2. notify the react client
-  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { status } } );
+  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status } } );
 
   // 3. acknowledge message as received
   await channel.ack( msg );

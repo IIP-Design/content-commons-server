@@ -1,5 +1,5 @@
 import {
-  UserInputError, ApolloError
+  UserInputError, ApolloError, withFilter
 } from 'apollo-server-express';
 import pubsub from '../services/pubsub';
 import {
@@ -17,9 +17,11 @@ const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
 export default {
   Subscription: {
     projectStatusChange: {
-      // Additional event labels can be passed to asyncIterator creation
-      subscribe: () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
-    },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
+        ( payload, variables ) => payload.projectStatusChange.id === variables.id,
+      )
+    }
   },
 
   Query: {
@@ -607,17 +609,6 @@ export default {
       return ctx.prisma.deleteManyVideoStreams( { ...where } );
     }
   },
-
-  // Subscription: {
-  // statusUpdated: {
-  //   subscribe: withFilter( () => pubsub.asyncIterator( [STATUS_UPDATED] ),
-  //     ( payload, variables ) => payload.statusUpdated.id === variables.id )
-  // },
-
-  // projectPublished: {
-  //   subscribe: withFilter( () => pubsub.asyncIterator( [PROJECT_PUBLISHED] ), ( payload, variables ) => payload.projectPublished.id === variables.id )
-  // }
-  // },
 
   VideoProject: {
     author( parent, args, ctx ) {
