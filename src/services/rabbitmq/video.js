@@ -131,7 +131,7 @@ export const publishUpdate = async ( id, data, status ) => {
 const onPublishUpdate = async projectId => {
   try {
     updateDatabase( projectId, {
-      status: 'PUBLISHED_MODIFIED',
+      status: 'PUBLISHED',
       publishedAt: ( new Date() ).toISOString()
     } );
   } catch ( err ) {
@@ -193,4 +193,7 @@ export const consumeError = async ( channel, msg ) => {
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
+
+  // 2. notify the react client
+  // pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status } } );
 };

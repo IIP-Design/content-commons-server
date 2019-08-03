@@ -37,8 +37,7 @@ enum ImageQuality {
 enum ProjectPublishStatus {
   DRAFT
   PUBLISHING
-  PUBLISHED
-  PUBLISHED_MODIFIED
+  PUBLISHED 
   EMBARGOED
 }
 
