@@ -171,6 +171,7 @@ export const consumeSuccess = async ( channel, msg ) => {
   }
 
   // 2. notify the react client
+  console.log( `NOTIFYING CLIENT: Project status changed to ${status}` );
   pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status } } );
 
   // 3. acknowledge message as received
@@ -195,5 +196,6 @@ export const consumeError = async ( channel, msg ) => {
   }
 
   // 2. notify the react client
+  console.log( `ERROR: NOTIFYING CLIENT of error: ${errorMessage}` );
   pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, error: errorMessage } } );
 };
