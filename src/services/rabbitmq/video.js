@@ -1,4 +1,3 @@
-import amqp from 'amqplib';
 import pubsub from '../pubsub';
 import { getConnection } from './initialize';
 import { publishToChannel } from './index';
@@ -158,7 +157,7 @@ export const consumeSuccess = async ( channel, msg ) => {
 
     case 'result.update.video':
       onPublishUpdate( projectId );
-      status = 'PUBLISHED_MODIFIED';
+      status = 'PUBLISHED';
       break;
 
     case 'result.delete.video':
@@ -184,7 +183,8 @@ export const consumeError = async ( channel, msg ) => {
   const data = JSON.parse( msgBody );
   const { projectId, projectStatus } = data;
 
-  console.log( `Unable to process queue ${routingKey} request for project : ${projectId} ` );
+  const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
+  console.log( errorMessage );
 
   try {
     updateDatabase( projectId, {
@@ -195,5 +195,5 @@ export const consumeError = async ( channel, msg ) => {
   }
 
   // 2. notify the react client
-  // pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status } } );
+  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, error: errorMessage } } );
 };

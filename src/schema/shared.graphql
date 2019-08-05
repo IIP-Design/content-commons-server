@@ -13,6 +13,7 @@ type FileInfo {
 
 type ProjectStatus { 
   id: ID
+  error: String
   status: ProjectPublishStatus 
 }
 
