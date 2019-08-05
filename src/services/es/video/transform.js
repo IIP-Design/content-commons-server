@@ -47,10 +47,10 @@ const transformThumbnails = thumbnails => {
 const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
   if ( !taxonomyTerms || !taxonomyTerms.length ) return [];
   const terms = [];
-  taxonomyTerms.forEach( ( { esId, translations = [] } ) => {
+  taxonomyTerms.forEach( ( { translations = [] } ) => {
     const translation = translations.find( trans => trans.language.id === unitLanguage.id );
     if ( translation ) {
-      terms.push( { id: esId, name: translation.name } );
+      terms.push( translation.name );
     }
   } );
   return terms;
@@ -102,9 +102,11 @@ const transformVideoFile = file => {
  * Convert a video unit of a video project into an ES video unit.
  *
  * @param publisherUnit
+ * @param projectCategories
+ * @param projectTags
  * @returns object
  */
-const transformVideoUnit = publisherUnit => {
+const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => {
   const esUnit = {
     language: {
       language_code: publisherUnit.language.languageCode,
@@ -129,11 +131,15 @@ const transformVideoUnit = publisherUnit => {
       md5: null
     },
   };
-  if ( publisherUnit.categories ) {
+  if ( publisherUnit.categories && publisherUnit.categories.length > 0 ) {
     esUnit.categories = transformTaxonomy( publisherUnit.categories, publisherUnit.language );
+  } else if ( projectCategories && projectCategories.length ) {
+    esUnit.categories = transformTaxonomy( projectCategories, publisherUnit.language );
   }
-  if ( publisherUnit.tags ) {
+  if ( publisherUnit.tags && publisherUnit.tags.length > 0 ) {
     esUnit.tags = transformTaxonomy( publisherUnit.tags, publisherUnit.language );
+  } else if ( projectTags && projectTags.length ) {
+    esUnit.tags = transformTaxonomy( projectTags, publisherUnit.language );
   }
 
   esUnit.thumbnail = transformThumbnails( publisherUnit.thumbnails );
@@ -176,8 +182,10 @@ const transformVideo = videoProject => {
     esData.author = `${videoProject.author.firstName} ${videoProject.author.lastName}`.trim();
   }
 
+  const { categories, tags } = videoProject;
+
   videoProject.units.forEach( gunit => {
-    const unit = transformVideoUnit( gunit );
+    const unit = transformVideoUnit( gunit, categories, tags );
 
     // Assign SRTs and Transcripts based on language
     // TODO: Allow for user assigned SRT/Transcript in future

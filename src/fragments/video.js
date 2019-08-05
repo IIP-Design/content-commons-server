@@ -80,18 +80,14 @@ export const VIDEO_PROJECT_FULL = `
         id 
         translations {
           name
-          language {
-            id
-          }
+          language { id languageCode locale textDirection displayName nativeName }
         }
       }
       categories {
         id 
         translations {
           name
-          language {
-            id
-          }
+          language { id languageCode locale textDirection displayName nativeName }
         }
       }
       thumbnails {
@@ -151,9 +147,7 @@ export const VIDEO_PROJECT_FULL = `
       id 
       translations {
         name
-        language {
-          id
-        }
+        language { id languageCode locale textDirection displayName nativeName }
       }
     }
   }
