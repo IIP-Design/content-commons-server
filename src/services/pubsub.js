@@ -6,10 +6,9 @@ const settings = {
   mode: 'short' // Optional: default 'short' ('short'|'long'|'dev'|'raw')
 };
 
-console.log( `ENDPOINT ${process.env.RABBITMQ_ENDPOINT}` );
 
 const config = {
-  host: process.env.RABBITMQ_ENDPOINT
+  host: process.env.RABBITMQ_DOMAIN
 };
 
 if ( process.env.RABBITMQ_PORT ) {
