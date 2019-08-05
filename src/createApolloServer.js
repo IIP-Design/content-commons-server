@@ -31,11 +31,11 @@ const createApolloServer = () => new ApolloServer( {
   subscriptions: {
     onConnect: ( connectionParams, webSocket ) => {
       console.log( 'Connect to websocket' );
-      console.dir( webSocket );
+      // console.dir( webSocket );
     },
     onDisconnect: ( webSocket, context ) => {
       console.log( 'Diconnected from websocket' );
-      console.dir( context );
+      // console.dir( context );
     },
     onOperation: ( message, params ) => {
       console.log( message );
