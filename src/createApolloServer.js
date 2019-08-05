@@ -28,6 +28,21 @@ const createApolloServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
+  subscriptions: {
+    onConnect: ( connectionParams, webSocket ) => {
+      console.log( 'Connect to websocket' );
+      console.dir( webSocket );
+    },
+    onDisconnect: ( webSocket, context ) => {
+      console.log( 'Diconnected from websocket' );
+      console.dir( context );
+    },
+    onOperation: ( message, params ) => {
+      console.log( message );
+      console.log( params );
+      return params;
+    },
+  },
   context: async ( { connection, ...other } ) => {
     if ( connection ) {
       return { ...connection.context, prisma };
