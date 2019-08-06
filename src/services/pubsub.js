@@ -8,12 +8,9 @@ const settings = {
 
 
 const config = {
-  host: process.env.RABBITMQ_DOMAIN
+  host: process.env.RABBITMQ_DOMAIN,
+  port: process.env.RABBITMQ_PORT
 };
-
-if ( process.env.RABBITMQ_PORT ) {
-  config.port = process.env.RABBITMQ_PORT;
-}
 
 const logger = ConsoleLogger.create( 'content-commons-server', settings );
 const pubsub = new AmqpPubSub( {

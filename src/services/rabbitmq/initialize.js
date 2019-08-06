@@ -1,7 +1,7 @@
 import amqp from 'amqplib';
 
 // RabbitMQ connection string
-const messageQueueConnectionString = process.env.RABBITMQ_ENDPOINT;
+const messageQueueConnectionString = `amqp://${process.env.RABBITMQ_DOMAIN}:${process.env.RABBITMQ_PORT}`;
 
 let consumerConnection = null;
 let publisherConnection = null;

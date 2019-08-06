@@ -44,6 +44,11 @@ Install the following if not already installed
   - **AWS_S3_PUBLISHER_BUCKET**: S3 bucket for authoring uploads
   - **AWS_S3_PRODUCTION_BUCKET**: S3 bucket that houses published assets
 
+- RabbitMQ configuration for queue/subscription service.
+
+  - **RABBITMQ_DOMAIN** : Rabbit Server domain
+  - **RABBITMQ_PORT** : Rabbit Server port
+
 - Deploy prisma schema, install dependencies and start development server
 
 ```
