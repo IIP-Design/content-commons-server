@@ -29,6 +29,7 @@ const createApolloServer = () => new ApolloServer( {
   resolvers,
   introspection: true,
   subscriptions: {
+    path: '/subscription',
     onConnect: () => {
       console.log( 'Connect to websocket' );
     },
