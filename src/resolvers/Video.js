@@ -17,12 +17,8 @@ const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
 export default {
   Subscription: {
     projectStatusChange: {
-      resolve: payload => {
-        console.dir( payload );
-        return payload;
-      },
       subscribe: withFilter(
-        () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
+        () => { console.log( 'received payload' ); return pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ); },
         ( payload, variables ) => payload.projectStatusChange.id === variables.id,
       )
     }
