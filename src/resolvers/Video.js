@@ -19,7 +19,7 @@ export default {
     projectStatusChange: {
       subscribe: withFilter(
         () => { console.log( 'received payload' ); return pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ); },
-        ( payload, variables ) => payload.projectStatusChange.id === variables.id,
+        ( payload, variables ) => payload.id === variables.id,
       )
     }
   },
