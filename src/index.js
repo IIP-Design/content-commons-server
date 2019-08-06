@@ -27,5 +27,5 @@ initQueueAndStartListening();
 //  We are calling `listen` on the http server variable, and not on `app`.
 httpServer.listen( { port: PORT }, () => {
   console.log( `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}` );
-  console.log( `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}` );
+  console.log( `🚀 Subscriptions ready at ws://0.0.0.0:${PORT}${server.subscriptionsPath}` );
 } );
