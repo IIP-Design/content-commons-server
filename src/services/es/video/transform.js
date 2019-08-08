@@ -1,5 +1,20 @@
+import { getVimeoId, getYouTubeId } from '../../../lib/projectParser';
+
 const ENGLISH_LOCALE = 'en-us';
 
+
+function getEmbedUrl( url ) {
+  if ( !url.includes( 'youtube' ) && !url.includes( 'vimeo' ) ) {
+    return url;
+  }
+  if ( url.includes( 'youtube' ) ) {
+    return `https://www.youtube.com/embed/${getYouTubeId( url )}`;
+  }
+  if ( url.includes( 'vimeo' ) ) {
+    return `https://player.vimeo.com/video/${getVimeoId( url )}`;
+  }
+  return url;
+}
 /**
  * Convert an array of thumbnails into an ES thumbnail object that consists of at least the full size.
  *
@@ -80,14 +95,24 @@ const transformVideoFile = file => {
     }
   };
   file.stream.forEach( stream => {
-    if ( stream.site === 'vimeo' && !source.stream ) {
+    if ( stream.site === 'youtube' ) {
       source.stream = {
-        url: stream.embedUrl,
-        link: stream.url,
-        site: 'vimeo'
+        url: stream.embedUrl || getEmbedUrl( stream.url ),
+        site: 'youtube',
+        uid: getYouTubeId( source.stream.url )
       };
-      const parts = stream.url.split( 'videos/' );
-      if ( parts.length === 2 ) [, source.stream.uid] = parts;
+      source.streamUrl.push( source.stream );
+    } else if ( stream.site === 'vimeo' ) {
+      const streamObj = {
+        url: stream.embedUrl || getEmbedUrl( stream.url ),
+        link: stream.url,
+        site: 'vimeo',
+        uid: getVimeoId( stream.url )
+      };
+      source.streamUrl.push( streamObj );
+      if ( !source.stream ) {
+        source.stream = streamObj;
+      }
     } else {
       source.streamUrl.push( {
         site: stream.site,
@@ -162,6 +187,7 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
  */
 const transformVideo = videoProject => {
   const now = ( new Date() ).toISOString();
+  console.log( JSON.stringify( videoProject, null, 2 ) );
 
   const esData = {
     post_id: videoProject.id,
@@ -213,6 +239,7 @@ const transformVideo = videoProject => {
       esData.thumbnail = unit.thumbnail;
     }
   } );
+  console.log( JSON.stringify( esData, null, 2 ) );
   return esData;
 };
 
