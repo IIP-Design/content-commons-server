@@ -2,7 +2,30 @@
 
 const getS3Dir = value => value.substring( 0, value.lastIndexOf( '/' ) );
 
-export const getVimeoId = value => value.substr( value.lastIndexOf( '/' ) + 1 );
+
+export const getYouTubeId = url => {
+  const reShort = /https:\/\/youtu.be\/(.*)/;
+  const reLong = /https:\/\/www.youtube.com\/watch\?v=(.*)/;
+  const idShort = url.match( reShort );
+  const idLong = url.match( reLong );
+  if ( idShort ) {
+    return idShort[1];
+  } if ( idLong ) {
+    return idLong[1];
+  }
+  return null;
+};
+
+export const getVimeoId = url => {
+  const regExp = /(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_-]+)?/;
+  const match = url.match( regExp );
+
+  if ( match ) {
+    return match[1];
+  }
+  return '';
+};
+
 export const hasValidValue = value => value && value.trim() !== '';
 
 export const getVimeoIds = stream => {
