@@ -1,6 +1,7 @@
 import { getVimeoId, getYouTubeId } from '../../../lib/projectParser';
 
 const ENGLISH_LOCALE = 'en-us';
+const THUMBNAIL_USE = 'Thumbnail/Cover Image';
 
 
 function getEmbedUrl( url ) {
@@ -15,13 +16,22 @@ function getEmbedUrl( url ) {
   }
   return url;
 }
+
+const transformThumbnail = image => ( {
+  url: image.url,
+  width: image.dimensions.width,
+  height: image.dimensions.height,
+  orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait'
+} );
+
 /**
  * Convert an array of thumbnails into an ES thumbnail object that consists of at least the full size.
  *
  * @param thumbnails
+ * @param hasSize
  * @returns object
  */
-const transformThumbnails = thumbnails => {
+const transformThumbnails = ( thumbnails, hasSize = true ) => {
   const esThumb = {
     name: null,
     alt: null,
@@ -35,20 +45,27 @@ const transformThumbnails = thumbnails => {
     }
   };
   if ( !thumbnails || !thumbnails.length ) return esThumb;
-  thumbnails.forEach( ( { size, image } ) => {
-    esThumb.sizes[size.toLowerCase()] = {
-      url: image.url,
-      width: image.dimensions.width,
-      height: image.dimensions.height,
-      orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait'
-    };
-    if ( image.size === 'FULL' ) {
-      esThumb.name = image.filename;
-      esThumb.alt = image.alt;
-      esThumb.caption = image.caption;
-      esThumb.longdesc = image.longdesc;
-    }
-  } );
+
+  if ( hasSize ) {
+    // Unit level thumbnails use the Thumbnail schema which includes size
+    thumbnails.forEach( ( { size, image } ) => {
+      esThumb.sizes[size.toLowerCase()] = transformThumbnail( image );
+      if ( size === 'FULL' ) {
+        esThumb.name = image.filename;
+        esThumb.alt = image.alt;
+        esThumb.caption = image.caption;
+        esThumb.longdesc = image.longdesc;
+      }
+    } );
+  } else {
+    // Project level thumbnails use ImageFile schema which does not include size
+    const image = thumbnails[0];
+    esThumb.sizes.full = transformThumbnail( image );
+    esThumb.name = image.filename;
+    esThumb.alt = image.alt;
+    esThumb.caption = image.caption;
+    esThumb.longdesc = image.longdesc;
+  }
   return esThumb;
 };
 
@@ -179,7 +196,7 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
 };
 
 /**
- * Transforms data from a VideProject into a format accepted by the Public API
+ * Transforms data from a VideoProject into a format accepted by the Public API
  * for Elastic Search.
  *
  * @param videoProject
@@ -187,7 +204,6 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
  */
 const transformVideo = videoProject => {
   const now = ( new Date() ).toISOString();
-  console.log( JSON.stringify( videoProject, null, 2 ) );
 
   const esData = {
     post_id: videoProject.id,
@@ -210,14 +226,14 @@ const transformVideo = videoProject => {
 
   const { categories, tags } = videoProject;
 
-  videoProject.units.forEach( gunit => {
-    const unit = transformVideoUnit( gunit, categories, tags );
+  videoProject.units.forEach( videoUnit => {
+    const unit = transformVideoUnit( videoUnit, categories, tags );
 
     // Assign SRTs and Transcripts based on language
     // TODO: Allow for user assigned SRT/Transcript in future
     if ( videoProject.supportFiles ) {
       videoProject.supportFiles.forEach( file => {
-        if ( file.language.id !== gunit.language.id ) return;
+        if ( file.language.id !== videoUnit.language.id ) return;
         const supportFile = {
           srcUrl: file.url,
           md5: file.md5
@@ -235,11 +251,16 @@ const transformVideo = videoProject => {
     //  it does not yet exist
     //  the unit thumbnail has a non null full size
     //  and the language is english
-    if ( !esData.thumbnail && unit.thumbnail.full && gunit.language.locale === ENGLISH_LOCALE ) {
+    if ( !esData.thumbnail && unit.thumbnail.sizes.full && videoUnit.language.locale === ENGLISH_LOCALE ) {
       esData.thumbnail = unit.thumbnail;
     }
   } );
-  console.log( JSON.stringify( esData, null, 2 ) );
+
+  // If still no project thumbnail, try to use the project level ImageFiles
+  if ( !esData.thumbnail && videoProject.thumbnails && videoProject.thumbnails.length > 0 ) {
+    const thumbs = videoProject.thumbnails.filter( thumb => thumb.use.name === THUMBNAIL_USE );
+    esData.thumbnail = transformThumbnails( thumbs, false );
+  }
   return esData;
 };
 
