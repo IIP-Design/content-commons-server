@@ -48,6 +48,7 @@ Install the following if not already installed
 
   - **RABBITMQ_DOMAIN** : Rabbit Server domain
   - **RABBITMQ_PORT** : Rabbit Server port
+  - **RABBITMQ_VHOST** : Rabbit Server vhost
 
 - Deploy prisma schema, install dependencies and start development server
 
