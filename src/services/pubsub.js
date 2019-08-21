@@ -6,10 +6,14 @@ const settings = {
   mode: 'short' // Optional: default 'short' ('short'|'long'|'dev'|'raw')
 };
 
+let port = process.env.RABBITMQ_PORT;
+if ( process.env.RABBITMQ_VHOST ) {
+  port = `${port}/%2F${process.env.RABBITMQ_VHOST}`;
+}
 
 const config = {
   host: process.env.RABBITMQ_DOMAIN,
-  port: process.env.RABBITMQ_PORT
+  port
 };
 
 const logger = ConsoleLogger.create( 'content-commons-server', settings );
