@@ -207,7 +207,7 @@ const transformVideo = videoProject => {
 
   const esData = {
     post_id: videoProject.id,
-    site: 'commons.america.gov',
+    site: process.env.INDEXING_DOMAIN,
     type: 'video',
     published: now,
     modified: now,

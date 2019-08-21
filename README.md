@@ -24,6 +24,7 @@ Install the following if not already installed
 - Create an .env file and add the following variables (use .env.tmpl as a guide)
 
   - **NODE_ENV** : environment, i.e. development, staging, production
+  - **INDEXING_DOMAIN** : site domain the content is indexed to
   - **FRONTEND_URL** : url to the React app client
   - **PRISMA_ENDPOINT** : url to the Prisma db
   - **PRISMA_SECRET:** : secret that secures connection between prisma services and db
