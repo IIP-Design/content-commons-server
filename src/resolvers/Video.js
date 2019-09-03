@@ -18,8 +18,8 @@ export default {
   Subscription: {
     projectStatusChange: {
       subscribe: withFilter(
-        () => { console.log( 'received payload' ); return pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ); },
-        ( payload, variables ) => payload.projectStatusChange.id === variables.id,
+        () => { console.log( 'Received payload' ); return pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ); },
+        ( payload, variables ) => payload.projectStatusChange.id === variables.id
       )
     }
   },
@@ -363,6 +363,7 @@ export default {
     },
 
     deleteManyThumbnails ( parent, { where }, ctx ) {
+      // check where clause
       return ctx.prisma.deleteManyThumbnails( { ...where } );
     },
 
@@ -390,7 +391,25 @@ export default {
       return ctx.prisma.updateManyImageFiles( { data, where } );
     },
 
-    deleteImageFile ( parent, { id }, ctx ) {
+    async deleteImageFile ( parent, { id }, ctx ) {
+      // 1. Verify we have a valid image file before contnuing
+      const doesImageFileExist = await ctx.prisma.$exists.imageFile( { id } );
+      if ( !doesImageFileExist ) {
+        throw new UserInputError( `An image file with id: ${id} does not exist in the database`, {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch image file that needs to be removed from s3
+      const imageFile = await ctx.prisma.imageFile( { id } );
+      const { url } = imageFile;
+
+      // 3. Delete from s3
+      if ( hasValidValue( url ) ) {
+        await deleteS3Asset( url, PUBLISHER_BUCKET );
+      }
+
+      // 4. Delete from DB
       return ctx.prisma.deleteImageFile( { id } );
     },
 
@@ -422,7 +441,25 @@ export default {
       return ctx.prisma.updateManySupportFiles( { data, where } );
     },
 
-    deleteSupportFile ( parent, { id }, ctx ) {
+    async deleteSupportFile ( parent, { id }, ctx ) {
+      // 1. Verify we have a valid support file before contnuing
+      const doesSupportFileExist = await ctx.prisma.$exists.supportFile( { id } );
+      if ( !doesSupportFileExist ) {
+        throw new UserInputError( `A support file with id ${id} does not exist in the database`, {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch support file that needs to be removed from s3
+      const supportFile = await ctx.prisma.supportFile( { id } );
+      const { url } = supportFile;
+
+      // 3. Delete from s3
+      if ( hasValidValue( url ) ) {
+        await deleteS3Asset( url, PUBLISHER_BUCKET );
+      }
+
+      // 4. Delete from DB
       return ctx.prisma.deleteSupportFile( { id } );
     },
 
