@@ -14,6 +14,19 @@ const s3 = new AWS.S3();
 const getKey = ( filename, projectId ) => {
   const fn = filename.replace( /\s+/g, '_' ).toLowerCase();
 
+  const dateRegexp = /^(?<yr>[0-9]{4})\/(?<mth>[0-9]{2})\/(?<domain>[a-zA-Z0-9.]*)_/;
+  const matches = projectId.match( dateRegexp );
+
+  // Check if the projectId is a file path and if so, save to that path
+  if ( matches ) {
+    const { yr, mth, domain } = matches.groups;
+
+    if ( yr && mth && domain ) {
+      return `${projectId}/${fn}`;
+    }
+  }
+
+  // if  yr, mth, domain are not present assume new project a
   const date = new Date();
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
@@ -23,7 +36,9 @@ const getKey = ( filename, projectId ) => {
 };
 
 export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) => {
-  const { contentType, filename, projectId } = params;
+  const {
+    contentType, filename, projectId
+  } = params;
 
   const key = getKey( filename, projectId );
 

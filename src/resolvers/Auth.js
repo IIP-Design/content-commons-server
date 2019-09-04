@@ -120,10 +120,10 @@ export default {
         // 1. Set a temporary token and expiry on that user for confirmation purposes
         const { tempToken, tempTokenExpiry } = await createToken();
         const userWithToken = { ...args.data, tempToken, tempTokenExpiry };
-        
+
         // 1a. Until more permissions are enabled, force to editor
-        let userWithTokenEditorOnly = userWithToken;
-        userWithTokenEditorOnly.permissions.set = [ 'EDITOR' ];        
+        const userWithTokenEditorOnly = userWithToken;
+        userWithTokenEditorOnly.permissions.set = ['EDITOR'];
 
         // 2. Create an unconfirmed user in the db
         const user = await ctx.prisma.createUser( userWithTokenEditorOnly ).$fragment( `fragment UserSignUp on User { id email team { name } }` );
@@ -277,7 +277,9 @@ export default {
       }
 
       try {
-        const res = await getSignedUrlPromise( { contentType, filename, projectId } );
+        const res = await getSignedUrlPromise( {
+          contentType, filename, projectId
+        } );
         return { key: res.key, url: res.url };
       } catch ( err ) {
         throw new ApolloError( err );
