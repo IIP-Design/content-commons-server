@@ -5,4 +5,7 @@ type Query {
 
 type Mutation {
   createTeam(name: String!, organization: String!): Team!
+  updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team 
+  deleteTeam(where: TeamWhereUniqueInput!): Team 
 }
+

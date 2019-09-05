@@ -16,6 +16,20 @@ export default {
       } );
 
       return team;
+    },
+
+    updateTeam ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateTeam( {
+        data,
+        where: { id }
+      } );
+    },
+
+    deleteTeam ( parent, { where }, ctx ) {
+      const { name } = where;
+      return ctx.prisma.deleteTeam( { name } );
     }
   }
 };
