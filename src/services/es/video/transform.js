@@ -17,6 +17,14 @@ function getEmbedUrl( url ) {
   return url;
 }
 
+const transformLanguage = language => ( {
+  language_code: language.languageCode,
+  locale: language.locale,
+  text_direction: language.textDirection.toLowerCase(),
+  display_name: language.displayName,
+  native_name: language.nativeName
+} );
+
 const transformThumbnail = image => ( {
   url: image.url,
   width: image.dimensions.width,
@@ -150,13 +158,7 @@ const transformVideoFile = file => {
  */
 const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => {
   const esUnit = {
-    language: {
-      language_code: publisherUnit.language.languageCode,
-      locale: publisherUnit.language.locale,
-      text_direction: publisherUnit.language.textDirection.toLowerCase(),
-      display_name: publisherUnit.language.displayName,
-      native_name: publisherUnit.language.nativeName
-    },
+    language: transformLanguage( publisherUnit.language ),
     title: publisherUnit.title,
     desc: publisherUnit.descPublic,
     categories: [],
@@ -214,6 +216,7 @@ const transformVideo = videoProject => {
     // owner: null,
     // author: null,
     // thumbnail: null,
+    supportFiles: [],
     unit: [],
   };
 
@@ -230,21 +233,8 @@ const transformVideo = videoProject => {
     const unit = transformVideoUnit( videoUnit, categories, tags );
 
     // Assign SRTs and Transcripts based on language
-    // TODO: Allow for user assigned SRT/Transcript in future
-    if ( videoProject.supportFiles ) {
-      videoProject.supportFiles.forEach( file => {
-        if ( file.language.id !== videoUnit.language.id ) return;
-        const supportFile = {
-          srcUrl: file.url,
-          md5: file.md5
-        };
-        if ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) {
-          unit.srt = supportFile;
-        } else {
-          unit.transcript = supportFile;
-        }
-      } );
-    }
+    // TODO: Allow for user assigned SRT/Transcript that would get added at the unit level
+
     esData.unit.push( unit );
 
     // Set the project thumbnail if:
@@ -255,6 +245,15 @@ const transformVideo = videoProject => {
       esData.thumbnail = unit.thumbnail;
     }
   } );
+
+  if ( videoProject.supportFiles ) {
+    esData.supportFiles = videoProject.supportFiles.map( file => ( {
+      srcUrl: file.url,
+      language: transformLanguage( file.language ),
+      // TODO: Support additional file types in future
+      supportFileType: ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) ? 'srt' : 'transcript',
+    } ) );
+  }
 
   // If still no project thumbnail, try to use the project level ImageFiles
   if ( !esData.thumbnail && videoProject.thumbnails && videoProject.thumbnails.length > 0 ) {
