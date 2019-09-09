@@ -1,9 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 import taxon from './taxonomy';
 
 const createTaxCSVs = () => {
-  const catcsv = fs.createWriteStream( './data/categories.csv' );
-  const tagcsv = fs.createWriteStream( './data/tags.csv' );
+  const catcsv = fs.createWriteStream( path.join( __dirname, 'categories.csv' ) );
+  const tagcsv = fs.createWriteStream( path.join( __dirname, 'tags.csv' ) );
   const locales = taxon.reduce( ( prev, curr ) => {
     Object.keys( curr.language ).forEach( lang => {
       if ( lang !== 'en' && !prev.includes( lang ) ) prev.push( lang );
@@ -12,7 +13,6 @@ const createTaxCSVs = () => {
   }, [] );
   const langs = {};
   locales.forEach( ( key, i ) => { langs[key] = i + 1; } );
-  console.log( langs );
   const header = ['id'].concat( locales ).join( ',' );
   catcsv.write( `${header}\n` );
   tagcsv.write( `${header}\n` );

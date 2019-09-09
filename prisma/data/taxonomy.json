@@ -814,11 +814,11 @@
       "fr-fr": "Humanité",
       "pt-br": "Humanidade",
       "ar": "البشرية",
-      "fa-ir": "HUmankind",
+      "fa-ir": "بشریت",
       "zh-cn": "人類",
       "ru-ru": "человечество",
-      "id-id": "HUmankind",
-      "ur": "HUmankind"
+      "id-id": "ummat manusia",
+      "ur": "انسانیت"
     }
   },
   {
@@ -855,7 +855,7 @@
     "language": {
       "en": "prisoners",
       "en-us": "prisoners",
-      "es-es": "السجناء",
+      "es-es": "presos",
       "fr-fr": "les prisonniers",
       "pt-br": "prisioneiros",
       "ar": "السجناء",
@@ -986,7 +986,7 @@
     "language": {
       "en": "social condition",
       "en-us": "social condition",
-      "es-es": "حالة اجتماعية",
+      "es-es": "condición social",
       "fr-fr": "Condition sociale",
       "pt-br": "Condição social",
       "ar": "حالة اجتماعية",
@@ -1463,7 +1463,7 @@
     "language": {
       "en": "unions",
       "en-us": "unions",
-      "es-es": "النقابات",
+      "es-es": "el sindicato",
       "fr-fr": "syndicats",
       "pt-br": "uniões",
       "ar": "النقابات",
@@ -2666,7 +2666,7 @@
     "language": {
       "en": "pride",
       "en-us": "pride",
-      "es-es": "فخر",
+      "es-es": "orgullo",
       "fr-fr": "fierté",
       "pt-br": "orgulho",
       "ar": "فخر",
@@ -2687,7 +2687,7 @@
     "language": {
       "en": "rights",
       "en-us": "rights",
-      "es-es": "حقوق",
+      "es-es": "derechos",
       "fr-fr": "droits",
       "pt-br": "direitos",
       "ar": "حقوق",
