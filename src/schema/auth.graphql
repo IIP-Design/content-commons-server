@@ -22,9 +22,12 @@ type Mutation {
     reply: String!
     page: String!
   ): Message
-  getSignedS3Url(
+  getSignedS3UrlGet(
+    key: String! 
+  ):SignedS3Url
+  getSignedS3UrlPut(
     contentType: String!
     filename: String!
-    projectId: String!
+    projectId: String! 
   ):SignedS3Url
 }

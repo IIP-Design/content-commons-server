@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
-import { getSignedUrlPromise } from '../services/aws/s3';
+import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/s3';
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { verifyGoogleToken } from '../services/googleAuth';
@@ -267,7 +267,8 @@ export default {
       }
     },
 
-    async getSignedS3Url( parent, args ) {
+    async getSignedS3UrlPut( parent, args ) {
+      console.log( 'getSignedS3UrlPut' );
       const {
         contentType, filename, projectId
       } = args;
@@ -277,9 +278,25 @@ export default {
       }
 
       try {
-        const res = await getSignedUrlPromise( {
+        return await getSignedUrlPromisePut( {
           contentType, filename, projectId
         } );
+      } catch ( err ) {
+        console.dir( err );
+        throw new ApolloError( err );
+      }
+    },
+
+    async getSignedS3UrlGet( parent, args ) {
+      console.log( 'getSignedS3UrlGet' );
+      const { key } = args;
+
+      if ( !key ) {
+        throw new ApolloError( `There is no asset availble with key: ${key}` );
+      }
+
+      try {
+        const res = await getSignedUrlPromiseGet( { key } );
         return { key: res.key, url: res.url };
       } catch ( err ) {
         throw new ApolloError( err );

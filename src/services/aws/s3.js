@@ -11,9 +11,19 @@ AWS.config.update( {
 
 const s3 = new AWS.S3();
 
+/**
+ * Returns either the current s3 path for exisiting projects or creates a
+ * path to save new assets.
+ * todo:  Should probably just store path prop in DB going forward
+ *
+ * @param {string} filename asset filename
+ * @param {string} projectId either a path to an existing project or an id from which to create a project
+ */
 const getKey = ( filename, projectId ) => {
+  // remove spaces in filename
   const fn = filename.replace( /\s+/g, '_' ).toLowerCase();
 
+  // test to see if this is a path or simply a filename
   const dateRegexp = /^(?<yr>[0-9]{4})\/(?<mth>[0-9]{2})\/(?<domain>[a-zA-Z0-9.]*)_/;
   const matches = projectId.match( dateRegexp );
 
@@ -26,7 +36,7 @@ const getKey = ( filename, projectId ) => {
     }
   }
 
-  // if  yr, mth, domain are not present assume new project a
+  // if  yr, mth, domain are not present assume new project
   const date = new Date();
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
@@ -35,7 +45,7 @@ const getKey = ( filename, projectId ) => {
   return `${year}/${month}/commons.america.gov_${projectId}/${fn}`;
 };
 
-export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) => {
+export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject ) => {
   const {
     contentType, filename, projectId
   } = params;
@@ -45,6 +55,21 @@ export const getSignedUrlPromise = params => new Promise( ( resolve, reject ) =>
   s3.getSignedUrl( 'putObject', {
     Bucket: PUBLISHER_BUCKET,
     ContentType: contentType,
+    Key: key
+  }, ( err, url ) => {
+    if ( err ) {
+      reject( err );
+    } else {
+      resolve( { key, url } );
+    }
+  } );
+} );
+
+export const getSignedUrlPromiseGet = params => new Promise( ( resolve, reject ) => {
+  const { key } = params;
+
+  s3.getSignedUrl( 'getObject', {
+    Bucket: PUBLISHER_BUCKET,
     Key: key
   }, ( err, url ) => {
     if ( err ) {
