@@ -21,7 +21,7 @@ export default {
         throw new Error( 'A file path must be provided' );
       }
 
-      path = `https://s3.amazonaws.com/${process.env.AWS_S3_PUBLISHER_BUCKET}/${path}`;
+      path = `https://s3.amazonaws.com/${process.env.AWS_S3_AUTHORING_BUCKET}/${path}`;
       const metadata = await probe( path ).catch( err => {
         throw new Error( `An error occurred: ${err}` );
       } );

@@ -12,7 +12,7 @@ import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitm
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 
 const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
-const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
+const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 export default {
   Subscription: {
