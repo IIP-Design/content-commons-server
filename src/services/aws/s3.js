@@ -1,11 +1,11 @@
 const AWS = require( 'aws-sdk' );
 
-const PUBLISHER_BUCKET = process.env.AWS_S3_PUBLISHER_BUCKET;
+const AUTHORING_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // Pulls in configs from .env
 AWS.config.update( {
-  accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_S3_AUTHORING_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_S3_AUTHORING_SECRET,
   region: process.env.AWS_REGION
 } );
 
@@ -53,7 +53,7 @@ export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject )
   const key = getKey( filename, projectId );
 
   s3.getSignedUrl( 'putObject', {
-    Bucket: PUBLISHER_BUCKET,
+    Bucket: AUTHORING_BUCKET,
     ContentType: contentType,
     Key: key
   }, ( err, url ) => {
@@ -69,7 +69,7 @@ export const getSignedUrlPromiseGet = params => new Promise( ( resolve, reject )
   const { key } = params;
 
   s3.getSignedUrl( 'getObject', {
-    Bucket: PUBLISHER_BUCKET,
+    Bucket: AUTHORING_BUCKET,
     Key: key
   }, ( err, url ) => {
     if ( err ) {
