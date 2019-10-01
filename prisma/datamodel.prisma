@@ -146,8 +146,8 @@ type VideoUnit {
   descPublic: String
   files: [VideoFile] @relation(onDelete: CASCADE)
   tags: [Tag]
-  categories: [Category]
-  thumbnails: [Thumbnail]
+  categories: [Category] 
+  thumbnails: [Thumbnail] @relation(onDelete: CASCADE)
 }
 
 type VideoStream {

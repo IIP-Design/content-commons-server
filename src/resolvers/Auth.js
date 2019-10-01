@@ -268,7 +268,6 @@ export default {
     },
 
     async getSignedS3UrlPut( parent, args ) {
-      console.log( 'getSignedS3UrlPut' );
       const {
         contentType, filename, projectId
       } = args;
@@ -288,7 +287,6 @@ export default {
     },
 
     async getSignedS3UrlGet( parent, args ) {
-      console.log( 'getSignedS3UrlGet' );
       const { key } = args;
 
       if ( !key ) {

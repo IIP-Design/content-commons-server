@@ -828,7 +828,6 @@ export type ProjectPublishStatus =
   | "DRAFT"
   | "PUBLISHING"
   | "PUBLISHED"
-  | "PUBLISHED_MODIFIED"
   | "EMBARGOED";
 
 export type Permission =
