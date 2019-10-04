@@ -1,12 +1,15 @@
-import { ApolloError, AuthenticationError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
+import { isEmailWhitelisted } from '../lib/whitelist';
 import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/s3';
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { verifyGoogleToken } from '../services/googleAuth';
+
+const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
 
@@ -21,7 +24,23 @@ const createToken = async () => {
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
 
 export default {
-  Query: {},
+  Query: {
+    async isWhitelisted( parent, args ) {
+      if ( !ENFORCE_WHITELIST ) return true;
+
+      const { email } = args;
+      if ( !email ) {
+        throw new ApolloError( 'An email address is not available.' );
+      }
+
+      try {
+        const whitelisted = await isEmailWhitelisted( email );
+        return whitelisted;
+      } catch ( err ) {
+        throw new ApolloError( err );
+      }
+    }
+  },
 
   Mutation: {
   /**
@@ -40,10 +59,16 @@ export default {
         throw new AuthenticationError( 'Unable to verify Google Token' );
       }
 
-
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
         throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
+      }
+
+      if ( ENFORCE_WHITELIST ) {
+        const whitelisted = await isEmailWhitelisted( googleUser.email );
+        if ( !whitelisted ) {
+          throw new AuthenticationError( 'This america.gov account is not currently approved during our beta testing period.' );
+        }
       }
 
       // 4. Check to see if user is in the db
@@ -86,6 +111,13 @@ export default {
         throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
       }
 
+      if ( ENFORCE_WHITELIST ) {
+        const whitelisted = await isEmailWhitelisted( email );
+        if ( !whitelisted ) {
+          throw new AuthenticationError( 'This america.gov account is not currently approved during our beta testing period.' );
+        }
+      }
+
       if ( !user.isConfirmed ) {
         throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
       }
@@ -116,6 +148,12 @@ export default {
      * @param {object} args { UserCreateInput }
      */
     async signUp( parent, args, ctx ) {
+      if ( ENFORCE_WHITELIST ) {
+        const whitelisted = await isEmailWhitelisted( args.data.email );
+        if ( !whitelisted ) {
+          throw new UserInputError( 'This america.gov account is not currently approved during our beta testing period.' );
+        }
+      }
       try {
         // 1. Set a temporary token and expiry on that user for confirmation purposes
         const { tempToken, tempTokenExpiry } = await createToken();
@@ -300,6 +338,6 @@ export default {
         throw new ApolloError( err );
       }
     }
-  }
+  },
 
 };

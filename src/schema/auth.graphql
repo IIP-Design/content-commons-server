@@ -1,7 +1,13 @@
 
 type SignedS3Url {
   key: String
-  url: String 
+  url: String
+}
+
+type Query {
+  isWhitelisted(
+    email: String!
+  ):Boolean
 }
 
 type Mutation {
@@ -23,11 +29,11 @@ type Mutation {
     page: String!
   ): Message
   getSignedS3UrlGet(
-    key: String! 
+    key: String!
   ):SignedS3Url
   getSignedS3UrlPut(
     contentType: String!
     filename: String!
-    projectId: String! 
+    projectId: String!
   ):SignedS3Url
 }
