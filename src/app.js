@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
 import express from 'express';
 
@@ -7,7 +8,7 @@ import express from 'express';
 const app = express();
 
 // Mount middleware to run before Apollo.
-app.use( cookieParser() );
+app.use( cookieParser(), helmet() );
 
 // Decode the JWT token on cookie so we can put the userId on each request
 app.use( ( req, res, next ) => {
