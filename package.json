@@ -7,7 +7,8 @@
     "dev": "nodemon -e js,graphql -x babel-node --inspect src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clear": "rimraf build",
-    "build": "npm run clear && babel src --out-dir build --source-maps",
+    "build": "npm run clear && babel src --out-dir build --source-maps && npm run copy",
+    "copy": "copyfiles -u 1  \"src/lib/**/*.csv\" build",
     "start": "node build/index.js",
     "deploy": "npm run build && npm run start",
     "prisma-deploy": "prisma deploy"
@@ -43,6 +44,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "babel-eslint": "^10.0.1",
+    "copyfiles": "^2.1.1",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.3.0",
