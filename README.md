@@ -25,6 +25,7 @@ Install the following if not already installed
 
   - **NODE_ENV** : environment, i.e. development, staging, production
   - **INDEXING_DOMAIN** : site domain the content is indexed to
+  - **VIMEO_TOKEN** : token to enable video deletion
   - **FRONTEND_URL** : url to the React app client
   - **PRISMA_ENDPOINT** : url to the Prisma db
   - **PRISMA_SECRET:** : secret that secures connection between prisma services and db
