@@ -11,14 +11,14 @@ type FileInfo {
   height: Float
 }
 
-type ProjectStatus { 
+type ProjectStatus {
   id: ID
   error: String
-  status: ProjectPublishStatus 
+  status: ProjectPublishStatus
 }
 
-type Subscription { 
-  projectStatusChange(id: ID!): ProjectStatus 
+type Subscription {
+  projectStatusChange(id: ID, ids: [ID]): ProjectStatus
 }
 
 type Query {
@@ -26,7 +26,7 @@ type Query {
   supportFile(id: ID!): SupportFile
 
   dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
-  dimensions(id: ID!): Dimensions 
+  dimensions(id: ID!): Dimensions
 }
 
 type Mutation {
