@@ -1,5 +1,6 @@
 import ffprobe from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
+import { getSignedUrlPromiseGet } from '../services/aws/s3';
 
 ffmpeg.setFfprobePath( ffprobe.path );
 
@@ -15,14 +16,15 @@ const probe = url => new Promise( ( resolve, reject ) => {
 export default {
   Mutation: {
     async getFileInfo  ( parent, args ) {
-      let { path } = args;
+      const { path } = args;
 
       if ( !path ) {
         throw new Error( 'A file path must be provided' );
       }
 
-      path = `https://s3.amazonaws.com/${process.env.AWS_S3_AUTHORING_BUCKET}/${path}`;
-      const metadata = await probe( path ).catch( err => {
+      // All access to the authoring buckets requires creds
+      const signed = await getSignedUrlPromiseGet( { key: path } );
+      const metadata = await probe( signed.url ).catch( err => {
         throw new Error( `An error occurred: ${err}` );
       } );
 
