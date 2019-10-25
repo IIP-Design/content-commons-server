@@ -44,7 +44,6 @@ Install the following if not already installed
   - **AWS_S3_AUTHORING_ACCESS_KEY_ID** : AWS IAM programmatic access key with full S3 permissions
   - **AWS_S3_AUTHORING_SECRET** : Secret key corresponding to the above access key
   - **AWS_S3_AUTHORING_BUCKET**: S3 bucket for authoring uploads
-  - **AWS_S3_PRODUCTION_BUCKET**: S3 bucket that houses published assets
 
 - RabbitMQ configuration for queue/subscription service.
 
