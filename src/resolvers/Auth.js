@@ -86,7 +86,7 @@ export default {
 
       // 6.Set the jwt as a cookie on the response
       ctx.res.cookie( 'americaCommonsToken', jwtToken, {
-        httpOnly: true,
+        httpOnly: true, // only allow access to cookie from the server
         maxAge: COOKIE_MAX_AGE
       } );
 
