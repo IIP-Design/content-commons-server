@@ -37,11 +37,16 @@ enum ImageQuality {
 enum ProjectPublishStatus {
   DRAFT
   PUBLISHING
-  PUBLISHED 
+  PUBLISHED
   EMBARGOED
 }
 
 enum ProjectVisibility {
+  INTERNAL
+  PUBLIC
+}
+
+enum FileVisibility {
   INTERNAL
   PUBLIC
 }
@@ -121,7 +126,7 @@ type VideoProject {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  publishedAt: DateTime 
+  publishedAt: DateTime
   projectType: ProjectType! @default(value: LANGUAGE)
   projectTitle: String!
   descPublic: String
@@ -146,7 +151,7 @@ type VideoUnit {
   descPublic: String
   files: [VideoFile] @relation(onDelete: CASCADE)
   tags: [Tag]
-  categories: [Category] 
+  categories: [Category]
   thumbnails: [Thumbnail] @relation(onDelete: CASCADE)
 }
 
@@ -187,6 +192,7 @@ type VideoFile {
   language: Language
   filetype: String
   filename: String
+  visibility: FileVisibility @default(value: PUBLIC)
   use: VideoUse
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -211,6 +217,7 @@ type ImageFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: FileVisibility @default(value: PUBLIC)
   use: ImageUse
   md5: String
   url: String
@@ -226,5 +233,6 @@ type SupportFile {
   filename: String
   filetype: String # srt, pdf
   filesize: Float
+  visibility: FileVisibility @default(value: PUBLIC)
   use: SupportFileUse
 }
