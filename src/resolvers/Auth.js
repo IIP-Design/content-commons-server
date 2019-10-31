@@ -21,7 +21,7 @@ const createToken = async () => {
     tempToken, tempTokenExpiry
   };
 };
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year cookie
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7; // 1 year cookie
 
 export default {
   Query: {
@@ -181,8 +181,7 @@ export default {
           text: 'Please check your email for a link to confirm your registration'
         };
       } catch ( err ) {
-        throw new ApolloError( err ); // debugging
-        // throw new ApolloError( 'There is already a user with that email in the system.' );
+        throw new ApolloError( 'There is already a user with that email in the system.' );
       }
     },
 
