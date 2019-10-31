@@ -773,7 +773,9 @@ export type ImageFileOrderByInput =
   | "md5_ASC"
   | "md5_DESC"
   | "url_ASC"
-  | "url_DESC";
+  | "url_DESC"
+  | "signedUrl_ASC"
+  | "signedUrl_DESC";
 
 export type ThumbnailOrderByInput =
   | "id_ASC"
@@ -854,6 +856,8 @@ export type VideoFileOrderByInput =
   | "videoBurnedInStatus_DESC"
   | "url_ASC"
   | "url_DESC"
+  | "signedUrl_ASC"
+  | "signedUrl_DESC"
   | "md5_ASC"
   | "md5_DESC"
   | "duration_ASC"
@@ -942,6 +946,8 @@ export type SupportFileOrderByInput =
   | "updatedAt_DESC"
   | "url_ASC"
   | "url_DESC"
+  | "signedUrl_ASC"
+  | "signedUrl_DESC"
   | "md5_ASC"
   | "md5_DESC"
   | "filename_ASC"
@@ -1393,6 +1399,7 @@ export interface ImageFileCreateInput {
   use?: Maybe<ImageUseCreateOneInput>;
   md5?: Maybe<String>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
 }
 
 export interface TagWhereInput {
@@ -1560,6 +1567,20 @@ export interface ImageFileScalarWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   AND?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
   OR?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
   NOT?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
@@ -1613,6 +1634,7 @@ export interface ImageFileUpdateInput {
   use?: Maybe<ImageUseUpdateOneInput>;
   md5?: Maybe<String>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
 }
 
 export interface TeamWhereInput {
@@ -1736,6 +1758,20 @@ export interface SupportFileScalarWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   md5?: Maybe<String>;
   md5_not?: Maybe<String>;
   md5_in?: Maybe<String[] | String>;
@@ -1953,6 +1989,7 @@ export interface ImageFileUpdateManyMutationInput {
   filesize?: Maybe<Float>;
   md5?: Maybe<String>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
 }
 
 export interface ThumbnailUpdateManyDataInput {
@@ -2099,6 +2136,7 @@ export interface SupportFileCreateInput {
   id?: Maybe<ID_Input>;
   language: LanguageCreateOneInput;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
@@ -2190,6 +2228,7 @@ export interface TagScalarWhereInput {
 export interface SupportFileUpdateInput {
   language?: Maybe<LanguageUpdateOneRequiredInput>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
@@ -2309,6 +2348,7 @@ export interface VideoFileUpdateManyDataInput {
   quality?: Maybe<VideoQuality>;
   videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   duration?: Maybe<Float>;
   bitrate?: Maybe<Float>;
@@ -2317,6 +2357,7 @@ export interface VideoFileUpdateManyDataInput {
 
 export interface SupportFileUpdateManyMutationInput {
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
@@ -2602,6 +2643,20 @@ export interface ImageFileWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   AND?: Maybe<ImageFileWhereInput[] | ImageFileWhereInput>;
   OR?: Maybe<ImageFileWhereInput[] | ImageFileWhereInput>;
   NOT?: Maybe<ImageFileWhereInput[] | ImageFileWhereInput>;
@@ -3001,6 +3056,7 @@ export interface ThumbnailCreateInput {
 
 export interface SupportFileUpdateManyDataInput {
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
@@ -3051,6 +3107,7 @@ export interface ImageFileUpdateDataInput {
   use?: Maybe<ImageUseUpdateOneInput>;
   md5?: Maybe<String>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -3193,6 +3250,20 @@ export interface VideoFileWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   md5?: Maybe<String>;
   md5_not?: Maybe<String>;
   md5_in?: Maybe<String[] | String>;
@@ -3462,6 +3533,20 @@ export interface VideoFileScalarWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   md5?: Maybe<String>;
   md5_not?: Maybe<String>;
   md5_in?: Maybe<String[] | String>;
@@ -3586,6 +3671,7 @@ export interface VideoFileCreateInput {
   quality?: Maybe<VideoQuality>;
   videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   duration?: Maybe<Float>;
   bitrate?: Maybe<Float>;
@@ -3668,6 +3754,7 @@ export interface ImageFileUpdateManyDataInput {
   filesize?: Maybe<Float>;
   md5?: Maybe<String>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
 }
 
 export interface VideoFileUpdateInput {
@@ -3678,6 +3765,7 @@ export interface VideoFileUpdateInput {
   quality?: Maybe<VideoQuality>;
   videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   duration?: Maybe<Float>;
   bitrate?: Maybe<Float>;
@@ -3855,6 +3943,7 @@ export interface VideoUseUpdateOneInput {
 export interface SupportFileUpdateDataInput {
   language?: Maybe<LanguageUpdateOneRequiredInput>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
@@ -3964,6 +4053,7 @@ export interface VideoFileUpdateDataInput {
   quality?: Maybe<VideoQuality>;
   videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   duration?: Maybe<Float>;
   bitrate?: Maybe<Float>;
@@ -4097,6 +4187,7 @@ export interface VideoFileUpdateManyMutationInput {
   quality?: Maybe<VideoQuality>;
   videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
   url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
   duration?: Maybe<Float>;
   bitrate?: Maybe<Float>;
@@ -4441,6 +4532,20 @@ export interface SupportFileWhereInput {
   url_not_starts_with?: Maybe<String>;
   url_ends_with?: Maybe<String>;
   url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
   md5?: Maybe<String>;
   md5_not?: Maybe<String>;
   md5_in?: Maybe<String[] | String>;
@@ -4837,6 +4942,7 @@ export interface SupportFile {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   url?: String;
+  signedUrl?: String;
   md5?: String;
   filename?: String;
   filetype?: String;
@@ -4849,6 +4955,7 @@ export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
   updatedAt: () => Promise<DateTimeOutput>;
   language: <T = LanguagePromise>() => T;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
@@ -4864,6 +4971,7 @@ export interface SupportFileSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   language: <T = LanguageSubscription>() => T;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
   md5: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
   filetype: () => Promise<AsyncIterator<String>>;
@@ -4879,6 +4987,7 @@ export interface SupportFileNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
   language: <T = LanguagePromise>() => T;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
@@ -5401,6 +5510,7 @@ export interface ImageFilePreviousValues {
   filesize?: Float;
   md5?: String;
   url?: String;
+  signedUrl?: String;
 }
 
 export interface ImageFilePreviousValuesPromise
@@ -5417,6 +5527,7 @@ export interface ImageFilePreviousValuesPromise
   filesize: () => Promise<Float>;
   md5: () => Promise<String>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
 }
 
 export interface ImageFilePreviousValuesSubscription
@@ -5433,6 +5544,7 @@ export interface ImageFilePreviousValuesSubscription
   filesize: () => Promise<AsyncIterator<Float>>;
   md5: () => Promise<AsyncIterator<String>>;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoStream {
@@ -5949,6 +6061,7 @@ export interface SupportFilePreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   url?: String;
+  signedUrl?: String;
   md5?: String;
   filename?: String;
   filetype?: String;
@@ -5962,6 +6075,7 @@ export interface SupportFilePreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
@@ -5975,6 +6089,7 @@ export interface SupportFilePreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
   md5: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
   filetype: () => Promise<AsyncIterator<String>>;
@@ -6161,6 +6276,7 @@ export interface ImageFile {
   filesize?: Float;
   md5?: String;
   url?: String;
+  signedUrl?: String;
 }
 
 export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
@@ -6178,6 +6294,7 @@ export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
   use: <T = ImageUsePromise>() => T;
   md5: () => Promise<String>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
 }
 
 export interface ImageFileSubscription
@@ -6197,6 +6314,7 @@ export interface ImageFileSubscription
   use: <T = ImageUseSubscription>() => T;
   md5: () => Promise<AsyncIterator<String>>;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ImageFileNullablePromise
@@ -6216,6 +6334,7 @@ export interface ImageFileNullablePromise
   use: <T = ImageUsePromise>() => T;
   md5: () => Promise<String>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
 }
 
 export interface AggregateVideoUse {
@@ -6508,6 +6627,7 @@ export interface VideoFile {
   quality?: VideoQuality;
   videoBurnedInStatus?: VideoBurnedInStatus;
   url?: String;
+  signedUrl?: String;
   md5?: String;
   duration?: Float;
   bitrate?: Float;
@@ -6525,6 +6645,7 @@ export interface VideoFilePromise extends Promise<VideoFile>, Fragmentable {
   quality: () => Promise<VideoQuality>;
   videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   duration: () => Promise<Float>;
   bitrate: () => Promise<Float>;
@@ -6554,6 +6675,7 @@ export interface VideoFileSubscription
   quality: () => Promise<AsyncIterator<VideoQuality>>;
   videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
   md5: () => Promise<AsyncIterator<String>>;
   duration: () => Promise<AsyncIterator<Float>>;
   bitrate: () => Promise<AsyncIterator<Float>>;
@@ -6583,6 +6705,7 @@ export interface VideoFileNullablePromise
   quality: () => Promise<VideoQuality>;
   videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   duration: () => Promise<Float>;
   bitrate: () => Promise<Float>;
@@ -7085,6 +7208,7 @@ export interface VideoFilePreviousValues {
   quality?: VideoQuality;
   videoBurnedInStatus?: VideoBurnedInStatus;
   url?: String;
+  signedUrl?: String;
   md5?: String;
   duration?: Float;
   bitrate?: Float;
@@ -7102,6 +7226,7 @@ export interface VideoFilePreviousValuesPromise
   quality: () => Promise<VideoQuality>;
   videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
   url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
   md5: () => Promise<String>;
   duration: () => Promise<Float>;
   bitrate: () => Promise<Float>;
@@ -7119,6 +7244,7 @@ export interface VideoFilePreviousValuesSubscription
   quality: () => Promise<AsyncIterator<VideoQuality>>;
   videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
   url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
   md5: () => Promise<AsyncIterator<String>>;
   duration: () => Promise<AsyncIterator<Float>>;
   bitrate: () => Promise<AsyncIterator<Float>>;

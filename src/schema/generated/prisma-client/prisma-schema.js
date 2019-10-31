@@ -360,6 +360,7 @@ type ImageFile {
   use: ImageUse
   md5: String
   url: String
+  signedUrl: String
 }
 
 type ImageFileConnection {
@@ -381,6 +382,7 @@ input ImageFileCreateInput {
   use: ImageUseCreateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileCreateManyInput {
@@ -421,6 +423,8 @@ enum ImageFileOrderByInput {
   md5_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
 }
 
 type ImageFilePreviousValues {
@@ -435,6 +439,7 @@ type ImageFilePreviousValues {
   filesize: Float
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileScalarWhereInput {
@@ -574,6 +579,20 @@ input ImageFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   AND: [ImageFileScalarWhereInput!]
   OR: [ImageFileScalarWhereInput!]
   NOT: [ImageFileScalarWhereInput!]
@@ -609,6 +628,7 @@ input ImageFileUpdateDataInput {
   use: ImageUseUpdateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateInput {
@@ -623,6 +643,7 @@ input ImageFileUpdateInput {
   use: ImageUseUpdateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyDataInput {
@@ -634,6 +655,7 @@ input ImageFileUpdateManyDataInput {
   filesize: Float
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyInput {
@@ -657,6 +679,7 @@ input ImageFileUpdateManyMutationInput {
   filesize: Float
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyWithWhereNestedInput {
@@ -829,6 +852,20 @@ input ImageFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   AND: [ImageFileWhereInput!]
   OR: [ImageFileWhereInput!]
   NOT: [ImageFileWhereInput!]
@@ -1569,6 +1606,7 @@ type SupportFile {
   updatedAt: DateTime!
   language: Language!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1586,6 +1624,7 @@ input SupportFileCreateInput {
   id: ID
   language: LanguageCreateOneInput!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1612,6 +1651,8 @@ enum SupportFileOrderByInput {
   updatedAt_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
   md5_ASC
   md5_DESC
   filename_ASC
@@ -1627,6 +1668,7 @@ type SupportFilePreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1678,6 +1720,20 @@ input SupportFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -1754,6 +1810,7 @@ input SupportFileSubscriptionWhereInput {
 input SupportFileUpdateDataInput {
   language: LanguageUpdateOneRequiredInput
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1764,6 +1821,7 @@ input SupportFileUpdateDataInput {
 input SupportFileUpdateInput {
   language: LanguageUpdateOneRequiredInput
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1773,6 +1831,7 @@ input SupportFileUpdateInput {
 
 input SupportFileUpdateManyDataInput {
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1793,6 +1852,7 @@ input SupportFileUpdateManyInput {
 
 input SupportFileUpdateManyMutationInput {
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
@@ -1982,6 +2042,20 @@ input SupportFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -3143,6 +3217,7 @@ type VideoFile {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3166,6 +3241,7 @@ input VideoFileCreateInput {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3201,6 +3277,8 @@ enum VideoFileOrderByInput {
   videoBurnedInStatus_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
   md5_ASC
   md5_DESC
   duration_ASC
@@ -3220,6 +3298,7 @@ type VideoFilePreviousValues {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3307,6 +3386,20 @@ input VideoFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -3376,6 +3469,7 @@ input VideoFileUpdateDataInput {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3392,6 +3486,7 @@ input VideoFileUpdateInput {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3406,6 +3501,7 @@ input VideoFileUpdateManyDataInput {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3430,6 +3526,7 @@ input VideoFileUpdateManyMutationInput {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3535,6 +3632,20 @@ input VideoFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]

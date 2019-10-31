@@ -191,6 +191,7 @@ type VideoFile {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String # may not need
   duration: Float
   bitrate: Float
@@ -214,6 +215,7 @@ type ImageFile {
   use: ImageUse
   md5: String
   url: String
+  signedUrl: String
 }
 
 type SupportFile {
@@ -222,6 +224,7 @@ type SupportFile {
   updatedAt: DateTime! @updatedAt
   language: Language!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String # srt, pdf

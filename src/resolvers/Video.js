@@ -135,6 +135,7 @@ export default {
     updateVideoProject ( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoProject( {
         data,
         where: { id }
@@ -153,6 +154,7 @@ export default {
 
       // 2. Transform it into thw acceptable elasticsearch data structure
       const esData = transformVideo( videoProject );
+
       const { status } = videoProject;
 
       // 3. Put on the queue for processing ( not sure we need to await here )
@@ -750,8 +752,11 @@ export default {
   },
 
   SupportFile: {
-    async url( parent ) {
-      const signed = await getSignedUrlPromiseGet( { key: parent.url } );
+    async signedUrl( parent ) {
+      const signed = await getSignedUrlPromiseGet( {
+        key: parent.url,
+        expires: 3600 // hour
+      } );
       return signed.url;
     },
 
@@ -768,8 +773,11 @@ export default {
   },
 
   ImageFile: {
-    async url( parent ) {
-      const signed = await getSignedUrlPromiseGet( { key: parent.url } );
+    async signedUrl( parent ) {
+      const signed = await getSignedUrlPromiseGet( {
+        key: parent.url,
+        expires: 3600 // hour
+      } );
       return signed.url;
     },
 
