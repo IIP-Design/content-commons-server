@@ -64,15 +64,15 @@ enum ThumbnailSize {
 
 type Office {
   id: ID! @id
-  name: String!  
+  name: String!
   abbr: String!
-  bureau: Bureau  
+  bureau: Bureau
 }
 
 type Bureau {
   id: ID! @id
-  name: String!  
-  abbr: String!  
+  name: String!
+  abbr: String!
   offices: [Office]
 }
 
@@ -141,12 +141,12 @@ type Package {
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
   type: PackageType!
-  title: String!  
+  title: String!
   desc:  String
   visibility: Visibility @default(value: INTERNAL)
   categories: [Category]
   tags: [Tag]
-  documents: [DocumentFile] 
+  documents: [DocumentFile]
 }
 
 
@@ -287,7 +287,7 @@ type DocumentFile {
   image: [ImageFile]
   url: String
   signedUrl: String
-  visibility: Visibility @default(value: INTERNAL) 
+  visibility: Visibility @default(value: INTERNAL)
   use: DocumentUse
   bureaus: [Bureau]
   categories: [Category]
