@@ -357,6 +357,7 @@ type ImageFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUse
   md5: String
   url: String
@@ -378,6 +379,7 @@ input ImageFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseCreateOneInput
   md5: String
   url: String
@@ -417,6 +419,8 @@ enum ImageFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
   md5_ASC
   md5_DESC
   url_ASC
@@ -433,6 +437,7 @@ type ImageFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
 }
@@ -546,6 +551,10 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -606,6 +615,7 @@ input ImageFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -620,6 +630,7 @@ input ImageFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -632,6 +643,7 @@ input ImageFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
 }
@@ -655,6 +667,7 @@ input ImageFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
 }
@@ -800,6 +813,10 @@ input ImageFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -1483,11 +1500,6 @@ enum ProjectType {
   LANGUAGE
 }
 
-enum ProjectVisibility {
-  INTERNAL
-  PUBLIC
-}
-
 type Query {
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
@@ -1573,6 +1585,7 @@ type SupportFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUse
 }
 
@@ -1590,6 +1603,7 @@ input SupportFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseCreateOneInput
 }
 
@@ -1620,6 +1634,8 @@ enum SupportFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
 }
 
 type SupportFilePreviousValues {
@@ -1631,6 +1647,7 @@ type SupportFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileScalarWhereInput {
@@ -1728,6 +1745,10 @@ input SupportFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -1758,6 +1779,7 @@ input SupportFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
@@ -1768,6 +1790,7 @@ input SupportFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
@@ -1777,6 +1800,7 @@ input SupportFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyInput {
@@ -1797,6 +1821,7 @@ input SupportFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -2032,6 +2057,10 @@ input SupportFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: SupportFileUseWhereInput
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
@@ -3139,6 +3168,7 @@ type VideoFile {
   language: Language
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUse
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3162,6 +3192,7 @@ input VideoFileCreateInput {
   language: LanguageCreateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseCreateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3195,6 +3226,8 @@ enum VideoFileOrderByInput {
   filetype_DESC
   filename_ASC
   filename_DESC
+  visibility_ASC
+  visibility_DESC
   quality_ASC
   quality_DESC
   videoBurnedInStatus_ASC
@@ -3217,6 +3250,7 @@ type VideoFilePreviousValues {
   updatedAt: DateTime!
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3285,6 +3319,10 @@ input VideoFileScalarWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   quality: VideoQuality
   quality_not: VideoQuality
   quality_in: [VideoQuality!]
@@ -3372,6 +3410,7 @@ input VideoFileUpdateDataInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3388,6 +3427,7 @@ input VideoFileUpdateInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3403,6 +3443,7 @@ input VideoFileUpdateInput {
 input VideoFileUpdateManyDataInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3427,6 +3468,7 @@ input VideoFileUpdateManyInput {
 input VideoFileUpdateManyMutationInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3512,6 +3554,10 @@ input VideoFileWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: VideoUseWhereInput
   quality: VideoQuality
   quality_not: VideoQuality
@@ -3598,7 +3644,7 @@ type VideoProject {
   author: User
   team: Team
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -3622,7 +3668,7 @@ input VideoProjectCreateInput {
   author: UserCreateOneInput
   team: TeamCreateOneInput
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
@@ -3668,7 +3714,7 @@ type VideoProjectPreviousValues {
   descPublic: String
   descInternal: String
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
 }
 
 type VideoProjectSubscriptionPayload {
@@ -3698,7 +3744,7 @@ input VideoProjectUpdateInput {
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
@@ -3713,7 +3759,7 @@ input VideoProjectUpdateManyMutationInput {
   descPublic: String
   descInternal: String
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
 }
 
 input VideoProjectWhereInput {
@@ -3807,10 +3853,10 @@ input VideoProjectWhereInput {
   status_not: ProjectPublishStatus
   status_in: [ProjectPublishStatus!]
   status_not_in: [ProjectPublishStatus!]
-  visibility: ProjectVisibility
-  visibility_not: ProjectVisibility
-  visibility_in: [ProjectVisibility!]
-  visibility_not_in: [ProjectVisibility!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput
@@ -4487,6 +4533,11 @@ input VideoUseWhereInput {
 input VideoUseWhereUniqueInput {
   id: ID
   name: String
+}
+
+enum Visibility {
+  INTERNAL
+  PUBLIC
 }
 `
       }

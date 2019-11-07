@@ -33,7 +33,7 @@ var models = [
     embedded: false
   },
   {
-    name: "ProjectVisibility",
+    name: "Visibility",
     embedded: false
   },
   {
