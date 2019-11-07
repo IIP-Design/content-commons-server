@@ -260,8 +260,6 @@ const transformVideo = videoProject => {
       supportFileType: ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) ? 'srt' : 'transcript',
       visibility: file.visibility,
     } ) );
-    console.log( videoProject.supportFiles );
-    console.log( esData.supportFiles );
   }
 
   // If still no project thumbnail, try to use the project level ImageFiles
@@ -269,9 +267,6 @@ const transformVideo = videoProject => {
     const thumbs = videoProject.thumbnails.filter( thumb => thumb.use.name === THUMBNAIL_USE );
     esData.thumbnail = transformThumbnails( thumbs, false );
   }
-
-  console.log( 'videoProject', JSON.stringify( videoProject, null, 2 ) );
-  console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
   return esData;
 };
 
