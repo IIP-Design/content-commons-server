@@ -17,6 +17,11 @@ function getEmbedUrl( url ) {
   return url;
 }
 
+function maybeGetUrlToProdS3( url ) {
+  if ( url.startsWith( 'http:' ) || url.startsWith( 'https:' ) ) return url;
+  return `https://${process.env.AWS_S3_PRODUCTION_BUCKET}.s3.amazonaws.com/${url}`;
+}
+
 const transformLanguage = language => ( {
   language_code: language.languageCode,
   locale: language.locale,
@@ -26,7 +31,7 @@ const transformLanguage = language => ( {
 } );
 
 const transformThumbnail = image => ( {
-  url: image.url,
+  url: maybeGetUrlToProdS3( image.url ),
   width: image.dimensions.width,
   height: image.dimensions.height,
   orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait'
@@ -110,7 +115,7 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
-    downloadUrl: file.url,
+    downloadUrl: maybeGetUrlToProdS3( file.url ),
     streamUrl: [],
     stream: null,
     duration: file.duration,
@@ -254,7 +259,7 @@ const transformVideo = videoProject => {
 
   if ( videoProject.supportFiles ) {
     esData.supportFiles = videoProject.supportFiles.map( file => ( {
-      srcUrl: file.url,
+      srcUrl: maybeGetUrlToProdS3( file.url ),
       language: transformLanguage( file.language ),
       // TODO: Support additional file types in future
       supportFileType: ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) ? 'srt' : 'transcript',

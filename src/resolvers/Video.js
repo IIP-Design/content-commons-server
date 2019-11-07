@@ -6,7 +6,7 @@ import {
   getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
 } from '../lib/projectParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
-import { deleteAllS3Assets, deleteS3Asset } from '../services/aws/s3';
+import { deleteAllS3Assets, deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
 import transformVideo from '../services/es/video/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
@@ -135,6 +135,7 @@ export default {
     updateVideoProject ( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoProject( {
         data,
         where: { id }
@@ -153,6 +154,7 @@ export default {
 
       // 2. Transform it into thw acceptable elasticsearch data structure
       const esData = transformVideo( videoProject );
+
       const { status } = videoProject;
 
       // 3. Put on the queue for processing ( not sure we need to await here )
@@ -750,6 +752,14 @@ export default {
   },
 
   SupportFile: {
+    async signedUrl( parent ) {
+      const signed = await getSignedUrlPromiseGet( {
+        key: parent.url,
+        expires: 3600 // hour
+      } );
+      return signed.url;
+    },
+
     language( parent, args, ctx ) {
       return ctx.prisma
         .supportFile( { id: parent.id } )
@@ -763,6 +773,14 @@ export default {
   },
 
   ImageFile: {
+    async signedUrl( parent ) {
+      const signed = await getSignedUrlPromiseGet( {
+        key: parent.url,
+        expires: 3600 // hour
+      } );
+      return signed.url;
+    },
+
     language( parent, args, ctx ) {
       return ctx.prisma
         .imageFile( { id: parent.id } )

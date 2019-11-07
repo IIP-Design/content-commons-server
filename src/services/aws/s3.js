@@ -66,11 +66,12 @@ export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject )
 } );
 
 export const getSignedUrlPromiseGet = params => new Promise( ( resolve, reject ) => {
-  const { key } = params;
+  const { key, expires } = params;
 
   s3.getSignedUrl( 'getObject', {
     Bucket: AUTHORING_BUCKET,
-    Key: key
+    Key: key,
+    Expires: expires || 900 // default 15 minutes
   }, ( err, url ) => {
     if ( err ) {
       reject( err );
