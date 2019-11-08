@@ -17,11 +17,11 @@ const seedUses = async ( csvFile = files.uses ) => {
         break;
       default: return null;
     }
-    delete row.type;
+    const { name, previous } = row;
     return upsert( {
-      where: row,
-      create: row,
-      update: row
+      where: { name: ( !previous ? name : previous ) },
+      create: { name },
+      update: { name }
     } ).catch( err => {
       prismaErrors( err );
       return null;

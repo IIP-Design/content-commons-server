@@ -1,14 +1,14 @@
-type,name
-Image,Email Graphic
-Image,Infographic
-Image,Website Hero Image
-Image,Social Media Graphic
-Image,Memes
-Image,3D Graphics
-Image,Thumbnail/Cover Image
-Video,Full Video
-Video,Promotional Teaser
-Video,Video Assets (B-Roll)
-Video,Event Video
-Audio,Event Audio
-Audio,Audio Assets (B-Roll)
+type,name,previous
+Image,Email Graphic,
+Image,Infographic,
+Image,Website Hero Image,
+Image,Social Media Graphic,
+Image,Memes,
+Image,3D Graphics,
+Image,Thumbnail/Cover Image,
+Video,Full Video,
+Video,Promotional Teaser,
+Video,Video Assets (B-Roll),
+Video,Web Chat,Event Video
+Audio,Event Audio,
+Audio,Audio Assets (B-Roll),

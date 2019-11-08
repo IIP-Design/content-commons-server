@@ -357,9 +357,11 @@ type ImageFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUse
   md5: String
   url: String
+  signedUrl: String
 }
 
 type ImageFileConnection {
@@ -378,9 +380,11 @@ input ImageFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseCreateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileCreateManyInput {
@@ -417,10 +421,14 @@ enum ImageFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
   md5_ASC
   md5_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
 }
 
 type ImageFilePreviousValues {
@@ -433,8 +441,10 @@ type ImageFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileScalarWhereInput {
@@ -546,6 +556,10 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -574,6 +588,20 @@ input ImageFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   AND: [ImageFileScalarWhereInput!]
   OR: [ImageFileScalarWhereInput!]
   NOT: [ImageFileScalarWhereInput!]
@@ -606,9 +634,11 @@ input ImageFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateInput {
@@ -620,9 +650,11 @@ input ImageFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyDataInput {
@@ -632,8 +664,10 @@ input ImageFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyInput {
@@ -655,8 +689,10 @@ input ImageFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
+  signedUrl: String
 }
 
 input ImageFileUpdateManyWithWhereNestedInput {
@@ -800,6 +836,10 @@ input ImageFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -829,6 +869,20 @@ input ImageFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   AND: [ImageFileWhereInput!]
   OR: [ImageFileWhereInput!]
   NOT: [ImageFileWhereInput!]
@@ -1483,11 +1537,6 @@ enum ProjectType {
   LANGUAGE
 }
 
-enum ProjectVisibility {
-  INTERNAL
-  PUBLIC
-}
-
 type Query {
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
@@ -1569,10 +1618,12 @@ type SupportFile {
   updatedAt: DateTime!
   language: Language!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUse
 }
 
@@ -1586,10 +1637,12 @@ input SupportFileCreateInput {
   id: ID
   language: LanguageCreateOneInput!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseCreateOneInput
 }
 
@@ -1612,6 +1665,8 @@ enum SupportFileOrderByInput {
   updatedAt_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
   md5_ASC
   md5_DESC
   filename_ASC
@@ -1620,6 +1675,8 @@ enum SupportFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
 }
 
 type SupportFilePreviousValues {
@@ -1627,10 +1684,12 @@ type SupportFilePreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileScalarWhereInput {
@@ -1678,6 +1737,20 @@ input SupportFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -1728,6 +1801,10 @@ input SupportFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -1754,29 +1831,35 @@ input SupportFileSubscriptionWhereInput {
 input SupportFileUpdateDataInput {
   language: LanguageUpdateOneRequiredInput
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
 input SupportFileUpdateInput {
   language: LanguageUpdateOneRequiredInput
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
 input SupportFileUpdateManyDataInput {
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyInput {
@@ -1793,10 +1876,12 @@ input SupportFileUpdateManyInput {
 
 input SupportFileUpdateManyMutationInput {
   url: String
+  signedUrl: String
   md5: String
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -1982,6 +2067,20 @@ input SupportFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -2032,6 +2131,10 @@ input SupportFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: SupportFileUseWhereInput
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
@@ -3139,10 +3242,12 @@ type VideoFile {
   language: Language
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUse
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3162,10 +3267,12 @@ input VideoFileCreateInput {
   language: LanguageCreateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseCreateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3195,12 +3302,16 @@ enum VideoFileOrderByInput {
   filetype_DESC
   filename_ASC
   filename_DESC
+  visibility_ASC
+  visibility_DESC
   quality_ASC
   quality_DESC
   videoBurnedInStatus_ASC
   videoBurnedInStatus_DESC
   url_ASC
   url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
   md5_ASC
   md5_DESC
   duration_ASC
@@ -3217,9 +3328,11 @@ type VideoFilePreviousValues {
   updatedAt: DateTime!
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3285,6 +3398,10 @@ input VideoFileScalarWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   quality: VideoQuality
   quality_not: VideoQuality
   quality_in: [VideoQuality!]
@@ -3307,6 +3424,20 @@ input VideoFileScalarWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -3372,10 +3503,12 @@ input VideoFileUpdateDataInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3388,10 +3521,12 @@ input VideoFileUpdateInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3403,9 +3538,11 @@ input VideoFileUpdateInput {
 input VideoFileUpdateManyDataInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3427,9 +3564,11 @@ input VideoFileUpdateManyInput {
 input VideoFileUpdateManyMutationInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
+  signedUrl: String
   md5: String
   duration: Float
   bitrate: Float
@@ -3512,6 +3651,10 @@ input VideoFileWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: VideoUseWhereInput
   quality: VideoQuality
   quality_not: VideoQuality
@@ -3535,6 +3678,20 @@ input VideoFileWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -3598,7 +3755,7 @@ type VideoProject {
   author: User
   team: Team
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -3622,7 +3779,7 @@ input VideoProjectCreateInput {
   author: UserCreateOneInput
   team: TeamCreateOneInput
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
@@ -3668,7 +3825,7 @@ type VideoProjectPreviousValues {
   descPublic: String
   descInternal: String
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
 }
 
 type VideoProjectSubscriptionPayload {
@@ -3698,7 +3855,7 @@ input VideoProjectUpdateInput {
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
@@ -3713,7 +3870,7 @@ input VideoProjectUpdateManyMutationInput {
   descPublic: String
   descInternal: String
   status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  visibility: Visibility
 }
 
 input VideoProjectWhereInput {
@@ -3807,10 +3964,10 @@ input VideoProjectWhereInput {
   status_not: ProjectPublishStatus
   status_in: [ProjectPublishStatus!]
   status_not_in: [ProjectPublishStatus!]
-  visibility: ProjectVisibility
-  visibility_not: ProjectVisibility
-  visibility_in: [ProjectVisibility!]
-  visibility_not_in: [ProjectVisibility!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput
@@ -4487,6 +4644,11 @@ input VideoUseWhereInput {
 input VideoUseWhereUniqueInput {
   id: ID
   name: String
+}
+
+enum Visibility {
+  INTERNAL
+  PUBLIC
 }
 `
       }

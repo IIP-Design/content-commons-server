@@ -23,6 +23,7 @@ const resolvers = merge(
   VideoResolvers
 );
 
+
 // Create Apollo server
 const createApolloServer = () => new ApolloServer( {
   typeDefs,
@@ -30,17 +31,9 @@ const createApolloServer = () => new ApolloServer( {
   introspection: true,
   subscriptions: {
     path: '/subscription',
-    onConnect: () => {
-      console.log( 'Connect to websocket' );
-    },
-    onDisconnect: ( ) => {
-      console.log( 'Diconnected from websocket' );
-    },
-    onOperation: ( message, params ) => {
-      console.log( message );
-      console.log( params );
-      return params;
-    },
+    onConnect: () => {},
+    onDisconnect: ( ) => {},
+    onOperation: ( message, params ) => params,
   },
   context: async ( { connection, ...other } ) => {
     if ( connection ) {

@@ -17,6 +17,11 @@ function getEmbedUrl( url ) {
   return url;
 }
 
+function maybeGetUrlToProdS3( url ) {
+  if ( url.startsWith( 'http:' ) || url.startsWith( 'https:' ) ) return url;
+  return `https://${process.env.AWS_S3_PRODUCTION_BUCKET}.s3.amazonaws.com/${url}`;
+}
+
 const transformLanguage = language => ( {
   language_code: language.languageCode,
   locale: language.locale,
@@ -26,7 +31,7 @@ const transformLanguage = language => ( {
 } );
 
 const transformThumbnail = image => ( {
-  url: image.url,
+  url: maybeGetUrlToProdS3( image.url ),
   width: image.dimensions.width,
   height: image.dimensions.height,
   orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait'
@@ -45,6 +50,7 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
     alt: null,
     caption: null,
     longdesc: null,
+    visibility: 'PUBLIC',
     sizes: {
       small: null,
       medium: null,
@@ -58,6 +64,9 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
     // Unit level thumbnails use the Thumbnail schema which includes size
     thumbnails.forEach( ( { size, image } ) => {
       esThumb.sizes[size.toLowerCase()] = transformThumbnail( image );
+      if ( image.visibility && image.visibility === 'INTERNAL' ) {
+        esThumb.visibility = 'INTERNAL';
+      }
       if ( size === 'FULL' ) {
         esThumb.name = image.filename;
         esThumb.alt = image.alt;
@@ -73,6 +82,7 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
     esThumb.alt = image.alt;
     esThumb.caption = image.caption;
     esThumb.longdesc = image.longdesc;
+    esThumb.visibility = image.visibility || 'PUBLIC';
   }
   return esThumb;
 };
@@ -105,12 +115,13 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
-    downloadUrl: file.url,
+    downloadUrl: maybeGetUrlToProdS3( file.url ),
     streamUrl: [],
     stream: null,
     duration: file.duration,
     filetype: file.filetype,
     video_quality: file.quality,
+    visibility: file.visibility,
     md5: file.md5,
     size: {
       width: file.dimensions && file.dimensions.width ? file.dimensions.width : null,
@@ -248,11 +259,14 @@ const transformVideo = videoProject => {
 
   if ( videoProject.supportFiles ) {
     esData.supportFiles = videoProject.supportFiles.map( file => ( {
-      srcUrl: file.url,
+      srcUrl: maybeGetUrlToProdS3( file.url ),
       language: transformLanguage( file.language ),
       // TODO: Support additional file types in future
       supportFileType: ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) ? 'srt' : 'transcript',
+      visibility: file.visibility,
     } ) );
+    console.log( videoProject.supportFiles );
+    console.log( esData.supportFiles );
   }
 
   // If still no project thumbnail, try to use the project level ImageFiles
@@ -260,6 +274,9 @@ const transformVideo = videoProject => {
     const thumbs = videoProject.thumbnails.filter( thumb => thumb.use.name === THUMBNAIL_USE );
     esData.thumbnail = transformThumbnails( thumbs, false );
   }
+
+  console.log( 'videoProject', JSON.stringify( videoProject, null, 2 ) );
+  console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
   return esData;
 };
 
