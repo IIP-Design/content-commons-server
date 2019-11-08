@@ -18,6 +18,10 @@ enum ProjectType {
   LANGUAGE
 }
 
+enum PackageType {
+  DAILY_GUIDANCE
+}
+
 enum VideoBurnedInStatus {
   SUBTITLED
   CAPTIONED
@@ -56,6 +60,20 @@ enum ThumbnailSize {
   MEDIUM
   LARGE
   FULL
+}
+
+type Office {
+  id: ID! @id
+  name: String!  
+  abbr: String!
+  bureau: Bureau  
+}
+
+type Bureau {
+  id: ID! @id
+  name: String!  
+  abbr: String!  
+  offices: [Office]
 }
 
 type User {
@@ -108,7 +126,7 @@ type Tag {
 type LanguageTranslation {
   id: ID! @id
   name: String!
-  language: Language!
+  language: Language
 }
 
 type Thumbnail {
@@ -116,6 +134,21 @@ type Thumbnail {
   size: ThumbnailSize @default(value: FULL)
   image: ImageFile
 }
+
+type Package {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime
+  type: PackageType!
+  title: String!  
+  desc:  String
+  visibility: Visibility @default(value: INTERNAL)
+  categories: [Category]
+  tags: [Tag]
+  documents: [DocumentFile] 
+}
+
 
 type VideoProject {
   id: ID! @id
@@ -161,6 +194,12 @@ type Dimensions {
   id: ID! @id
   width: Int
   height: Int
+}
+
+# Press Guidance, meeting note
+type DocumentUse {
+  id: ID! @id
+  name: String! @unique
 }
 
 # Full video,promotional teaser, etc
@@ -233,4 +272,24 @@ type SupportFile {
   filesize: Float
   visibility: Visibility @default(value: PUBLIC)
   use: SupportFileUse
+}
+
+type DocumentFile {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime
+  language: Language
+  filetype: String
+  filename: String
+  filesize: Float
+  text: String
+  image: [ImageFile]
+  url: String
+  signedUrl: String
+  visibility: Visibility @default(value: INTERNAL) 
+  use: DocumentUse
+  bureaus: [Bureau]
+  categories: [Category]
+  tags: [Tag]
 }

@@ -17,6 +17,10 @@ var models = [
     embedded: false
   },
   {
+    name: "PackageType",
+    embedded: false
+  },
+  {
     name: "VideoBurnedInStatus",
     embedded: false
   },
@@ -42,6 +46,14 @@ var models = [
   },
   {
     name: "ThumbnailSize",
+    embedded: false
+  },
+  {
+    name: "Office",
+    embedded: false
+  },
+  {
+    name: "Bureau",
     embedded: false
   },
   {
@@ -73,6 +85,10 @@ var models = [
     embedded: false
   },
   {
+    name: "Package",
+    embedded: false
+  },
+  {
     name: "VideoProject",
     embedded: false
   },
@@ -86,6 +102,10 @@ var models = [
   },
   {
     name: "Dimensions",
+    embedded: false
+  },
+  {
+    name: "DocumentUse",
     embedded: false
   },
   {
@@ -110,6 +130,10 @@ var models = [
   },
   {
     name: "SupportFile",
+    embedded: false
+  },
+  {
+    name: "DocumentFile",
     embedded: false
   }
 ];
