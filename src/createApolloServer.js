@@ -8,6 +8,7 @@ import TaxonomyResolvers from './resolvers/Taxonomy';
 import TeamResolvers from './resolvers/Team';
 import UserResolvers from './resolvers/User';
 import UtilResolvers from './resolvers/Util';
+import DocumentResolvers from './resolvers/Document';
 import VideoResolvers from './resolvers/Video';
 import { prisma } from './schema/generated/prisma-client';
 
@@ -20,6 +21,7 @@ const resolvers = merge(
   TaxonomyResolvers,
   UserResolvers,
   TeamResolvers,
+  DocumentResolvers,
   VideoResolvers
 );
 

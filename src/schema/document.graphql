@@ -1,0 +1,12 @@
+type Query {
+  documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
+  documentUse(id: ID!): DocumentUse
+}
+
+type Mutation {
+  createDocumentUse(name: String!): DocumentUse!
+  updateDocumentUse(data: DocumentUseUpdateInput!, where: DocumentUseWhereUniqueInput!): DocumentUse
+  updateManyDocumentUses(data: DocumentUseUpdateManyMutationInput!, where: DocumentUseWhereInput): BatchPayload!
+  deleteDocumentUse(id: ID!): DocumentUse
+  deleteManyDocumentUses(where: DocumentUseWhereInput): BatchPayload!
+}

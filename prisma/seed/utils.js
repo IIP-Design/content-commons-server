@@ -3,7 +3,7 @@ import csv from 'csv-parser';
 
 export const ucfirst = string => String( string ).charAt( 0 ).toUpperCase() + string.slice( 1 );
 export const lcfirst = string => String( string ).charAt( 0 ).toLowerCase() + string.slice( 1 );
-export const printError = err => (typeof err === 'string' ? err : JSON.stringify( err, null, 2 ));
+export const printError = err => console.error( typeof err === 'string' ? err : JSON.stringify( err, null, 2 ) );
 
 /**
  * Print error messages from a Prisma error object.
@@ -54,15 +54,17 @@ export const getCsvRows = file => new Promise( resolve => {
  *
  * @param obj
  * @param callback
- * @returns {Promise<void>}
  */
 export const forEachSync = async ( obj, callback ) => {
   const entries = Object.entries( obj );
+  const results = [];
   for ( let i = 0; i < entries.length; i += 1 ) {
     const [key, val] = entries[i];
     // eslint-disable-next-line no-await-in-loop
-    await callback( val, key );
+    const result = await callback( val, key );
+    results.push( result );
   }
+  return results;
 };
 
 /**
