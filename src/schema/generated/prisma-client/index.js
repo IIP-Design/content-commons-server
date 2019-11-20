@@ -33,7 +33,7 @@ var models = [
     embedded: false
   },
   {
-    name: "ProjectPublishStatus",
+    name: "PublishStatus",
     embedded: false
   },
   {
@@ -82,6 +82,10 @@ var models = [
   },
   {
     name: "Thumbnail",
+    embedded: false
+  },
+  {
+    name: "DocumentConversionFormat",
     embedded: false
   },
   {

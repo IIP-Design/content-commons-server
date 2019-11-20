@@ -11,14 +11,14 @@ type FileInfo {
   height: Float
 }
 
-type ProjectStatus {
+type Status {
   id: ID
   error: String
-  status: ProjectPublishStatus
+  status: PublishStatus
 }
 
 type Subscription {
-  projectStatusChange(id: ID, ids: [ID]): ProjectStatus
+  projectStatusChange(id: ID, ids: [ID]): Status
 }
 
 type Query {
