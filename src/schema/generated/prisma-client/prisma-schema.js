@@ -15,6 +15,10 @@ type AggregateDimensions {
   count: Int!
 }
 
+type AggregateDocumentConversionFormat {
+  count: Int!
+}
+
 type AggregateDocumentFile {
   count: Int!
 }
@@ -611,6 +615,170 @@ input DimensionsWhereUniqueInput {
   id: ID
 }
 
+type DocumentConversionFormat {
+  id: ID!
+  rawText: String
+  html: String
+  markdown: String
+}
+
+type DocumentConversionFormatConnection {
+  pageInfo: PageInfo!
+  edges: [DocumentConversionFormatEdge]!
+  aggregate: AggregateDocumentConversionFormat!
+}
+
+input DocumentConversionFormatCreateInput {
+  id: ID
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatCreateOneInput {
+  create: DocumentConversionFormatCreateInput
+  connect: DocumentConversionFormatWhereUniqueInput
+}
+
+type DocumentConversionFormatEdge {
+  node: DocumentConversionFormat!
+  cursor: String!
+}
+
+enum DocumentConversionFormatOrderByInput {
+  id_ASC
+  id_DESC
+  rawText_ASC
+  rawText_DESC
+  html_ASC
+  html_DESC
+  markdown_ASC
+  markdown_DESC
+}
+
+type DocumentConversionFormatPreviousValues {
+  id: ID!
+  rawText: String
+  html: String
+  markdown: String
+}
+
+type DocumentConversionFormatSubscriptionPayload {
+  mutation: MutationType!
+  node: DocumentConversionFormat
+  updatedFields: [String!]
+  previousValues: DocumentConversionFormatPreviousValues
+}
+
+input DocumentConversionFormatSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DocumentConversionFormatWhereInput
+  AND: [DocumentConversionFormatSubscriptionWhereInput!]
+  OR: [DocumentConversionFormatSubscriptionWhereInput!]
+  NOT: [DocumentConversionFormatSubscriptionWhereInput!]
+}
+
+input DocumentConversionFormatUpdateDataInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateManyMutationInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateOneInput {
+  create: DocumentConversionFormatCreateInput
+  update: DocumentConversionFormatUpdateDataInput
+  upsert: DocumentConversionFormatUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: DocumentConversionFormatWhereUniqueInput
+}
+
+input DocumentConversionFormatUpsertNestedInput {
+  update: DocumentConversionFormatUpdateDataInput!
+  create: DocumentConversionFormatCreateInput!
+}
+
+input DocumentConversionFormatWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  rawText: String
+  rawText_not: String
+  rawText_in: [String!]
+  rawText_not_in: [String!]
+  rawText_lt: String
+  rawText_lte: String
+  rawText_gt: String
+  rawText_gte: String
+  rawText_contains: String
+  rawText_not_contains: String
+  rawText_starts_with: String
+  rawText_not_starts_with: String
+  rawText_ends_with: String
+  rawText_not_ends_with: String
+  html: String
+  html_not: String
+  html_in: [String!]
+  html_not_in: [String!]
+  html_lt: String
+  html_lte: String
+  html_gt: String
+  html_gte: String
+  html_contains: String
+  html_not_contains: String
+  html_starts_with: String
+  html_not_starts_with: String
+  html_ends_with: String
+  html_not_ends_with: String
+  markdown: String
+  markdown_not: String
+  markdown_in: [String!]
+  markdown_not_in: [String!]
+  markdown_lt: String
+  markdown_lte: String
+  markdown_gt: String
+  markdown_gte: String
+  markdown_contains: String
+  markdown_not_contains: String
+  markdown_starts_with: String
+  markdown_not_starts_with: String
+  markdown_ends_with: String
+  markdown_not_ends_with: String
+  AND: [DocumentConversionFormatWhereInput!]
+  OR: [DocumentConversionFormatWhereInput!]
+  NOT: [DocumentConversionFormatWhereInput!]
+}
+
+input DocumentConversionFormatWhereUniqueInput {
+  id: ID
+}
+
 type DocumentFile {
   id: ID!
   createdAt: DateTime!
@@ -620,7 +788,8 @@ type DocumentFile {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
+  content: DocumentConversionFormat
   image(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
   url: String
   signedUrl: String
@@ -644,7 +813,8 @@ input DocumentFileCreateInput {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
+  content: DocumentConversionFormatCreateOneInput
   image: ImageFileCreateManyInput
   url: String
   signedUrl: String
@@ -680,8 +850,8 @@ enum DocumentFileOrderByInput {
   filename_DESC
   filesize_ASC
   filesize_DESC
-  text_ASC
-  text_DESC
+  status_ASC
+  status_DESC
   url_ASC
   url_DESC
   signedUrl_ASC
@@ -698,7 +868,7 @@ type DocumentFilePreviousValues {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
   url: String
   signedUrl: String
   visibility: Visibility
@@ -779,20 +949,10 @@ input DocumentFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
   url: String
   url_not: String
   url_in: [String!]
@@ -854,7 +1014,8 @@ input DocumentFileUpdateDataInput {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
+  content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
   url: String
   signedUrl: String
@@ -871,7 +1032,8 @@ input DocumentFileUpdateInput {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
+  content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
   url: String
   signedUrl: String
@@ -887,7 +1049,7 @@ input DocumentFileUpdateManyDataInput {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
   url: String
   signedUrl: String
   visibility: Visibility
@@ -910,7 +1072,7 @@ input DocumentFileUpdateManyMutationInput {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus
   url: String
   signedUrl: String
   visibility: Visibility
@@ -1008,20 +1170,11 @@ input DocumentFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  content: DocumentConversionFormatWhereInput
   image_every: ImageFileWhereInput
   image_some: ImageFileWhereInput
   image_none: ImageFileWhereInput
@@ -2268,6 +2421,12 @@ type Mutation {
   upsertDimensions(where: DimensionsWhereUniqueInput!, create: DimensionsCreateInput!, update: DimensionsUpdateInput!): Dimensions!
   deleteDimensions(where: DimensionsWhereUniqueInput!): Dimensions
   deleteManyDimensionses(where: DimensionsWhereInput): BatchPayload!
+  createDocumentConversionFormat(data: DocumentConversionFormatCreateInput!): DocumentConversionFormat!
+  updateDocumentConversionFormat(data: DocumentConversionFormatUpdateInput!, where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  updateManyDocumentConversionFormats(data: DocumentConversionFormatUpdateManyMutationInput!, where: DocumentConversionFormatWhereInput): BatchPayload!
+  upsertDocumentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!, create: DocumentConversionFormatCreateInput!, update: DocumentConversionFormatUpdateInput!): DocumentConversionFormat!
+  deleteDocumentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  deleteManyDocumentConversionFormats(where: DocumentConversionFormatWhereInput): BatchPayload!
   createDocumentFile(data: DocumentFileCreateInput!): DocumentFile!
   updateDocumentFile(data: DocumentFileUpdateInput!, where: DocumentFileWhereUniqueInput!): DocumentFile
   updateManyDocumentFiles(data: DocumentFileUpdateManyMutationInput!, where: DocumentFileWhereInput): BatchPayload!
@@ -2620,6 +2779,7 @@ type Package {
   type: PackageType!
   title: String!
   desc: String
+  status: PublishStatus
   visibility: Visibility
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
@@ -2638,6 +2798,7 @@ input PackageCreateInput {
   type: PackageType!
   title: String!
   desc: String
+  status: PublishStatus
   visibility: Visibility
   categories: CategoryCreateManyInput
   tags: TagCreateManyInput
@@ -2664,6 +2825,8 @@ enum PackageOrderByInput {
   title_DESC
   desc_ASC
   desc_DESC
+  status_ASC
+  status_DESC
   visibility_ASC
   visibility_DESC
 }
@@ -2676,6 +2839,7 @@ type PackagePreviousValues {
   type: PackageType!
   title: String!
   desc: String
+  status: PublishStatus
   visibility: Visibility
 }
 
@@ -2706,6 +2870,7 @@ input PackageUpdateInput {
   type: PackageType
   title: String
   desc: String
+  status: PublishStatus
   visibility: Visibility
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
@@ -2717,6 +2882,7 @@ input PackageUpdateManyMutationInput {
   type: PackageType
   title: String
   desc: String
+  status: PublishStatus
   visibility: Visibility
 }
 
@@ -2791,6 +2957,10 @@ input PackageWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
   visibility: Visibility
   visibility_not: Visibility
   visibility_in: [Visibility!]
@@ -2828,15 +2998,15 @@ enum Permission {
   ADMIN
 }
 
-enum ProjectPublishStatus {
+enum ProjectType {
+  LANGUAGE
+}
+
+enum PublishStatus {
   DRAFT
   PUBLISHING
   PUBLISHED
   EMBARGOED
-}
-
-enum ProjectType {
-  LANGUAGE
 }
 
 type Query {
@@ -2849,6 +3019,9 @@ type Query {
   dimensions(where: DimensionsWhereUniqueInput!): Dimensions
   dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
   dimensionsesConnection(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DimensionsConnection!
+  documentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  documentConversionFormats(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentConversionFormat]!
+  documentConversionFormatsConnection(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentConversionFormatConnection!
   documentFile(where: DocumentFileWhereUniqueInput!): DocumentFile
   documentFiles(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile]!
   documentFilesConnection(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentFileConnection!
@@ -2913,6 +3086,7 @@ type Subscription {
   bureau(where: BureauSubscriptionWhereInput): BureauSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   dimensions(where: DimensionsSubscriptionWhereInput): DimensionsSubscriptionPayload
+  documentConversionFormat(where: DocumentConversionFormatSubscriptionWhereInput): DocumentConversionFormatSubscriptionPayload
   documentFile(where: DocumentFileSubscriptionWhereInput): DocumentFileSubscriptionPayload
   documentUse(where: DocumentUseSubscriptionWhereInput): DocumentUseSubscriptionPayload
   imageFile(where: ImageFileSubscriptionWhereInput): ImageFileSubscriptionPayload
@@ -5076,7 +5250,7 @@ type VideoProject {
   descInternal: String
   author: User
   team: Team
-  status: ProjectPublishStatus
+  status: PublishStatus
   visibility: Visibility
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
@@ -5100,7 +5274,7 @@ input VideoProjectCreateInput {
   descInternal: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
-  status: ProjectPublishStatus
+  status: PublishStatus
   visibility: Visibility
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
@@ -5146,7 +5320,7 @@ type VideoProjectPreviousValues {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  status: ProjectPublishStatus
+  status: PublishStatus
   visibility: Visibility
 }
 
@@ -5176,7 +5350,7 @@ input VideoProjectUpdateInput {
   descInternal: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
-  status: ProjectPublishStatus
+  status: PublishStatus
   visibility: Visibility
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
@@ -5191,7 +5365,7 @@ input VideoProjectUpdateManyMutationInput {
   projectTitle: String
   descPublic: String
   descInternal: String
-  status: ProjectPublishStatus
+  status: PublishStatus
   visibility: Visibility
 }
 
@@ -5282,10 +5456,10 @@ input VideoProjectWhereInput {
   descInternal_not_ends_with: String
   author: UserWhereInput
   team: TeamWhereInput
-  status: ProjectPublishStatus
-  status_not: ProjectPublishStatus
-  status_in: [ProjectPublishStatus!]
-  status_not_in: [ProjectPublishStatus!]
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
   visibility: Visibility
   visibility_not: Visibility
   visibility_in: [Visibility!]

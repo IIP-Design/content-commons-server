@@ -38,7 +38,7 @@ enum ImageQuality {
   PRINT
 }
 
-enum ProjectPublishStatus {
+enum PublishStatus {
   DRAFT
   PUBLISHING
   PUBLISHED
@@ -135,6 +135,13 @@ type Thumbnail {
   image: ImageFile
 }
 
+type DocumentConversionFormat {
+  id: ID! @id
+  rawText: String
+  html: String
+  markdown: String
+}
+
 type Package {
   id: ID! @id
   createdAt: DateTime! @createdAt
@@ -143,6 +150,7 @@ type Package {
   type: PackageType!
   title: String!
   desc:  String
+  status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: INTERNAL)
   categories: [Category]
   tags: [Tag]
@@ -161,7 +169,7 @@ type VideoProject {
   descInternal: String
   author: User #[User|Author] # more than 1 author?
   team: Team
-  status: ProjectPublishStatus @default(value: DRAFT)
+  status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: PUBLIC)
   units: [VideoUnit] @relation(onDelete: CASCADE)
   supportFiles: [SupportFile] @relation(onDelete: CASCADE)
@@ -283,7 +291,8 @@ type DocumentFile {
   filetype: String
   filename: String
   filesize: Float
-  text: String
+  status: PublishStatus @default(value: DRAFT)
+  content: DocumentConversionFormat
   image: [ImageFile]
   url: String
   signedUrl: String
