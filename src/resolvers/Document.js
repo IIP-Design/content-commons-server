@@ -24,6 +24,37 @@ export default {
   },
 
   Mutation: {
+    async createDocumentFile ( parent, args, ctx ) {
+      const { data } = args;
+      const documentFile = await ctx.prisma.createDocumentFile( {
+        ...data
+      } );
+
+      return documentFile;
+    },
+
+    updateDocumentFile ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateDocumentFile( {
+        data,
+        where: { id }
+      } );
+    },
+
+    updateManyDocumentFiles ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyDocumentFiles( { data, where } );
+    },
+
+    deleteDocumentFile ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteDocumentFile( { id } );
+    },
+
+    deleteManyDocumentFiles ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyDocumentFiles( { ...where } );
+    },
 
     async createDocumentUse ( parent, args, ctx ) {
       const documentUse = await ctx.prisma.createDocumentUse( {
@@ -54,6 +85,38 @@ export default {
 
     deleteManyDocumentUses ( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentUses( { ...where } );
+    },
+
+    async createDocumentConversionFormat ( parent, args, ctx ) {
+      const { data } = args;
+      const documentConversionFormat = await ctx.prisma.createDocumentConversionFormat( {
+        ...data
+      } );
+
+      return documentConversionFormat;
+    },
+
+    updateDocumentConversionFormat ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateDocumentConversionFormat( {
+        data,
+        where: { id }
+      } );
+    },
+
+    updateManyDocumentConversionFormats ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyDocumentConversionFormats( { data, where } );
+    },
+
+    deleteDocumentConversionFormat ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteDocumentConversionFormat( { id } );
+    },
+
+    deleteManyDocumentConversionFormats ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyDocumentConversionFormats( { ...where } );
     },
   },
 

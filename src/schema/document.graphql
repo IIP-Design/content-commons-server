@@ -10,6 +10,18 @@ type Query {
 }
 
 type Mutation {
+  createDocumentFile(data: DocumentFileCreateInput!): DocumentFile!
+  updateDocumentFile(data: DocumentFileUpdateInput!, where: DocumentFileWhereUniqueInput!): DocumentFile
+  updateManyDocumentFiles(data: DocumentFileUpdateManyMutationInput!, where: DocumentFileWhereInput): BatchPayload!
+  deleteDocumentFile(id: ID!): DocumentFile
+  deleteManyDocumentFiles(where: DocumentFileWhereInput): BatchPayload!
+
+  createDocumentConversionFormat(data: DocumentConversionFormatCreateInput!): DocumentConversionFormat!
+  updateDocumentConversionFormat(data: DocumentConversionFormatUpdateInput!, where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  updateManyDocumentConversionFormats(data: DocumentConversionFormatUpdateManyMutationInput!, where: DocumentConversionFormatWhereInput): BatchPayload!
+  deleteDocumentConversionFormat(id: ID!): DocumentConversionFormat
+  deleteManyDocumentConversionFormats(where: DocumentConversionFormatWhereInput): BatchPayload!
+
   createDocumentUse(name: String!): DocumentUse!
   updateDocumentUse(data: DocumentUseUpdateInput!, where: DocumentUseWhereUniqueInput!): DocumentUse
   updateManyDocumentUses(data: DocumentUseUpdateManyMutationInput!, where: DocumentUseWhereInput): BatchPayload!
