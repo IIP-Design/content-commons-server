@@ -55,5 +55,49 @@ export default {
     deleteManyDocumentUses ( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentUses( { ...where } );
     },
+  },
+
+  DocumentFile: {
+    language( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .language( { ...args } );
+    },
+
+    content( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .content( { ...args } );
+    },
+
+    image( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .image( { ...args } );
+    },
+
+    use( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .use( { ...args } );
+    },
+
+    bureaus( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .bureaus( { ...args } );
+    },
+
+    categories( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .categories( { ...args } );
+    },
+
+    tags( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .tags( { ...args } );
+    }
   }
 };
