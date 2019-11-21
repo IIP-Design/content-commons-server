@@ -4,9 +4,9 @@ type Query {
 }
 
 type Mutation {
-  createPackage(name: String!): Package!
+  createPackage(data: PackageCreateInput!): Package!
   updatePackage(data: PackageUpdateInput!, where: PackageWhereUniqueInput!): Package
-  updateManyPackageses(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
+  updateManyPackages(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
   deletePackage(id: ID!): Package
   deleteManyPackages(where: PackageWhereInput): BatchPayload!
 }
