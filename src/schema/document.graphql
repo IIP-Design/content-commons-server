@@ -1,9 +1,10 @@
 type Query {
   documentFiles(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile]!
   documentFile(id: ID!): DocumentFile
-}
 
-type Query {
+  documentConversionFormats(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentConversionFormat]!
+  documentConversionFormat(id: ID!): DocumentConversionFormat
+
   documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
   documentUse(id: ID!): DocumentUse
 }

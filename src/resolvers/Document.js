@@ -14,6 +14,13 @@ export default {
     documentUse ( parent, args, ctx ) {
       return ctx.prisma.documentUse( { id: args.id } );
     },
+
+    documentConversionFormats ( parent, args, ctx ) {
+      return ctx.prisma.documentConversionFormats( { ...args } );
+    },
+    documentConversionFormat ( parent, args, ctx ) {
+      return ctx.prisma.documentConversionFormat( { id: args.id } );
+    },
   },
 
   Mutation: {
