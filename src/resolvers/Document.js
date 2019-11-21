@@ -1,5 +1,13 @@
 export default {
   Query: {
+    documentFiles ( parent, args, ctx ) {
+      return ctx.prisma.documentFiles( { ...args } );
+    },
+
+    documentFile ( parent, args, ctx ) {
+      return ctx.prisma.documentFile( { id: args.id } );
+    },
+
     documentUses ( parent, args, ctx ) {
       return ctx.prisma.documentUses( { ...args } );
     },

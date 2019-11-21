@@ -1,4 +1,9 @@
 type Query {
+  documentFiles(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile]!
+  documentFile(id: ID!): DocumentFile
+}
+
+type Query {
   documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
   documentUse(id: ID!): DocumentUse
 }
