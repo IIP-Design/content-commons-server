@@ -16,3 +16,4 @@
 # import Query.*, Mutation.*, * from "./document.graphql"
 # import Query.*, Mutation.*, * from "./image.graphql"
 # import Query.*, Mutation.*, * from "./video.graphql"
+# import Query.*, Mutation.*, * from "./package.graphql"

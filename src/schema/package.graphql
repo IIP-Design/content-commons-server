@@ -1,0 +1,12 @@
+type Query {
+  packages(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Package]!
+  package(id: ID!): Package
+}
+
+type Mutation {
+  createPackage(name: String!): Package!
+  updatePackage(data: PackageUpdateInput!, where: PackageWhereUniqueInput!): Package
+  updateManyPackageses(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
+  deletePackage(id: ID!): Package
+  deleteManyPackages(where: PackageWhereInput): BatchPayload!
+}
