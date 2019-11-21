@@ -11,6 +11,7 @@ import UtilResolvers from './resolvers/Util';
 import DocumentResolvers from './resolvers/Document';
 import VideoResolvers from './resolvers/Video';
 import PackageResolvers from './resolvers/Package';
+import BureauResolvers from './resolvers/Bureau';
 import { prisma } from './schema/generated/prisma-client';
 
 const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
@@ -24,7 +25,8 @@ const resolvers = merge(
   TeamResolvers,
   DocumentResolvers,
   VideoResolvers,
-  PackageResolvers
+  PackageResolvers,
+  BureauResolvers
 );
 
 

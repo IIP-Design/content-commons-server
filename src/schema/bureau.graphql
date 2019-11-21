@@ -1,0 +1,7 @@
+type Query {
+  bureaus(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bureau]!
+  bureau(id: ID!): Bureau
+
+  offices(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Office]!
+  office(id: ID!): Office
+}
