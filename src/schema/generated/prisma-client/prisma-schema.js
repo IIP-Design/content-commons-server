@@ -788,6 +788,8 @@ type DocumentFile {
   filetype: String
   filename: String
   filesize: Float
+  author: User
+  team: Team
   status: PublishStatus
   content: DocumentConversionFormat
   image(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -813,6 +815,8 @@ input DocumentFileCreateInput {
   filetype: String
   filename: String
   filesize: Float
+  author: UserCreateOneInput
+  team: TeamCreateOneInput
   status: PublishStatus
   content: DocumentConversionFormatCreateOneInput
   image: ImageFileCreateManyInput
@@ -1014,6 +1018,8 @@ input DocumentFileUpdateDataInput {
   filetype: String
   filename: String
   filesize: Float
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
   status: PublishStatus
   content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
@@ -1032,6 +1038,8 @@ input DocumentFileUpdateInput {
   filetype: String
   filename: String
   filesize: Float
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
   status: PublishStatus
   content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
@@ -1170,6 +1178,8 @@ input DocumentFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  author: UserWhereInput
+  team: TeamWhereInput
   status: PublishStatus
   status_not: PublishStatus
   status_in: [PublishStatus!]
@@ -2779,6 +2789,8 @@ type Package {
   type: PackageType!
   title: String!
   desc: String
+  author: User
+  team: Team
   status: PublishStatus
   visibility: Visibility
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
@@ -2798,6 +2810,8 @@ input PackageCreateInput {
   type: PackageType!
   title: String!
   desc: String
+  author: UserCreateOneInput
+  team: TeamCreateOneInput
   status: PublishStatus
   visibility: Visibility
   categories: CategoryCreateManyInput
@@ -2870,6 +2884,8 @@ input PackageUpdateInput {
   type: PackageType
   title: String
   desc: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
   status: PublishStatus
   visibility: Visibility
   categories: CategoryUpdateManyInput
@@ -2957,6 +2973,8 @@ input PackageWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
+  author: UserWhereInput
+  team: TeamWhereInput
   status: PublishStatus
   status_not: PublishStatus
   status_in: [PublishStatus!]

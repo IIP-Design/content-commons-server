@@ -150,6 +150,8 @@ type Package {
   type: PackageType!
   title: String!
   desc:  String
+  author: User #[User|Author] # more than 1 author?
+  team: Team
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: INTERNAL)
   categories: [Category]
@@ -291,6 +293,8 @@ type DocumentFile {
   filetype: String
   filename: String
   filesize: Float
+  author: User #[User|Author] # more than 1 author?
+  team: Team
   status: PublishStatus @default(value: DRAFT)
   content: DocumentConversionFormat
   image: [ImageFile]
