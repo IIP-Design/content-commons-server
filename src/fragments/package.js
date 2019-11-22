@@ -14,6 +14,18 @@ export const PACKAGE_FULL = `
     desc
     status
     visibility
+    author {
+      id
+      firstName
+      lastName
+      email
+      permissions
+    }
+    team {
+      id
+      name
+      organization
+    }
     documents {
       id
       language { id languageCode locale textDirection displayName nativeName }
