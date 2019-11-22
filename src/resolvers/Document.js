@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server-express';
 import { hasValidValue } from '../lib/projectParser';
-import { deleteS3Asset } from '../services/aws/s3';
+import { deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -173,6 +173,14 @@ export default {
       return ctx.prisma
         .documentFile( { id: parent.id } )
         .image( { ...args } );
+    },
+
+    async signedUrl( parent ) {
+      const signed = await getSignedUrlPromiseGet( {
+        key: parent.url,
+        expires: 3600 // hour
+      } );
+      return signed.url;
     },
 
     use( parent, args, ctx ) {
