@@ -9,4 +9,7 @@ type Mutation {
   updateManyPackages(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
   deletePackage(id: ID!): Package
   deleteManyPackages(where: PackageWhereInput): BatchPayload!
+
+  publishPackage(id: ID!): Package
+  unpublishPackage(id: ID!): Package
 }
