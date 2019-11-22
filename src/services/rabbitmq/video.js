@@ -1,7 +1,7 @@
 import pubsub from '../pubsub';
 import { getConnection } from './initialize';
 import { publishToChannel } from './index';
-import { getS3ProjectDirectory } from '../../lib/projectParser';
+import { getS3ContentDirectory } from '../../lib/sharedParser';
 import { prisma } from '../../schema/generated/prisma-client';
 
 // Need to abstract video specific stuff so this file can remain generic
@@ -21,7 +21,7 @@ const updateDatabase = async ( id, data ) => {
 
 const _getS3ProjectDirectory = async id => {
   const units = await prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIDEO_FILES );
-  return getS3ProjectDirectory( units );
+  return getS3ContentDirectory( units );
 };
 
 

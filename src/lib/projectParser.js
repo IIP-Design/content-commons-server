@@ -1,7 +1,4 @@
-
-
-const getS3Dir = value => value.substring( 0, value.lastIndexOf( '/' ) );
-
+import { hasValidValue } from './sharedParser';
 
 export const getYouTubeId = url => {
   const reShort = /https:\/\/youtu.be\/(.*)/;
@@ -26,8 +23,6 @@ export const getVimeoId = url => {
   return '';
 };
 
-export const hasValidValue = value => value && value.trim() !== '';
-
 export const getVimeoIds = stream => {
   const vimeo = [];
   if ( stream && stream.length ) {
@@ -38,25 +33,6 @@ export const getVimeoIds = stream => {
     } );
   }
   return vimeo;
-};
-
-export const getS3ProjectDirectory = units => {
-  let s3Dir = null;
-
-  units.forEach( unit => {
-    if ( unit.files && unit.files.length ) {
-      unit.files.forEach( file => {
-        // makes the assumption that all files to be deleted reside in same s3 subdir
-        if ( !s3Dir ) {
-          if ( hasValidValue( file.url ) ) {
-            s3Dir = getS3Dir( file.url );
-          }
-        }
-      } );
-    }
-  } );
-
-  return s3Dir;
 };
 
 export const getVimeoFiles = units => {

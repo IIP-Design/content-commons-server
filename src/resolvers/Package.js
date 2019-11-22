@@ -1,5 +1,5 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
-import { getS3PackageDirectory } from '../lib/packageParser';
+import { getS3ContentDirectory } from '../lib/sharedParser';
 import { deleteAllS3Assets } from '../services/aws/s3';
 import { PACKAGE_DOCUMENT_FILES, PACKAGE_FULL } from '../fragments/package';
 
@@ -109,7 +109,7 @@ export default {
       // 3. Delete files if they exist
       if ( documents.length ) {
         let deleteS3;
-        const s3DirToDelete = getS3PackageDirectory( documents );
+        const s3DirToDelete = getS3ContentDirectory( documents, 'package' );
 
         // Delete files from S3
         if ( s3DirToDelete ) {

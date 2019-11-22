@@ -2,9 +2,8 @@ import {
   UserInputError, ApolloError, withFilter
 } from 'apollo-server-express';
 import pubsub from '../services/pubsub';
-import {
-  getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
-} from '../lib/projectParser';
+import { getVimeoFiles, getVimeoId } from '../lib/projectParser';
+import { getS3ContentDirectory, hasValidValue } from '../lib/sharedParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllS3Assets, deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
 import transformVideo from '../services/es/video/transform';
@@ -217,7 +216,7 @@ export default {
       // 3. Delete vimeo files if they exist
       if ( units.length ) {
         let deleteS3;
-        const s3DirToDelete = getS3ProjectDirectory( units );
+        const s3DirToDelete = getS3ContentDirectory( units );
         const vimeoFilesToDelete = getVimeoFiles( units );
 
         // 3a. Delete from vimeo
