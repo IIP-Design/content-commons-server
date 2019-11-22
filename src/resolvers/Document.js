@@ -1,3 +1,9 @@
+import { UserInputError } from 'apollo-server-express';
+import { hasValidValue } from '../lib/projectParser';
+import { deleteS3Asset } from '../services/aws/s3';
+
+const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
+
 export default {
   Query: {
     documentFiles ( parent, args, ctx ) {
@@ -48,7 +54,25 @@ export default {
       return ctx.prisma.updateManyDocumentFiles( { data, where } );
     },
 
-    deleteDocumentFile ( parent, { id }, ctx ) {
+    async deleteDocumentFile ( parent, { id }, ctx ) {
+      // 1. Verify we have a document file before continuing
+      const doesDocumentFileExist = await ctx.prisma.$exists.documentFile( { id } );
+      if ( !doesDocumentFileExist ) {
+        throw new UserInputError( `A document file with id: ${id} does not exist in the database`, {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch image file that needs to be removed from s3
+      const documentFile = await ctx.prisma.documentFile( { id } );
+      const { url } = documentFile;
+
+      // 3. Delete from s3
+      if ( hasValidValue( url ) ) {
+        await deleteS3Asset( url, PUBLISHER_BUCKET );
+      }
+
+      // 4. Delete from DB
       return ctx.prisma.deleteDocumentFile( { id } );
     },
 
