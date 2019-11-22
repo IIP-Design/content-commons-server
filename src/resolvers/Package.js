@@ -1,11 +1,16 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
+import { deleteAllS3Assets } from '../services/aws/s3';
+
+const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // temp
 const VIDEO_PACKAGE_FULL = 'VIDEO_PACKAGE_FULL';
+const PACKAGE_DOCUMENT_FILES = 'PACKAGE_DOCUMENT_FILES';
 const transformPackage = () => {};
 const publishCreate = () => {};
 const publishUpdate = () => {};
 const publishDelete = () => {};
+const getS3PackageDirectory = () => {};
 
 export default {
   Query: {
@@ -90,7 +95,34 @@ export default {
       return pkg;
     },
 
-    deletePackage ( parent, { id }, ctx ) {
+    async deletePackage( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before continuing
+      const doesPackageExist = await ctx.prisma.$exists.package( { id } );
+      if ( !doesPackageExist ) {
+        throw new UserInputError( 'A package with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Fetch files that need to be removed from s3
+      const documents = await ctx.prisma.package( { id } ).documents().$fragment( PACKAGE_DOCUMENT_FILES );
+
+      // 3. Delete files if they exist
+      if ( documents.length ) {
+        let deleteS3;
+        const s3DirToDelete = getS3PackageDirectory( documents );
+
+        // Delete files from S3
+        if ( s3DirToDelete ) {
+          deleteS3 = deleteAllS3Assets( s3DirToDelete, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
+        }
+
+        if ( deleteS3 ) {
+          await deleteS3;
+        }
+      }
+
+      // 4. Delete project from db and return id of deleted project
       return ctx.prisma.deletePackage( { id } );
     },
 
