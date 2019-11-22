@@ -1,12 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { getS3PackageDirectory } from '../lib/packageParser';
 import { deleteAllS3Assets } from '../services/aws/s3';
+import { PACKAGE_DOCUMENT_FILES, PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // temp
-const VIDEO_PACKAGE_FULL = 'VIDEO_PACKAGE_FULL';
-const PACKAGE_DOCUMENT_FILES = 'PACKAGE_DOCUMENT_FILES';
 const transformPackage = () => {};
 const publishCreate = () => {};
 const publishUpdate = () => {};
@@ -51,7 +50,7 @@ export default {
 
     async publishPackage( parent, args, ctx ) {
       // 1. Get data for project to publish from db
-      const pkg = await ctx.prisma.package( { id: args.id } ).$fragment( VIDEO_PACKAGE_FULL );
+      const pkg = await ctx.prisma.package( { id: args.id } ).$fragment( PACKAGE_FULL );
       if ( !pkg ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
           invalidArgs: 'id'
@@ -82,7 +81,7 @@ export default {
     },
 
     async unpublishPackage( parent, args, ctx ) {
-      const pkg = await ctx.prisma.package( args ).$fragment( VIDEO_PACKAGE_FULL );
+      const pkg = await ctx.prisma.package( args ).$fragment( PACKAGE_FULL );
       if ( !pkg ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
           invalidArgs: 'id'
