@@ -1,15 +1,13 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import { getS3ContentDirectory } from '../lib/sharedParser';
 import { deleteAllS3Assets } from '../services/aws/s3';
+import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { PACKAGE_DOCUMENT_FILES, PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // temp
 const transformPackage = () => {};
-const publishCreate = () => {};
-const publishUpdate = () => {};
-const publishDelete = () => {};
 
 export default {
   Query: {
