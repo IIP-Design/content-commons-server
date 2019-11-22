@@ -17,7 +17,31 @@ export default {
     }
   },
 
-  Mutation: {},
+  Mutation: {
+    async createBureau( parent, args, ctx ) {
+      const { data } = args;
+      const bureau = await ctx.prisma.createBureau( {
+        ...data
+      } );
+      return bureau;
+    },
+
+    updateBureau( parent, args, ctx ) {
+      return ctx.prisma.updateBureau( { ...args } );
+    },
+
+    async createOffice( parent, args, ctx ) {
+      const { data } = args;
+      const office = await ctx.prisma.createOffice( {
+        ...data
+      } );
+      return office;
+    },
+
+    updateOffice( parent, args, ctx ) {
+      return ctx.prisma.updateOffice( { ...args } );
+    }
+  },
 
   Bureau: {
     offices( parent, args, ctx ) {

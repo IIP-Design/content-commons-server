@@ -5,3 +5,15 @@ type Query {
   offices(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Office]!
   office(id: ID!): Office
 }
+
+type Mutation {
+  createBureau(data: BureauCreateInput!): Bureau!
+  updateBureau(data: BureauUpdateInput!, where: BureauWhereUniqueInput!): Bureau
+  deleteBureau(id: ID!): Bureau
+  deleteManyBureaus(where: BureauWhereInput): BatchPayload!
+
+  createOffice(data: OfficeCreateInput!): Office!
+  updateOffice(data: OfficeUpdateInput!, where: OfficeWhereUniqueInput!): Office
+  deleteOffice(id: ID!): Office
+  deleteManyOffices(where: OfficeWhereInput): BatchPayload!
+}
