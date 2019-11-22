@@ -131,6 +131,18 @@ export default {
   },
 
   Package: {
+    author( parent, args, ctx ) {
+      return ctx.prisma
+        .package( { id: parent.id } )
+        .author( { ...args } );
+    },
+
+    team( parent, args, ctx ) {
+      return ctx.prisma
+        .package( { id: parent.id } )
+        .team( { ...args } );
+    },
+
     categories( parent, args, ctx ) {
       return ctx.prisma
         .package( { id: parent.id } )

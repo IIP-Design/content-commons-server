@@ -121,6 +121,18 @@ export default {
   },
 
   DocumentFile: {
+    author( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .author( { ...args } );
+    },
+
+    team( parent, args, ctx ) {
+      return ctx.prisma
+        .documentFile( { id: parent.id } )
+        .team( { ...args } );
+    },
+
     language( parent, args, ctx ) {
       return ctx.prisma
         .documentFile( { id: parent.id } )
