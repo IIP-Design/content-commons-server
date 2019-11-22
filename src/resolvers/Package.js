@@ -1,4 +1,5 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
+import { getS3PackageDirectory } from '../lib/packageParser';
 import { deleteAllS3Assets } from '../services/aws/s3';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
@@ -10,7 +11,6 @@ const transformPackage = () => {};
 const publishCreate = () => {};
 const publishUpdate = () => {};
 const publishDelete = () => {};
-const getS3PackageDirectory = () => {};
 
 export default {
   Query: {
