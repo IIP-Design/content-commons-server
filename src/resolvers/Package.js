@@ -74,12 +74,20 @@ export default {
       const esData = transformPackage( pkg );
 
       const { status } = pkg;
+      const params = {
+        id: args.id,
+        data: esData,
+        status,
+        type: 'package',
+        field: 'documents',
+        fragment: PACKAGE_DOCUMENT_FILES
+      };
 
       // 3. Put on the queue for processing ( not sure we need to await here )
       if ( status === 'DRAFT' ) {
-        publishCreate( args.id, esData, status );
+        publishCreate( params );
       } else {
-        publishUpdate( args.id, esData, status );
+        publishUpdate( params );
       }
 
       // 4. Update the package status
@@ -101,8 +109,14 @@ export default {
         } );
       }
       const { id } = pkg;
+      const params = {
+        id,
+        type: 'package',
+        field: 'documents',
+        fragment: PACKAGE_DOCUMENT_FILES
+      };
 
-      publishDelete( id );
+      publishDelete( params );
 
       return pkg;
     },

@@ -4,12 +4,6 @@ import { publishToChannel } from './index';
 import { getS3ContentDirectory } from '../../lib/sharedParser';
 import { prisma } from '../../schema/generated/prisma-client';
 
-/**
- * This file is basically the same as `./video.js`.
- * Find a way to combine the two files.
- */
-import { PACKAGE_DOCUMENT_FILES } from '../../fragments/package';
-
 const PACKAGE_STATUS_CHANGE = 'PACKAGE_STATUS_CHANGE';
 
 const createChannel = async () => {
@@ -43,13 +37,16 @@ const _getS3ContentDirectory = async ( id, type, field, fragment ) => {
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async ( id, data, status ) => {
+export const publishCreate = async params => {
+  const {
+    id, data, status, type, field, fragment
+  } = params;
   // data.type: 'package'
   console.log( '[x] PUBLISHING a publish create request' );
 
   // Connect to RabbitMQ and create a channel
   const channel = await createChannel();
-  const directory = await _getS3ContentDirectory( id, 'package', 'documents', PACKAGE_DOCUMENT_FILES );
+  const directory = await _getS3ContentDirectory( id, type, field, fragment );
 
   await publishToChannel( channel, {
     exchangeName: 'publish',
@@ -84,12 +81,15 @@ const onPublishCreate = async packageId => {
  * @param {object} data package data
  *
  */
-export const publishDelete = async id => {
+export const publishDelete = async params => {
+  const {
+    id, type, field, fragment
+  } = params;
   console.log( '[x] PUBLISHING a publish delete request' );
 
   // connect to Rabbit MQ and create a channel
   const channel = await createChannel();
-  const directory = await _getS3ContentDirectory( id, 'package', 'documents', PACKAGE_DOCUMENT_FILES );
+  const directory = await _getS3ContentDirectory( id, type, field, fragment );
 
   await publishToChannel( channel, {
     exchangeName: 'publish',
@@ -116,10 +116,13 @@ const onPublishDelete = async packageId => {
 };
 
 
-export const publishUpdate = async ( id, data, status ) => {
+export const publishUpdate = async params => {
+  const {
+    id, data, status, type, field, fragment
+  } = params;
   // connect to Rabbit MQ and create a channel
   const channel = await createChannel();
-  const directory = await _getS3ContentDirectory( id, 'package', 'documents', PACKAGE_DOCUMENT_FILES );
+  const directory = await _getS3ContentDirectory( id, type, field, fragment );
 
   console.log( '[x] PUBLISHING a publish update request' );
 
