@@ -41,7 +41,6 @@ export const publishCreate = async params => {
   const {
     id, data, status, type, field, fragment
   } = params;
-  // data.type: 'package'
   console.log( '[x] PUBLISHING a publish create request' );
 
   // Connect to RabbitMQ and create a channel
@@ -52,10 +51,10 @@ export const publishCreate = async params => {
     exchangeName: 'publish',
     routingKey: 'create',
     data: {
-      packageId: id,
-      packageStatus: status,
-      packageJson: JSON.stringify( data ),
-      packageDirectory: directory
+      [`${type}Id`]: id,
+      [`${type}Status`]: status,
+      [`${type}Json`]: JSON.stringify( data ),
+      [`${type}Directory`]: directory
     }
   } );
 
@@ -95,8 +94,8 @@ export const publishDelete = async params => {
     exchangeName: 'publish',
     routingKey: 'delete',
     data: {
-      packageId: id,
-      packageDirectory: directory
+      [`${type}Id`]: id,
+      [`${type}Directory`]: directory
     }
   } );
 
@@ -130,10 +129,10 @@ export const publishUpdate = async params => {
     exchangeName: 'publish',
     routingKey: 'update',
     data: {
-      packageId: id,
-      packageStatus: status,
-      packageJson: JSON.stringify( data ),
-      packageDirectory: directory
+      [`${type}Id`]: id,
+      [`${type}Status`]: status,
+      [`${type}Json`]: JSON.stringify( data ),
+      [`${type}Directory`]: directory
     }
   } );
 
