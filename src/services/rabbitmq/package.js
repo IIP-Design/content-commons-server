@@ -61,12 +61,12 @@ export const publishCreate = async params => {
   channel.close();
 };
 
-const onPublishCreate = async packageId => {
+const onPublishCreate = async ( id, updateFn ) => {
   try {
-    updateDatabase( packageId, {
+    updateDatabase( id, {
       status: 'PUBLISHED',
       publishedAt: ( new Date() ).toISOString()
-    }, 'updatePackage' );
+    }, updateFn );
     // notify the client
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
@@ -102,13 +102,13 @@ export const publishDelete = async params => {
   channel.close();
 };
 
-const onPublishDelete = async packageId => {
-  console.log( `onPublishDelete ${packageId}` );
+const onPublishDelete = async ( id, updateFn ) => {
+  console.log( `onPublishDelete ${id}` );
   try {
-    updateDatabase( packageId, {
+    updateDatabase( id, {
       status: 'DRAFT',
       publishedAt: null
-    }, 'updatePackage' );
+    }, updateFn );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
@@ -139,12 +139,12 @@ export const publishUpdate = async params => {
   channel.close();
 };
 
-const onPublishUpdate = async packageId => {
+const onPublishUpdate = async ( id, updateFn ) => {
   try {
-    updateDatabase( packageId, {
+    updateDatabase( id, {
       status: 'PUBLISHED',
       publishedAt: ( new Date() ).toISOString()
-    }, 'updatePackage' );
+    }, updateFn );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
@@ -163,17 +163,17 @@ export const consumeSuccess = async ( channel, msg ) => {
   // 1. on successful result, update db with applicable status using the returned packageId
   switch ( routingKey ) {
     case 'result.create.package':
-      onPublishCreate( packageId );
+      onPublishCreate( packageId, 'updatePackage' );
       status = 'PUBLISHED';
       break;
 
     case 'result.update.package':
-      onPublishUpdate( packageId );
+      onPublishUpdate( packageId, 'updatePackage' );
       status = 'PUBLISHED';
       break;
 
     case 'result.delete.package':
-      onPublishDelete( packageId );
+      onPublishDelete( packageId, 'updatePackage' );
       status = 'DRAFT';
       break;
 
