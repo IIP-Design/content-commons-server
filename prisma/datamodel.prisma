@@ -148,6 +148,8 @@ type Package {
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
   type: PackageType!
+  author: User
+  team: Team
   title: String!
   desc:  String
   status: PublishStatus @default(value: DRAFT)

@@ -2777,6 +2777,8 @@ type Package {
   updatedAt: DateTime!
   publishedAt: DateTime
   type: PackageType!
+  author: User
+  team: Team
   title: String!
   desc: String
   status: PublishStatus
@@ -2796,6 +2798,8 @@ input PackageCreateInput {
   id: ID
   publishedAt: DateTime
   type: PackageType!
+  author: UserCreateOneInput
+  team: TeamCreateOneInput
   title: String!
   desc: String
   status: PublishStatus
@@ -2868,6 +2872,8 @@ enum PackageType {
 input PackageUpdateInput {
   publishedAt: DateTime
   type: PackageType
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
   title: String
   desc: String
   status: PublishStatus
@@ -2929,6 +2935,8 @@ input PackageWhereInput {
   type_not: PackageType
   type_in: [PackageType!]
   type_not_in: [PackageType!]
+  author: UserWhereInput
+  team: TeamWhereInput
   title: String
   title_not: String
   title_in: [String!]
