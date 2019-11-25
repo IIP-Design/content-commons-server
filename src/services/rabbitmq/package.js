@@ -18,8 +18,8 @@ const createChannel = async () => {
   return channel;
 };
 
-const updateDatabase = async ( id, data ) => {
-  await prisma.updatePackage( { data, where: { id } } ).catch( err => console.error( err ) );
+const updateDatabase = async ( id, data, updateFn ) => {
+  await prisma[updateFn]( { data, where: { id } } ).catch( err => console.error( err ) );
 };
 
 const _getS3PackageDirectory = async id => {
@@ -63,7 +63,7 @@ const onPublishCreate = async packageId => {
     updateDatabase( packageId, {
       status: 'PUBLISHED',
       publishedAt: ( new Date() ).toISOString()
-    } );
+    }, 'updatePackage' );
     // notify the client
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
@@ -102,7 +102,7 @@ const onPublishDelete = async packageId => {
     updateDatabase( packageId, {
       status: 'DRAFT',
       publishedAt: null
-    } );
+    }, 'updatePackage' );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
@@ -135,7 +135,7 @@ const onPublishUpdate = async packageId => {
     updateDatabase( packageId, {
       status: 'PUBLISHED',
       publishedAt: ( new Date() ).toISOString()
-    } );
+    }, 'updatePackage' );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
@@ -193,7 +193,7 @@ export const consumeError = async ( channel, msg ) => {
   try {
     updateDatabase( packageId, {
       status: packageStatus
-    } );
+    }, 'updatePackage' );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
