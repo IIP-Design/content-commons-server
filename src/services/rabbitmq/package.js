@@ -149,7 +149,7 @@ export const consumeSuccess = async ( channel, msg ) => {
   const { packageId } = data;
   let status;
 
-  console.log( `[√] RECEIVED a publish ${routingKey} result for project ${packageId}` );
+  console.log( `[√] RECEIVED a publish ${routingKey} result for package ${packageId}` );
 
   // 1. on successful result, update db with applicable status using the returned packageId
   switch ( routingKey ) {
@@ -187,7 +187,7 @@ export const consumeError = async ( channel, msg ) => {
   const data = JSON.parse( msgBody );
   const { packageId, packageStatus } = data;
 
-  const errorMessage = `Unable to process queue ${routingKey} request for project : ${packageId} `;
+  const errorMessage = `Unable to process queue ${routingKey} request for package : ${packageId} `;
   console.log( errorMessage );
 
   try {
