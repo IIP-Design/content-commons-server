@@ -1,15 +1,32 @@
-import { ApolloError, UserInputError } from 'apollo-server-express';
+import { ApolloError, UserInputError, withFilter } from 'apollo-server-express';
+import pubsub from '../services/pubsub';
 import { getS3ContentDirectory } from '../lib/sharedParser';
 import { deleteAllS3Assets } from '../services/aws/s3';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { PACKAGE_DOCUMENT_FILES, PACKAGE_FULL } from '../fragments/package';
 
+const PACKAGE_STATUS_CHANGE = 'PACKAGE_STATUS_CHANGE';
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // temp
 const transformPackage = () => {};
 
 export default {
+  Subscription: {
+    packageStatusChange: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator( [PACKAGE_STATUS_CHANGE] ),
+        ( payload, variables ) => {
+          const { id } = payload.packageStatusChange;
+          if ( !id && ( !variables.ids || !variables.ids.length ) ) {
+            return true;
+          }
+          return id === variables.id || variables.ids.includes( id );
+        }
+      )
+    }
+  },
+
   Query: {
     packages ( parent, args, ctx ) {
       return ctx.prisma.packages( { ...args } );

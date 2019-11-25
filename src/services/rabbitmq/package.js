@@ -200,5 +200,5 @@ export const consumeError = async ( channel, msg ) => {
 
   // 2. notify the react client
   console.log( `ERROR: NOTIFYING CLIENT of error: ${errorMessage}` );
-  pubsub.publish( PACKAGE_STATUS_CHANGE, { projectStatusChange: { id: packageId, status: packageStatus, error: errorMessage } } );
+  pubsub.publish( PACKAGE_STATUS_CHANGE, { packageStatusChange: { id: packageId, status: packageStatus, error: errorMessage } } );
 };

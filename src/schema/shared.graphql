@@ -19,6 +19,7 @@ type Status {
 
 type Subscription {
   projectStatusChange(id: ID, ids: [ID]): Status
+  packageStatusChange(id: ID, ids: [ID]): Status
 }
 
 type Query {
