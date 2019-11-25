@@ -64,7 +64,7 @@ export default {
     },
 
     async publishPackage( parent, args, ctx ) {
-      // 1. Get data for project to publish from db
+      // 1. Get data for package to publish from db
       const pkg = await ctx.prisma.package( { id: args.id } ).$fragment( PACKAGE_FULL );
       if ( !pkg ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
@@ -84,7 +84,7 @@ export default {
         publishUpdate( args.id, esData, status );
       }
 
-      // 4. Update the project status
+      // 4. Update the package status
       await ctx.prisma.updatePackage( {
         data: { status: 'PUBLISHING' },
         where: args
@@ -110,7 +110,7 @@ export default {
     },
 
     async deletePackage( parent, { id }, ctx ) {
-      // 1. Verify we have a valid project before continuing
+      // 1. Verify we have a valid package before continuing
       const doesPackageExist = await ctx.prisma.$exists.package( { id } );
       if ( !doesPackageExist ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
@@ -136,7 +136,7 @@ export default {
         }
       }
 
-      // 4. Delete project from db and return id of deleted project
+      // 4. Delete package from db and return id of deleted package
       return ctx.prisma.deletePackage( { id } );
     },
 
