@@ -16,6 +16,9 @@ type Mutation {
   deleteDocumentFile(id: ID!): DocumentFile
   deleteManyDocumentFiles(where: DocumentFileWhereInput): BatchPayload!
 
+  publishDocumentFile(id: ID!): DocumentFile
+  unpublishDocumentFile(id: ID!): DocumentFile
+
   createDocumentConversionFormat(data: DocumentConversionFormatCreateInput!): DocumentConversionFormat!
   updateDocumentConversionFormat(data: DocumentConversionFormatUpdateInput!, where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
   updateManyDocumentConversionFormats(data: DocumentConversionFormatUpdateManyMutationInput!, where: DocumentConversionFormatWhereInput): BatchPayload!

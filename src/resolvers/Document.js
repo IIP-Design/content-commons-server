@@ -1,8 +1,15 @@
-import { UserInputError } from 'apollo-server-express';
-import { hasValidValue } from '../lib/projectParser';
+import { ApolloError, UserInputError } from 'apollo-server-express';
+import { hasValidValue } from '../lib/sharedParser';
 import { deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
+import { DOCUMENT_FILE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
+
+// temp
+const transformDocumentFile = () => {};
+const publishCreate = () => {};
+const publishUpdate = () => {};
+const publishDelete = () => {};
 
 export default {
   Query: {
@@ -54,6 +61,52 @@ export default {
       return ctx.prisma.updateManyDocumentFiles( { data, where } );
     },
 
+    async publishDocumentFile( parent, args, ctx ) {
+      // 1. Get data for document file to publish from db
+      const documentFile = await ctx.prisma.documentFile( { id: args.id } ).$fragment( DOCUMENT_FILE_FULL );
+      if ( !documentFile ) {
+        throw new UserInputError( 'A document file with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 2. Transform it into the acceptable elasticsearch data structure
+      const esData = transformDocumentFile( documentFile );
+
+      const { status } = documentFile;
+
+      // 3. Put on the queue for processing
+      if ( status === 'DRAFT' ) {
+        publishCreate( args.id, esData, status );
+      } else {
+        publishUpdate( args.id, esData, status );
+      }
+
+      // 4. Update the document file status
+      await ctx.prisma.updateDocumentFile( {
+        data: { status: 'PUBLISHING' },
+        where: args
+      } ).catch( err => {
+        throw new ApolloError( err );
+      } );
+
+      return documentFile;
+    },
+
+    async unpublishDocumentFile( parent, args, ctx ) {
+      const documentFile = await ctx.prisma.documentFile( args ).$fragment( DOCUMENT_FILE_FULL );
+      if ( !documentFile ) {
+        throw new UserInputError( 'A document file with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+      const { id } = documentFile;
+
+      publishDelete( id );
+
+      return documentFile;
+    },
+
     async deleteDocumentFile ( parent, { id }, ctx ) {
       // 1. Verify we have a document file before continuing
       const doesDocumentFileExist = await ctx.prisma.$exists.documentFile( { id } );
@@ -63,7 +116,7 @@ export default {
         } );
       }
 
-      // 2. Fetch image file that needs to be removed from s3
+      // 2. Fetch document file that needs to be removed from s3
       const documentFile = await ctx.prisma.documentFile( { id } );
       const { url } = documentFile;
 
