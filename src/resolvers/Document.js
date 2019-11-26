@@ -1,8 +1,10 @@
-import { ApolloError, UserInputError } from 'apollo-server-express';
+import { ApolloError, UserInputError, withFilter } from 'apollo-server-express';
+import pubsub from '../services/pubsub';
 import { hasValidValue } from '../lib/sharedParser';
 import { deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
 import { DOCUMENT_FILE_FULL } from '../fragments/package';
 
+const DOCUMENT_FILE_STATUS_CHANGE = 'DOCUMENT_FILE_STATUS_CHANGE';
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 // temp
@@ -12,6 +14,21 @@ const publishUpdate = () => {};
 const publishDelete = () => {};
 
 export default {
+  Subscription: {
+    documentFileStatusChange: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator( [DOCUMENT_FILE_STATUS_CHANGE] ),
+        ( payload, variables ) => {
+          const { id } = payload.documentFileStatusChange;
+          if ( !id && ( !variables.ids || !variables.ids.length ) ) {
+            return true;
+          }
+          return id === variables.id || variables.ids.includes( id );
+        }
+      )
+    }
+  },
+
   Query: {
     documentFiles ( parent, args, ctx ) {
       return ctx.prisma.documentFiles( { ...args } );
