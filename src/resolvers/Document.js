@@ -91,12 +91,20 @@ export default {
       const esData = transformDocumentFile( documentFile );
 
       const { status } = documentFile;
+      const params = {
+        id: args.id,
+        data: esData,
+        status,
+        type: 'package',
+        field: 'documents',
+        fragment: DOCUMENT_FILE_FULL
+      };
 
       // 3. Put on the queue for processing
       if ( status === 'DRAFT' ) {
-        publishCreate( args.id, esData, status );
+        publishCreate( params );
       } else {
-        publishUpdate( args.id, esData, status );
+        publishUpdate( params );
       }
 
       // 4. Update the document file status
@@ -118,8 +126,14 @@ export default {
         } );
       }
       const { id } = documentFile;
+      const params = {
+        id,
+        type: 'package',
+        field: 'documents',
+        fragment: DOCUMENT_FILE_FULL
+      };
 
-      publishDelete( id );
+      publishDelete( params );
 
       return documentFile;
     },
