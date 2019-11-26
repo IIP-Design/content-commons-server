@@ -131,7 +131,7 @@ export default {
       }
 
       // 2. Fetch files that need to be removed from s3
-      const documents = await ctx.prisma.package( { id } ).documents().$fragment( PACKAGE_DOCUMENT_FILES );
+      const documents = await ctx.prisma.package( { id } ).$fragment( PACKAGE_DOCUMENT_FILES );
 
       // 3. Delete files if they exist
       if ( documents.length ) {
