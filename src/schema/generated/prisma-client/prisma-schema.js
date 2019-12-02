@@ -481,6 +481,7 @@ enum ContentType {
   DOCUMENT
   IMAGE
   TEACHING_MATERIAL
+  PACKAGE
 }
 
 scalar DateTime
@@ -2777,6 +2778,7 @@ type Package {
   updatedAt: DateTime!
   publishedAt: DateTime
   type: PackageType!
+  assetPath: String
   author: User
   team: Team
   title: String!
@@ -2798,6 +2800,7 @@ input PackageCreateInput {
   id: ID
   publishedAt: DateTime
   type: PackageType!
+  assetPath: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
   title: String!
@@ -2825,6 +2828,8 @@ enum PackageOrderByInput {
   publishedAt_DESC
   type_ASC
   type_DESC
+  assetPath_ASC
+  assetPath_DESC
   title_ASC
   title_DESC
   desc_ASC
@@ -2841,6 +2846,7 @@ type PackagePreviousValues {
   updatedAt: DateTime!
   publishedAt: DateTime
   type: PackageType!
+  assetPath: String
   title: String!
   desc: String
   status: PublishStatus
@@ -2872,6 +2878,7 @@ enum PackageType {
 input PackageUpdateInput {
   publishedAt: DateTime
   type: PackageType
+  assetPath: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   title: String
@@ -2886,6 +2893,7 @@ input PackageUpdateInput {
 input PackageUpdateManyMutationInput {
   publishedAt: DateTime
   type: PackageType
+  assetPath: String
   title: String
   desc: String
   status: PublishStatus
@@ -2935,6 +2943,20 @@ input PackageWhereInput {
   type_not: PackageType
   type_in: [PackageType!]
   type_not_in: [PackageType!]
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
   author: UserWhereInput
   team: TeamWhereInput
   title: String
@@ -5256,6 +5278,7 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   author: User
   team: Team
   status: PublishStatus
@@ -5280,6 +5303,7 @@ input VideoProjectCreateInput {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
   status: PublishStatus
@@ -5313,6 +5337,8 @@ enum VideoProjectOrderByInput {
   descPublic_DESC
   descInternal_ASC
   descInternal_DESC
+  assetPath_ASC
+  assetPath_DESC
   status_ASC
   status_DESC
   visibility_ASC
@@ -5328,6 +5354,7 @@ type VideoProjectPreviousValues {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   status: PublishStatus
   visibility: Visibility
 }
@@ -5356,6 +5383,7 @@ input VideoProjectUpdateInput {
   projectTitle: String
   descPublic: String
   descInternal: String
+  assetPath: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   status: PublishStatus
@@ -5373,6 +5401,7 @@ input VideoProjectUpdateManyMutationInput {
   projectTitle: String
   descPublic: String
   descInternal: String
+  assetPath: String
   status: PublishStatus
   visibility: Visibility
 }
@@ -5462,6 +5491,20 @@ input VideoProjectWhereInput {
   descInternal_not_starts_with: String
   descInternal_ends_with: String
   descInternal_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
   author: UserWhereInput
   team: TeamWhereInput
   status: PublishStatus

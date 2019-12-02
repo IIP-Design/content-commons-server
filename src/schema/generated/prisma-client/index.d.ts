@@ -1014,6 +1014,8 @@ export type PackageOrderByInput =
   | "publishedAt_DESC"
   | "type_ASC"
   | "type_DESC"
+  | "assetPath_ASC"
+  | "assetPath_DESC"
   | "title_ASC"
   | "title_DESC"
   | "desc_ASC"
@@ -1064,7 +1066,8 @@ export type ContentType =
   | "VIDEO"
   | "DOCUMENT"
   | "IMAGE"
-  | "TEACHING_MATERIAL";
+  | "TEACHING_MATERIAL"
+  | "PACKAGE";
 
 export type ProjectType = "LANGUAGE";
 
@@ -1190,6 +1193,8 @@ export type VideoProjectOrderByInput =
   | "descPublic_DESC"
   | "descInternal_ASC"
   | "descInternal_DESC"
+  | "assetPath_ASC"
+  | "assetPath_DESC"
   | "status_ASC"
   | "status_DESC"
   | "visibility_ASC"
@@ -2866,6 +2871,7 @@ export interface VideoProjectUpdateInput {
   projectTitle?: Maybe<String>;
   descPublic?: Maybe<String>;
   descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
   author?: Maybe<UserUpdateOneInput>;
   team?: Maybe<TeamUpdateOneInput>;
   status?: Maybe<PublishStatus>;
@@ -2957,6 +2963,7 @@ export interface VideoProjectCreateInput {
   projectTitle: String;
   descPublic?: Maybe<String>;
   descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
   author?: Maybe<UserCreateOneInput>;
   team?: Maybe<TeamCreateOneInput>;
   status?: Maybe<PublishStatus>;
@@ -4001,6 +4008,7 @@ export interface VideoProjectUpdateManyMutationInput {
   projectTitle?: Maybe<String>;
   descPublic?: Maybe<String>;
   descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
   status?: Maybe<PublishStatus>;
   visibility?: Maybe<Visibility>;
 }
@@ -4374,6 +4382,20 @@ export interface PackageWhereInput {
   type_not?: Maybe<PackageType>;
   type_in?: Maybe<PackageType[] | PackageType>;
   type_not_in?: Maybe<PackageType[] | PackageType>;
+  assetPath?: Maybe<String>;
+  assetPath_not?: Maybe<String>;
+  assetPath_in?: Maybe<String[] | String>;
+  assetPath_not_in?: Maybe<String[] | String>;
+  assetPath_lt?: Maybe<String>;
+  assetPath_lte?: Maybe<String>;
+  assetPath_gt?: Maybe<String>;
+  assetPath_gte?: Maybe<String>;
+  assetPath_contains?: Maybe<String>;
+  assetPath_not_contains?: Maybe<String>;
+  assetPath_starts_with?: Maybe<String>;
+  assetPath_not_starts_with?: Maybe<String>;
+  assetPath_ends_with?: Maybe<String>;
+  assetPath_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   team?: Maybe<TeamWhereInput>;
   title?: Maybe<String>;
@@ -4838,6 +4860,7 @@ export interface PackageCreateInput {
   id?: Maybe<ID_Input>;
   publishedAt?: Maybe<DateTimeInput>;
   type: PackageType;
+  assetPath?: Maybe<String>;
   author?: Maybe<UserCreateOneInput>;
   team?: Maybe<TeamCreateOneInput>;
   title: String;
@@ -4980,6 +5003,20 @@ export interface VideoProjectWhereInput {
   descInternal_not_starts_with?: Maybe<String>;
   descInternal_ends_with?: Maybe<String>;
   descInternal_not_ends_with?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  assetPath_not?: Maybe<String>;
+  assetPath_in?: Maybe<String[] | String>;
+  assetPath_not_in?: Maybe<String[] | String>;
+  assetPath_lt?: Maybe<String>;
+  assetPath_lte?: Maybe<String>;
+  assetPath_gt?: Maybe<String>;
+  assetPath_gte?: Maybe<String>;
+  assetPath_contains?: Maybe<String>;
+  assetPath_not_contains?: Maybe<String>;
+  assetPath_starts_with?: Maybe<String>;
+  assetPath_not_starts_with?: Maybe<String>;
+  assetPath_ends_with?: Maybe<String>;
+  assetPath_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   team?: Maybe<TeamWhereInput>;
   status?: Maybe<PublishStatus>;
@@ -5171,6 +5208,7 @@ export interface DocumentFileSubscriptionWhereInput {
 export interface PackageUpdateInput {
   publishedAt?: Maybe<DateTimeInput>;
   type?: Maybe<PackageType>;
+  assetPath?: Maybe<String>;
   author?: Maybe<UserUpdateOneInput>;
   team?: Maybe<TeamUpdateOneInput>;
   title?: Maybe<String>;
@@ -6055,6 +6093,7 @@ export interface VideoFileUpdateInput {
 export interface PackageUpdateManyMutationInput {
   publishedAt?: Maybe<DateTimeInput>;
   type?: Maybe<PackageType>;
+  assetPath?: Maybe<String>;
   title?: Maybe<String>;
   desc?: Maybe<String>;
   status?: Maybe<PublishStatus>;
@@ -7701,6 +7740,7 @@ export interface Package {
   updatedAt: DateTimeOutput;
   publishedAt?: DateTimeOutput;
   type: PackageType;
+  assetPath?: String;
   title: String;
   desc?: String;
   status?: PublishStatus;
@@ -7713,6 +7753,7 @@ export interface PackagePromise extends Promise<Package>, Fragmentable {
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
   type: () => Promise<PackageType>;
+  assetPath: () => Promise<String>;
   author: <T = UserPromise>() => T;
   team: <T = TeamPromise>() => T;
   title: () => Promise<String>;
@@ -7756,6 +7797,7 @@ export interface PackageSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   type: () => Promise<AsyncIterator<PackageType>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
   team: <T = TeamSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
@@ -7799,6 +7841,7 @@ export interface PackageNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
   type: () => Promise<PackageType>;
+  assetPath: () => Promise<String>;
   author: <T = UserPromise>() => T;
   team: <T = TeamPromise>() => T;
   title: () => Promise<String>;
@@ -8432,6 +8475,7 @@ export interface PackagePreviousValues {
   updatedAt: DateTimeOutput;
   publishedAt?: DateTimeOutput;
   type: PackageType;
+  assetPath?: String;
   title: String;
   desc?: String;
   status?: PublishStatus;
@@ -8446,6 +8490,7 @@ export interface PackagePreviousValuesPromise
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
   type: () => Promise<PackageType>;
+  assetPath: () => Promise<String>;
   title: () => Promise<String>;
   desc: () => Promise<String>;
   status: () => Promise<PublishStatus>;
@@ -8460,6 +8505,7 @@ export interface PackagePreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   type: () => Promise<AsyncIterator<PackageType>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
   title: () => Promise<AsyncIterator<String>>;
   desc: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<PublishStatus>>;
@@ -9544,6 +9590,7 @@ export interface VideoProject {
   projectTitle: String;
   descPublic?: String;
   descInternal?: String;
+  assetPath?: String;
   status?: PublishStatus;
   visibility?: Visibility;
 }
@@ -9559,6 +9606,7 @@ export interface VideoProjectPromise
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
   descInternal: () => Promise<String>;
+  assetPath: () => Promise<String>;
   author: <T = UserPromise>() => T;
   team: <T = TeamPromise>() => T;
   status: () => Promise<PublishStatus>;
@@ -9621,6 +9669,7 @@ export interface VideoProjectSubscription
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
   descInternal: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
   author: <T = UserSubscription>() => T;
   team: <T = TeamSubscription>() => T;
   status: () => Promise<AsyncIterator<PublishStatus>>;
@@ -9683,6 +9732,7 @@ export interface VideoProjectNullablePromise
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
   descInternal: () => Promise<String>;
+  assetPath: () => Promise<String>;
   author: <T = UserPromise>() => T;
   team: <T = TeamPromise>() => T;
   status: () => Promise<PublishStatus>;
@@ -10079,6 +10129,7 @@ export interface VideoProjectPreviousValues {
   projectTitle: String;
   descPublic?: String;
   descInternal?: String;
+  assetPath?: String;
   status?: PublishStatus;
   visibility?: Visibility;
 }
@@ -10094,6 +10145,7 @@ export interface VideoProjectPreviousValuesPromise
   projectTitle: () => Promise<String>;
   descPublic: () => Promise<String>;
   descInternal: () => Promise<String>;
+  assetPath: () => Promise<String>;
   status: () => Promise<PublishStatus>;
   visibility: () => Promise<Visibility>;
 }
@@ -10109,6 +10161,7 @@ export interface VideoProjectPreviousValuesSubscription
   projectTitle: () => Promise<AsyncIterator<String>>;
   descPublic: () => Promise<AsyncIterator<String>>;
   descInternal: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<PublishStatus>>;
   visibility: () => Promise<AsyncIterator<Visibility>>;
 }
