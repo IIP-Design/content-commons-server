@@ -12,6 +12,7 @@ enum ContentType {
   DOCUMENT
   IMAGE
   TEACHING_MATERIAL
+  PACKAGE
 }
 
 enum ProjectType {
@@ -148,6 +149,7 @@ type Package {
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
   type: PackageType!
+  assetPath: String
   author: User
   team: Team
   title: String!
@@ -169,6 +171,7 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   author: User #[User|Author] # more than 1 author?
   team: Team
   status: PublishStatus @default(value: DRAFT)
