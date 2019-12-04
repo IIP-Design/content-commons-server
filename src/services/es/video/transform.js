@@ -258,11 +258,20 @@ const transformVideo = videoProject => {
   } );
 
   if ( videoProject.supportFiles ) {
+    const setSupportFileType = file => {
+      const srtFile = file.filetype === 'srt' || file.url.substr( -3 ) === 'srt';
+      const vttFile = file.filetype === 'vtt' || file.url.substr( -3 ) === 'vtt';
+
+      if ( srtFile ) return 'srt';
+      if ( vttFile ) return 'vtt';
+      return 'transcript';
+    };
+
     esData.supportFiles = videoProject.supportFiles.map( file => ( {
       srcUrl: maybeGetUrlToProdS3( file.url ),
       language: transformLanguage( file.language ),
       // TODO: Support additional file types in future
-      supportFileType: ( file.filetype === 'srt' || file.url.substr( -3 ) === 'srt' ) ? 'srt' : 'transcript',
+      supportFileType: setSupportFileType( file ),
       visibility: file.visibility,
     } ) );
     console.log( videoProject.supportFiles );
