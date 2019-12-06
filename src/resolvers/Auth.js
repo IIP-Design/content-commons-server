@@ -8,6 +8,7 @@ import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { verifyGoogleToken } from '../services/googleAuth';
+import { verifyCloudflareToken } from '../services/cloudflareAuth';
 
 const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
 
@@ -43,6 +44,59 @@ export default {
   },
 
   Mutation: {
+  /**
+   * @param {object} args { token } cloudflare tokenId
+   */
+    async cloudflareSignin( parent, { token }, ctx ) {
+      // 1. Was a cloudflare token sent?
+      if ( !token ) {
+        throw new AuthenticationError( 'A valid Cloudflare token is not available' );
+      }
+
+      // 2. Verify that the Cloudflare token sent is vaild
+      const cloudflareUser = await verifyCloudflareToken( token );
+
+      if ( !cloudflareUser ) {
+        throw new AuthenticationError( 'Unable to verify Cloudflare Token' );
+      }
+
+      // 3. Verify that the cloudflare user is from america.gov or state.gov
+      if ( cloudflareUser.email.includes( 'america.gov' ) || cloudflareUser.email.includes( 'state.gov' ) ) {
+        throw new AuthenticationError( 'You must be an america.gov or state.gov user.' );
+      }
+
+      if ( ENFORCE_WHITELIST ) {
+        const whitelisted = await isEmailWhitelisted( cloudflareUser.email );
+        if ( !whitelisted ) {
+          throw new AuthenticationError( 'This account is not currently approved during our beta testing period.' );
+        }
+      }
+
+      // 4. Check to see if user is in the db
+      const user = await ctx.prisma.user( { email: cloudflareUser.email } );
+      if ( !user ) {
+        // TODO: Implement registration process
+        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
+      }
+
+      if ( !user.isConfirmed ) {
+        // TODO: Handle user confirmation for Cloudflare users
+        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
+      }
+
+      // 5.Create user's JWT token
+      const jwtToken = generateToken( user.id );
+
+      // 6.Set the jwt as a cookie on the response
+      ctx.res.cookie( 'americaCommonsToken', jwtToken, {
+        httpOnly: true, // only allow access to cookie from the server
+        maxAge: COOKIE_MAX_AGE
+      } );
+
+      // 7.Return user
+      return user;
+    },
+
   /**
    * @param {object} args { token } google tokenId
    */
