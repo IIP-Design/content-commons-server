@@ -1,12 +1,12 @@
 import { prisma } from '../../src/schema/generated/prisma-client';
 import { files } from './seed.js';
 import {
-  forEach, getCsvRows, prismaErrors
+  forEachSync, getCsvRows, prismaErrors
 } from './utils';
 
 const seedUses = async ( csvFile = files.uses ) => {
   const rows = await getCsvRows( csvFile );
-  return forEach( rows, row => {
+  const results = await forEachSync( rows, async row => {
     let upsert;
     switch ( row.type ) {
       case 'Image':
@@ -15,18 +15,33 @@ const seedUses = async ( csvFile = files.uses ) => {
       case 'Video':
         upsert = prisma.upsertVideoUse;
         break;
+      case 'Document':
+        upsert = prisma.upsertDocumentUse;
+        break;
       default: return null;
     }
-    delete row.type;
-    return upsert( {
-      where: row,
-      create: row,
-      update: row
-    } ).catch( err => {
+    const { name, previous } = row;
+    const args = {
+      where: { name },
+      create: { name },
+      update: { name }
+    };
+    if ( previous ) {
+      args.where = { name: previous };
+    }
+    return upsert( args ).catch( err => {
+      if ( previous ) {
+        args.where = { name };
+        return upsert( args ).catch( err2 => {
+          prismaErrors( err2 );
+          return null;
+        } );
+      }
       prismaErrors( err );
       return null;
     } );
-  } ).then( results => results.filter( result => result !== null ) );
+  } );
+  return results;
 };
 
 export default seedUses;

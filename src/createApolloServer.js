@@ -8,7 +8,9 @@ import TaxonomyResolvers from './resolvers/Taxonomy';
 import TeamResolvers from './resolvers/Team';
 import UserResolvers from './resolvers/User';
 import UtilResolvers from './resolvers/Util';
+import DocumentResolvers from './resolvers/Document';
 import VideoResolvers from './resolvers/Video';
+import PackageResolvers from './resolvers/Package';
 import { prisma } from './schema/generated/prisma-client';
 
 const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
@@ -20,7 +22,9 @@ const resolvers = merge(
   TaxonomyResolvers,
   UserResolvers,
   TeamResolvers,
-  VideoResolvers
+  DocumentResolvers,
+  VideoResolvers,
+  PackageResolvers
 );
 
 

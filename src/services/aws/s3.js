@@ -11,6 +11,15 @@ AWS.config.update( {
 
 const s3 = new AWS.S3();
 
+const getYrMonthPath = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  month = month < 10 ? `0${month}` : month;
+
+  return `${year}/${month}`;
+};
+
 /**
  * Returns either the current s3 path for exisiting projects or creates a
  * path to save new assets.
@@ -21,7 +30,7 @@ const s3 = new AWS.S3();
  */
 const getKey = ( filename, projectId ) => {
   // remove spaces in filename
-  const fn = filename.replace( /\s+/g, '_' ).toLowerCase();
+  const fn = filename.replace( /\s+/g, '_' );
 
   // test to see if this is a path or simply a filename
   const dateRegexp = /^(?<yr>[0-9]{4})\/(?<mth>[0-9]{2})\/(?<domain>[a-zA-Z0-9.]*)_/;
@@ -37,13 +46,10 @@ const getKey = ( filename, projectId ) => {
   }
 
   // if  yr, mth, domain are not present assume new project
-  const date = new Date();
-  const year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  month = month < 10 ? `0${month}` : month;
-
-  return `${year}/${month}/commons.america.gov_${projectId}/${fn}`;
+  return `${getYrMonthPath()}/commons.america.gov_${projectId}/${fn}`;
 };
+
+export const getAssetPath = ( type, id ) => `${getYrMonthPath()}/${type}/commons.america.gov_${id}`;
 
 export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject ) => {
   const {

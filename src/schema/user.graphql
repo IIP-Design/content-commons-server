@@ -12,7 +12,13 @@ type User {
   team: Team
 }
 
+type Mutation {
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteUser(where: UserWhereUniqueInput!): User
+}
+
 type Query {
   authenticatedUser: User
   users: [User]!
 }
+

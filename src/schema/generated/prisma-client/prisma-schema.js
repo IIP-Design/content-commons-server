@@ -3,11 +3,27 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateCategory {
+/* GraphQL */ `type AggregateBureau {
+  count: Int!
+}
+
+type AggregateCategory {
   count: Int!
 }
 
 type AggregateDimensions {
+  count: Int!
+}
+
+type AggregateDocumentConversionFormat {
+  count: Int!
+}
+
+type AggregateDocumentFile {
+  count: Int!
+}
+
+type AggregateDocumentUse {
   count: Int!
 }
 
@@ -24,6 +40,14 @@ type AggregateLanguage {
 }
 
 type AggregateLanguageTranslation {
+  count: Int!
+}
+
+type AggregateOffice {
+  count: Int!
+}
+
+type AggregatePackage {
   count: Int!
 }
 
@@ -73,6 +97,252 @@ type AggregateVideoUse {
 
 type BatchPayload {
   count: Long!
+}
+
+type Bureau {
+  id: ID!
+  name: String!
+  abbr: String!
+  offices(where: OfficeWhereInput, orderBy: OfficeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Office!]
+}
+
+type BureauConnection {
+  pageInfo: PageInfo!
+  edges: [BureauEdge]!
+  aggregate: AggregateBureau!
+}
+
+input BureauCreateInput {
+  id: ID
+  name: String!
+  abbr: String!
+  offices: OfficeCreateManyWithoutBureauInput
+}
+
+input BureauCreateManyInput {
+  create: [BureauCreateInput!]
+  connect: [BureauWhereUniqueInput!]
+}
+
+input BureauCreateOneWithoutOfficesInput {
+  create: BureauCreateWithoutOfficesInput
+  connect: BureauWhereUniqueInput
+}
+
+input BureauCreateWithoutOfficesInput {
+  id: ID
+  name: String!
+  abbr: String!
+}
+
+type BureauEdge {
+  node: Bureau!
+  cursor: String!
+}
+
+enum BureauOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  abbr_ASC
+  abbr_DESC
+}
+
+type BureauPreviousValues {
+  id: ID!
+  name: String!
+  abbr: String!
+}
+
+input BureauScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  AND: [BureauScalarWhereInput!]
+  OR: [BureauScalarWhereInput!]
+  NOT: [BureauScalarWhereInput!]
+}
+
+type BureauSubscriptionPayload {
+  mutation: MutationType!
+  node: Bureau
+  updatedFields: [String!]
+  previousValues: BureauPreviousValues
+}
+
+input BureauSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BureauWhereInput
+  AND: [BureauSubscriptionWhereInput!]
+  OR: [BureauSubscriptionWhereInput!]
+  NOT: [BureauSubscriptionWhereInput!]
+}
+
+input BureauUpdateDataInput {
+  name: String
+  abbr: String
+  offices: OfficeUpdateManyWithoutBureauInput
+}
+
+input BureauUpdateInput {
+  name: String
+  abbr: String
+  offices: OfficeUpdateManyWithoutBureauInput
+}
+
+input BureauUpdateManyDataInput {
+  name: String
+  abbr: String
+}
+
+input BureauUpdateManyInput {
+  create: [BureauCreateInput!]
+  update: [BureauUpdateWithWhereUniqueNestedInput!]
+  upsert: [BureauUpsertWithWhereUniqueNestedInput!]
+  delete: [BureauWhereUniqueInput!]
+  connect: [BureauWhereUniqueInput!]
+  set: [BureauWhereUniqueInput!]
+  disconnect: [BureauWhereUniqueInput!]
+  deleteMany: [BureauScalarWhereInput!]
+  updateMany: [BureauUpdateManyWithWhereNestedInput!]
+}
+
+input BureauUpdateManyMutationInput {
+  name: String
+  abbr: String
+}
+
+input BureauUpdateManyWithWhereNestedInput {
+  where: BureauScalarWhereInput!
+  data: BureauUpdateManyDataInput!
+}
+
+input BureauUpdateOneWithoutOfficesInput {
+  create: BureauCreateWithoutOfficesInput
+  update: BureauUpdateWithoutOfficesDataInput
+  upsert: BureauUpsertWithoutOfficesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: BureauWhereUniqueInput
+}
+
+input BureauUpdateWithoutOfficesDataInput {
+  name: String
+  abbr: String
+}
+
+input BureauUpdateWithWhereUniqueNestedInput {
+  where: BureauWhereUniqueInput!
+  data: BureauUpdateDataInput!
+}
+
+input BureauUpsertWithoutOfficesInput {
+  update: BureauUpdateWithoutOfficesDataInput!
+  create: BureauCreateWithoutOfficesInput!
+}
+
+input BureauUpsertWithWhereUniqueNestedInput {
+  where: BureauWhereUniqueInput!
+  update: BureauUpdateDataInput!
+  create: BureauCreateInput!
+}
+
+input BureauWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  offices_every: OfficeWhereInput
+  offices_some: OfficeWhereInput
+  offices_none: OfficeWhereInput
+  AND: [BureauWhereInput!]
+  OR: [BureauWhereInput!]
+  NOT: [BureauWhereInput!]
+}
+
+input BureauWhereUniqueInput {
+  id: ID
 }
 
 type Category {
@@ -211,6 +481,7 @@ enum ContentType {
   DOCUMENT
   IMAGE
   TEACHING_MATERIAL
+  PACKAGE
 }
 
 scalar DateTime
@@ -345,6 +616,741 @@ input DimensionsWhereUniqueInput {
   id: ID
 }
 
+type DocumentConversionFormat {
+  id: ID!
+  rawText: String
+  html: String
+  markdown: String
+}
+
+type DocumentConversionFormatConnection {
+  pageInfo: PageInfo!
+  edges: [DocumentConversionFormatEdge]!
+  aggregate: AggregateDocumentConversionFormat!
+}
+
+input DocumentConversionFormatCreateInput {
+  id: ID
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatCreateOneInput {
+  create: DocumentConversionFormatCreateInput
+  connect: DocumentConversionFormatWhereUniqueInput
+}
+
+type DocumentConversionFormatEdge {
+  node: DocumentConversionFormat!
+  cursor: String!
+}
+
+enum DocumentConversionFormatOrderByInput {
+  id_ASC
+  id_DESC
+  rawText_ASC
+  rawText_DESC
+  html_ASC
+  html_DESC
+  markdown_ASC
+  markdown_DESC
+}
+
+type DocumentConversionFormatPreviousValues {
+  id: ID!
+  rawText: String
+  html: String
+  markdown: String
+}
+
+type DocumentConversionFormatSubscriptionPayload {
+  mutation: MutationType!
+  node: DocumentConversionFormat
+  updatedFields: [String!]
+  previousValues: DocumentConversionFormatPreviousValues
+}
+
+input DocumentConversionFormatSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DocumentConversionFormatWhereInput
+  AND: [DocumentConversionFormatSubscriptionWhereInput!]
+  OR: [DocumentConversionFormatSubscriptionWhereInput!]
+  NOT: [DocumentConversionFormatSubscriptionWhereInput!]
+}
+
+input DocumentConversionFormatUpdateDataInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateManyMutationInput {
+  rawText: String
+  html: String
+  markdown: String
+}
+
+input DocumentConversionFormatUpdateOneInput {
+  create: DocumentConversionFormatCreateInput
+  update: DocumentConversionFormatUpdateDataInput
+  upsert: DocumentConversionFormatUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: DocumentConversionFormatWhereUniqueInput
+}
+
+input DocumentConversionFormatUpsertNestedInput {
+  update: DocumentConversionFormatUpdateDataInput!
+  create: DocumentConversionFormatCreateInput!
+}
+
+input DocumentConversionFormatWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  rawText: String
+  rawText_not: String
+  rawText_in: [String!]
+  rawText_not_in: [String!]
+  rawText_lt: String
+  rawText_lte: String
+  rawText_gt: String
+  rawText_gte: String
+  rawText_contains: String
+  rawText_not_contains: String
+  rawText_starts_with: String
+  rawText_not_starts_with: String
+  rawText_ends_with: String
+  rawText_not_ends_with: String
+  html: String
+  html_not: String
+  html_in: [String!]
+  html_not_in: [String!]
+  html_lt: String
+  html_lte: String
+  html_gt: String
+  html_gte: String
+  html_contains: String
+  html_not_contains: String
+  html_starts_with: String
+  html_not_starts_with: String
+  html_ends_with: String
+  html_not_ends_with: String
+  markdown: String
+  markdown_not: String
+  markdown_in: [String!]
+  markdown_not_in: [String!]
+  markdown_lt: String
+  markdown_lte: String
+  markdown_gt: String
+  markdown_gte: String
+  markdown_contains: String
+  markdown_not_contains: String
+  markdown_starts_with: String
+  markdown_not_starts_with: String
+  markdown_ends_with: String
+  markdown_not_ends_with: String
+  AND: [DocumentConversionFormatWhereInput!]
+  OR: [DocumentConversionFormatWhereInput!]
+  NOT: [DocumentConversionFormatWhereInput!]
+}
+
+input DocumentConversionFormatWhereUniqueInput {
+  id: ID
+}
+
+type DocumentFile {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  language: Language
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  content: DocumentConversionFormat
+  image(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
+  url: String
+  signedUrl: String
+  visibility: Visibility
+  use: DocumentUse
+  bureaus(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bureau!]
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+}
+
+type DocumentFileConnection {
+  pageInfo: PageInfo!
+  edges: [DocumentFileEdge]!
+  aggregate: AggregateDocumentFile!
+}
+
+input DocumentFileCreateInput {
+  id: ID
+  publishedAt: DateTime
+  language: LanguageCreateOneInput
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  content: DocumentConversionFormatCreateOneInput
+  image: ImageFileCreateManyInput
+  url: String
+  signedUrl: String
+  visibility: Visibility
+  use: DocumentUseCreateOneInput
+  bureaus: BureauCreateManyInput
+  categories: CategoryCreateManyInput
+  tags: TagCreateManyInput
+}
+
+input DocumentFileCreateManyInput {
+  create: [DocumentFileCreateInput!]
+  connect: [DocumentFileWhereUniqueInput!]
+}
+
+type DocumentFileEdge {
+  node: DocumentFile!
+  cursor: String!
+}
+
+enum DocumentFileOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  filetype_ASC
+  filetype_DESC
+  filename_ASC
+  filename_DESC
+  filesize_ASC
+  filesize_DESC
+  status_ASC
+  status_DESC
+  url_ASC
+  url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
+  visibility_ASC
+  visibility_DESC
+}
+
+type DocumentFilePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  url: String
+  signedUrl: String
+  visibility: Visibility
+}
+
+input DocumentFileScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  filetype: String
+  filetype_not: String
+  filetype_in: [String!]
+  filetype_not_in: [String!]
+  filetype_lt: String
+  filetype_lte: String
+  filetype_gt: String
+  filetype_gte: String
+  filetype_contains: String
+  filetype_not_contains: String
+  filetype_starts_with: String
+  filetype_not_starts_with: String
+  filetype_ends_with: String
+  filetype_not_ends_with: String
+  filename: String
+  filename_not: String
+  filename_in: [String!]
+  filename_not_in: [String!]
+  filename_lt: String
+  filename_lte: String
+  filename_gt: String
+  filename_gte: String
+  filename_contains: String
+  filename_not_contains: String
+  filename_starts_with: String
+  filename_not_starts_with: String
+  filename_ends_with: String
+  filename_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  AND: [DocumentFileScalarWhereInput!]
+  OR: [DocumentFileScalarWhereInput!]
+  NOT: [DocumentFileScalarWhereInput!]
+}
+
+type DocumentFileSubscriptionPayload {
+  mutation: MutationType!
+  node: DocumentFile
+  updatedFields: [String!]
+  previousValues: DocumentFilePreviousValues
+}
+
+input DocumentFileSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DocumentFileWhereInput
+  AND: [DocumentFileSubscriptionWhereInput!]
+  OR: [DocumentFileSubscriptionWhereInput!]
+  NOT: [DocumentFileSubscriptionWhereInput!]
+}
+
+input DocumentFileUpdateDataInput {
+  publishedAt: DateTime
+  language: LanguageUpdateOneInput
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  content: DocumentConversionFormatUpdateOneInput
+  image: ImageFileUpdateManyInput
+  url: String
+  signedUrl: String
+  visibility: Visibility
+  use: DocumentUseUpdateOneInput
+  bureaus: BureauUpdateManyInput
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
+}
+
+input DocumentFileUpdateInput {
+  publishedAt: DateTime
+  language: LanguageUpdateOneInput
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  content: DocumentConversionFormatUpdateOneInput
+  image: ImageFileUpdateManyInput
+  url: String
+  signedUrl: String
+  visibility: Visibility
+  use: DocumentUseUpdateOneInput
+  bureaus: BureauUpdateManyInput
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
+}
+
+input DocumentFileUpdateManyDataInput {
+  publishedAt: DateTime
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  url: String
+  signedUrl: String
+  visibility: Visibility
+}
+
+input DocumentFileUpdateManyInput {
+  create: [DocumentFileCreateInput!]
+  update: [DocumentFileUpdateWithWhereUniqueNestedInput!]
+  upsert: [DocumentFileUpsertWithWhereUniqueNestedInput!]
+  delete: [DocumentFileWhereUniqueInput!]
+  connect: [DocumentFileWhereUniqueInput!]
+  set: [DocumentFileWhereUniqueInput!]
+  disconnect: [DocumentFileWhereUniqueInput!]
+  deleteMany: [DocumentFileScalarWhereInput!]
+  updateMany: [DocumentFileUpdateManyWithWhereNestedInput!]
+}
+
+input DocumentFileUpdateManyMutationInput {
+  publishedAt: DateTime
+  filetype: String
+  filename: String
+  filesize: Float
+  status: PublishStatus
+  url: String
+  signedUrl: String
+  visibility: Visibility
+}
+
+input DocumentFileUpdateManyWithWhereNestedInput {
+  where: DocumentFileScalarWhereInput!
+  data: DocumentFileUpdateManyDataInput!
+}
+
+input DocumentFileUpdateWithWhereUniqueNestedInput {
+  where: DocumentFileWhereUniqueInput!
+  data: DocumentFileUpdateDataInput!
+}
+
+input DocumentFileUpsertWithWhereUniqueNestedInput {
+  where: DocumentFileWhereUniqueInput!
+  update: DocumentFileUpdateDataInput!
+  create: DocumentFileCreateInput!
+}
+
+input DocumentFileWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  language: LanguageWhereInput
+  filetype: String
+  filetype_not: String
+  filetype_in: [String!]
+  filetype_not_in: [String!]
+  filetype_lt: String
+  filetype_lte: String
+  filetype_gt: String
+  filetype_gte: String
+  filetype_contains: String
+  filetype_not_contains: String
+  filetype_starts_with: String
+  filetype_not_starts_with: String
+  filetype_ends_with: String
+  filetype_not_ends_with: String
+  filename: String
+  filename_not: String
+  filename_in: [String!]
+  filename_not_in: [String!]
+  filename_lt: String
+  filename_lte: String
+  filename_gt: String
+  filename_gte: String
+  filename_contains: String
+  filename_not_contains: String
+  filename_starts_with: String
+  filename_not_starts_with: String
+  filename_ends_with: String
+  filename_not_ends_with: String
+  filesize: Float
+  filesize_not: Float
+  filesize_in: [Float!]
+  filesize_not_in: [Float!]
+  filesize_lt: Float
+  filesize_lte: Float
+  filesize_gt: Float
+  filesize_gte: Float
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  content: DocumentConversionFormatWhereInput
+  image_every: ImageFileWhereInput
+  image_some: ImageFileWhereInput
+  image_none: ImageFileWhereInput
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  use: DocumentUseWhereInput
+  bureaus_every: BureauWhereInput
+  bureaus_some: BureauWhereInput
+  bureaus_none: BureauWhereInput
+  categories_every: CategoryWhereInput
+  categories_some: CategoryWhereInput
+  categories_none: CategoryWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
+  AND: [DocumentFileWhereInput!]
+  OR: [DocumentFileWhereInput!]
+  NOT: [DocumentFileWhereInput!]
+}
+
+input DocumentFileWhereUniqueInput {
+  id: ID
+}
+
+type DocumentUse {
+  id: ID!
+  name: String!
+}
+
+type DocumentUseConnection {
+  pageInfo: PageInfo!
+  edges: [DocumentUseEdge]!
+  aggregate: AggregateDocumentUse!
+}
+
+input DocumentUseCreateInput {
+  id: ID
+  name: String!
+}
+
+input DocumentUseCreateOneInput {
+  create: DocumentUseCreateInput
+  connect: DocumentUseWhereUniqueInput
+}
+
+type DocumentUseEdge {
+  node: DocumentUse!
+  cursor: String!
+}
+
+enum DocumentUseOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type DocumentUsePreviousValues {
+  id: ID!
+  name: String!
+}
+
+type DocumentUseSubscriptionPayload {
+  mutation: MutationType!
+  node: DocumentUse
+  updatedFields: [String!]
+  previousValues: DocumentUsePreviousValues
+}
+
+input DocumentUseSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DocumentUseWhereInput
+  AND: [DocumentUseSubscriptionWhereInput!]
+  OR: [DocumentUseSubscriptionWhereInput!]
+  NOT: [DocumentUseSubscriptionWhereInput!]
+}
+
+input DocumentUseUpdateDataInput {
+  name: String
+}
+
+input DocumentUseUpdateInput {
+  name: String
+}
+
+input DocumentUseUpdateManyMutationInput {
+  name: String
+}
+
+input DocumentUseUpdateOneInput {
+  create: DocumentUseCreateInput
+  update: DocumentUseUpdateDataInput
+  upsert: DocumentUseUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: DocumentUseWhereUniqueInput
+}
+
+input DocumentUseUpsertNestedInput {
+  update: DocumentUseUpdateDataInput!
+  create: DocumentUseCreateInput!
+}
+
+input DocumentUseWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [DocumentUseWhereInput!]
+  OR: [DocumentUseWhereInput!]
+  NOT: [DocumentUseWhereInput!]
+}
+
+input DocumentUseWhereUniqueInput {
+  id: ID
+  name: String
+}
+
 type ImageFile {
   id: ID!
   createdAt: DateTime!
@@ -357,6 +1363,7 @@ type ImageFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUse
   md5: String
   url: String
@@ -379,6 +1386,7 @@ input ImageFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseCreateOneInput
   md5: String
   url: String
@@ -419,6 +1427,8 @@ enum ImageFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
   md5_ASC
   md5_DESC
   url_ASC
@@ -437,6 +1447,7 @@ type ImageFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
   signedUrl: String
@@ -551,6 +1562,10 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -625,6 +1640,7 @@ input ImageFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -640,6 +1656,7 @@ input ImageFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: ImageUseUpdateOneInput
   md5: String
   url: String
@@ -653,6 +1670,7 @@ input ImageFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
   signedUrl: String
@@ -677,6 +1695,7 @@ input ImageFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   md5: String
   url: String
   signedUrl: String
@@ -823,6 +1842,10 @@ input ImageFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: ImageUseWhereInput
   md5: String
   md5_not: String
@@ -1075,7 +2098,7 @@ input LanguageSubscriptionWhereInput {
 type LanguageTranslation {
   id: ID!
   name: String!
-  language: Language!
+  language: Language
 }
 
 type LanguageTranslationConnection {
@@ -1087,7 +2110,7 @@ type LanguageTranslationConnection {
 input LanguageTranslationCreateInput {
   id: ID
   name: String!
-  language: LanguageCreateOneInput!
+  language: LanguageCreateOneInput
 }
 
 input LanguageTranslationCreateManyInput {
@@ -1166,12 +2189,12 @@ input LanguageTranslationSubscriptionWhereInput {
 
 input LanguageTranslationUpdateDataInput {
   name: String
-  language: LanguageUpdateOneRequiredInput
+  language: LanguageUpdateOneInput
 }
 
 input LanguageTranslationUpdateInput {
   name: String
-  language: LanguageUpdateOneRequiredInput
+  language: LanguageUpdateOneInput
 }
 
 input LanguageTranslationUpdateManyDataInput {
@@ -1382,6 +2405,12 @@ input LanguageWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createBureau(data: BureauCreateInput!): Bureau!
+  updateBureau(data: BureauUpdateInput!, where: BureauWhereUniqueInput!): Bureau
+  updateManyBureaus(data: BureauUpdateManyMutationInput!, where: BureauWhereInput): BatchPayload!
+  upsertBureau(where: BureauWhereUniqueInput!, create: BureauCreateInput!, update: BureauUpdateInput!): Bureau!
+  deleteBureau(where: BureauWhereUniqueInput!): Bureau
+  deleteManyBureaus(where: BureauWhereInput): BatchPayload!
   createCategory(data: CategoryCreateInput!): Category!
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
@@ -1393,6 +2422,24 @@ type Mutation {
   upsertDimensions(where: DimensionsWhereUniqueInput!, create: DimensionsCreateInput!, update: DimensionsUpdateInput!): Dimensions!
   deleteDimensions(where: DimensionsWhereUniqueInput!): Dimensions
   deleteManyDimensionses(where: DimensionsWhereInput): BatchPayload!
+  createDocumentConversionFormat(data: DocumentConversionFormatCreateInput!): DocumentConversionFormat!
+  updateDocumentConversionFormat(data: DocumentConversionFormatUpdateInput!, where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  updateManyDocumentConversionFormats(data: DocumentConversionFormatUpdateManyMutationInput!, where: DocumentConversionFormatWhereInput): BatchPayload!
+  upsertDocumentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!, create: DocumentConversionFormatCreateInput!, update: DocumentConversionFormatUpdateInput!): DocumentConversionFormat!
+  deleteDocumentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  deleteManyDocumentConversionFormats(where: DocumentConversionFormatWhereInput): BatchPayload!
+  createDocumentFile(data: DocumentFileCreateInput!): DocumentFile!
+  updateDocumentFile(data: DocumentFileUpdateInput!, where: DocumentFileWhereUniqueInput!): DocumentFile
+  updateManyDocumentFiles(data: DocumentFileUpdateManyMutationInput!, where: DocumentFileWhereInput): BatchPayload!
+  upsertDocumentFile(where: DocumentFileWhereUniqueInput!, create: DocumentFileCreateInput!, update: DocumentFileUpdateInput!): DocumentFile!
+  deleteDocumentFile(where: DocumentFileWhereUniqueInput!): DocumentFile
+  deleteManyDocumentFiles(where: DocumentFileWhereInput): BatchPayload!
+  createDocumentUse(data: DocumentUseCreateInput!): DocumentUse!
+  updateDocumentUse(data: DocumentUseUpdateInput!, where: DocumentUseWhereUniqueInput!): DocumentUse
+  updateManyDocumentUses(data: DocumentUseUpdateManyMutationInput!, where: DocumentUseWhereInput): BatchPayload!
+  upsertDocumentUse(where: DocumentUseWhereUniqueInput!, create: DocumentUseCreateInput!, update: DocumentUseUpdateInput!): DocumentUse!
+  deleteDocumentUse(where: DocumentUseWhereUniqueInput!): DocumentUse
+  deleteManyDocumentUses(where: DocumentUseWhereInput): BatchPayload!
   createImageFile(data: ImageFileCreateInput!): ImageFile!
   updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
   updateManyImageFiles(data: ImageFileUpdateManyMutationInput!, where: ImageFileWhereInput): BatchPayload!
@@ -1417,6 +2464,18 @@ type Mutation {
   upsertLanguageTranslation(where: LanguageTranslationWhereUniqueInput!, create: LanguageTranslationCreateInput!, update: LanguageTranslationUpdateInput!): LanguageTranslation!
   deleteLanguageTranslation(where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
   deleteManyLanguageTranslations(where: LanguageTranslationWhereInput): BatchPayload!
+  createOffice(data: OfficeCreateInput!): Office!
+  updateOffice(data: OfficeUpdateInput!, where: OfficeWhereUniqueInput!): Office
+  updateManyOffices(data: OfficeUpdateManyMutationInput!, where: OfficeWhereInput): BatchPayload!
+  upsertOffice(where: OfficeWhereUniqueInput!, create: OfficeCreateInput!, update: OfficeUpdateInput!): Office!
+  deleteOffice(where: OfficeWhereUniqueInput!): Office
+  deleteManyOffices(where: OfficeWhereInput): BatchPayload!
+  createPackage(data: PackageCreateInput!): Package!
+  updatePackage(data: PackageUpdateInput!, where: PackageWhereUniqueInput!): Package
+  updateManyPackages(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
+  upsertPackage(where: PackageWhereUniqueInput!, create: PackageCreateInput!, update: PackageUpdateInput!): Package!
+  deletePackage(where: PackageWhereUniqueInput!): Package
+  deleteManyPackages(where: PackageWhereInput): BatchPayload!
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile
   updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
@@ -1494,6 +2553,466 @@ interface Node {
   id: ID!
 }
 
+type Office {
+  id: ID!
+  name: String!
+  abbr: String!
+  bureau: Bureau
+}
+
+type OfficeConnection {
+  pageInfo: PageInfo!
+  edges: [OfficeEdge]!
+  aggregate: AggregateOffice!
+}
+
+input OfficeCreateInput {
+  id: ID
+  name: String!
+  abbr: String!
+  bureau: BureauCreateOneWithoutOfficesInput
+}
+
+input OfficeCreateManyWithoutBureauInput {
+  create: [OfficeCreateWithoutBureauInput!]
+  connect: [OfficeWhereUniqueInput!]
+}
+
+input OfficeCreateWithoutBureauInput {
+  id: ID
+  name: String!
+  abbr: String!
+}
+
+type OfficeEdge {
+  node: Office!
+  cursor: String!
+}
+
+enum OfficeOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  abbr_ASC
+  abbr_DESC
+}
+
+type OfficePreviousValues {
+  id: ID!
+  name: String!
+  abbr: String!
+}
+
+input OfficeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  AND: [OfficeScalarWhereInput!]
+  OR: [OfficeScalarWhereInput!]
+  NOT: [OfficeScalarWhereInput!]
+}
+
+type OfficeSubscriptionPayload {
+  mutation: MutationType!
+  node: Office
+  updatedFields: [String!]
+  previousValues: OfficePreviousValues
+}
+
+input OfficeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: OfficeWhereInput
+  AND: [OfficeSubscriptionWhereInput!]
+  OR: [OfficeSubscriptionWhereInput!]
+  NOT: [OfficeSubscriptionWhereInput!]
+}
+
+input OfficeUpdateInput {
+  name: String
+  abbr: String
+  bureau: BureauUpdateOneWithoutOfficesInput
+}
+
+input OfficeUpdateManyDataInput {
+  name: String
+  abbr: String
+}
+
+input OfficeUpdateManyMutationInput {
+  name: String
+  abbr: String
+}
+
+input OfficeUpdateManyWithoutBureauInput {
+  create: [OfficeCreateWithoutBureauInput!]
+  delete: [OfficeWhereUniqueInput!]
+  connect: [OfficeWhereUniqueInput!]
+  set: [OfficeWhereUniqueInput!]
+  disconnect: [OfficeWhereUniqueInput!]
+  update: [OfficeUpdateWithWhereUniqueWithoutBureauInput!]
+  upsert: [OfficeUpsertWithWhereUniqueWithoutBureauInput!]
+  deleteMany: [OfficeScalarWhereInput!]
+  updateMany: [OfficeUpdateManyWithWhereNestedInput!]
+}
+
+input OfficeUpdateManyWithWhereNestedInput {
+  where: OfficeScalarWhereInput!
+  data: OfficeUpdateManyDataInput!
+}
+
+input OfficeUpdateWithoutBureauDataInput {
+  name: String
+  abbr: String
+}
+
+input OfficeUpdateWithWhereUniqueWithoutBureauInput {
+  where: OfficeWhereUniqueInput!
+  data: OfficeUpdateWithoutBureauDataInput!
+}
+
+input OfficeUpsertWithWhereUniqueWithoutBureauInput {
+  where: OfficeWhereUniqueInput!
+  update: OfficeUpdateWithoutBureauDataInput!
+  create: OfficeCreateWithoutBureauInput!
+}
+
+input OfficeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  bureau: BureauWhereInput
+  AND: [OfficeWhereInput!]
+  OR: [OfficeWhereInput!]
+  NOT: [OfficeWhereInput!]
+}
+
+input OfficeWhereUniqueInput {
+  id: ID
+}
+
+type Package {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  type: PackageType!
+  assetPath: String
+  author: User
+  team: Team
+  title: String!
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  documents(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile!]
+}
+
+type PackageConnection {
+  pageInfo: PageInfo!
+  edges: [PackageEdge]!
+  aggregate: AggregatePackage!
+}
+
+input PackageCreateInput {
+  id: ID
+  publishedAt: DateTime
+  type: PackageType!
+  assetPath: String
+  author: UserCreateOneInput
+  team: TeamCreateOneInput
+  title: String!
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+  categories: CategoryCreateManyInput
+  tags: TagCreateManyInput
+  documents: DocumentFileCreateManyInput
+}
+
+type PackageEdge {
+  node: Package!
+  cursor: String!
+}
+
+enum PackageOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  type_ASC
+  type_DESC
+  assetPath_ASC
+  assetPath_DESC
+  title_ASC
+  title_DESC
+  desc_ASC
+  desc_DESC
+  status_ASC
+  status_DESC
+  visibility_ASC
+  visibility_DESC
+}
+
+type PackagePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  type: PackageType!
+  assetPath: String
+  title: String!
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+type PackageSubscriptionPayload {
+  mutation: MutationType!
+  node: Package
+  updatedFields: [String!]
+  previousValues: PackagePreviousValues
+}
+
+input PackageSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PackageWhereInput
+  AND: [PackageSubscriptionWhereInput!]
+  OR: [PackageSubscriptionWhereInput!]
+  NOT: [PackageSubscriptionWhereInput!]
+}
+
+enum PackageType {
+  DAILY_GUIDANCE
+}
+
+input PackageUpdateInput {
+  publishedAt: DateTime
+  type: PackageType
+  assetPath: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
+  title: String
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
+  documents: DocumentFileUpdateManyInput
+}
+
+input PackageUpdateManyMutationInput {
+  publishedAt: DateTime
+  type: PackageType
+  assetPath: String
+  title: String
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+input PackageWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  type: PackageType
+  type_not: PackageType
+  type_in: [PackageType!]
+  type_not_in: [PackageType!]
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
+  author: UserWhereInput
+  team: TeamWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  desc: String
+  desc_not: String
+  desc_in: [String!]
+  desc_not_in: [String!]
+  desc_lt: String
+  desc_lte: String
+  desc_gt: String
+  desc_gte: String
+  desc_contains: String
+  desc_not_contains: String
+  desc_starts_with: String
+  desc_not_starts_with: String
+  desc_ends_with: String
+  desc_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  categories_every: CategoryWhereInput
+  categories_some: CategoryWhereInput
+  categories_none: CategoryWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
+  documents_every: DocumentFileWhereInput
+  documents_some: DocumentFileWhereInput
+  documents_none: DocumentFileWhereInput
+  AND: [PackageWhereInput!]
+  OR: [PackageWhereInput!]
+  NOT: [PackageWhereInput!]
+}
+
+input PackageWhereUniqueInput {
+  id: ID
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -1509,29 +3028,36 @@ enum Permission {
   ADMIN
 }
 
-enum ProjectPublishStatus {
+enum ProjectType {
+  LANGUAGE
+}
+
+enum PublishStatus {
   DRAFT
   PUBLISHING
   PUBLISHED
   EMBARGOED
 }
 
-enum ProjectType {
-  LANGUAGE
-}
-
-enum ProjectVisibility {
-  INTERNAL
-  PUBLIC
-}
-
 type Query {
+  bureau(where: BureauWhereUniqueInput!): Bureau
+  bureaus(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bureau]!
+  bureausConnection(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BureauConnection!
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   dimensions(where: DimensionsWhereUniqueInput!): Dimensions
   dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
   dimensionsesConnection(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DimensionsConnection!
+  documentConversionFormat(where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  documentConversionFormats(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentConversionFormat]!
+  documentConversionFormatsConnection(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentConversionFormatConnection!
+  documentFile(where: DocumentFileWhereUniqueInput!): DocumentFile
+  documentFiles(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile]!
+  documentFilesConnection(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentFileConnection!
+  documentUse(where: DocumentUseWhereUniqueInput!): DocumentUse
+  documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
+  documentUsesConnection(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentUseConnection!
   imageFile(where: ImageFileWhereUniqueInput!): ImageFile
   imageFiles(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile]!
   imageFilesConnection(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageFileConnection!
@@ -1544,6 +3070,12 @@ type Query {
   languageTranslation(where: LanguageTranslationWhereUniqueInput!): LanguageTranslation
   languageTranslations(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LanguageTranslation]!
   languageTranslationsConnection(where: LanguageTranslationWhereInput, orderBy: LanguageTranslationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LanguageTranslationConnection!
+  office(where: OfficeWhereUniqueInput!): Office
+  offices(where: OfficeWhereInput, orderBy: OfficeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Office]!
+  officesConnection(where: OfficeWhereInput, orderBy: OfficeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfficeConnection!
+  package(where: PackageWhereUniqueInput!): Package
+  packages(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Package]!
+  packagesConnection(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PackageConnection!
   supportFile(where: SupportFileWhereUniqueInput!): SupportFile
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFilesConnection(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileConnection!
@@ -1581,12 +3113,18 @@ type Query {
 }
 
 type Subscription {
+  bureau(where: BureauSubscriptionWhereInput): BureauSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   dimensions(where: DimensionsSubscriptionWhereInput): DimensionsSubscriptionPayload
+  documentConversionFormat(where: DocumentConversionFormatSubscriptionWhereInput): DocumentConversionFormatSubscriptionPayload
+  documentFile(where: DocumentFileSubscriptionWhereInput): DocumentFileSubscriptionPayload
+  documentUse(where: DocumentUseSubscriptionWhereInput): DocumentUseSubscriptionPayload
   imageFile(where: ImageFileSubscriptionWhereInput): ImageFileSubscriptionPayload
   imageUse(where: ImageUseSubscriptionWhereInput): ImageUseSubscriptionPayload
   language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
   languageTranslation(where: LanguageTranslationSubscriptionWhereInput): LanguageTranslationSubscriptionPayload
+  office(where: OfficeSubscriptionWhereInput): OfficeSubscriptionPayload
+  package(where: PackageSubscriptionWhereInput): PackageSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
   supportFileUse(where: SupportFileUseSubscriptionWhereInput): SupportFileUseSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
@@ -1611,6 +3149,7 @@ type SupportFile {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUse
 }
 
@@ -1629,6 +3168,7 @@ input SupportFileCreateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseCreateOneInput
 }
 
@@ -1661,6 +3201,8 @@ enum SupportFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  visibility_ASC
+  visibility_DESC
 }
 
 type SupportFilePreviousValues {
@@ -1673,6 +3215,7 @@ type SupportFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileScalarWhereInput {
@@ -1784,6 +3327,10 @@ input SupportFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -1815,6 +3362,7 @@ input SupportFileUpdateDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
@@ -1826,6 +3374,7 @@ input SupportFileUpdateInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
   use: SupportFileUseUpdateOneInput
 }
 
@@ -1836,6 +3385,7 @@ input SupportFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyInput {
@@ -1857,6 +3407,7 @@ input SupportFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  visibility: Visibility
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -2106,6 +3657,10 @@ input SupportFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: SupportFileUseWhereInput
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
@@ -3213,6 +4768,7 @@ type VideoFile {
   language: Language
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUse
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3237,6 +4793,7 @@ input VideoFileCreateInput {
   language: LanguageCreateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseCreateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3271,6 +4828,8 @@ enum VideoFileOrderByInput {
   filetype_DESC
   filename_ASC
   filename_DESC
+  visibility_ASC
+  visibility_DESC
   quality_ASC
   quality_DESC
   videoBurnedInStatus_ASC
@@ -3295,6 +4854,7 @@ type VideoFilePreviousValues {
   updatedAt: DateTime!
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3364,6 +4924,10 @@ input VideoFileScalarWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   quality: VideoQuality
   quality_not: VideoQuality
   quality_in: [VideoQuality!]
@@ -3465,6 +5029,7 @@ input VideoFileUpdateDataInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3482,6 +5047,7 @@ input VideoFileUpdateInput {
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
+  visibility: Visibility
   use: VideoUseUpdateOneInput
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
@@ -3498,6 +5064,7 @@ input VideoFileUpdateInput {
 input VideoFileUpdateManyDataInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3523,6 +5090,7 @@ input VideoFileUpdateManyInput {
 input VideoFileUpdateManyMutationInput {
   filetype: String
   filename: String
+  visibility: Visibility
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
@@ -3609,6 +5177,10 @@ input VideoFileWhereInput {
   filename_not_starts_with: String
   filename_ends_with: String
   filename_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   use: VideoUseWhereInput
   quality: VideoQuality
   quality_not: VideoQuality
@@ -3706,10 +5278,11 @@ type VideoProject {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   author: User
   team: Team
-  status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  status: PublishStatus
+  visibility: Visibility
   units(where: VideoUnitWhereInput, orderBy: VideoUnitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoUnit!]
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
   thumbnails(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
@@ -3730,10 +5303,11 @@ input VideoProjectCreateInput {
   projectTitle: String!
   descPublic: String
   descInternal: String
+  assetPath: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
-  status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  status: PublishStatus
+  visibility: Visibility
   units: VideoUnitCreateManyInput
   supportFiles: SupportFileCreateManyInput
   thumbnails: ImageFileCreateManyInput
@@ -3763,6 +5337,8 @@ enum VideoProjectOrderByInput {
   descPublic_DESC
   descInternal_ASC
   descInternal_DESC
+  assetPath_ASC
+  assetPath_DESC
   status_ASC
   status_DESC
   visibility_ASC
@@ -3778,8 +5354,9 @@ type VideoProjectPreviousValues {
   projectTitle: String!
   descPublic: String
   descInternal: String
-  status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
 }
 
 type VideoProjectSubscriptionPayload {
@@ -3806,10 +5383,11 @@ input VideoProjectUpdateInput {
   projectTitle: String
   descPublic: String
   descInternal: String
+  assetPath: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
-  status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  status: PublishStatus
+  visibility: Visibility
   units: VideoUnitUpdateManyInput
   supportFiles: SupportFileUpdateManyInput
   thumbnails: ImageFileUpdateManyInput
@@ -3823,8 +5401,9 @@ input VideoProjectUpdateManyMutationInput {
   projectTitle: String
   descPublic: String
   descInternal: String
-  status: ProjectPublishStatus
-  visibility: ProjectVisibility
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
 }
 
 input VideoProjectWhereInput {
@@ -3912,16 +5491,30 @@ input VideoProjectWhereInput {
   descInternal_not_starts_with: String
   descInternal_ends_with: String
   descInternal_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
   author: UserWhereInput
   team: TeamWhereInput
-  status: ProjectPublishStatus
-  status_not: ProjectPublishStatus
-  status_in: [ProjectPublishStatus!]
-  status_not_in: [ProjectPublishStatus!]
-  visibility: ProjectVisibility
-  visibility_not: ProjectVisibility
-  visibility_in: [ProjectVisibility!]
-  visibility_not_in: [ProjectVisibility!]
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   units_every: VideoUnitWhereInput
   units_some: VideoUnitWhereInput
   units_none: VideoUnitWhereInput
@@ -4598,6 +6191,11 @@ input VideoUseWhereInput {
 input VideoUseWhereUniqueInput {
   id: ID
   name: String
+}
+
+enum Visibility {
+  INTERNAL
+  PUBLIC
 }
 `
       }

@@ -1,14 +1,29 @@
-type,name
-Image,Email Graphic
-Image,Infographic
-Image,Website Hero Image
-Image,Social Media Graphic
-Image,Memes
-Image,3D Graphics
-Image,Thumbnail/Cover Image
-Video,Full Video
-Video,Promotional Teaser
-Video,Video Assets (B-Roll)
-Video,Event Video
-Audio,Event Audio
-Audio,Audio Assets (B-Roll)
+type,name,previous
+Image,Email Graphic,
+Image,Infographic,
+Image,Website Hero Image,
+Image,Social Media Graphic,
+Image,Memes,
+Image,3D Graphics,
+Image,Thumbnail/Cover Image,
+Video,Full Video,
+Video,Promotional Teaser,
+Video,Video Assets (B-Roll),
+Video,Web Chat,Event Video
+Audio,Event Audio,
+Audio,Audio Assets (B-Roll),
+Document,Background Briefing,
+Document,Department Press Briefing,
+Document,Fact Sheet,
+Document,Interview,
+Document,Media Note,
+Document,Notice to the Press,
+Document,On-the-record Briefing,
+Document,Press Guidance,
+Document,Remarks,
+Document,Speeches,
+Document,Statement,
+Document,Taken Questions,
+Document,Travel Alert,
+Document,Readout,
+Document,Travel Warning,

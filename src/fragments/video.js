@@ -57,6 +57,7 @@ export const VIDEO_PROJECT_FULL = `
         language { id languageCode locale textDirection displayName nativeName }
         filetype
         filename
+        visibility
         use { name }
         quality
         videoBurnedInStatus
@@ -105,6 +106,7 @@ export const VIDEO_PROJECT_FULL = `
           caption
           filename
           filetype
+          visibility
           use {
             name
           }
@@ -121,6 +123,7 @@ export const VIDEO_PROJECT_FULL = `
       filename
       filetype
       filename
+      visibility
       use {
         name
       }
@@ -137,6 +140,7 @@ export const VIDEO_PROJECT_FULL = `
       caption
       filename
       filetype
+      visibility
       use {
         name
       }
