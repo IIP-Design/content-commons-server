@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server-express';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 // import pubsub from '../services/pubsub';
 import { deleteAllS3Assets } from '../services/aws/s3';
 // import transformPackage from '../services/es/package/transform';
@@ -21,12 +21,18 @@ export default {
   },
 
   Mutation: {
+    async packageExists( parent, args, ctx ) {
+      const { where } = args;
+      return ctx.prisma.$exists.package( where );
+    },
+
     async createPackage( parent, args, ctx ) {
       const { data } = args;
-
-      return ctx.prisma.createPackage( {
-        ...data
-      } );
+      try {
+        return ctx.prisma.createPackage( { ...data } );
+      } catch ( err ) {
+        throw new ApolloError( err );
+      }
     },
 
     updatePackage( parent, args, ctx ) {
