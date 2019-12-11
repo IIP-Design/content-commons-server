@@ -56,12 +56,12 @@ export default {
       // 2. Verify that the Cloudflare token sent is vaild
       const cloudflareUser = await verifyCloudflareToken( token );
 
-      if ( !cloudflareUser ) {
-        throw new AuthenticationError( 'Unable to verify Cloudflare Token' );
+      if ( !cloudflareUser || cloudflareUser.message ) {
+        throw new AuthenticationError( `Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.` );
       }
 
       // 3. Verify that the cloudflare user is from america.gov or state.gov
-      if ( cloudflareUser.email.includes( 'america.gov' ) || cloudflareUser.email.includes( 'state.gov' ) ) {
+      if ( !cloudflareUser.email.includes( 'america.gov' ) && !cloudflareUser.email.includes( 'state.gov' ) ) {
         throw new AuthenticationError( 'You must be an america.gov or state.gov user.' );
       }
 
