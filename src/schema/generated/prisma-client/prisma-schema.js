@@ -785,6 +785,7 @@ type DocumentFile {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  title: String
   language: Language
   filetype: String
   filename: String
@@ -810,6 +811,7 @@ type DocumentFileConnection {
 input DocumentFileCreateInput {
   id: ID
   publishedAt: DateTime
+  title: String
   language: LanguageCreateOneInput
   filetype: String
   filename: String
@@ -845,6 +847,8 @@ enum DocumentFileOrderByInput {
   updatedAt_DESC
   publishedAt_ASC
   publishedAt_DESC
+  title_ASC
+  title_DESC
   filetype_ASC
   filetype_DESC
   filename_ASC
@@ -866,6 +870,7 @@ type DocumentFilePreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  title: String
   filetype: String
   filename: String
   filesize: Float
@@ -914,6 +919,20 @@ input DocumentFileScalarWhereInput {
   publishedAt_lte: DateTime
   publishedAt_gt: DateTime
   publishedAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filetype: String
   filetype_not: String
   filetype_in: [String!]
@@ -1011,6 +1030,7 @@ input DocumentFileSubscriptionWhereInput {
 
 input DocumentFileUpdateDataInput {
   publishedAt: DateTime
+  title: String
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
@@ -1029,6 +1049,7 @@ input DocumentFileUpdateDataInput {
 
 input DocumentFileUpdateInput {
   publishedAt: DateTime
+  title: String
   language: LanguageUpdateOneInput
   filetype: String
   filename: String
@@ -1047,6 +1068,7 @@ input DocumentFileUpdateInput {
 
 input DocumentFileUpdateManyDataInput {
   publishedAt: DateTime
+  title: String
   filetype: String
   filename: String
   filesize: Float
@@ -1070,6 +1092,7 @@ input DocumentFileUpdateManyInput {
 
 input DocumentFileUpdateManyMutationInput {
   publishedAt: DateTime
+  title: String
   filetype: String
   filename: String
   filesize: Float
@@ -1134,6 +1157,20 @@ input DocumentFileWhereInput {
   publishedAt_lte: DateTime
   publishedAt_gt: DateTime
   publishedAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   language: LanguageWhereInput
   filetype: String
   filetype_not: String

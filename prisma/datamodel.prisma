@@ -292,6 +292,7 @@ type DocumentFile {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
+  title: String
   language: Language
   filetype: String
   filename: String

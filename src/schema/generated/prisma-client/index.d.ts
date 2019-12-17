@@ -1245,6 +1245,8 @@ export type DocumentFileOrderByInput =
   | "updatedAt_DESC"
   | "publishedAt_ASC"
   | "publishedAt_DESC"
+  | "title_ASC"
+  | "title_DESC"
   | "filetype_ASC"
   | "filetype_DESC"
   | "filename_ASC"
@@ -1850,6 +1852,20 @@ export interface DocumentFileWhereInput {
   publishedAt_lte?: Maybe<DateTimeInput>;
   publishedAt_gt?: Maybe<DateTimeInput>;
   publishedAt_gte?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   language?: Maybe<LanguageWhereInput>;
   filetype?: Maybe<String>;
   filetype_not?: Maybe<String>;
@@ -2449,6 +2465,7 @@ export interface ThumbnailUpdateManyWithWhereNestedInput {
 export interface DocumentFileCreateInput {
   id?: Maybe<ID_Input>;
   publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
   language?: Maybe<LanguageCreateOneInput>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
@@ -2885,6 +2902,7 @@ export interface VideoProjectUpdateInput {
 
 export interface DocumentFileUpdateInput {
   publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
   language?: Maybe<LanguageUpdateOneInput>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
@@ -3979,6 +3997,7 @@ export type ImageUseWhereUniqueInput = AtLeastOne<{
 
 export interface DocumentFileUpdateManyMutationInput {
   publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
@@ -5866,6 +5885,7 @@ export interface BureauWhereInput {
 
 export interface DocumentFileUpdateDataInput {
   publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
   language?: Maybe<LanguageUpdateOneInput>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
@@ -5954,6 +5974,20 @@ export interface DocumentFileScalarWhereInput {
   publishedAt_lte?: Maybe<DateTimeInput>;
   publishedAt_gt?: Maybe<DateTimeInput>;
   publishedAt_gte?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   filetype?: Maybe<String>;
   filetype_not?: Maybe<String>;
   filetype_in?: Maybe<String[] | String>;
@@ -6063,6 +6097,7 @@ export interface VideoFileUpdateManyInput {
 
 export interface DocumentFileUpdateManyDataInput {
   publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
@@ -7153,6 +7188,7 @@ export interface DocumentFilePreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   publishedAt?: DateTimeOutput;
+  title?: String;
   filetype?: String;
   filename?: String;
   filesize?: Float;
@@ -7169,6 +7205,7 @@ export interface DocumentFilePreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
+  title: () => Promise<String>;
   filetype: () => Promise<String>;
   filename: () => Promise<String>;
   filesize: () => Promise<Float>;
@@ -7185,6 +7222,7 @@ export interface DocumentFilePreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  title: () => Promise<AsyncIterator<String>>;
   filetype: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
   filesize: () => Promise<AsyncIterator<Float>>;
@@ -9865,6 +9903,7 @@ export interface DocumentFile {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   publishedAt?: DateTimeOutput;
+  title?: String;
   filetype?: String;
   filename?: String;
   filesize?: Float;
@@ -9881,6 +9920,7 @@ export interface DocumentFilePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
+  title: () => Promise<String>;
   language: <T = LanguagePromise>() => T;
   filetype: () => Promise<String>;
   filename: () => Promise<String>;
@@ -9936,6 +9976,7 @@ export interface DocumentFileSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  title: () => Promise<AsyncIterator<String>>;
   language: <T = LanguageSubscription>() => T;
   filetype: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
@@ -9991,6 +10032,7 @@ export interface DocumentFileNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   publishedAt: () => Promise<DateTimeOutput>;
+  title: () => Promise<String>;
   language: <T = LanguagePromise>() => T;
   filetype: () => Promise<String>;
   filename: () => Promise<String>;
