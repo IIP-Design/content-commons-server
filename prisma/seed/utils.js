@@ -5,18 +5,20 @@ export const ucfirst = string => String( string ).charAt( 0 ).toUpperCase() + st
 export const lcfirst = string => String( string ).charAt( 0 ).toLowerCase() + string.slice( 1 );
 export const printError = err => console.error( typeof err === 'string' ? err : JSON.stringify( err, null, 2 ) );
 
+export const getPrismaErrors = result => {
+  if ( result && result.result && result.result.errors && result.result.errors.length > 0 ) {
+    return result.result.errors.map( err => err.message ).join( '\n' );
+  }
+  return 'Prisma error.';
+};
+
 /**
  * Print error messages from a Prisma error object.
  *
  * @param result
  */
 export const prismaErrors = result => {
-  // printError( result.result );
-  if ( result.result.errors.length > 0 ) {
-    printError( result.result.errors.map( err => err.message ).join( '\n' ) );
-    return;
-  }
-  printError( 'Prisma error.' );
+  printError( getPrismaErrors( result ) );
 };
 
 /**
