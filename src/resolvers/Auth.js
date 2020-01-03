@@ -1,6 +1,7 @@
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import randomize from 'randomatic';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
 import { isEmailWhitelisted } from '../lib/whitelist';
@@ -73,15 +74,43 @@ export default {
       }
 
       // 4. Check to see if user is in the db
-      const user = await ctx.prisma.user( { email: cloudflareUser.email } );
+      let user = await ctx.prisma.user( { email: cloudflareUser.email } );
       if ( !user ) {
-        // TODO: Implement registration process
-        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
-      }
+        try {
+          // 1. Set a temporary token and expiry on that user for confirmation purposes
+          const { tempToken, tempTokenExpiry } = await createToken();
+          const { email } = cloudflareUser;
+          const firstName = 'State Employee';
+          const lastName = 'State Employee';
+          const permissions = {};
+          const userWithToken = {email, firstName, lastName, permissions, tempToken, tempTokenExpiry };
 
-      if ( !user.isConfirmed ) {
-        // TODO: Handle user confirmation for Cloudflare users
-        throw new AuthenticationError( 'You must confirm your account before you can sign in.' );
+          // 1a. If signing in with Cloudflare, force as subscriber
+          const userWithTokenSubscriberOnly = userWithToken;
+          userWithTokenSubscriberOnly.permissions.set = ['SUBSCRIBER'];
+
+          // 2. Create an unconfirmed user in the db
+          user = await ctx.prisma.createUser( userWithTokenSubscriberOnly ).$fragment( `fragment UserSignUp on User { id email firstName lastName }` );
+          if ( !user.isConfirmed ) {
+            // 3. Force confirm the user with a random password due to CF login
+            if ( user ) {
+              const password = await bcrypt.hash( randomize('Aa0!', 12), 10 );
+
+              // 4. Save the new password to the user and remove old tempToken fields
+              user = await ctx.prisma.updateUser( {
+                where: { email: user.email },
+                data: {
+                  password,
+                  isConfirmed: true,
+                  tempToken: null,
+                  tempTokenExpiry: null
+                },
+              } );
+            }
+          }
+        } catch ( err ) {
+          throw new ApolloError( 'There was an error processing your login.' );
+        }
       }
 
       // 5.Create user's JWT token
