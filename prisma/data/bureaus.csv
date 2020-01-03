@@ -1,0 +1,18 @@
+abbr,name,parent,isBureau
+A,"Bureau of Administration",,1
+LM,"Office of Logistics Management","Bureau of Administration",
+OPE,"Office of Procurement Executive","Bureau of Administration",
+AF,"Bureau of African Affairs",,1
+BP,"Bureau of Budget and Planning",,1
+CA,"Bureau of Consular Affairs",,1
+DS,"Bureau of Diplomatic Security",,1
+EAP,"Bureau of East Asian and Pacific Affairs",,1
+ECA,"Bureau of Educational and Cultural Afairs",,1
+GPA,"Bureau of Global Public Affairs",,1
+GSM,"Office of Global Social Media","Bureau of Global Public Affairs",
+SPOX,"Office of the Spokesperson","Bureau of Global Public Affairs",
+PL,"Office of Public Liaison","Bureau of Global Public Affairs",
+HR,"Bureau of Human Resources",,1
+NEA,"Bureau of Near Eastern Affairs",,1
+SCA,"Bureau of South and Central Asian Affairs",,1
+WHA,"Bureau of Western Hemisphere Affairs",,1
