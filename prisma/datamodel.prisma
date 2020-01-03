@@ -67,14 +67,14 @@ type Office {
   id: ID! @id
   name: String!
   abbr: String!
-  bureau: Bureau
+  bureau: Bureau @relation(onDelete: SET_NULL)
 }
 
 type Bureau {
   id: ID! @id
   name: String!
   abbr: String!
-  offices: [Office]
+  offices: [Office] @scalarList(strategy: RELATION)
 }
 
 type User {

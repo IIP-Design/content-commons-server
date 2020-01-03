@@ -3,10 +3,12 @@ import fs from 'fs';
 import seedLanguages from './seedLanguages';
 import seedTaxonomies from './seedTaxonomies';
 import seedTeams from './seedTeams';
+import seedBureaus from './seedBureaus';
 import seedUses from './seedUses';
 
 export const files = {
   teams: './prisma/data/teams.csv',
+  bureaus: './prisma/data/bureaus.csv',
   languages: './prisma/data/languages.csv',
   categories: './prisma/data/categories.csv',
   tags: './prisma/data/tags.csv',
@@ -32,6 +34,25 @@ export const files = {
     promises.push( teamProm );
   } else {
     console.error( `CSV not found: ${files.teams}\nTeams were not processed.` );
+  }
+  if ( fs.existsSync( files.bureaus ) ) {
+    const burProm = seedBureaus().then( bureaus => {
+      const counts = [0, 0];
+      bureaus.forEach( result => {
+        if ( 'offices' in result ) {
+          counts[0] += 1;
+          if ( result.offices ) {
+            counts[1] += result.offices.length;
+          }
+        } else {
+          counts[1] += 1;
+        }
+      } );
+      console.log( `Created/updated ${counts[0] + counts[1]} bureaus/offices` );
+    } );
+    promises.push( burProm );
+  } else {
+    console.error( `CSV not found: ${files.bureaus}\nBureaus/Offices were not processed.` );
   }
   if ( fs.existsSync( files.uses ) ) {
     const usesProm = seedUses().then( uses => {
