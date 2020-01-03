@@ -14,6 +14,7 @@ export const PACKAGE_FULL = `
     desc
     status
     visibility
+    assetPath
     author {
       id
       firstName

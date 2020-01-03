@@ -1,11 +1,13 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 // import pubsub from '../services/pubsub';
-import { deleteAllS3Assets } from '../services/aws/s3';
+import { deleteAllS3Assets, deleteS3Asset, getAssetPath } from '../services/aws/s3';
 // import transformPackage from '../services/es/package/transform';
 // import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
-import { PACKAGE_DOCUMENT_FILES } from '../fragments/package';
+import { hasValidValue } from '../lib/projectParser';
+import { PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
+
 
 export default {
   Subscription: {},
@@ -29,7 +31,15 @@ export default {
     async createPackage( parent, args, ctx ) {
       const { data } = args;
       try {
-        return ctx.prisma.createPackage( { ...data } );
+        const { id, type } = await ctx.prisma.createPackage( { ...data } );
+
+        // Set the S3 assetPath using the new package id
+        const assetPath = getAssetPath( id, type.toLowerCase() );
+
+        return ctx.prisma.updatePackage( {
+          data: { assetPath },
+          where: { id }
+        } );
       } catch ( err ) {
         throw new ApolloError( err );
       }
@@ -41,6 +51,16 @@ export default {
         data,
         where: { id }
       } = updates;
+
+      if ( data && data.documents && data.documents.delete ) {
+        const documentsToDelete = data.documents.delete;
+        documentsToDelete.forEach( async document => {
+          const { url } = await ctx.prisma.documentFile( { id: document.id } );
+          if ( url && hasValidValue( url ) ) {
+            await deleteS3Asset( url, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
+          }
+        } );
+      }
 
       return ctx.prisma.updatePackage( {
         data,
@@ -72,18 +92,15 @@ export default {
       }
 
       // 2. Fetch files that need to be removed from s3
-      const documents = await ctx.prisma.package( { id } ).$fragment( PACKAGE_DOCUMENT_FILES );
+      const pkg = await ctx.prisma.package( { id } ).$fragment( PACKAGE_FULL );
 
       // 3. Delete files if they exist
-      if ( documents.length ) {
+      if ( pkg && pkg.documents.length ) {
         let deleteS3;
-        // const s3DirToDelete = getS3ContentDirectory( documents, 'package' );
-        // setting this to null until the assetPath is implemented during pacakge creation
-        const s3DirToDelete = null;
 
         // Delete files from S3
-        if ( s3DirToDelete ) {
-          deleteS3 = deleteAllS3Assets( s3DirToDelete, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
+        if ( pkg.assetPath ) {
+          deleteS3 = deleteAllS3Assets( pkg.assetPath, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
         }
 
         if ( deleteS3 ) {
