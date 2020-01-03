@@ -1,0 +1,8 @@
+type Query {
+  bureaus(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bureau]!
+  bureau(id: ID!): Bureau 
+}
+
+type Mutation {
+  createBureau(data: BureauCreateInput!): Bureau!
+}

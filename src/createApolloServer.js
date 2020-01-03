@@ -4,6 +4,7 @@ import merge from 'lodash/merge';
 import path from 'path';
 import AuthResolvers from './resolvers/Auth';
 import LanguageResolvers from './resolvers/Language';
+import BureauResolvers from './resolvers/Bureau';
 import TaxonomyResolvers from './resolvers/Taxonomy';
 import TeamResolvers from './resolvers/Team';
 import UserResolvers from './resolvers/User';
@@ -20,6 +21,7 @@ const resolvers = merge(
   UtilResolvers,
   LanguageResolvers,
   TaxonomyResolvers,
+  BureauResolvers,
   UserResolvers,
   TeamResolvers,
   DocumentResolvers,

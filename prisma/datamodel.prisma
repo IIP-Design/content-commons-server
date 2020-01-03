@@ -143,6 +143,8 @@ type DocumentConversionFormat {
   markdown: String
 }
 
+# NOTE: we can add other arrays in addition to the documents arrays
+# for packages that contain other content types, i.e. images
 type Package {
   id: ID! @id
   createdAt: DateTime! @createdAt
@@ -158,7 +160,7 @@ type Package {
   visibility: Visibility @default(value: INTERNAL)
   categories: [Category]
   tags: [Tag]
-  documents: [DocumentFile]
+  documents: [DocumentFile] 
 }
 
 
