@@ -33,23 +33,24 @@ const getKey = ( filename, projectId ) => {
   const fn = filename.replace( /\s+/g, '_' );
 
   // test to see if this is a path or simply a filename
-  const dateRegexp = /^(?<yr>[0-9]{4})\/(?<mth>[0-9]{2})\/(?<domain>[a-zA-Z0-9.]*)_/;
+
+  const dateRegexp = /(?<yr>[0-9]{4})\/(?<mth>[0-9]{2})\//;
   const matches = projectId.match( dateRegexp );
 
   // Check if the projectId is a file path and if so, save to that path
   if ( matches ) {
-    const { yr, mth, domain } = matches.groups;
+    const { yr, mth } = matches.groups;
 
-    if ( yr && mth && domain ) {
+    if ( yr && mth ) {
       return `${projectId}/${fn}`;
     }
   }
 
-  // if  yr, mth, domain are not present assume new project
+  // if yr, mth, domain are not present assume new project
   return `${getYrMonthPath()}/commons.america.gov_${projectId}/${fn}`;
 };
 
-export const getAssetPath = ( type, id ) => `${getYrMonthPath()}/${type}/commons.america.gov_${id}`;
+export const getAssetPath = ( id, type ) => `${type}/${getYrMonthPath()}/commons.america.gov_${id}`;
 
 export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject ) => {
   const {
