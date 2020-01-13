@@ -3,6 +3,8 @@ type Query {
   documentFiles(where: DocumentFileWhereInput, orderBy: DocumentFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentFile]!
   documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
   documentUse(id: ID!): DocumentUse
+  documentConversionFormats(where: DocumentConversionFormatWhereInput, orderBy: DocumentConversionFormatOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentConversionFormat]!
+  documentConversionFormat(id: ID!): DocumentConversionFormat
 }
 
 type Mutation {
@@ -15,4 +17,9 @@ type Mutation {
   updateManyDocumentUses(data: DocumentUseUpdateManyMutationInput!, where: DocumentUseWhereInput): BatchPayload!
   deleteDocumentUse(id: ID!): DocumentUse
   deleteManyDocumentUses(where: DocumentUseWhereInput): BatchPayload!
+  createDocumentConversionFormat(data: DocumentConversionFormatCreateInput!): DocumentConversionFormat!
+  updateDocumentConversionFormat(data: DocumentConversionFormatUpdateInput!, where: DocumentConversionFormatWhereUniqueInput!): DocumentConversionFormat
+  updateManyDocumentConversionFormats(data: DocumentConversionFormatUpdateManyMutationInput!, where: DocumentConversionFormatWhereInput): BatchPayload!
+  deleteDocumentConversionFormat(id: ID!): DocumentConversionFormat
+  deleteManyDocumentConversionFormats(where: DocumentConversionFormatWhereInput): BatchPayload!
 }
