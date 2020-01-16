@@ -29,7 +29,8 @@ export default {
 
   Mutation: {
     async createDocumentFile( parent, args, ctx ) {
-      const documentFile = await ctx.prisma.createDocumentFile( { ...args } );
+      const { data } = args;
+      const documentFile = await ctx.prisma.createDocumentFile( { ...data } );
 
       return documentFile;
     },
