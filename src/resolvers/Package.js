@@ -1,6 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
+import path from 'path';
+import mammoth from 'mammoth';
+import xss from 'xss';
 // import pubsub from '../services/pubsub';
-import { deleteAllS3Assets, deleteS3Asset, getAssetPath } from '../services/aws/s3';
+import {
+  deleteAllS3Assets, deleteS3Asset, getAssetPath
+} from '../services/aws/s3';
 // import transformPackage from '../services/es/package/transform';
 // import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { hasValidValue } from '../lib/projectParser';
@@ -8,6 +13,16 @@ import { PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
+/**
+ * Strips tags and multiple spaces from a string of html
+ * @param {string} string
+ */
+const htmlToText = ( string = '' ) => (
+  string
+    .replace( /<[\s\S]*?>/g, ' ' )
+    .replace( /\s{2,}/g, ' ' )
+    .trim()
+);
 
 export default {
   Subscription: {},
@@ -45,7 +60,7 @@ export default {
       }
     },
 
-    updatePackage( parent, args, ctx ) {
+    async updatePackage( parent, args, ctx ) {
       const updates = { ...args };
       const {
         data,
@@ -61,6 +76,47 @@ export default {
           }
         } );
       }
+
+      const convertDocxContent = async () => {
+        if ( !data.documents || !data.documents.create || !data.documents.create[0] ) {
+          return;
+        }
+
+        const setDocumentContent = async input => (
+          mammoth.convertToHtml( input )
+            .then( result => {
+              if ( result.value ) {
+                data.documents.create[0].content = {
+                  create: {
+                    rawText: htmlToText( result.value ),
+                    html: xss( result.value ),
+                    markdown: ''
+                  }
+                };
+              }
+
+              if ( result.messages && result.messages.length ) {
+                result.messages.forEach( msg => console.log( msg ) );
+              }
+            } )
+            .catch( err => console.log( err ) )
+            .done()
+        );
+
+        // use local sample.docx just to test mammoth output
+        const filePath = path.join( __dirname, 'sample.docx' );
+
+        await setDocumentContent( { path: filePath } )
+          .then( () => (
+            // call updatePackage to update data w/ document content
+            ctx.prisma.updatePackage( {
+              data: {}, // empty to avoid creating a document w/ no content
+              where: { id }
+            } )
+          ) );
+      };
+
+      await convertDocxContent();
 
       return ctx.prisma.updatePackage( {
         data,
