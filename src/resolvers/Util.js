@@ -155,5 +155,6 @@ export const convertDocxContent = async params => {
         data: {}, // {} to avoid creating a document w/ no content
         where: { id }
       } )
-    ) );
+    ) )
+    .catch( err => console.log( err ) );
 };
