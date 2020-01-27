@@ -62,6 +62,7 @@ export default {
 const htmlToText = ( string = '' ) => (
   string
     .replace( /<[\s\S]*?>/g, ' ' )
+    .replace( /\t/g, ' ' )
     .replace( /\s{2,}/g, ' ' )
     .trim()
 );
