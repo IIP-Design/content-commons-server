@@ -135,14 +135,14 @@ const setDocumentContent = async ( document, input ) => (
 
 /**
  * Converts docx content
- * @param {string} id Package id
- * @param {object} data
- * @param {object} ctx Prisma context
+ * @param {object} params
  */
-export const convertDocxContent = async ( id, data, ctx ) => {
-  if ( !data.documents || !data.documents.create || !data.documents.create[0] ) {
-    return;
-  }
+export const convertDocxContent = async params => {
+  const {
+    id, data, ctx, isCreateAction
+  } = params;
+
+  if ( !isCreateAction ) return null;
 
   const document = data.documents.create[0];
   const signed = await getSignedUrlPromiseGet( { key: document.url } );

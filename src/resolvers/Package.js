@@ -64,7 +64,15 @@ export default {
         } );
       }
 
-      await convertDocxContent( id, data, ctx );
+      const isCreateAction = data.documents
+        && data.documents.create
+        && data.documents.create[0];
+
+      const params = {
+        id, data, ctx, isCreateAction
+      };
+
+      await convertDocxContent( params );
 
       return ctx.prisma.updatePackage( {
         data,
