@@ -15,6 +15,7 @@ type Mutation {
   signUp(data: UserCreateInput): Message
   signIn(email: String!, password: String!): User!
   googleSignin(token: String!): User
+  cloudflareSignin(token: String!): User
   updatePassword(
     tempToken: String!
     password: String!

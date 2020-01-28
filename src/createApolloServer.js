@@ -38,7 +38,7 @@ const createApolloServer = () => new ApolloServer( {
   subscriptions: {
     path: '/subscription',
     onConnect: () => {},
-    onDisconnect: ( ) => {},
+    onDisconnect: () => {},
     onOperation: ( message, params ) => params,
   },
   context: async ( { connection, ...other } ) => {

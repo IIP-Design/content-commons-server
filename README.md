@@ -53,6 +53,11 @@ Install the following if not already installed
   - **RABBITMQ_PORT** : Rabbit Server port
   - **RABBITMQ_VHOST** : Rabbit Server vhost
 
+- CloudFlare domain for authentication.
+
+  - **CLOUDFLARE_AUTH_DOMAIN** : Domain CloudFlare authenticates against
+  - **CLOUDFLARE_POLICY_AUD** : CloudFlare access id assocated with configured domain
+
 - Deploy prisma schema, install dependencies and start development server
 
 ```

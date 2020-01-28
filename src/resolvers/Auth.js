@@ -8,6 +8,8 @@ import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { verifyGoogleToken } from '../services/googleAuth';
+import { verifyCloudflareToken } from '../services/cloudflareAuth';
+import { USER } from '../fragments/user';
 
 const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
 
@@ -21,7 +23,17 @@ const createToken = async () => {
     tempToken, tempTokenExpiry
   };
 };
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7; // 1 year cookie
+
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24; // 24 hours, matches CloudFlare maxAge
+
+const setCookie = ( ctx, jwtToken ) => {
+  ctx.res.cookie( 'americaCommonsToken', jwtToken, {
+    httpOnly: true, // only allow access to cookie from the server
+    maxAge: COOKIE_MAX_AGE,
+    secure: !process.env.NODE_ENV === 'development',
+    sameSite: 'Lax'
+  } );
+};
 
 export default {
   Query: {
@@ -43,9 +55,61 @@ export default {
   },
 
   Mutation: {
-  /**
-   * @param {object} args { token } google tokenId
-   */
+    /**
+     * @param {object} args { token } cloudflare tokenId
+     */
+    async cloudflareSignin( parent, { token }, ctx ) {
+      // 1. Was a cloudflare token sent?
+      if ( !token ) {
+        throw new AuthenticationError( 'A valid Cloudflare token is not available' );
+      }
+
+      // 2. Verify that the Cloudflare token sent is vaild
+      const cloudflareUser = await verifyCloudflareToken( token );
+
+      if ( !cloudflareUser || cloudflareUser.message ) { // cloudflare message is error
+        throw new AuthenticationError(
+          `Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.`
+        );
+      }
+
+      // 3. Check to see if user is in the db
+      let user = await ctx.prisma.user( { email: cloudflareUser.email } );
+
+      // 4. If user is not in the db, create one with subscriber permissions
+      if ( !user ) {
+        try {
+          const { email } = cloudflareUser;
+
+          const subscriber = {
+            email,
+            firstName: '',
+            lastName: '',
+            isConfirmed: true,
+            permissions: {
+              set: ['SUBSCRIBER']
+            }
+          };
+
+          user = await ctx.prisma.createUser( subscriber ).$fragment( USER );
+        } catch ( err ) {
+          throw new ApolloError( 'There was an error processing your login.' );
+        }
+      }
+
+      // 5.Create user's JWT token
+      const jwtToken = generateToken( user.id );
+
+      // 6.Set the jwt as a cookie on the response
+      setCookie( ctx, jwtToken );
+
+      // 7.Return user
+      return user;
+    },
+
+    /**
+     * @param {object} args { token } google tokenId
+     */
     async googleSignin( parent, { token }, ctx ) {
       // 1. Was a google token sent?
       if ( !token ) {
@@ -61,20 +125,26 @@ export default {
 
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
-        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
+        throw new AuthenticationError(
+          'You must first register using your america.gov email account to sign in.'
+        );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( googleUser.email );
         if ( !whitelisted ) {
-          throw new AuthenticationError( 'This america.gov account is not currently approved during our beta testing period.' );
+          throw new AuthenticationError(
+            'This america.gov account is not currently approved during our beta testing period.'
+          );
         }
       }
 
       // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
       if ( !user ) {
-        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
+        throw new AuthenticationError(
+          'You must first register your account before you can sign in.'
+        );
       }
 
       if ( !user.isConfirmed ) {
@@ -85,10 +155,7 @@ export default {
       const jwtToken = generateToken( user.id );
 
       // 6.Set the jwt as a cookie on the response
-      ctx.res.cookie( 'americaCommonsToken', jwtToken, {
-        httpOnly: true, // only allow access to cookie from the server
-        maxAge: COOKIE_MAX_AGE
-      } );
+      setCookie( ctx, jwtToken );
 
       // 7.Return user
       return user;
@@ -104,17 +171,23 @@ export default {
       const user = await ctx.prisma.user( { email } );
 
       if ( !user && email.includes( 'america.gov' ) ) {
-        throw new AuthenticationError( 'You must first register your account before you can sign in.' );
+        throw new AuthenticationError(
+          'You must first register your account before you can sign in.'
+        );
       }
 
       if ( !user ) {
-        throw new AuthenticationError( 'You must first register using your america.gov email account to sign in.' );
+        throw new AuthenticationError(
+          'You must first register using your america.gov email account to sign in.'
+        );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( email );
         if ( !whitelisted ) {
-          throw new AuthenticationError( 'This america.gov account is not currently approved during our beta testing period.' );
+          throw new AuthenticationError(
+            'This america.gov account is not currently approved during our beta testing period.'
+          );
         }
       }
 
@@ -132,15 +205,11 @@ export default {
       const jwtToken = generateToken( user.id );
 
       // 4. Set the cookie with the token
-      ctx.res.cookie( 'americaCommonsToken', jwtToken, {
-        httpOnly: true,
-        maxAge: COOKIE_MAX_AGE
-      } );
+      setCookie( ctx, jwtToken );
 
       // 5. Return the user
       return user;
     },
-
 
     /**
      * Creates an unconfirmed user in db then send confirmation email
@@ -151,7 +220,9 @@ export default {
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( args.data.email );
         if ( !whitelisted ) {
-          throw new UserInputError( 'This america.gov account is not currently approved during our beta testing period.' );
+          throw new UserInputError(
+            'This america.gov account is not currently approved during our beta testing period.'
+          );
         }
       }
       try {
@@ -164,7 +235,9 @@ export default {
         userWithTokenEditorOnly.permissions.set = ['EDITOR'];
 
         // 2. Create an unconfirmed user in the db
-        const user = await ctx.prisma.createUser( userWithTokenEditorOnly ).$fragment( `fragment UserSignUp on User { id email team { name } }` );
+        const user = await ctx.prisma
+          .createUser( userWithTokenEditorOnly )
+          .$fragment( `fragment UserSignUp on User { id email team { name } }` );
 
         // 3. Email the user
         if ( user ) {
@@ -212,8 +285,8 @@ export default {
       const [user] = await ctx.prisma.users( {
         where: {
           tempToken: args.tempToken,
-          tempTokenExpiry_gte: Date.now() - 3600000,
-        },
+          tempTokenExpiry_gte: Date.now() - 3600000
+        }
       } );
 
       if ( !user ) {
@@ -231,17 +304,14 @@ export default {
           isConfirmed: true,
           tempToken: null,
           tempTokenExpiry: null
-        },
+        }
       } );
 
       // 6. Generate JWT
       const jwtToken = generateToken( user.id );
 
       // 7. Set the JWT cookie
-      ctx.res.cookie( 'americaCommonsToken', jwtToken, {
-        httpOnly: true,
-        maxAge: COOKIE_MAX_AGE
-      } );
+      setCookie( ctx, jwtToken );
 
       // 8. return the new user
       return updatedUser;
@@ -258,14 +328,18 @@ export default {
       } = args;
       try {
         // 1. check if there is a user with that email and if they are confirmed.
-        const user = await ctx.prisma.user( { email } ).$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
+        const user = await ctx.prisma
+          .user( { email } )
+          .$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
 
         if ( !user ) {
           throw new AuthenticationError( `No user found for email ${email}` );
         }
 
         if ( page === 'passwordreset' && !user.isConfirmed ) {
-          throw new AuthenticationError( 'You must confirm your account before you can reset your password.' );
+          throw new AuthenticationError(
+            'You must confirm your account before you can reset your password.'
+          );
         }
 
         if ( page === 'confirm' && user.isConfirmed ) {
@@ -277,19 +351,20 @@ export default {
         const userWithToken = { tempToken, tempTokenExpiry };
 
         // 3. Update user with temporary token
-        const updatedUser = await ctx.prisma
-          .updateUser( {
-            data: userWithToken,
-            where: {
-              email
-            }
-          } );
+        const updatedUser = await ctx.prisma.updateUser( {
+          data: userWithToken,
+          where: {
+            email
+          }
+        } );
 
         // 4. Email the user
         if ( updatedUser ) {
           const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}`;
-          const htmlEmail = ( page === 'confirm' ) ? confirmationEmail( confirmLink, team.name ) : passwordResetEmail( body, confirmLink, link );
+          const htmlEmail = page === 'confirm'
+            ? confirmationEmail( confirmLink, team.name )
+            : passwordResetEmail( body, confirmLink, link );
           const params = setSesParams( user.email, htmlEmail, subject );
 
           await sendSesEmail( params );
@@ -305,9 +380,7 @@ export default {
     },
 
     async getSignedS3UrlPut( parent, args ) {
-      const {
-        contentType, filename, projectId
-      } = args;
+      const { contentType, filename, projectId } = args;
 
       if ( !contentType || !filename || !projectId ) {
         throw new ApolloError( 'A valid contentType, filename or project id is not available' );
@@ -315,7 +388,9 @@ export default {
 
       try {
         return await getSignedUrlPromisePut( {
-          contentType, filename, projectId
+          contentType,
+          filename,
+          projectId
         } );
       } catch ( err ) {
         console.dir( err );
@@ -337,6 +412,5 @@ export default {
         throw new ApolloError( err );
       }
     }
-  },
-
+  }
 };
