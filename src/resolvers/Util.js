@@ -1,8 +1,8 @@
 import ffprobe from 'ffprobe-static';
 import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
+import getStream from 'get-stream';
 import mammoth from 'mammoth';
-import toArray from 'stream-to-array';
 import xss from 'xss';
 import { getSignedUrlPromiseGet } from '../services/aws/s3';
 
@@ -68,25 +68,6 @@ const htmlToText = ( string = '' ) => (
 );
 
 /**
- * Creates a Buffer from a stream part
- * @param {*} part
- */
-const handleStreamPart = part => (
-  Buffer.isBuffer( part )
-    ? part
-    : Buffer.from( part )
-);
-
-/**
- * Concatenates an array of Buffers
- * @param {array} streamParts
- */
-const streamToBuffer = streamParts => {
-  const buffers = streamParts.map( handleStreamPart );
-  return Buffer.concat( buffers );
-};
-
-/**
  * Gets a remote docx as a Buffer
  * @param {string} url
  */
@@ -94,10 +75,11 @@ const getDocxBuffer = url => (
   axios.get( url, { responseType: 'stream' } )
     .then( async res => {
       if ( res.status === 200 ) {
-        return toArray( res.data )
-          .then( streamToBuffer )
-          .then( buf => buf ) // buf, i.e., buffer
-          .catch( err => console.log( err ) );
+        try {
+          return await getStream.buffer( res.data );
+        } catch ( error ) {
+          console.log( error.bufferedData );
+        }
       }
       return Buffer.from( [] );
     } )
