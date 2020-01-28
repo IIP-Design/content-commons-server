@@ -99,7 +99,7 @@ const getDocxBuffer = url => (
           .then( buf => buf ) // buf, i.e., buffer
           .catch( err => console.log( err ) );
       }
-      return [];
+      return Buffer.from( [] );
     } )
     .then( buf => buf )
     .catch( err => console.log( err ) )
