@@ -1,0 +1,11 @@
+type Query {
+  regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
+  region(id: ID!): Region
+
+  countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
+  country(id: ID!): Country 
+}
+
+type Mutation {
+  createRegion(data: RegionCreateInput!): Region!
+}

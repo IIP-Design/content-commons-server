@@ -104,6 +104,10 @@ export default {
       return ctx.prisma.documentFile( { id: parent.id } ).bureaus( { ...args } );
     },
 
+    countries( parent, args, ctx ) {
+      return ctx.prisma.documentFile( { id: parent.id } ).countries( { ...args } );
+    },
+
     tags( parent, args, ctx ) {
       return ctx.prisma.documentFile( { id: parent.id } ).tags( { ...args } );
     },

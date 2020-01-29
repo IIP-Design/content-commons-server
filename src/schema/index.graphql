@@ -10,6 +10,7 @@
 # import Query.*, Mutation.*, * from "./shared.graphql"
 # import Query.*, Mutation.*, * from "./language.graphql"
 # import Query.*, Mutation.*, * from "./bureau.graphql"
+# import Query.*, Mutation.*, * from "./region.graphql"
 # import Query.*, Mutation.*, * from "./taxonomy.graphql"
 # import Query.*, Mutation.*, * from "./user.graphql"
 # import Query.*, Mutation.*, * from "./team.graphql"
