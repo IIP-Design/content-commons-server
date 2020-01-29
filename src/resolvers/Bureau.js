@@ -5,7 +5,7 @@ export default {
     },
 
     bureau( parent, args, ctx ) {
-      return ctx.prisma.language( { ...args } );
+      return ctx.prisma.bureau( { ...args } );
     }
   },
 
