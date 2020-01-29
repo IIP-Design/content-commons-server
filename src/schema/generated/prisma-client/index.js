@@ -49,6 +49,14 @@ var models = [
     embedded: false
   },
   {
+    name: "Country",
+    embedded: false
+  },
+  {
+    name: "Region",
+    embedded: false
+  },
+  {
     name: "Office",
     embedded: false
   },
