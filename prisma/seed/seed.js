@@ -5,6 +5,7 @@ import seedTaxonomies from './seedTaxonomies';
 import seedTeams from './seedTeams';
 import seedBureaus from './seedBureaus';
 import seedUses from './seedUses';
+import seedRegions from './seedRegions';
 
 export const files = {
   teams: './prisma/data/teams.csv',
@@ -12,7 +13,8 @@ export const files = {
   languages: './prisma/data/languages.csv',
   categories: './prisma/data/categories.csv',
   tags: './prisma/data/tags.csv',
-  uses: './prisma/data/uses.csv'
+  uses: './prisma/data/uses.csv',
+  regions: './prisma/data/regions.csv'
 };
 
 /**
@@ -30,11 +32,12 @@ export const files = {
   if ( fs.existsSync( files.teams ) ) {
     const teamProm = seedTeams().then( teams => {
       console.log( `Created/updated ${teams.length} teams` );
-    } );
+    } ).catch( err => console.log( err ) );
     promises.push( teamProm );
   } else {
     console.error( `CSV not found: ${files.teams}\nTeams were not processed.` );
   }
+
   if ( fs.existsSync( files.bureaus ) ) {
     const burProm = seedBureaus().then( bureaus => {
       const counts = [0, 0];
@@ -49,34 +52,57 @@ export const files = {
         }
       } );
       console.log( `Created/updated ${counts[0] + counts[1]} bureaus/offices` );
-    } );
+    } ).catch( err => console.log( err ) );
     promises.push( burProm );
   } else {
     console.error( `CSV not found: ${files.bureaus}\nBureaus/Offices were not processed.` );
   }
+
+  if ( fs.existsSync( files.regions ) ) {
+    const regProm = seedRegions().then( regions => {
+      const counts = [0, 0];
+      regions.forEach( result => {
+        if ( 'countries' in result ) {
+          counts[0] += 1;
+          if ( result.countries ) {
+            counts[1] += result.countries.length;
+          }
+        } else {
+          counts[1] += 1;
+        }
+      } );
+      console.log( `Created/updated ${counts[0] + counts[1]} regions/countries` );
+    } ).catch( err => console.log( err ) );
+    promises.push( regProm );
+  } else {
+    console.error( `CSV not found: ${files.regions}\nRegions/Countries were not processed.` );
+  }
+
   if ( fs.existsSync( files.uses ) ) {
     const usesProm = seedUses().then( uses => {
       console.log( `Created/updated ${uses.length} uses` );
-    } );
+    } ).catch( err => console.log( err ) );
     promises.push( usesProm );
   } else {
     console.error( `CSV not found: ${files.uses}\nUses were not processed.` );
   }
+
   if ( fs.existsSync( files.languages ) ) {
     // Synchronously do languages since we will probably need them below
     await seedLanguages().then( languages => {
       console.log( `Created/updated ${Object.keys( languages ).length} languages` );
       return languages;
-    } );
+    } ).catch( err => console.log( err ) );
   } else {
     console.error( `CSV not found: ${files.languages}\nLanguages were not processed.` );
   }
+
   const catsExist = fs.existsSync( files.categories );
   const tagsExist = fs.existsSync( files.tags );
   if ( catsExist && tagsExist ) {
     const taxProm = seedTaxonomies().then( tax => {
       console.log( `Created/updated ${tax.categories.length} categories\nCreated/updated ${tax.tags.length} tags` );
-    } );
+    } ).catch( err => console.log( err ) );
     promises.push( taxProm );
   } else {
     const errors = [];
@@ -85,5 +111,6 @@ export const files = {
     errors.push( 'Taxonomies were not processed.' );
     console.error( errors.join( '\n' ) );
   }
+
   await Promise.all( promises );
 } )();

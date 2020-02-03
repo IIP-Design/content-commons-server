@@ -1,0 +1,10 @@
+abbr,name,parent,isRegion
+AS,"Asia",,1
+JP,"Japan","Asia",
+MA,"Malaysia","Asia",
+NA,"North America",,1
+CA,"Canada","North America",
+US,"United States","North America",
+AF,"Africa",,1
+EG,"Egypt","Africa",
+NI,"Nigeria","Africa",
