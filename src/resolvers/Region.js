@@ -8,9 +8,9 @@ export default {
       return ctx.prisma.region( { ...args } );
     },
 
-    countries( parent, args, ctx ) {
-      return ctx.prisma.countries( { ...args } );
-    },
+    // countries( parent, args, ctx ) {
+    //   return ctx.prisma.countries( { ...args } );
+    // },
 
     country( parent, args, ctx ) {
       return ctx.prisma.country( { ...args } );
