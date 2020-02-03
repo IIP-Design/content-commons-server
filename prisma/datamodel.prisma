@@ -63,6 +63,20 @@ enum ThumbnailSize {
   FULL
 }
 
+type Country {
+  id: ID! @id
+  name: String!
+  abbr: String!
+  region: Region @relation(onDelete: SET_NULL)
+}
+
+type Region {
+  id: ID! @id
+  name: String!
+  abbr: String!
+  countries: [Country] @scalarList(strategy: RELATION)
+}
+
 type Office {
   id: ID! @id
   name: String!
@@ -306,7 +320,8 @@ type DocumentFile {
   signedUrl: String
   visibility: Visibility @default(value: INTERNAL)
   use: DocumentUse
-  bureaus: [Bureau] 
+  bureaus: [Bureau]
+  countries: [Country]
   categories: [Category]
   tags: [Tag]
 }

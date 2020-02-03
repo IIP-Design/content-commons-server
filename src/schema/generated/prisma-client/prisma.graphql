@@ -6,6 +6,10 @@ type AggregateCategory {
   count: Int!
 }
 
+type AggregateCountry {
+  count: Int!
+}
+
 type AggregateDimensions {
   count: Int!
 }
@@ -43,6 +47,10 @@ type AggregateOffice {
 }
 
 type AggregatePackage {
+  count: Int!
+}
+
+type AggregateRegion {
   count: Int!
 }
 
@@ -479,6 +487,259 @@ enum ContentType {
   PACKAGE
 }
 
+type Country {
+  id: ID!
+  name: String!
+  abbr: String!
+  region: Region
+}
+
+type CountryConnection {
+  pageInfo: PageInfo!
+  edges: [CountryEdge]!
+  aggregate: AggregateCountry!
+}
+
+input CountryCreateInput {
+  id: ID
+  name: String!
+  abbr: String!
+  region: RegionCreateOneWithoutCountriesInput
+}
+
+input CountryCreateManyInput {
+  create: [CountryCreateInput!]
+  connect: [CountryWhereUniqueInput!]
+}
+
+input CountryCreateManyWithoutRegionInput {
+  create: [CountryCreateWithoutRegionInput!]
+  connect: [CountryWhereUniqueInput!]
+}
+
+input CountryCreateWithoutRegionInput {
+  id: ID
+  name: String!
+  abbr: String!
+}
+
+type CountryEdge {
+  node: Country!
+  cursor: String!
+}
+
+enum CountryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  abbr_ASC
+  abbr_DESC
+}
+
+type CountryPreviousValues {
+  id: ID!
+  name: String!
+  abbr: String!
+}
+
+input CountryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  AND: [CountryScalarWhereInput!]
+  OR: [CountryScalarWhereInput!]
+  NOT: [CountryScalarWhereInput!]
+}
+
+type CountrySubscriptionPayload {
+  mutation: MutationType!
+  node: Country
+  updatedFields: [String!]
+  previousValues: CountryPreviousValues
+}
+
+input CountrySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CountryWhereInput
+  AND: [CountrySubscriptionWhereInput!]
+  OR: [CountrySubscriptionWhereInput!]
+  NOT: [CountrySubscriptionWhereInput!]
+}
+
+input CountryUpdateDataInput {
+  name: String
+  abbr: String
+  region: RegionUpdateOneWithoutCountriesInput
+}
+
+input CountryUpdateInput {
+  name: String
+  abbr: String
+  region: RegionUpdateOneWithoutCountriesInput
+}
+
+input CountryUpdateManyDataInput {
+  name: String
+  abbr: String
+}
+
+input CountryUpdateManyInput {
+  create: [CountryCreateInput!]
+  update: [CountryUpdateWithWhereUniqueNestedInput!]
+  upsert: [CountryUpsertWithWhereUniqueNestedInput!]
+  delete: [CountryWhereUniqueInput!]
+  connect: [CountryWhereUniqueInput!]
+  set: [CountryWhereUniqueInput!]
+  disconnect: [CountryWhereUniqueInput!]
+  deleteMany: [CountryScalarWhereInput!]
+  updateMany: [CountryUpdateManyWithWhereNestedInput!]
+}
+
+input CountryUpdateManyMutationInput {
+  name: String
+  abbr: String
+}
+
+input CountryUpdateManyWithoutRegionInput {
+  create: [CountryCreateWithoutRegionInput!]
+  delete: [CountryWhereUniqueInput!]
+  connect: [CountryWhereUniqueInput!]
+  set: [CountryWhereUniqueInput!]
+  disconnect: [CountryWhereUniqueInput!]
+  update: [CountryUpdateWithWhereUniqueWithoutRegionInput!]
+  upsert: [CountryUpsertWithWhereUniqueWithoutRegionInput!]
+  deleteMany: [CountryScalarWhereInput!]
+  updateMany: [CountryUpdateManyWithWhereNestedInput!]
+}
+
+input CountryUpdateManyWithWhereNestedInput {
+  where: CountryScalarWhereInput!
+  data: CountryUpdateManyDataInput!
+}
+
+input CountryUpdateWithoutRegionDataInput {
+  name: String
+  abbr: String
+}
+
+input CountryUpdateWithWhereUniqueNestedInput {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateDataInput!
+}
+
+input CountryUpdateWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput!
+  data: CountryUpdateWithoutRegionDataInput!
+}
+
+input CountryUpsertWithWhereUniqueNestedInput {
+  where: CountryWhereUniqueInput!
+  update: CountryUpdateDataInput!
+  create: CountryCreateInput!
+}
+
+input CountryUpsertWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput!
+  update: CountryUpdateWithoutRegionDataInput!
+  create: CountryCreateWithoutRegionInput!
+}
+
+input CountryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  region: RegionWhereInput
+  AND: [CountryWhereInput!]
+  OR: [CountryWhereInput!]
+  NOT: [CountryWhereInput!]
+}
+
+input CountryWhereUniqueInput {
+  id: ID
+}
+
 scalar DateTime
 
 type Dimensions {
@@ -793,6 +1054,7 @@ type DocumentFile {
   visibility: Visibility
   use: DocumentUse
   bureaus(where: BureauWhereInput, orderBy: BureauOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bureau!]
+  countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country!]
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
@@ -819,6 +1081,7 @@ input DocumentFileCreateInput {
   visibility: Visibility
   use: DocumentUseCreateOneInput
   bureaus: BureauCreateManyInput
+  countries: CountryCreateManyInput
   categories: CategoryCreateManyInput
   tags: TagCreateManyInput
 }
@@ -1038,6 +1301,7 @@ input DocumentFileUpdateDataInput {
   visibility: Visibility
   use: DocumentUseUpdateOneInput
   bureaus: BureauUpdateManyInput
+  countries: CountryUpdateManyInput
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
 }
@@ -1057,6 +1321,7 @@ input DocumentFileUpdateInput {
   visibility: Visibility
   use: DocumentUseUpdateOneInput
   bureaus: BureauUpdateManyInput
+  countries: CountryUpdateManyInput
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
 }
@@ -1247,6 +1512,9 @@ input DocumentFileWhereInput {
   bureaus_every: BureauWhereInput
   bureaus_some: BureauWhereInput
   bureaus_none: BureauWhereInput
+  countries_every: CountryWhereInput
+  countries_some: CountryWhereInput
+  countries_none: CountryWhereInput
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
@@ -2448,6 +2716,12 @@ type Mutation {
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  createCountry(data: CountryCreateInput!): Country!
+  updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
+  updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
+  upsertCountry(where: CountryWhereUniqueInput!, create: CountryCreateInput!, update: CountryUpdateInput!): Country!
+  deleteCountry(where: CountryWhereUniqueInput!): Country
+  deleteManyCountries(where: CountryWhereInput): BatchPayload!
   createDimensions(data: DimensionsCreateInput!): Dimensions!
   updateDimensions(data: DimensionsUpdateInput!, where: DimensionsWhereUniqueInput!): Dimensions
   updateManyDimensionses(data: DimensionsUpdateManyMutationInput!, where: DimensionsWhereInput): BatchPayload!
@@ -2508,6 +2782,12 @@ type Mutation {
   upsertPackage(where: PackageWhereUniqueInput!, create: PackageCreateInput!, update: PackageUpdateInput!): Package!
   deletePackage(where: PackageWhereUniqueInput!): Package
   deleteManyPackages(where: PackageWhereInput): BatchPayload!
+  createRegion(data: RegionCreateInput!): Region!
+  updateRegion(data: RegionUpdateInput!, where: RegionWhereUniqueInput!): Region
+  updateManyRegions(data: RegionUpdateManyMutationInput!, where: RegionWhereInput): BatchPayload!
+  upsertRegion(where: RegionWhereUniqueInput!, create: RegionCreateInput!, update: RegionUpdateInput!): Region!
+  deleteRegion(where: RegionWhereUniqueInput!): Region
+  deleteManyRegions(where: RegionWhereInput): BatchPayload!
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile
   updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
@@ -3078,6 +3358,9 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  country(where: CountryWhereUniqueInput!): Country
+  countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
+  countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
   dimensions(where: DimensionsWhereUniqueInput!): Dimensions
   dimensionses(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dimensions]!
   dimensionsesConnection(where: DimensionsWhereInput, orderBy: DimensionsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DimensionsConnection!
@@ -3108,6 +3391,9 @@ type Query {
   package(where: PackageWhereUniqueInput!): Package
   packages(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Package]!
   packagesConnection(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PackageConnection!
+  region(where: RegionWhereUniqueInput!): Region
+  regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
+  regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
   supportFile(where: SupportFileWhereUniqueInput!): SupportFile
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFilesConnection(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileConnection!
@@ -3144,9 +3430,164 @@ type Query {
   node(id: ID!): Node
 }
 
+type Region {
+  id: ID!
+  name: String!
+  abbr: String!
+  countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country!]
+}
+
+type RegionConnection {
+  pageInfo: PageInfo!
+  edges: [RegionEdge]!
+  aggregate: AggregateRegion!
+}
+
+input RegionCreateInput {
+  id: ID
+  name: String!
+  abbr: String!
+  countries: CountryCreateManyWithoutRegionInput
+}
+
+input RegionCreateOneWithoutCountriesInput {
+  create: RegionCreateWithoutCountriesInput
+  connect: RegionWhereUniqueInput
+}
+
+input RegionCreateWithoutCountriesInput {
+  id: ID
+  name: String!
+  abbr: String!
+}
+
+type RegionEdge {
+  node: Region!
+  cursor: String!
+}
+
+enum RegionOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  abbr_ASC
+  abbr_DESC
+}
+
+type RegionPreviousValues {
+  id: ID!
+  name: String!
+  abbr: String!
+}
+
+type RegionSubscriptionPayload {
+  mutation: MutationType!
+  node: Region
+  updatedFields: [String!]
+  previousValues: RegionPreviousValues
+}
+
+input RegionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: RegionWhereInput
+  AND: [RegionSubscriptionWhereInput!]
+  OR: [RegionSubscriptionWhereInput!]
+  NOT: [RegionSubscriptionWhereInput!]
+}
+
+input RegionUpdateInput {
+  name: String
+  abbr: String
+  countries: CountryUpdateManyWithoutRegionInput
+}
+
+input RegionUpdateManyMutationInput {
+  name: String
+  abbr: String
+}
+
+input RegionUpdateOneWithoutCountriesInput {
+  create: RegionCreateWithoutCountriesInput
+  update: RegionUpdateWithoutCountriesDataInput
+  upsert: RegionUpsertWithoutCountriesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: RegionWhereUniqueInput
+}
+
+input RegionUpdateWithoutCountriesDataInput {
+  name: String
+  abbr: String
+}
+
+input RegionUpsertWithoutCountriesInput {
+  update: RegionUpdateWithoutCountriesDataInput!
+  create: RegionCreateWithoutCountriesInput!
+}
+
+input RegionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  abbr: String
+  abbr_not: String
+  abbr_in: [String!]
+  abbr_not_in: [String!]
+  abbr_lt: String
+  abbr_lte: String
+  abbr_gt: String
+  abbr_gte: String
+  abbr_contains: String
+  abbr_not_contains: String
+  abbr_starts_with: String
+  abbr_not_starts_with: String
+  abbr_ends_with: String
+  abbr_not_ends_with: String
+  countries_every: CountryWhereInput
+  countries_some: CountryWhereInput
+  countries_none: CountryWhereInput
+  AND: [RegionWhereInput!]
+  OR: [RegionWhereInput!]
+  NOT: [RegionWhereInput!]
+}
+
+input RegionWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   bureau(where: BureauSubscriptionWhereInput): BureauSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   dimensions(where: DimensionsSubscriptionWhereInput): DimensionsSubscriptionPayload
   documentConversionFormat(where: DocumentConversionFormatSubscriptionWhereInput): DocumentConversionFormatSubscriptionPayload
   documentFile(where: DocumentFileSubscriptionWhereInput): DocumentFileSubscriptionPayload
@@ -3157,6 +3598,7 @@ type Subscription {
   languageTranslation(where: LanguageTranslationSubscriptionWhereInput): LanguageTranslationSubscriptionPayload
   office(where: OfficeSubscriptionWhereInput): OfficeSubscriptionPayload
   package(where: PackageSubscriptionWhereInput): PackageSubscriptionPayload
+  region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
   supportFileUse(where: SupportFileUseSubscriptionWhereInput): SupportFileUseSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
