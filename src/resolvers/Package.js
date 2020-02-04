@@ -1,13 +1,15 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 // import pubsub from '../services/pubsub';
-import { deleteAllS3Assets, deleteS3Asset, getAssetPath } from '../services/aws/s3';
+import { convertDocxContent } from './Util';
+import {
+  deleteAllS3Assets, deleteS3Asset, getAssetPath
+} from '../services/aws/s3';
 // import transformPackage from '../services/es/package/transform';
 // import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { hasValidValue } from '../lib/projectParser';
 import { PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
-
 
 export default {
   Subscription: {},
@@ -45,7 +47,7 @@ export default {
       }
     },
 
-    updatePackage( parent, args, ctx ) {
+    async updatePackage( parent, args, ctx ) {
       const updates = { ...args };
       const {
         data,
@@ -61,6 +63,16 @@ export default {
           }
         } );
       }
+
+      const isCreateAction = data.documents
+        && data.documents.create
+        && data.documents.create[0];
+
+      const params = {
+        id, data, ctx, isCreateAction
+      };
+
+      await convertDocxContent( params );
 
       return ctx.prisma.updatePackage( {
         data,

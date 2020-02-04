@@ -1,4 +1,3 @@
-
 import { getSignedUrlPromiseGet } from '../services/aws/s3';
 
 export default {
@@ -11,29 +10,38 @@ export default {
       return ctx.prisma.documentFile( { id: args.id } );
     },
 
-    documentUses( parent, args, ctx ) {
+    documentUses ( parent, args, ctx ) {
       return ctx.prisma.documentUses( { ...args } );
     },
 
     documentUse( parent, args, ctx ) {
       return ctx.prisma.documentUse( { id: args.id } );
+    },
+
+    documentConversionFormats ( parent, args, ctx ) {
+      return ctx.prisma.documentConversionFormats( { ...args } );
+    },
+
+    documentConversionFormat ( parent, args, ctx ) {
+      return ctx.prisma.documentConversionFormat( { id: args.id } );
     }
   },
 
   Mutation: {
     async createDocumentFile( parent, args, ctx ) {
-      const documentFile = await ctx.prisma.createDocumentFile( { ...args } );
+      const { data } = args;
+      const documentFile = await ctx.prisma.createDocumentFile( { ...data } );
 
       return documentFile;
     },
 
-    updateDocumentFile( parent, args, ctx ) {
+    updateDocumentFile ( parent, args, ctx ) {
       const updates = { ...args };
-      const {
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateDocumentFile( {
         data,
         where: { id }
-      } = updates;
-      return ctx.prisma.updateDocumentFile( { data, where: { id } } );
+      } );
     },
 
     deleteDocumentFile( parent, { id }, ctx ) {
@@ -76,6 +84,38 @@ export default {
 
     deleteManyDocumentUses( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentUses( { ...where } );
+    },
+
+    async createDocumentConversionFormat ( parent, args, ctx ) {
+      const { data } = args;
+      const documentConversionFormat = await ctx.prisma.createDocumentConversionFormat( {
+        ...data
+      } );
+
+      return documentConversionFormat;
+    },
+
+    updateDocumentConversionFormat ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where: { id } } = updates;
+      return ctx.prisma.updateDocumentConversionFormat( {
+        data,
+        where: { id }
+      } );
+    },
+
+    updateManyDocumentConversionFormats ( parent, args, ctx ) {
+      const updates = { ...args };
+      const { data, where } = updates;
+      return ctx.prisma.updateManyDocumentConversionFormats( { data, where } );
+    },
+
+    deleteDocumentConversionFormat ( parent, { id }, ctx ) {
+      return ctx.prisma.deleteDocumentConversionFormat( { id } );
+    },
+
+    deleteManyDocumentConversionFormats ( parent, { where }, ctx ) {
+      return ctx.prisma.deleteManyDocumentConversionFormats( { ...where } );
     }
   },
 
@@ -114,6 +154,10 @@ export default {
 
     categories( parent, args, ctx ) {
       return ctx.prisma.documentFile( { id: parent.id } ).categories( { ...args } );
+    },
+
+    content( parent, args, ctx ) {
+      return ctx.prisma.documentFile( { id: parent.id } ).content( { ...args } );
     }
   }
 };
