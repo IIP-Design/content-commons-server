@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
+import { requiresLogin } from '../lib/authentication';
 import { isEmailWhitelisted } from '../lib/whitelist';
 import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/s3';
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
@@ -379,7 +380,7 @@ export default {
       }
     },
 
-    async getSignedS3UrlPut( parent, args ) {
+    getSignedS3UrlPut: requiresLogin( async ( parent, args ) => {
       const { contentType, filename, projectId } = args;
 
       if ( !contentType || !filename || !projectId ) {
@@ -396,9 +397,9 @@ export default {
         console.dir( err );
         throw new ApolloError( err );
       }
-    },
+    } ),
 
-    async getSignedS3UrlGet( parent, args ) {
+    getSignedS3UrlGet: requiresLogin( async ( parent, args ) => {
       const { key } = args;
 
       if ( !key ) {
@@ -411,6 +412,6 @@ export default {
       } catch ( err ) {
         throw new ApolloError( err );
       }
-    }
+    } )
   }
 };

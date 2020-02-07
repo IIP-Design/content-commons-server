@@ -1,13 +1,10 @@
 import { ApolloError } from 'apollo-server-express';
+import { requiresLogin } from '../lib/authentication';
 
 export default {
   Query: {
     authenticatedUser( parent, args, ctx ) {
-      // Check for current user id
-      if ( !ctx.req.userId ) {
-        return null;
-      }
-      return ctx.prisma.user( { id: ctx.req.userId } );
+      return ctx.user;
     },
 
     users( parent, args, ctx ) {
@@ -15,7 +12,7 @@ export default {
     }
   },
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async updateUser( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
@@ -25,7 +22,7 @@ export default {
     deleteUser( parent, { id }, ctx ) {
       return ctx.prisma.deleteUser( { id } );
     }
-  },
+  } ),
 
   User: {
     team( parent, args, ctx ) {

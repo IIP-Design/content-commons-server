@@ -1,5 +1,6 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 // import pubsub from '../services/pubsub';
+import { requiresLogin } from '../lib/authentication';
 import { convertDocxContent } from './Util';
 import {
   deleteAllS3Assets, deleteS3Asset, getAssetPath
@@ -14,7 +15,7 @@ const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 export default {
   Subscription: {},
 
-  Query: {
+  Query: requiresLogin( {
     packages( parent, args, ctx ) {
       return ctx.prisma.packages();
     },
@@ -22,9 +23,9 @@ export default {
     package( parent, args, ctx ) {
       return ctx.prisma.package( { id: args.id } );
     }
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async packageExists( parent, args, ctx ) {
       const { where } = args;
       return ctx.prisma.$exists.package( where );
@@ -127,7 +128,7 @@ export default {
     deleteManyPackages( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyPackages( { ...where } );
     }
-  },
+  } ),
 
   Package: {
     author( parent, args, ctx ) {

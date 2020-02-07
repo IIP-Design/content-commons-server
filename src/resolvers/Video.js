@@ -2,6 +2,7 @@ import {
   UserInputError, ApolloError, withFilter
 } from 'apollo-server-express';
 import pubsub from '../services/pubsub';
+import { requiresLogin } from '../lib/authentication';
 import {
   getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
 } from '../lib/projectParser';
@@ -30,7 +31,7 @@ export default {
     }
   },
 
-  Query: {
+  Query: requiresLogin( {
     videoProjects ( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
     },
@@ -126,9 +127,9 @@ export default {
     videoStream ( parent, args, ctx ) {
       return ctx.prisma.videoStream( { id: args.id } );
     }
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createVideoProject ( parent, args, ctx ) {
       const { data } = args;
       const videoProject = await ctx.prisma.createVideoProject( {
@@ -653,7 +654,7 @@ export default {
     deleteManyVideoStreams ( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyVideoStreams( { ...where } );
     }
-  },
+  } ),
 
   VideoProject: {
     author( parent, args, ctx ) {

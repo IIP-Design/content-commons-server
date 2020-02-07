@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import merge from 'lodash/merge';
 import path from 'path';
+import jwt from 'jsonwebtoken';
 import AuthResolvers from './resolvers/Auth';
 import LanguageResolvers from './resolvers/Language';
 import RegionResolvers from './resolvers/Region';
@@ -14,6 +15,7 @@ import DocumentResolvers from './resolvers/Document';
 import VideoResolvers from './resolvers/Video';
 import PackageResolvers from './resolvers/Package';
 import { prisma } from './schema/generated/prisma-client';
+
 
 const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 
@@ -31,6 +33,24 @@ const resolvers = merge(
   PackageResolvers
 );
 
+const fetchUser = async req => {
+  const { americaCommonsToken } = req.cookies;
+
+  if ( !americaCommonsToken ) {
+    return null;
+  }
+
+  let user = null;
+  const { userId } = jwt.verify( americaCommonsToken, process.env.PUBLISHER_APP_SECRET );
+
+  if ( userId ) {
+    user = await prisma.user( { id: userId } );
+  }
+
+  // return valid user if exists
+  return user;
+};
+
 
 // Create Apollo server
 const createApolloServer = () => new ApolloServer( {
@@ -41,13 +61,28 @@ const createApolloServer = () => new ApolloServer( {
     path: '/subscription',
     onConnect: () => {},
     onDisconnect: () => {},
-    onOperation: ( message, params ) => params,
+    onOperation: ( message, params ) => params
   },
-  context: async ( { connection, ...other } ) => {
+  context: async ( { connection, req, res } ) => {
+    // subscription connection (websocket)
     if ( connection ) {
       return { ...connection.context, prisma };
     }
-    return { ...other, prisma };
+
+    const user = await fetchUser( req );
+    return {
+      req,
+      res,
+      prisma,
+      user
+    };
+  },
+  playground: {
+    settings: {
+      // Needed for auth
+      // Docs: https://github.com/prisma/graphql-playground
+      'request.credentials': 'same-origin'
+    }
   }
 } );
 

@@ -1,7 +1,8 @@
+import { requiresLogin } from '../lib/authentication';
 import { getSignedUrlPromiseGet } from '../services/aws/s3';
 
 export default {
-  Query: {
+  Query: requiresLogin( {
     documentFiles( parent, args, ctx ) {
       return ctx.prisma.documentFiles( { ...args } );
     },
@@ -25,9 +26,9 @@ export default {
     documentConversionFormat ( parent, args, ctx ) {
       return ctx.prisma.documentConversionFormat( { id: args.id } );
     }
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createDocumentFile( parent, args, ctx ) {
       const { data } = args;
       const documentFile = await ctx.prisma.createDocumentFile( { ...data } );
@@ -117,7 +118,7 @@ export default {
     deleteManyDocumentConversionFormats ( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentConversionFormats( { ...where } );
     }
-  },
+  } ),
 
   DocumentFile: {
     async signedUrl( parent ) {
