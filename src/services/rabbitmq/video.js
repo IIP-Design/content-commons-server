@@ -1,19 +1,12 @@
 import pubsub from '../pubsub';
-import { getConnection } from './initialize';
 import { publishToChannel } from './index';
 import { getS3ProjectDirectory } from '../../lib/projectParser';
 import { prisma } from '../../schema/generated/prisma-client';
 
-// Need to abstract video specific stuff so this file can remain generic
 import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
 
 const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 
-const createChannel = async () => {
-  const connection = await getConnection( 'publisher' );
-  const channel = await connection.createConfirmChannel();
-  return channel;
-};
 
 const updateDatabase = async ( id, data ) => {
   await prisma.updateVideoProject( { data, where: { id } } ).catch( err => console.error( err ) );
@@ -37,11 +30,9 @@ export const publishCreate = async ( id, data, status ) => {
   // data.type: 'video'
   console.log( '[x] PUBLISHING a publish create request' );
 
-  // Connect to RabbitMQ and create a channel
-  const channel = await createChannel();
   const projectDirectory = await _getS3ProjectDirectory( id );
 
-  await publishToChannel( channel, {
+  await publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'create',
     data: {
@@ -51,9 +42,8 @@ export const publishCreate = async ( id, data, status ) => {
       projectDirectory
     }
   } );
-
-  channel.close();
 };
+
 
 const onPublishCreate = async projectId => {
   try {
@@ -78,10 +68,9 @@ export const publishDelete = async id => {
   console.log( '[x] PUBLISHING a publish delete request' );
 
   // connect to Rabbit MQ and create a channel
-  const channel = await createChannel();
   const projectDirectory = await _getS3ProjectDirectory( id );
 
-  await publishToChannel( channel, {
+  await publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'delete',
     data: {
@@ -89,8 +78,6 @@ export const publishDelete = async id => {
       projectDirectory
     }
   } );
-
-  channel.close();
 };
 
 const onPublishDelete = async projectId => {
@@ -107,13 +94,11 @@ const onPublishDelete = async projectId => {
 
 
 export const publishUpdate = async ( id, data, status ) => {
-  // connect to Rabbit MQ and create a channel
-  const channel = await createChannel();
   const projectDirectory = await _getS3ProjectDirectory( id );
 
   console.log( '[x] PUBLISHING a publish upate request' );
 
-  await publishToChannel( channel, {
+  await publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'update',
     data: {
@@ -123,8 +108,6 @@ export const publishUpdate = async ( id, data, status ) => {
       projectDirectory
     }
   } );
-
-  channel.close();
 };
 
 const onPublishUpdate = async projectId => {
