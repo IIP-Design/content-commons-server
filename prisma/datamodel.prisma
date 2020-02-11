@@ -314,6 +314,7 @@ type DocumentFile {
   filename: String
   filesize: Float
   status: PublishStatus @default(value: DRAFT)
+  excerpt: String
   content: DocumentConversionFormat
   image: [ImageFile]
   url: String

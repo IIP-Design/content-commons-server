@@ -159,6 +159,10 @@ export default {
 
     content( parent, args, ctx ) {
       return ctx.prisma.documentFile( { id: parent.id } ).content( { ...args } );
+    },
+
+    excerpt( parent, args, ctx ) {
+      return ctx.prisma.documentFile( { id: parent.id } ).excerpt( { ...args } );
     }
   }
 };

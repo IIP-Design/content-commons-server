@@ -1287,6 +1287,8 @@ export type DocumentFileOrderByInput =
   | "filesize_DESC"
   | "status_ASC"
   | "status_DESC"
+  | "excerpt_ASC"
+  | "excerpt_DESC"
   | "url_ASC"
   | "url_DESC"
   | "signedUrl_ASC"
@@ -2516,6 +2518,7 @@ export interface DocumentFileCreateInput {
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
   status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
   content?: Maybe<DocumentConversionFormatCreateOneInput>;
   image?: Maybe<ImageFileCreateManyInput>;
   url?: Maybe<String>;
@@ -2971,6 +2974,7 @@ export interface DocumentFileUpdateInput {
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
   status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
   content?: Maybe<DocumentConversionFormatUpdateOneInput>;
   image?: Maybe<ImageFileUpdateManyInput>;
   url?: Maybe<String>;
@@ -4260,6 +4264,20 @@ export interface DocumentFileWhereInput {
   status_not?: Maybe<PublishStatus>;
   status_in?: Maybe<PublishStatus[] | PublishStatus>;
   status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
+  excerpt?: Maybe<String>;
+  excerpt_not?: Maybe<String>;
+  excerpt_in?: Maybe<String[] | String>;
+  excerpt_not_in?: Maybe<String[] | String>;
+  excerpt_lt?: Maybe<String>;
+  excerpt_lte?: Maybe<String>;
+  excerpt_gt?: Maybe<String>;
+  excerpt_gte?: Maybe<String>;
+  excerpt_contains?: Maybe<String>;
+  excerpt_not_contains?: Maybe<String>;
+  excerpt_starts_with?: Maybe<String>;
+  excerpt_not_starts_with?: Maybe<String>;
+  excerpt_ends_with?: Maybe<String>;
+  excerpt_not_ends_with?: Maybe<String>;
   content?: Maybe<DocumentConversionFormatWhereInput>;
   image_every?: Maybe<ImageFileWhereInput>;
   image_some?: Maybe<ImageFileWhereInput>;
@@ -4550,6 +4568,7 @@ export interface DocumentFileUpdateManyMutationInput {
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
   status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
   url?: Maybe<String>;
   signedUrl?: Maybe<String>;
   visibility?: Maybe<Visibility>;
@@ -6126,6 +6145,7 @@ export interface DocumentFileUpdateDataInput {
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
   status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
   content?: Maybe<DocumentConversionFormatUpdateOneInput>;
   image?: Maybe<ImageFileUpdateManyInput>;
   url?: Maybe<String>;
@@ -6304,6 +6324,20 @@ export interface DocumentFileScalarWhereInput {
   status_not?: Maybe<PublishStatus>;
   status_in?: Maybe<PublishStatus[] | PublishStatus>;
   status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
+  excerpt?: Maybe<String>;
+  excerpt_not?: Maybe<String>;
+  excerpt_in?: Maybe<String[] | String>;
+  excerpt_not_in?: Maybe<String[] | String>;
+  excerpt_lt?: Maybe<String>;
+  excerpt_lte?: Maybe<String>;
+  excerpt_gt?: Maybe<String>;
+  excerpt_gte?: Maybe<String>;
+  excerpt_contains?: Maybe<String>;
+  excerpt_not_contains?: Maybe<String>;
+  excerpt_starts_with?: Maybe<String>;
+  excerpt_not_starts_with?: Maybe<String>;
+  excerpt_ends_with?: Maybe<String>;
+  excerpt_not_ends_with?: Maybe<String>;
   url?: Maybe<String>;
   url_not?: Maybe<String>;
   url_in?: Maybe<String[] | String>;
@@ -6364,6 +6398,7 @@ export interface DocumentFileUpdateManyDataInput {
   filename?: Maybe<String>;
   filesize?: Maybe<Float>;
   status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
   url?: Maybe<String>;
   signedUrl?: Maybe<String>;
   visibility?: Maybe<Visibility>;
@@ -7770,6 +7805,7 @@ export interface DocumentFilePreviousValues {
   filename?: String;
   filesize?: Float;
   status?: PublishStatus;
+  excerpt?: String;
   url?: String;
   signedUrl?: String;
   visibility?: Visibility;
@@ -7787,6 +7823,7 @@ export interface DocumentFilePreviousValuesPromise
   filename: () => Promise<String>;
   filesize: () => Promise<Float>;
   status: () => Promise<PublishStatus>;
+  excerpt: () => Promise<String>;
   url: () => Promise<String>;
   signedUrl: () => Promise<String>;
   visibility: () => Promise<Visibility>;
@@ -7804,6 +7841,7 @@ export interface DocumentFilePreviousValuesSubscription
   filename: () => Promise<AsyncIterator<String>>;
   filesize: () => Promise<AsyncIterator<Float>>;
   status: () => Promise<AsyncIterator<PublishStatus>>;
+  excerpt: () => Promise<AsyncIterator<String>>;
   url: () => Promise<AsyncIterator<String>>;
   signedUrl: () => Promise<AsyncIterator<String>>;
   visibility: () => Promise<AsyncIterator<Visibility>>;
@@ -9809,6 +9847,7 @@ export interface DocumentFile {
   filename?: String;
   filesize?: Float;
   status?: PublishStatus;
+  excerpt?: String;
   url?: String;
   signedUrl?: String;
   visibility?: Visibility;
@@ -9827,6 +9866,7 @@ export interface DocumentFilePromise
   filename: () => Promise<String>;
   filesize: () => Promise<Float>;
   status: () => Promise<PublishStatus>;
+  excerpt: () => Promise<String>;
   content: <T = DocumentConversionFormatPromise>() => T;
   image: <T = FragmentableArray<ImageFile>>(args?: {
     where?: ImageFileWhereInput;
@@ -9892,6 +9932,7 @@ export interface DocumentFileSubscription
   filename: () => Promise<AsyncIterator<String>>;
   filesize: () => Promise<AsyncIterator<Float>>;
   status: () => Promise<AsyncIterator<PublishStatus>>;
+  excerpt: () => Promise<AsyncIterator<String>>;
   content: <T = DocumentConversionFormatSubscription>() => T;
   image: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
     where?: ImageFileWhereInput;
@@ -9957,6 +9998,7 @@ export interface DocumentFileNullablePromise
   filename: () => Promise<String>;
   filesize: () => Promise<Float>;
   status: () => Promise<PublishStatus>;
+  excerpt: () => Promise<String>;
   content: <T = DocumentConversionFormatPromise>() => T;
   image: <T = FragmentableArray<ImageFile>>(args?: {
     where?: ImageFileWhereInput;
