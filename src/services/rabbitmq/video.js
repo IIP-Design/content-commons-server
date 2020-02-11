@@ -1,11 +1,9 @@
-import pubsub from '../pubsub';
-import { publishToChannel } from './index';
+import { publishToChannel, parseMessage } from './index';
 import { getS3ProjectDirectory } from '../../lib/projectParser';
+import { notifyClientOnSuccess, notifyClientOnError } from './notify';
 import { prisma } from '../../schema/generated/prisma-client';
 
 import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
-
-const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 
 
 const updateDatabase = async ( id, data ) => {
@@ -34,7 +32,7 @@ export const publishCreate = async ( id, data, status ) => {
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'create',
+    routingKey: 'create.video',
     data: {
       projectId: id,
       projectStatus: status,
@@ -72,7 +70,7 @@ export const publishDelete = async id => {
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'delete',
+    routingKey: 'delete.video',
     data: {
       projectId: id,
       projectDirectory
@@ -100,7 +98,7 @@ export const publishUpdate = async ( id, data, status ) => {
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'update',
+    routingKey: 'update.video',
     data: {
       projectId: id,
       projectStatus: status,
@@ -123,10 +121,7 @@ const onPublishUpdate = async projectId => {
 
 export const consumeSuccess = async ( channel, msg ) => {
   // parse message
-  const { routingKey } = msg.fields;
-  const msgBody = msg.content.toString();
-  const data = JSON.parse( msgBody );
-  const { projectId } = data;
+  const { routingKey, projectId } = parseMessage( msg );
   let status;
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
@@ -154,31 +149,25 @@ export const consumeSuccess = async ( channel, msg ) => {
   }
 
   // 2. notify the react client
-  console.log( `NOTIFYING CLIENT: Project status changed to ${status}` );
-  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status, error: null } } );
+  notifyClientOnSuccess( { id: projectId, status } );
 
   // 3. acknowledge message as received
   await channel.ack( msg );
 };
 
 export const consumeError = async ( channel, msg ) => {
-  const { routingKey } = msg.fields;
-  const msgBody = msg.content.toString();
-  const data = JSON.parse( msgBody );
-  const { projectId, projectStatus } = data;
+  // parse message
+  const { routingKey, projectId, projectStatus } = parseMessage( msg );
 
   const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
   console.log( errorMessage );
 
   try {
-    updateDatabase( projectId, {
-      status: projectStatus
-    } );
+    updateDatabase( projectId, { status: projectStatus } );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
 
   // 2. notify the react client
-  console.log( `ERROR: NOTIFYING CLIENT of error: ${errorMessage}` );
-  pubsub.publish( PROJECT_STATUS_CHANGE, { projectStatusChange: { id: projectId, status: projectStatus, error: errorMessage } } );
+  notifyClientOnError( { id: projectId, status: projectStatus, error: errorMessage } );
 };
