@@ -1,9 +1,22 @@
-// import amqp from 'amqplib';
 import initialize, { getPublishChannel, getConsumerChannel } from './initialize';
 import {
   consumeSuccess as videoConsumeSuccess,
   consumeError as videoConsumeError
 } from './video';
+import {
+  consumeSuccess as packageConsumeSuccess,
+  consumeError as packageConsumeError
+} from './package';
+
+// Utility function to parse messages
+export const parseMessage = msg => {
+  const { routingKey } = msg.fields;
+  const msgBody = msg.content.toString();
+  const data = JSON.parse( msgBody );
+  const { projectId, projectStatus } = data;
+
+  return { routingKey, projectId, projectStatus };
+};
 
 // Utility function to publish messages to a channel
 export const publishToChannel = async ( { routingKey, exchangeName, data } ) => {
@@ -32,7 +45,12 @@ const consumeSuccess = async () => {
   await channel.prefetch( 1 );
 
   channel.consume( 'publish.result', async msg => {
-    videoConsumeSuccess( channel, msg );
+    const { routingKey } = msg.fields; // result.create.video
+    if ( routingKey.includes( 'video' ) ) {
+      videoConsumeSuccess( channel, msg );
+    } else if ( routingKey.includes( 'package' ) ) {
+      packageConsumeSuccess( channel, msg );
+    }
   } );
 };
 
@@ -41,7 +59,12 @@ const consumeErrors = async () => {
   await channel.prefetch( 1 );
 
   channel.consume( 'publish.dlq', async msg => {
-    videoConsumeError( channel, msg );
+    const { routingKey } = msg.fields;
+    if ( routingKey.includes( 'video' ) ) {
+      videoConsumeError( channel, msg );
+    } else if ( routingKey.includes( 'package' ) ) {
+      packageConsumeError( channel, msg );
+    }
   }, {
     noAck: true
   } );
