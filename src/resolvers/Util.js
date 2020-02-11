@@ -67,6 +67,28 @@ const htmlToText = ( string = '' ) => (
     .trim()
 );
 
+const getIndex = ( array, regex ) => (
+  array.findIndex( n => regex.test( n ) )
+);
+
+const getLongestElement = markup => {
+  const elements = markup.split( /\s*<\/p>|<\/ul>|<\/ol>/ );
+
+  /**
+   * To improve chances of returning a relevant body
+   * paragraph, slice the array to remove boilerplate
+   * headings at top and clearances at bottom.
+   */
+  const start = getIndex( elements, /For\s*Immediate\s*Release/g );
+  const end = getIndex( elements, /\x23\s*/g ); // for # # # line
+
+  const longestElement = elements
+    .slice( start === 0 ? start : start + 1, end )
+    .sort( ( curr, next ) => next.length - curr.length );
+
+  return longestElement[0] || '';
+};
+
 /**
  * Gets a remote docx as a Buffer
  * @param {string} url
@@ -88,7 +110,7 @@ const getDocxBuffer = url => (
 );
 
 /**
- * Builds document.content w/ converted docx content
+ * Builds document.content & document.excerpt w/ converted docx content
  * @param {object} document
  * @param {object} input
  * @see https://github.com/mwilliamson/mammoth.js
@@ -97,12 +119,13 @@ const setDocumentContent = async ( document, input ) => (
   mammoth.convertToHtml( input )
     .then( result => {
       if ( result.value ) {
+        const sanitized = xss( result.value );
+        document.excerpt = getLongestElement( sanitized );
         document.content = {
           create: {
             rawText: htmlToText( result.value ),
-            html: xss( result.value ),
-            // omitting md to simply & since it's not used by client
-            markdown: ''
+            html: sanitized,
+            markdown: '' // omit md since not used by client
           }
         };
       }
