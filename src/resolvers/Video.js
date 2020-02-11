@@ -1,7 +1,6 @@
 import {
-  UserInputError, ApolloError, withFilter
+  UserInputError, ApolloError
 } from 'apollo-server-express';
-import pubsub from '../services/pubsub';
 import { requiresLogin } from '../lib/authentication';
 import {
   getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
@@ -12,25 +11,9 @@ import transformVideo from '../services/es/video/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 
-const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 export default {
-  Subscription: {
-    projectStatusChange: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
-        ( payload, variables ) => {
-          const { id } = payload.projectStatusChange;
-          if ( !id && ( !variables.ids || !variables.ids.length ) ) {
-            return true;
-          }
-          return id === variables.id || variables.ids.includes( id );
-        }
-      )
-    }
-  },
-
   Query: requiresLogin( {
     videoProjects ( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
@@ -159,7 +142,7 @@ export default {
         } );
       }
 
-      // 2. Transform it into thw acceptable elasticsearch data structure
+      // 2. Transform it into the acceptable elasticsearch data structure
       const esData = transformVideo( videoProject );
 
       const { status } = videoProject;
