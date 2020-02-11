@@ -79,6 +79,8 @@ Prisma database endpoint requires authorization. To add authorization to the pla
 
   ![Add Headers to playground](docs/headers.jpg)
 
+RabbitMQ management admin should now be accessible at http://localhost:15672
+
 ## Running Tests
 
 [TODO]
@@ -92,5 +94,3 @@ Prisma database endpoint requires authorization. To add authorization to the pla
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/IIP-Design/content-commons-server/tags).
-
-Bye
