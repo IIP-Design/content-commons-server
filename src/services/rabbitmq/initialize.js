@@ -1,4 +1,5 @@
 import amqp from 'amqplib';
+// import { AMQPPubSub } from 'graphql-amqp-subscriptions';
 
 // RabbitMQ connection string
 let messageQueueConnectionString = `amqp://${process.env.RABBITMQ_DOMAIN}:${process.env.RABBITMQ_PORT}`;
@@ -38,7 +39,6 @@ export const getConnection = async type => {
   return publisherConnection;
 };
 
-
 // Use separaye publich and consumer channels for each thread (should we only be using 1 channel?)
 export const getPublishChannel = async () => {
   if ( _publishChannel ) {
@@ -71,6 +71,7 @@ export const getConsumerChannel = async () => {
   }
 };
 
+
 const setUpExchanges = async channel => {
   await Promise.all( [
     channel.assertExchange( 'publish', 'topic', { durable: true } ),
@@ -91,9 +92,9 @@ const setUpQueues = async channel => {
 const bindExhangesToQueues = async channel => {
   // channel.bindQueue( '[queueName], [exchange], [key])
   await Promise.all( [
-    channel.bindQueue( 'publish.create', 'publish', 'create' ),
-    channel.bindQueue( 'publish.update', 'publish', 'update' ),
-    channel.bindQueue( 'publish.delete', 'publish', 'delete' ),
+    channel.bindQueue( 'publish.create', 'publish', 'create.*' ),
+    channel.bindQueue( 'publish.update', 'publish', 'update.*' ),
+    channel.bindQueue( 'publish.delete', 'publish', 'delete.*' ),
     channel.bindQueue( 'publish.result', 'publish', 'result.*.*' ),
     channel.bindQueue( 'publish.dlq', 'publish.dlx' )
   ] );
