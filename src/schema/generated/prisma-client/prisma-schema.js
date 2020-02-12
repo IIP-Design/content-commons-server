@@ -1052,6 +1052,7 @@ type DocumentFile {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   content: DocumentConversionFormat
   image(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
   url: String
@@ -1079,6 +1080,7 @@ input DocumentFileCreateInput {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   content: DocumentConversionFormatCreateOneInput
   image: ImageFileCreateManyInput
   url: String
@@ -1120,6 +1122,8 @@ enum DocumentFileOrderByInput {
   filesize_DESC
   status_ASC
   status_DESC
+  excerpt_ASC
+  excerpt_DESC
   url_ASC
   url_DESC
   signedUrl_ASC
@@ -1138,6 +1142,7 @@ type DocumentFilePreviousValues {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   url: String
   signedUrl: String
   visibility: Visibility
@@ -1236,6 +1241,20 @@ input DocumentFileScalarWhereInput {
   status_not: PublishStatus
   status_in: [PublishStatus!]
   status_not_in: [PublishStatus!]
+  excerpt: String
+  excerpt_not: String
+  excerpt_in: [String!]
+  excerpt_not_in: [String!]
+  excerpt_lt: String
+  excerpt_lte: String
+  excerpt_gt: String
+  excerpt_gte: String
+  excerpt_contains: String
+  excerpt_not_contains: String
+  excerpt_starts_with: String
+  excerpt_not_starts_with: String
+  excerpt_ends_with: String
+  excerpt_not_ends_with: String
   url: String
   url_not: String
   url_in: [String!]
@@ -1299,6 +1318,7 @@ input DocumentFileUpdateDataInput {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
   url: String
@@ -1319,6 +1339,7 @@ input DocumentFileUpdateInput {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   content: DocumentConversionFormatUpdateOneInput
   image: ImageFileUpdateManyInput
   url: String
@@ -1338,6 +1359,7 @@ input DocumentFileUpdateManyDataInput {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   url: String
   signedUrl: String
   visibility: Visibility
@@ -1362,6 +1384,7 @@ input DocumentFileUpdateManyMutationInput {
   filename: String
   filesize: Float
   status: PublishStatus
+  excerpt: String
   url: String
   signedUrl: String
   visibility: Visibility
@@ -1477,6 +1500,20 @@ input DocumentFileWhereInput {
   status_not: PublishStatus
   status_in: [PublishStatus!]
   status_not_in: [PublishStatus!]
+  excerpt: String
+  excerpt_not: String
+  excerpt_in: [String!]
+  excerpt_not_in: [String!]
+  excerpt_lt: String
+  excerpt_lte: String
+  excerpt_gt: String
+  excerpt_gte: String
+  excerpt_contains: String
+  excerpt_not_contains: String
+  excerpt_starts_with: String
+  excerpt_not_starts_with: String
+  excerpt_ends_with: String
+  excerpt_not_ends_with: String
   content: DocumentConversionFormatWhereInput
   image_every: ImageFileWhereInput
   image_some: ImageFileWhereInput
