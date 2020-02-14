@@ -119,7 +119,7 @@ const onPublishUpdate = async projectId => {
   }
 };
 
-export const consumeSuccess = async ( channel, msg ) => {
+const consumeSuccess = async ( channel, msg ) => {
   // parse message
   const { routingKey, projectId } = parseMessage( msg );
   let status;
@@ -155,7 +155,7 @@ export const consumeSuccess = async ( channel, msg ) => {
   await channel.ack( msg );
 };
 
-export const consumeError = async ( channel, msg ) => {
+const consumeError = async ( channel, msg ) => {
   // parse message
   const { routingKey, projectId, projectStatus } = parseMessage( msg );
 
@@ -170,4 +170,9 @@ export const consumeError = async ( channel, msg ) => {
 
   // 2. notify the react client
   notifyClientOnError( { id: projectId, status: projectStatus, error: errorMessage } );
+};
+
+export default {
+  consumeSuccess,
+  consumeError
 };

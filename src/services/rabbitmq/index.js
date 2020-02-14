@@ -1,12 +1,6 @@
 import initialize, { getPublishChannel, getConsumerChannel } from './initialize';
-import {
-  consumeSuccess as videoConsumeSuccess,
-  consumeError as videoConsumeError
-} from './video';
-import {
-  consumeSuccess as packageConsumeSuccess,
-  consumeError as packageConsumeError
-} from './package';
+import video from './video';
+import pkg from './package';
 
 // Utility function to parse messages
 export const parseMessage = msg => {
@@ -47,9 +41,9 @@ const consumeSuccess = async () => {
   channel.consume( 'publish.result', async msg => {
     const { routingKey } = msg.fields; // result.create.video
     if ( routingKey.includes( 'video' ) ) {
-      videoConsumeSuccess( channel, msg );
+      video.consumeSuccess( channel, msg );
     } else if ( routingKey.includes( 'package' ) ) {
-      packageConsumeSuccess( channel, msg );
+      pkg.consumeSuccess( channel, msg );
     }
   } );
 };
@@ -61,9 +55,9 @@ const consumeErrors = async () => {
   channel.consume( 'publish.dlq', async msg => {
     const { routingKey } = msg.fields;
     if ( routingKey.includes( 'video' ) ) {
-      videoConsumeError( channel, msg );
+      video.consumeError( channel, msg );
     } else if ( routingKey.includes( 'package' ) ) {
-      packageConsumeError( channel, msg );
+      pkg.consumeError( channel, msg );
     }
   }, {
     noAck: true
