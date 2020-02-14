@@ -1,8 +1,8 @@
 import { getVimeoId, getYouTubeId } from '../../../lib/projectParser';
+import { maybeGetUrlToProdS3 } from '../index';
 
 const ENGLISH_LOCALE = 'en-us';
 const THUMBNAIL_USE = 'Thumbnail/Cover Image';
-
 
 function getEmbedUrl( url ) {
   if ( !url.includes( 'youtube' ) && !url.includes( 'vimeo' ) ) {
@@ -15,11 +15,6 @@ function getEmbedUrl( url ) {
     return `https://player.vimeo.com/video/${getVimeoId( url )}`;
   }
   return url;
-}
-
-function maybeGetUrlToProdS3( url ) {
-  if ( url.startsWith( 'http:' ) || url.startsWith( 'https:' ) ) return url;
-  return `https://${process.env.AWS_S3_PRODUCTION_BUCKET}.s3.amazonaws.com/${url}`;
 }
 
 const transformLanguage = language => ( {
