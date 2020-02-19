@@ -1356,7 +1356,15 @@ export type DocumentConversionFormatOrderByInput =
   | "markdown_ASC"
   | "markdown_DESC";
 
-export type PublishStatus = "DRAFT" | "PUBLISHING" | "PUBLISHED" | "EMBARGOED";
+export type PublishStatus =
+  | "DRAFT"
+  | "PUBLISHING"
+  | "PUBLISH_FAILURE"
+  | "UNPUBLISH_FAILURE"
+  | "PUBLISH_SUCCESS"
+  | "UNPUBLISH_SUCCESS"
+  | "PUBLISHED"
+  | "EMBARGOED";
 
 export type Visibility = "INTERNAL" | "PUBLIC";
 
