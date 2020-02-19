@@ -70,7 +70,7 @@ export const publishUpdate = async ( id, data, status, projectDirectory ) => {
 const consumeSuccess = async ( channel, msg ) => {
   // 1. Parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
-  const status = routingKey === 'delete.package' ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
+  const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
@@ -92,7 +92,7 @@ const consumeError = async ( channel, msg ) => {
   const { routingKey, data: { projectIds } } = parseMessage( msg );
   const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectIds.id} `;
 
-  const status = routingKey === 'delete.package' ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
+  const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
 
   // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
