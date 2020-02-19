@@ -121,7 +121,7 @@ const onPublishUpdate = async projectId => {
 
 const consumeSuccess = async ( channel, msg ) => {
   // parse message
-  const { routingKey, projectId } = parseMessage( msg );
+  const { routingKey, data: { projectId } } = parseMessage( msg );
   let status;
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
@@ -157,7 +157,7 @@ const consumeSuccess = async ( channel, msg ) => {
 
 const consumeError = async ( channel, msg ) => {
   // parse message
-  const { routingKey, projectId, projectStatus } = parseMessage( msg );
+  const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
 
   const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
   console.log( errorMessage );

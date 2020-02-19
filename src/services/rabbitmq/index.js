@@ -7,9 +7,8 @@ export const parseMessage = msg => {
   const { routingKey } = msg.fields;
   const msgBody = msg.content.toString();
   const data = JSON.parse( msgBody );
-  const { projectId, projectStatus } = data;
 
-  return { routingKey, projectId, projectStatus };
+  return { routingKey, data };
 };
 
 // Utility function to publish messages to a channel
