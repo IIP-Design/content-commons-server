@@ -30,6 +30,7 @@ export const PACKAGE_FULL = `
     documents {
       id
       language { id languageCode locale textDirection displayName nativeName }
+      title
       filetype
       filename
       filesize
