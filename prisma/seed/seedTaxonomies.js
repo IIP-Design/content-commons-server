@@ -122,6 +122,8 @@ const processTerm = async ( type, translations ) => {
 };
 
 const seedTaxonomies = async () => {
+  console.log( 'Seeding Taxonomies' );
+
   const languages = await getLanguages();
   /**
    * Synchronously process translations.
@@ -185,6 +187,10 @@ const seedTaxonomies = async () => {
    * @returns {*}
    */
   const processTerms = ( type, terms ) => {
+    console.log( `${type} : ${terms}` );
+    console.log( 'terms' );
+    console.dir( terms );
+
     if ( terms === null ) return [];
     return Promise.all( terms.map( translations => processTerm( type, translations ) ) )
       .then( results => results.filter( result => result ) );
@@ -193,6 +199,11 @@ const seedTaxonomies = async () => {
   // Process all of the translations first to ensure we reuse translations where possible
   const catTranslations = await getCsvRows( files.categories ).then( processTranslations );
   const tagTranslations = await getCsvRows( files.tags ).then( processTranslations );
+  console.log( '--- catTranslations ---' );
+  console.dir( catTranslations );
+  console.log( '--- tagTranslations ---' );
+  console.dir( tagTranslations );
+
   return Promise.all( [
     processTerms( 'category', catTranslations ),
     processTerms( 'tag', tagTranslations )
