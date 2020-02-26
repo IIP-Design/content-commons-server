@@ -1,6 +1,5 @@
 import { publishToChannel, parseMessage } from './index';
 import { getS3ProjectDirectory } from '../../lib/projectParser';
-import { notifyClientOnSuccess, notifyClientOnError } from './notify';
 import { prisma } from '../../schema/generated/prisma-client';
 
 import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
@@ -43,18 +42,6 @@ export const publishCreate = async ( id, data, status ) => {
 };
 
 
-const onPublishCreate = async projectId => {
-  try {
-    updateDatabase( projectId, {
-      status: 'PUBLISHED',
-      publishedAt: ( new Date() ).toISOString()
-    } );
-    // notify the client
-  } catch ( err ) {
-    console.log( `Error: ${err.message}` );
-  }
-};
-
 /**
  * Put publish deletion request on publish.delete queue
  *
@@ -78,18 +65,6 @@ export const publishDelete = async id => {
   } );
 };
 
-const onPublishDelete = async projectId => {
-  console.log( `onPublishDelete ${projectId}` );
-  try {
-    updateDatabase( projectId, {
-      status: 'DRAFT',
-      publishedAt: null
-    } );
-  } catch ( err ) {
-    console.log( `Error: ${err.message}` );
-  }
-};
-
 
 export const publishUpdate = async ( id, data, status ) => {
   const projectDirectory = await _getS3ProjectDirectory( id );
@@ -108,68 +83,41 @@ export const publishUpdate = async ( id, data, status ) => {
   } );
 };
 
-const onPublishUpdate = async projectId => {
-  try {
-    updateDatabase( projectId, {
-      status: 'PUBLISHED',
-      publishedAt: ( new Date() ).toISOString()
-    } );
-  } catch ( err ) {
-    console.log( `Error: ${err.message}` );
-  }
-};
 
 const consumeSuccess = async ( channel, msg ) => {
-  // parse message
+  // 1. parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
-  let status;
+  const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
-  // 1. on successful result, update db with applicable status using the returned projectId
-  switch ( routingKey ) {
-    case 'result.create.video':
-      onPublishCreate( projectId );
-      status = 'PUBLISHED';
-      break;
-
-    case 'result.update.video':
-      onPublishUpdate( projectId );
-      status = 'PUBLISHED';
-      break;
-
-    case 'result.delete.video':
-      onPublishDelete( projectId );
-      status = 'DRAFT';
-      break;
-
-    default:
-      console.log( `Invalid result type: ${routingKey}` );
-      break;
+  // 2. on successful result, update db with applicable status using the returned projectId
+  try {
+    updateDatabase( projectId, { status } );
+  } catch ( err ) {
+    console.log( `Error: ${err.message}` );
   }
 
-  // 2. notify the react client
-  notifyClientOnSuccess( { id: projectId, status } );
 
   // 3. acknowledge message as received
   await channel.ack( msg );
 };
 
 const consumeError = async ( channel, msg ) => {
-  // parse message
+  // 1. parse message
   const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
 
   const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
-  console.log( errorMessage );
 
+  // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
     updateDatabase( projectId, { status: projectStatus } );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
 
-  // 2. notify the react client
-  notifyClientOnError( { id: projectId, status: projectStatus, error: errorMessage } );
+  // 3. log error
+  console.log( errorMessage );
 };
 
 export default {
