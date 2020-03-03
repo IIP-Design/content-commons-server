@@ -37,12 +37,18 @@ const consumeSuccess = async () => {
   const channel = await getConsumerChannel();
   await channel.prefetch( 1 );
 
-  channel.consume( 'publish.result', async msg => {
-    const { routingKey } = msg.fields; // result.create.video
-    if ( routingKey.includes( 'video' ) ) {
-      video.consumeSuccess( channel, msg );
-    } else if ( routingKey.includes( 'package' ) ) {
-      pkg.consumeSuccess( channel, msg );
+  channel.consume( 'publish.result', msg => {
+    if ( msg && msg.fields ) {
+      const { routingKey } = msg.fields; // result.create.video
+      if ( routingKey ) {
+        if ( routingKey.includes( 'video' ) ) {
+          video.consumeSuccess( channel, msg );
+        } else if ( routingKey.includes( 'package' ) ) {
+          pkg.consumeSuccess( channel, msg );
+        }
+      }
+    } else {
+      console.log( 'ERROR [consumeSuccess] : Either msg or msg.fields is absent' );
     }
   } );
 };
@@ -51,12 +57,18 @@ const consumeErrors = async () => {
   const channel = await getConsumerChannel();
   await channel.prefetch( 1 );
 
-  channel.consume( 'publish.dlq', async msg => {
-    const { routingKey } = msg.fields;
-    if ( routingKey.includes( 'video' ) ) {
-      video.consumeError( channel, msg );
-    } else if ( routingKey.includes( 'package' ) ) {
-      pkg.consumeError( channel, msg );
+  channel.consume( 'publish.dlq', msg => {
+    if ( msg && msg.fields ) {
+      const { routingKey } = msg.fields;
+      if ( routingKey ) {
+        if ( routingKey.includes( 'video' ) ) {
+          video.consumeError( channel, msg );
+        } else if ( routingKey.includes( 'package' ) ) {
+          pkg.consumeError( channel, msg );
+        }
+      }
+    } else {
+      console.log( 'ERROR [consumeErrors] : Either msg or msg.fields is absent' );
     }
   }, {
     noAck: true
