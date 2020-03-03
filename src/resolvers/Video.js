@@ -134,12 +134,15 @@ export default {
 
 
     async publishVideoProject( parent, args, ctx ) {
+      const { id } = args;
+
       // 1. Get data for project to publish from db
-      const videoProject = await ctx.prisma.videoProject( { id: args.id } ).$fragment( VIDEO_PROJECT_FULL );
+      const videoProject = await ctx.prisma.videoProject( { id } ).$fragment( VIDEO_PROJECT_FULL );
+
       if ( !videoProject ) {
-        throw new UserInputError( 'A project with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updateVideoProject( { data: { status: 'PUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
 
       // 2. Transform it into the acceptable elasticsearch data structure
@@ -149,9 +152,9 @@ export default {
 
       // 3. Put on the queue for processing ( not sure we need to await here )
       if ( status === 'DRAFT' ) {
-        publishCreate( args.id, esData, status );
+        publishCreate( id, esData, status );
       } else {
-        publishUpdate( args.id, esData, status );
+        publishUpdate( id, esData, status );
       }
 
       // 4. Update the project status
@@ -166,13 +169,15 @@ export default {
     },
 
     async unpublishVideoProject( parent, args, ctx ) {
+      const { id } = args;
+
       const videoProject = await ctx.prisma.videoProject( args ).$fragment( VIDEO_PROJECT_FULL );
+
       if ( !videoProject ) {
-        throw new UserInputError( 'A project with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updateVideoProject( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
-      const { id } = videoProject;
 
       publishDelete( id );
 

@@ -90,18 +90,18 @@ const consumeSuccess = async ( channel, msg ) => {
 const consumeError = async ( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectIds } } = parseMessage( msg );
-  const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectIds.id} `;
-
-  const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
 
   // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
+    const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
     updateDatabase( projectIds.id, { status } );
   } catch ( err ) {
-    console.log( `Error: ${err.message}` );
+    console.log( `[package consumeError]: cannot package status : ${err.message}` );
   }
 
   // 3. log error
+  const id = projectIds && projectIds.id ? `: ${projectIds.id}` : '';
+  const errorMessage = `Unable to process queue ${routingKey} request for project ${id} `;
   console.log( errorMessage );
 };
 

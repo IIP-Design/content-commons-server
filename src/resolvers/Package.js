@@ -83,9 +83,9 @@ export default {
       const pkg = await ctx.prisma.package( { id } ).$fragment( PACKAGE_FULL );
 
       if ( !pkg ) {
-        throw new UserInputError( 'A package with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updatePackage( { data: { status: 'PUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
 
       // 2. Transform it into the acceptable elasticsearch data structure
@@ -108,9 +108,9 @@ export default {
       const pkg = await ctx.prisma.package( { id } ).$fragment( PACKAGE_FULL );
 
       if ( !pkg ) {
-        throw new UserInputError( 'A package with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updatePackage( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
 
       // Need to delete the package id AND its containing documents

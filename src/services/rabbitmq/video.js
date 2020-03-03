@@ -107,8 +107,6 @@ const consumeError = async ( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
 
-  const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
-
   // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
     updateDatabase( projectId, { status: projectStatus } );
@@ -117,6 +115,7 @@ const consumeError = async ( channel, msg ) => {
   }
 
   // 3. log error
+  const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
   console.log( errorMessage );
 };
 
