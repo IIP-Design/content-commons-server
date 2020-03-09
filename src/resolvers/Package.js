@@ -5,7 +5,7 @@ import {
   deleteAllS3Assets, deleteS3Asset, getAssetPath
 } from '../services/aws/s3';
 import transformPackage from '../services/es/package/transform';
-import { publishCreate, publishDelete } from '../services/rabbitmq/package';
+import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { hasValidValue } from '../lib/projectParser';
 import { PACKAGE_FULL } from '../fragments/package';
 
@@ -96,9 +96,7 @@ export default {
       if ( status === 'DRAFT' ) {
         publishCreate( id, esData, status, pkg.assetPath );
       } else {
-        return pkg;
-        // to do: update package
-        // publishUpdate( id, esData, status );
+        publishUpdate( id, esData, status, pkg.assetPath );
       }
 
       return pkg;

@@ -46,7 +46,9 @@ const consumeSuccess = async () => {
         } else if ( routingKey.includes( 'package' ) ) {
           pkg.consumeSuccess( channel, msg );
         }
+        // TODO handle not having handler for routing keu
       }
+      // TODO handle no routing key
     } else {
       console.log( 'ERROR [consumeSuccess] : Either msg or msg.fields is absent' );
     }
@@ -66,7 +68,9 @@ const consumeErrors = async () => {
         } else if ( routingKey.includes( 'package' ) ) {
           pkg.consumeError( channel, msg );
         }
+        // TODO handle not having error handler for routing key
       }
+      // TODO handle no routing key
     } else {
       console.log( 'ERROR [consumeErrors] : Either msg or msg.fields is absent' );
     }
