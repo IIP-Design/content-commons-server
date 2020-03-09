@@ -30,7 +30,7 @@ const transformLanguage = language => ( {
 const transformDocument = ( document, team ) => {
   const now = new Date().toISOString();
   const {
-    filename, filetype, title, language, visibility, content, url, use, tags, bureaus
+    filename, filetype, title, language, visibility, content, url, use, tags, bureaus, countries
   } = document;
 
   const doc = {
@@ -63,10 +63,16 @@ const transformDocument = ( document, team ) => {
     }
   }
 
-
   if ( bureaus && bureaus.length ) {
     doc.bureaus = bureaus.map( bureau => {
       const { id, name, abbr } = bureau;
+      return { id, name, abbr };
+    } );
+  }
+
+  if ( countries && countries.length ) {
+    doc.countries = countries.map( country => {
+      const { id, name, abbr } = country;
       return { id, name, abbr };
     } );
   }
@@ -76,7 +82,7 @@ const transformDocument = ( document, team ) => {
 
 
 /**
- * Transforms data from a VideoProject into a format accepted by the Public API
+ * Transforms data from a Package into a format accepted by the Public API
  * for Elastic Search.
  *
  * @param pkg
