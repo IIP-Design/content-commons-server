@@ -58,6 +58,11 @@ Install the following if not already installed
   - **CLOUDFLARE_AUTH_DOMAIN** : Domain CloudFlare authenticates against
   - **CLOUDFLARE_POLICY_AUD** : CloudFlare access id assocated with configured domain
 
+- Elasticsearch authentication.
+
+  - **ES_APP_SECRET** : Secret used to generate an easticsearch token for cdp api communication
+  - **ES_APP_USER** : Elasticsearch user
+
 - Deploy prisma schema, install dependencies and start development server
 
 ```
