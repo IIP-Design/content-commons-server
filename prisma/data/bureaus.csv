@@ -1,18 +1,65 @@
 abbr,name,parent,isBureau
+A/LM,"Office of Logistics Management","Bureau of Administration",
+A/OPR/OS,"Office of Overseas Schools","Bureau of Administration",
+A/OPE,"Office of Procurement Executive","Bureau of Administration",
+SEGL,"Office of the Special Envoy for the Great Lakes Region of Africa","Bureau of African Affairs",
+EB/TFS,"Division for Counter Threat Finance and Sanctions","Bureau of Economic and Business Affairs",
+GPA/GSM,"Office of Global Social Media","Bureau of Global Public Affairs",
+L/T,"Office of Treaty Affairs","Office of the Legal Adviser",
+S/CPR,"Office of the Chief of Protocol",,1
+S/CCI,"Office of the Coordinator for Cyber Issues",,1
+L,"Office of the Legal Adviser",,1
+F,"Office of U.S. Foreign Assistance Resources",,1
+T,"Under Secretary for Arms Control and International Security",,1
+J,"Under Secretary for Civilian Security, Democracy, and Human Rights",,1
+E,"Under Secretary for Economic Growth, Energy, and the Environment",,1
+M,"Under Secretary for Management",,1
+P,"Under Secretary for Political Affairs",,1
+R,"Under Secretary for Public Diplomacy and Public Affairs",,1
+J/GCJ,"Office of Global Criminal Justice",,1
+J/IRF,"Office of International Religious Freedom",,1
+J/SEAS,"Office of the Special Envoy to Monitor and Combat Anti-Semitism",,1
+J/TIP,"Office to Monitor and Combat Trafficking in Persons",,1
+E/STAS,"Office of the Science and Technology Advisor",,1
+FSI,"Foreign Service Institute",,1
+M/EDCS,"Office of Emergencies in the Diplomatic and Consular Service",,1
+M/OFM,"Office of Foreign Missions",,1
+M/SS,"Office of Management Strategy and Solutions",,1
+GEC,"Global Engagement Center",,1
+R/PPR,"Office of Policy, Planning, and Resources",,1
+APEC,"Asia-Pacific Economic Cooperation",,1
 A,"Bureau of Administration",,1
-LM,"Office of Logistics Management","Bureau of Administration",
-OPE,"Office of Procurement Executive","Bureau of Administration",
 AF,"Bureau of African Affairs",,1
+AVC,"Bureau of Arms Control, Verification and Compliance",,1
 BP,"Bureau of Budget and Planning",,1
+CSO,"Bureau of Conflict and Stabilization Operations",,1
 CA,"Bureau of Consular Affairs",,1
+CT,"Bureau of Counterterrorism",,1
+DRL,"Bureau of Democracy, Human Rights, and Labor",,1
 DS,"Bureau of Diplomatic Security",,1
 EAP,"Bureau of East Asian and Pacific Affairs",,1
-ECA,"Bureau of Educational and Cultural Afairs",,1
+EB,"Bureau of Economic and Business Affairs",,1
+ECA,"Bureau of Educational and Cultural Affairs",,1
+ENR,"Bureau of Energy Resources",,1
+EUR,"Bureau of European and Eurasian Affairs",,1
 GPA,"Bureau of Global Public Affairs",,1
-GSM,"Office of Global Social Media","Bureau of Global Public Affairs",
-SPOX,"Office of the Spokesperson","Bureau of Global Public Affairs",
-PL,"Office of Public Liaison","Bureau of Global Public Affairs",
 HR,"Bureau of Human Resources",,1
+IRM,"Bureau of Information Resource Management",,1
+INR,"Bureau of Intelligence and Research",,1
+INL,"Bureau of International Narcotics and Law Enforcement Affairs",,1
+IO,"Bureau of International Organization Affairs",,1
+ISN,"Bureau of International Security and Nonproliferation",,1
+H,"Bureau of Legislative Affairs",,1
 NEA,"Bureau of Near Eastern Affairs",,1
+OBO,"Bureau of Overseas Buildings Operations",,1
+PM,"Bureau of Political-Military Affairs",,1
+PRM,"Bureau of Population, Refugees, and Migration",,1
 SCA,"Bureau of South and Central Asian Affairs",,1
+CGFS,"Bureau of the Comptroller and Global Financial Service",,1
 WHA,"Bureau of Western Hemisphere Affairs",,1
+C,"Counselor of the Department",,1
+D,"Deputy Secretary of State",,1
+OIG,"Office of Inspector General",,1
+S,"The Secretary of State",,1
+USAID,"United States Agency for International Development",,1
+USUN,"United States Mission to the United Nations",,1
