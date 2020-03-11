@@ -41,6 +41,7 @@ export const PACKAGE_FULL = `
         html
         markdown
       }
+      excerpt
       image {
         id
         language { id languageCode locale textDirection displayName nativeName }

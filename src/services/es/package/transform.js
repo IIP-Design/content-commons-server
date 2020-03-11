@@ -30,7 +30,7 @@ const transformLanguage = language => ( {
 const transformDocument = ( document, team ) => {
   const now = new Date().toISOString();
   const {
-    filename, filetype, title, language, visibility, content, url, use, tags, bureaus, countries
+    filename, filetype, title, language, visibility, content, excerpt, url, use, tags, bureaus, countries
   } = document;
 
   const doc = {
@@ -45,6 +45,7 @@ const transformDocument = ( document, team ) => {
     filename,
     filetype,
     title: title || '',
+    excerpt,
     url: getUrlToProdS3( url ),
     use: use.name,
     tags: transformTaxonomy( tags, 'en-us' )
