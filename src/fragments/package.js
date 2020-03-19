@@ -30,6 +30,7 @@ export const PACKAGE_FULL = `
     documents {
       id
       language { id languageCode locale textDirection displayName nativeName }
+      title
       filetype
       filename
       filesize
@@ -40,6 +41,7 @@ export const PACKAGE_FULL = `
         html
         markdown
       }
+      excerpt
       image {
         id
         language { id languageCode locale textDirection displayName nativeName }
@@ -56,8 +58,7 @@ export const PACKAGE_FULL = `
         use {
           id
           name
-        }
-        md5
+        } 
         url
         signedUrl
       }
@@ -90,6 +91,16 @@ export const PACKAGE_FULL = `
         translations {
           name
           language { id languageCode locale textDirection displayName nativeName }
+        }
+      }
+      countries {
+        id
+        name
+        abbr
+        region {
+          id
+          name
+          abbr
         }
       }
     }

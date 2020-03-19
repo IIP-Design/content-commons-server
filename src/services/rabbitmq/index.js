@@ -1,53 +1,79 @@
-// mport amqp from 'amqplib';
-import initialize, { getConnection } from './initialize';
-import {
-  consumeSuccess as videoConsumeSuccess,
-  consumeError as videoConsumeError
-} from './video';
+import initialize, { getPublishChannel, getConsumerChannel } from './initialize';
+import video from './video';
+import pkg from './package';
 
-// Utility function to publish messages to a channel
-export const publishToChannel = ( channel, { routingKey, exchangeName, data } ) => new Promise( ( resolve, reject ) => {
-  channel.publish( exchangeName,
-    routingKey,
-    Buffer.from( JSON.stringify( data ), 'utf-8' ), {
-      persistent: true
-    }, err => {
-      if ( err ) {
-        return reject( err );
-      }
+// Utility function to parse messages
+export const parseMessage = msg => {
+  const { routingKey } = msg.fields;
+  const msgBody = msg.content.toString();
+  const data = JSON.parse( msgBody );
 
-      resolve();
-    } );
-} );
-
-const handleConnectionEvents = connection => {
-  // handle connection closed
-  connection.on( 'close', () => console.log( 'Connection has been closed' ) );
-  // handle errors
-  connection.on( 'error', err => console.log( `Error: Connection error: ${err.toString()}` ) );
+  return { routingKey, data };
 };
 
-const consumeSuccess = async () => {
-  const connection = await getConnection( 'consumer' );
-  handleConnectionEvents( connection );
+// Utility function to publish messages to a channel
+export const publishToChannel = async ( { routingKey, exchangeName, data } ) => {
+  const channel = await getPublishChannel( 'publish' );
 
-  const channel = await connection.createChannel();
+  if ( channel ) {
+    return new Promise( ( resolve, reject ) => {
+      channel.publish( exchangeName,
+        routingKey,
+        Buffer.from( JSON.stringify( data ), 'utf-8' ), {
+          persistent: true
+        }, err => {
+          if ( err ) {
+            return reject( err );
+          }
+
+          resolve();
+        } );
+    } );
+  }
+};
+
+
+const consumeSuccess = async () => {
+  const channel = await getConsumerChannel();
   await channel.prefetch( 1 );
 
-  channel.consume( 'publish.result', async msg => {
-    videoConsumeSuccess( channel, msg );
+  channel.consume( 'publish.result', msg => {
+    if ( msg && msg.fields ) {
+      const { routingKey } = msg.fields; // result.create.video
+      if ( routingKey ) {
+        if ( routingKey.includes( 'video' ) ) {
+          video.consumeSuccess( channel, msg );
+        } else if ( routingKey.includes( 'package' ) ) {
+          pkg.consumeSuccess( channel, msg );
+        }
+        // TODO handle not having handler for routing keu
+      }
+      // TODO handle no routing key
+    } else {
+      console.log( 'ERROR [consumeSuccess] : Either msg or msg.fields is absent' );
+    }
   } );
 };
 
 const consumeErrors = async () => {
-  const connection = await getConnection( 'consumer' );
-  handleConnectionEvents( connection );
-
-  const channel = await connection.createChannel();
+  const channel = await getConsumerChannel();
   await channel.prefetch( 1 );
 
-  channel.consume( 'publish.dlq', async msg => {
-    videoConsumeError( channel, msg );
+  channel.consume( 'publish.dlq', msg => {
+    if ( msg && msg.fields ) {
+      const { routingKey } = msg.fields;
+      if ( routingKey ) {
+        if ( routingKey.includes( 'video' ) ) {
+          video.consumeError( channel, msg );
+        } else if ( routingKey.includes( 'package' ) ) {
+          pkg.consumeError( channel, msg );
+        }
+        // TODO handle not having error handler for routing key
+      }
+      // TODO handle no routing key
+    } else {
+      console.log( 'ERROR [consumeErrors] : Either msg or msg.fields is absent' );
+    }
   }, {
     noAck: true
   } );
@@ -65,8 +91,12 @@ const listenForResults = async () => {
 // Setup up RabbitMQ and start listening for publish results
 export const initQueueAndStartListening = async () => {
   // initialize RabbitMQ Exchanges/Queues
-  await initialize().catch( err => console.error( err.cause ) );
+  const isInitialized = await initialize().catch( err => console.error( err.cause ) );
 
-  // listen for results on RabbitMQc
-  listenForResults();
+  // Should we attempt restart if this fails and if so, how many times?
+
+  if ( isInitialized ) {
+    // listen for results on RabbitMQc
+    listenForResults();
+  }
 };

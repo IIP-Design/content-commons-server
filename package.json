@@ -11,7 +11,8 @@
     "copy": "copyfiles -u 1  \"src/lib/**/*.csv\" build",
     "start": "node build/index.js",
     "deploy": "npm run build && npm run start",
-    "prisma-deploy": "prisma deploy"
+    "prisma-deploy": "prisma deploy",
+    "prisma-seed": "prisma seed"
   },
   "author": "",
   "license": "ISC",

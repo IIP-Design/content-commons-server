@@ -193,6 +193,7 @@ const seedTaxonomies = async () => {
   // Process all of the translations first to ensure we reuse translations where possible
   const catTranslations = await getCsvRows( files.categories ).then( processTranslations );
   const tagTranslations = await getCsvRows( files.tags ).then( processTranslations );
+
   return Promise.all( [
     processTerms( 'category', catTranslations ),
     processTerms( 'tag', tagTranslations )

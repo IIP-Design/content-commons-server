@@ -1,20 +1,17 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
-// import pubsub from '../services/pubsub';
 import { requiresLogin } from '../lib/authentication';
 import { convertDocxContent } from './Util';
 import {
   deleteAllS3Assets, deleteS3Asset, getAssetPath
 } from '../services/aws/s3';
-// import transformPackage from '../services/es/package/transform';
-// import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
+import transformPackage from '../services/es/package/transform';
+import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
 import { hasValidValue } from '../lib/projectParser';
 import { PACKAGE_FULL } from '../fragments/package';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 export default {
-  Subscription: {},
-
   Query: requiresLogin( {
     packages( parent, args, ctx ) {
       return ctx.prisma.packages();
@@ -81,12 +78,45 @@ export default {
       } );
     },
 
-    publishPackage( parent, { id }, ctx ) {
-      return ctx.prisma.package( { id } );
+    async publishPackage( parent, { id }, ctx ) {
+      // 1. Get data for project to publish from db
+      const pkg = await ctx.prisma.package( { id } ).$fragment( PACKAGE_FULL );
+
+      if ( !pkg ) {
+        return ctx.prisma
+          .updatePackage( { data: { status: 'PUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
+      }
+
+      // 2. Transform it into the acceptable elasticsearch data structure
+      const esData = transformPackage( pkg );
+      const { status } = pkg;
+
+      // 3. Put on the queue for processing ( not sure we need to await here )
+      if ( status === 'DRAFT' ) {
+        publishCreate( id, esData, status, pkg.assetPath );
+      } else {
+        publishUpdate( id, esData, status, pkg.assetPath );
+      }
+
+      return pkg;
     },
 
-    unpublishPackage( parent, { id }, ctx ) {
-      return ctx.prisma.package( { id } );
+    async unpublishPackage( parent, { id }, ctx ) {
+      const pkg = await ctx.prisma.package( { id } ).$fragment( PACKAGE_FULL );
+
+      if ( !pkg ) {
+        return ctx.prisma
+          .updatePackage( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
+      }
+
+      // Need to delete the package id AND its containing documents
+      const ids = { id, documentIds: pkg.documents.map( document => document.id ) };
+
+      publishDelete( ids, pkg.assetPath );
+
+      return pkg;
     },
 
     updateManyPackages( parent, args, ctx ) {

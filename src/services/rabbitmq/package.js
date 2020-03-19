@@ -1,19 +1,9 @@
 import { publishToChannel, parseMessage } from './index';
-import { getS3ProjectDirectory } from '../../lib/projectParser';
 import { prisma } from '../../schema/generated/prisma-client';
 
-import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
-
-
 const updateDatabase = async ( id, data ) => {
-  await prisma.updateVideoProject( { data, where: { id } } ).catch( err => console.error( err ) );
+  await prisma.updatePackage( { data, where: { id } } ).catch( err => console.error( err ) );
 };
-
-const _getS3ProjectDirectory = async id => {
-  const units = await prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIDEO_FILES );
-  return getS3ProjectDirectory( units );
-};
-
 
 /**
  * Put publish creation request on publish.create queue
@@ -23,15 +13,13 @@ const _getS3ProjectDirectory = async id => {
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async ( id, data, status ) => {
-  // data.type: 'video'
-  console.log( '[x] PUBLISHING a publish create request' );
-
-  const projectDirectory = await _getS3ProjectDirectory( id );
+export const publishCreate = async ( id, data, status, projectDirectory ) => {
+  // data.type: 'package'.  Also creates each document contained within package
+  console.log( '[x] PUBLISHING a package publish create request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'create.video',
+    routingKey: 'create.package',
     data: {
       projectId: id,
       projectStatus: status,
@@ -49,31 +37,26 @@ export const publishCreate = async ( id, data, status ) => {
  * @param {object} data project data
  *
  */
-export const publishDelete = async id => {
-  console.log( '[x] PUBLISHING a publish delete request' );
-
-  // connect to Rabbit MQ and create a channel
-  const projectDirectory = await _getS3ProjectDirectory( id );
+export const publishDelete = async ( ids, projectDirectory ) => {
+  console.log( '[x] PUBLISHING a publish package delete request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'delete.video',
+    routingKey: 'delete.package',
     data: {
-      projectId: id,
+      projectIds: ids,
       projectDirectory
     }
   } );
 };
 
 
-export const publishUpdate = async ( id, data, status ) => {
-  const projectDirectory = await _getS3ProjectDirectory( id );
-
-  console.log( '[x] PUBLISHING a publish upate request' );
+export const publishUpdate = async ( id, data, status, projectDirectory ) => {
+  console.log( '[x] PUBLISHING a publish package upate request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'update.video',
+    routingKey: 'update.package',
     data: {
       projectId: id,
       projectStatus: status,
@@ -85,19 +68,20 @@ export const publishUpdate = async ( id, data, status ) => {
 
 
 const consumeSuccess = async ( channel, msg ) => {
-  // 1. parse message
+  // 1. Parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
-  // 2. on successful result, update db with applicable status using the returned projectId
+  // 2. Update db with success status to alert the client (client polls for status changes)
   try {
-    updateDatabase( projectId, { status } );
+    updateDatabase(
+      projectId, { status }
+    );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
-
 
   // 3. acknowledge message as received
   await channel.ack( msg );
@@ -105,17 +89,19 @@ const consumeSuccess = async ( channel, msg ) => {
 
 const consumeError = async ( channel, msg ) => {
   // 1. parse message
-  const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
+  const { routingKey, data: { projectIds } } = parseMessage( msg );
 
   // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
-    updateDatabase( projectId, { status: projectStatus } );
+    const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
+    updateDatabase( projectIds.id, { status } );
   } catch ( err ) {
-    console.log( `Error: ${err.message}` );
+    console.log( `[package consumeError]: cannot package status : ${err.message}` );
   }
 
   // 3. log error
-  const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
+  const id = projectIds && projectIds.id ? `: ${projectIds.id}` : '';
+  const errorMessage = `Unable to process queue ${routingKey} request for project ${id} `;
   console.log( errorMessage );
 };
 

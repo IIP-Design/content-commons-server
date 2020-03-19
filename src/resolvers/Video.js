@@ -1,7 +1,6 @@
 import {
-  UserInputError, ApolloError, withFilter
+  UserInputError, ApolloError
 } from 'apollo-server-express';
-import pubsub from '../services/pubsub';
 import { requiresLogin } from '../lib/authentication';
 import {
   getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
@@ -12,25 +11,9 @@ import transformVideo from '../services/es/video/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
 import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
 
-const PROJECT_STATUS_CHANGE = 'PROJECT_STATUS_CHANGE';
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 export default {
-  Subscription: {
-    projectStatusChange: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator( [PROJECT_STATUS_CHANGE] ),
-        ( payload, variables ) => {
-          const { id } = payload.projectStatusChange;
-          if ( !id && ( !variables.ids || !variables.ids.length ) ) {
-            return true;
-          }
-          return id === variables.id || variables.ids.includes( id );
-        }
-      )
-    }
-  },
-
   Query: requiresLogin( {
     videoProjects ( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
@@ -151,24 +134,27 @@ export default {
 
 
     async publishVideoProject( parent, args, ctx ) {
+      const { id } = args;
+
       // 1. Get data for project to publish from db
-      const videoProject = await ctx.prisma.videoProject( { id: args.id } ).$fragment( VIDEO_PROJECT_FULL );
+      const videoProject = await ctx.prisma.videoProject( { id } ).$fragment( VIDEO_PROJECT_FULL );
+
       if ( !videoProject ) {
-        throw new UserInputError( 'A project with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updateVideoProject( { data: { status: 'PUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
 
-      // 2. Transform it into thw acceptable elasticsearch data structure
+      // 2. Transform it into the acceptable elasticsearch data structure
       const esData = transformVideo( videoProject );
 
       const { status } = videoProject;
 
       // 3. Put on the queue for processing ( not sure we need to await here )
       if ( status === 'DRAFT' ) {
-        publishCreate( args.id, esData, status );
+        publishCreate( id, esData, status );
       } else {
-        publishUpdate( args.id, esData, status );
+        publishUpdate( id, esData, status );
       }
 
       // 4. Update the project status
@@ -183,13 +169,15 @@ export default {
     },
 
     async unpublishVideoProject( parent, args, ctx ) {
+      const { id } = args;
+
       const videoProject = await ctx.prisma.videoProject( args ).$fragment( VIDEO_PROJECT_FULL );
+
       if ( !videoProject ) {
-        throw new UserInputError( 'A project with that id does not exist in the database', {
-          invalidArgs: 'id'
-        } );
+        return ctx.prisma
+          .updateVideoProject( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
       }
-      const { id } = videoProject;
 
       publishDelete( id );
 

@@ -13,8 +13,18 @@ import { verifyCloudflareToken } from '../services/cloudflareAuth';
 import { USER } from '../fragments/user';
 
 const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24; // 24 hours, matches CloudFlare maxAge
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
+
+// This should be handled on api server
+const generateESCookie = ctx => {
+  const esToken = jwt.sign( { user: process.env.ES_APP_USER }, process.env.ES_APP_SECRET );
+  ctx.res.cookie( 'ES_TOKEN', esToken, {
+    maxAge: COOKIE_MAX_AGE,
+    secure: !process.env.NODE_ENV === 'development'
+  } );
+};
 
 const createToken = async () => {
   const randomBytesPromiseified = promisify( randomBytes );
@@ -25,7 +35,6 @@ const createToken = async () => {
   };
 };
 
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24; // 24 hours, matches CloudFlare maxAge
 
 const setCookie = ( ctx, jwtToken ) => {
   ctx.res.cookie( 'americaCommonsToken', jwtToken, {
@@ -35,6 +44,7 @@ const setCookie = ( ctx, jwtToken ) => {
     sameSite: 'Lax'
   } );
 };
+
 
 export default {
   Query: {
@@ -68,7 +78,8 @@ export default {
       // 2. Verify that the Cloudflare token sent is vaild
       const cloudflareUser = await verifyCloudflareToken( token );
 
-      if ( !cloudflareUser || cloudflareUser.message ) { // cloudflare message is error
+      if ( !cloudflareUser || cloudflareUser.message ) {
+        // cloudflare message is error
         throw new AuthenticationError(
           `Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.`
         );
@@ -104,7 +115,12 @@ export default {
       // 6.Set the jwt as a cookie on the response
       setCookie( ctx, jwtToken );
 
-      // 7.Return user
+      // 7. Set the ES token for client to ES communication
+      // We should be getting tokens from api server
+      // Since api is not yet ready to generate tokens so doing it here
+      generateESCookie( ctx );
+
+      // 8.Return user
       return user;
     },
 
@@ -158,7 +174,12 @@ export default {
       // 6.Set the jwt as a cookie on the response
       setCookie( ctx, jwtToken );
 
-      // 7.Return user
+      // 7. Set the ES token for client to ES communication
+      // We should be getting tokens from api server
+      // Since api is not yet ready to generate tokens so doing it here
+      generateESCookie( ctx );
+
+      // 8.Return user
       return user;
     },
 
@@ -264,6 +285,7 @@ export default {
      */
     signOut( parent, args, ctx ) {
       ctx.res.clearCookie( 'americaCommonsToken' );
+      ctx.res.clearCookie( 'ES_TOKEN' );
       return 'loggedout';
     },
 

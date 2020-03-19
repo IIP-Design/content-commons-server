@@ -98,6 +98,7 @@ export const files = {
   }
 
   const catsExist = fs.existsSync( files.categories );
+
   const tagsExist = fs.existsSync( files.tags );
   if ( catsExist && tagsExist ) {
     const taxProm = seedTaxonomies().then( tax => {

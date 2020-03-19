@@ -4,6 +4,7 @@ import merge from 'lodash/merge';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 import AuthResolvers from './resolvers/Auth';
+import SharedResolvers from './resolvers/Shared';
 import LanguageResolvers from './resolvers/Language';
 import RegionResolvers from './resolvers/Region';
 import BureauResolvers from './resolvers/Bureau';
@@ -22,6 +23,7 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const resolvers = merge(
   AuthResolvers,
   UtilResolvers,
+  SharedResolvers,
   LanguageResolvers,
   TaxonomyResolvers,
   RegionResolvers,

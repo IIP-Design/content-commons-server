@@ -58,6 +58,11 @@ Install the following if not already installed
   - **CLOUDFLARE_AUTH_DOMAIN** : Domain CloudFlare authenticates against
   - **CLOUDFLARE_POLICY_AUD** : CloudFlare access id assocated with configured domain
 
+- Elasticsearch authentication.
+
+  - **ES_APP_SECRET** : Secret used to generate an easticsearch token for cdp api communication
+  - **ES_APP_USER** : Elasticsearch user
+
 - Deploy prisma schema, install dependencies and start development server
 
 ```
@@ -79,6 +84,8 @@ Prisma database endpoint requires authorization. To add authorization to the pla
 
   ![Add Headers to playground](docs/headers.jpg)
 
+RabbitMQ management admin should now be accessible at http://localhost:15672
+
 ## Running Tests
 
 [TODO]
@@ -92,5 +99,3 @@ Prisma database endpoint requires authorization. To add authorization to the pla
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/IIP-Design/content-commons-server/tags).
-
-Bye
