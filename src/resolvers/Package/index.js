@@ -51,6 +51,7 @@ export default {
         where: { id }
       } = updates;
 
+
       const { documents } = data;
 
       // 1. Delete documents
@@ -67,7 +68,7 @@ export default {
 
       // 3. If new docs, put on document util worker queue
       // for processing
-      if ( documents.create && documents.create[0] ) {
+      if ( documents && documents.create && documents.create[0] ) {
         if ( pkg && pkg.documents ) {
           pkg.documents.forEach( document => {
             if ( !document.content ) {
