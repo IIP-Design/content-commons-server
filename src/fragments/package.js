@@ -9,6 +9,8 @@ export const PACKAGE_DOCUMENT_FILES = `
 export const PACKAGE_FULL = `
   fragment PACKAGE_FULL on Package {
     id
+    createdAt
+    updatedAt
     type
     title
     desc

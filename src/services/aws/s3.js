@@ -1,4 +1,5 @@
 const AWS = require( 'aws-sdk' );
+const fs = require( 'fs' );
 
 const AUTHORING_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -147,4 +148,17 @@ export const copyS3AllAssets = async ( dir, fromBucket, toBucket ) => {
 
   // If more than a page of files, copy next batch
   if ( listedObjects.IsTruncated ) await copyS3AllAssets( dir );
+};
+
+export const uploadAsset = ( file, key ) => {
+  const fileContent = fs.readFileSync( file );
+  // Setting up S3 upload parameters
+  const params = {
+    Bucket: AUTHORING_BUCKET,
+    Key: key,
+    Body: fileContent
+  };
+
+  // Upload files to the bucket
+  return s3.upload( params ).promise();
 };

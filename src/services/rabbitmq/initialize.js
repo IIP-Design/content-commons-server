@@ -55,7 +55,7 @@ export const getPublishChannel = async () => {
   }
 };
 
-// Use separaye publich and consumer channels for each thread (should we only be using 1 channel?)
+// Use separaye publish and consumer channels for each thread (should we only be using 1 channel?)
 export const getConsumerChannel = async () => {
   if ( _consumerChannel ) {
     return _consumerChannel;
@@ -75,7 +75,8 @@ export const getConsumerChannel = async () => {
 const setUpExchanges = async channel => {
   await Promise.all( [
     channel.assertExchange( 'publish', 'topic', { durable: true } ),
-    channel.assertExchange( 'publish.dlx', 'fanout', { durable: true } )
+    channel.assertExchange( 'publish.dlx', 'fanout', { durable: true } ),
+    channel.assertExchange( 'util', 'topic', { durable: true } ),
   ] );
 };
 
@@ -85,6 +86,8 @@ const setUpQueues = async channel => {
     channel.assertQueue( 'publish.update', { durable: true, deadLetterExchange: 'publish.dlx' } ),
     channel.assertQueue( 'publish.delete', { durable: true, deadLetterExchange: 'publish.dlx' } ),
     channel.assertQueue( 'publish.result', { durable: true, deadLetterExchange: 'publish.dlx' } ),
+    channel.assertQueue( 'util.process', { durable: true, deadLetterExchange: 'publish.dlx' } ),
+    channel.assertQueue( 'util.result', { durable: true, deadLetterExchange: 'publish.dlx' } ),
     channel.assertQueue( 'publish.dlq', { durable: true } )
   ] );
 };
@@ -96,6 +99,8 @@ const bindExhangesToQueues = async channel => {
     channel.bindQueue( 'publish.update', 'publish', 'update.*' ),
     channel.bindQueue( 'publish.delete', 'publish', 'delete.*' ),
     channel.bindQueue( 'publish.result', 'publish', 'result.*.*' ),
+    channel.bindQueue( 'util.process', 'util', 'convert.document' ),
+    channel.bindQueue( 'util.result', 'util', 'convert.result' ),
     channel.bindQueue( 'publish.dlq', 'publish.dlx' )
   ] );
 };

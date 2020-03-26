@@ -138,7 +138,7 @@ export default {
     },
 
     image( parent, args, ctx ) {
-      return ctx.prisma.documentFile( { id: parent.id } ).image( { ...args } );
+      return ctx.prisma.documentFile( { id: parent.id } ).image();
     },
 
     bureaus( parent, args, ctx ) {

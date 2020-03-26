@@ -41,11 +41,13 @@
     "jwk-to-pem": "^2.0.3",
     "lodash": "^4.17.15",
     "mammoth": "^1.4.9",
+    "node-html-to-image": "^1.1.0",
     "prisma-client-lib": "^1.34.0",
+    "tmp": "^0.1.0",
     "xss": "^1.0.6"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",

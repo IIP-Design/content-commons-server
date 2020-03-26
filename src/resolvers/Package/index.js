@@ -1,13 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
-import { requiresLogin } from '../lib/authentication';
-import { convertDocxContent } from './Util';
-import {
-  deleteAllS3Assets, deleteS3Asset, getAssetPath
-} from '../services/aws/s3';
-import transformPackage from '../services/es/package/transform';
-import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/package';
-import { hasValidValue } from '../lib/projectParser';
-import { PACKAGE_FULL } from '../fragments/package';
+import { requiresLogin } from '../../lib/authentication';
+import { deleteAllS3Assets, getAssetPath } from '../../services/aws/s3';
+import transformPackage from '../../services/es/package/transform';
+import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/package';
+import { publishToChannel } from '../../services/rabbitmq';
+import { PACKAGE_FULL } from '../../fragments/package';
+import { deleteAssets } from './controller';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -47,35 +45,50 @@ export default {
 
     async updatePackage( parent, args, ctx ) {
       const updates = { ...args };
+
       const {
         data,
         where: { id }
       } = updates;
 
-      if ( data && data.documents && data.documents.delete ) {
-        const documentsToDelete = data.documents.delete;
-        documentsToDelete.forEach( async document => {
-          const { url } = await ctx.prisma.documentFile( { id: document.id } );
-          if ( url && hasValidValue( url ) ) {
-            await deleteS3Asset( url, PUBLISHER_BUCKET ).catch( err => console.dir( err ) );
-          }
-        } );
+      const { documents } = data;
+
+      // 1. Delete documents
+      if ( documents && documents.delete ) {
+        const documentsToDelete = documents.delete;
+        deleteAssets( ctx, documentsToDelete ).catch( err => `Unable to delete assets ${err.toString()}` );
       }
 
-      const isCreateAction = data.documents
-        && data.documents.create
-        && data.documents.create[0];
+      // 2. Update package to add any new documents, we need the new document
+      // ids to pass to the document convert worker
+      const pkg = await ctx.prisma
+        .updatePackage( { data, where: { id } } )
+        .$fragment( PACKAGE_FULL );
 
-      const params = {
-        id, data, ctx, isCreateAction
-      };
+      // 3. If new docs, put on document util worker queue
+      // for processing
+      if ( documents.create && documents.create[0] ) {
+        if ( pkg && pkg.documents ) {
+          pkg.documents.forEach( document => {
+            if ( !document.content ) {
+              console.log( `[x] PUBLISHING a util process request for : document ${document.title}` );
 
-      await convertDocxContent( params );
+              publishToChannel( {
+                routingKey: 'convert.document',
+                exchangeName: 'util',
+                data: {
+                  id: document.id,
+                  url: document.url,
+                  assetPath: data.assetPath,
+                  thumbnailFilename: document.title
+                }
+              } );
+            }
+          } );
+        }
+      }
 
-      return ctx.prisma.updatePackage( {
-        data,
-        where: { id }
-      } );
+      return pkg;
     },
 
     async publishPackage( parent, { id }, ctx ) {
@@ -181,4 +194,5 @@ export default {
       return ctx.prisma.package( { id: parent.id } ).documents( { ...args } );
     }
   }
+
 };

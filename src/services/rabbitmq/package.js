@@ -1,5 +1,6 @@
 import { publishToChannel, parseMessage } from './index';
 import { prisma } from '../../schema/generated/prisma-client';
+import { getLongestElement } from './util';
 
 const updateDatabase = async ( id, data ) => {
   await prisma.updatePackage( { data, where: { id } } ).catch( err => console.error( err ) );
@@ -17,7 +18,7 @@ export const publishCreate = async ( id, data, status, projectDirectory ) => {
   // data.type: 'package'.  Also creates each document contained within package
   console.log( '[x] PUBLISHING a package publish create request' );
 
-  await publishToChannel( {
+  publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'create.package',
     data: {
@@ -40,7 +41,7 @@ export const publishCreate = async ( id, data, status, projectDirectory ) => {
 export const publishDelete = async ( ids, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package delete request' );
 
-  await publishToChannel( {
+  publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'delete.package',
     data: {
@@ -54,7 +55,7 @@ export const publishDelete = async ( ids, projectDirectory ) => {
 export const publishUpdate = async ( id, data, status, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package upate request' );
 
-  await publishToChannel( {
+  publishToChannel( {
     exchangeName: 'publish',
     routingKey: 'update.package',
     data: {
@@ -67,7 +68,7 @@ export const publishUpdate = async ( id, data, status, projectDirectory ) => {
 };
 
 
-const consumeSuccess = async ( channel, msg ) => {
+const consumePublishSuccess = async ( channel, msg ) => {
   // 1. Parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
@@ -84,8 +85,51 @@ const consumeSuccess = async ( channel, msg ) => {
   }
 
   // 3. acknowledge message as received
-  await channel.ack( msg );
+  channel.ack( msg );
 };
+
+const consumeConvertSuccess = async ( channel, msg ) => {
+  // 1. Parse message
+  const {
+    routingKey, data: {
+      id, content, title, thumbnailUrl, error
+    }
+  } = parseMessage( msg );
+
+  console.log( `[√] RECEIVED a publish ${routingKey} result for document ${title}` );
+
+  if ( error ) {
+    console.log( `Unable to convert document ${title} due to error: ${error}` );
+  }
+
+  // 2. Update db with success status to alert the client (client polls for status changes)
+  try {
+    await prisma.updateDocumentFile( {
+      where: { id },
+      data: {
+        content: {
+          create: {
+            html: error ? 'UNAVAILABLE' : content.html,
+            rawText: error ? 'UNAVAILABLE' : content.rawText
+          }
+        },
+        excerpt: error ? 'UNAVAILABLE' : getLongestElement( content.html ),
+        image: {
+          create: {
+            url: error ? 'UNAVAILABLE' : thumbnailUrl,
+            alt: error ? '' : `Thumbnail for ${title}`
+          }
+        }
+      }
+    } );
+  } catch ( err ) {
+    console.log( `Error: Cannot update document with converted content becaues: ${err.message}` );
+  }
+
+  // 3. acknowledge message as received
+  channel.ack( msg );
+};
+
 
 const consumeError = async ( channel, msg ) => {
   // 1. parse message
@@ -106,6 +150,7 @@ const consumeError = async ( channel, msg ) => {
 };
 
 export default {
-  consumeSuccess,
+  consumePublishSuccess,
+  consumeConvertSuccess,
   consumeError
 };
