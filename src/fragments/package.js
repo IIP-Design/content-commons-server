@@ -11,6 +11,7 @@ export const PACKAGE_FULL = `
     id
     createdAt
     updatedAt
+    publishedAt
     type
     title
     desc
