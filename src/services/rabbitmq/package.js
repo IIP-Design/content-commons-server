@@ -97,6 +97,7 @@ const consumeConvertSuccess = async ( channel, msg ) => {
   } = parseMessage( msg );
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for document ${title}` );
+  console.log( `thumbnail url is ${thumbnailUrl}` );
 
   if ( error ) {
     console.log( `Unable to convert document ${title} due to error: ${error}` );
@@ -109,15 +110,15 @@ const consumeConvertSuccess = async ( channel, msg ) => {
       data: {
         content: {
           create: {
-            html: error ? 'UNAVAILABLE' : content.html,
-            rawText: error ? 'UNAVAILABLE' : content.rawText
+            html: content && content.html ? content.html : 'UNAVAILABLE',
+            rawText: content && content.rawText ? content.rawText : 'UNAVAILABLE'
           }
         },
-        excerpt: error ? 'UNAVAILABLE' : getLongestElement( content.html ),
+        excerpt: content && content.html ? getLongestElement( content.html ) : 'UNAVAILABLE',
         image: {
           create: {
-            url: error ? 'UNAVAILABLE' : thumbnailUrl,
-            alt: error ? '' : `Thumbnail for ${title}`
+            url: thumbnailUrl || 'UNAVAILABLE',
+            alt: thumbnailUrl ? `Thumbnail for ${title}` : ''
           }
         }
       }
