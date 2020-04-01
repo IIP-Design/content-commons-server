@@ -1,5 +1,14 @@
 import { getUrlToProdS3 } from '../index';
 
+const english = {
+  language_code: 'en',
+  locale: 'en-us',
+  text_direction: 'ltr',
+  display_name: 'English',
+  native_name: 'English'
+};
+
+
 /**
  * Convert a taxonomy field (categories/tags) into translated ES terms based on the provided language.
  *
@@ -103,6 +112,7 @@ const transformPackage = pkg => {
     published: now,
     modified: now,
     visibility,
+    language: english,
     desc,
     owner: team && team.name ? team.name : '',
     documents: []
