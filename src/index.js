@@ -19,7 +19,10 @@ server.applyMiddleware( {
 } );
 
 const httpServer = http.createServer( app );
+
+/* Subscriptions are currebntly turned off
 server.installSubscriptionHandlers( httpServer );
+*/
 
 // initialize rabbitmq (move to sep worker?)
 initQueueAndStartListening();
@@ -27,5 +30,5 @@ initQueueAndStartListening();
 //  We are calling `listen` on the http server variable, and not on `app`.
 httpServer.listen( { port: PORT }, () => {
   console.log( `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}` );
-  console.log( `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}` );
+  // console.log( `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}` );
 } );
