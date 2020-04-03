@@ -25,7 +25,6 @@ export const publishToChannel = async ( { routingKey, exchangeName, data } ) => 
           if ( err ) {
             return reject( err );
           }
-
           resolve();
         } );
     } );
@@ -33,7 +32,7 @@ export const publishToChannel = async ( { routingKey, exchangeName, data } ) => 
 };
 
 
-const consumeSuccess = async () => {
+const consumePublishSuccess = async () => {
   const channel = await getConsumerChannel();
   await channel.prefetch( 1 );
 
@@ -44,13 +43,31 @@ const consumeSuccess = async () => {
         if ( routingKey.includes( 'video' ) ) {
           video.consumeSuccess( channel, msg );
         } else if ( routingKey.includes( 'package' ) ) {
-          pkg.consumeSuccess( channel, msg );
+          pkg.consumePublishSuccess( channel, msg );
         }
         // TODO handle not having handler for routing keu
       }
       // TODO handle no routing key
     } else {
       console.log( 'ERROR [consumeSuccess] : Either msg or msg.fields is absent' );
+    }
+  } );
+};
+
+const consumeUtilSuccess = async () => {
+  const channel = await getConsumerChannel();
+  await channel.prefetch( 1 );
+
+  channel.consume( 'util.result', msg => {
+    const { routingKey } = msg.fields;
+    console.log( `routingKey ${routingKey}` );
+    if ( msg && msg.fields ) {
+      if ( routingKey === 'convert.result' ) {
+        console.log( 'process convert result' );
+        pkg.consumeConvertSuccess( channel, msg );
+      }
+    } else {
+      console.log( 'ERROR [consumeUtilSuccess] : Either msg or msg.fields is absent' );
     }
   } );
 };
@@ -82,10 +99,11 @@ const consumeErrors = async () => {
 
 const listenForResults = async () => {
   // start consuming messages
-  consumeSuccess();
+  consumePublishSuccess();
+  consumeUtilSuccess();
   consumeErrors();
 
-  console.log( '[...] LISTENING for publish result' );
+  console.log( '[...] LISTENING for queue results' );
 };
 
 // Setup up RabbitMQ and start listening for publish results

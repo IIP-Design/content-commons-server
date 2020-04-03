@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 import path from 'path';
 import jwt from 'jsonwebtoken';
 import AuthResolvers from './resolvers/Auth';
-import SharedResolvers from './resolvers/Shared';
+// import SharedResolvers from './resolvers/Shared';
 import LanguageResolvers from './resolvers/Language';
 import RegionResolvers from './resolvers/Region';
 import BureauResolvers from './resolvers/Bureau';
@@ -23,7 +23,7 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const resolvers = merge(
   AuthResolvers,
   UtilResolvers,
-  SharedResolvers,
+  // SharedResolvers,
   LanguageResolvers,
   TaxonomyResolvers,
   RegionResolvers,
@@ -59,17 +59,17 @@ const createApolloServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
   introspection: true,
-  subscriptions: {
-    path: '/subscription',
-    onConnect: () => {},
-    onDisconnect: () => {},
-    onOperation: ( message, params ) => params
-  },
-  context: async ( { connection, req, res } ) => {
-    // subscription connection (websocket)
-    if ( connection ) {
-      return { ...connection.context, prisma };
-    }
+  // subscriptions: { // currently disabled
+  //   path: '/subscription',
+  //   onConnect: () => {},
+  //   onDisconnect: () => {},
+  //   onOperation: ( message, params ) => params
+  // },
+  context: async ( { req, res } ) => {
+    // subscription connection: websocket, currently disabled
+    // if ( connection ) {
+    //   return { ...connection.context, prisma };
+    // }
 
     const user = await fetchUser( req );
     return {

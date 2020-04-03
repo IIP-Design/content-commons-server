@@ -79,3 +79,14 @@ export const DOCUMENT_FILE_FULL = `
     }
   }
 `;
+
+export const DOCUMENT_FILE_URL = `
+ fragment DOCUMENT_FILE_URL on DocumentFile {
+    id
+    url 
+    image {
+      id
+      url
+    }
+  }
+`;

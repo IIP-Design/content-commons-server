@@ -98,9 +98,8 @@ const consumeSuccess = async ( channel, msg ) => {
     console.log( `Error: ${err.message}` );
   }
 
-
   // 3. acknowledge message as received
-  await channel.ack( msg );
+  channel.ack( msg );
 };
 
 const consumeError = async ( channel, msg ) => {
