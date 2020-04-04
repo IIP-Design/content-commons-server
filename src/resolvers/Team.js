@@ -1,7 +1,7 @@
 import { requiresLogin } from '../lib/authentication';
 
 export default {
-  Query: requiresLogin( {
+  Query: {
     teams ( parent, args, ctx ) {
       return ctx.prisma.teams( { ...args } );
     },
@@ -9,7 +9,7 @@ export default {
     team( parent, args, ctx ) {
       return ctx.prisma.team( { id: args.id } );
     }
-  } ),
+  },
 
   Mutation: requiresLogin( {
     async createTeam ( parent, args, ctx ) {
