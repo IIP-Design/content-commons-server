@@ -2,15 +2,8 @@
   {
     "_id": "J4riF2MBR4UFGCthEuBP",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL"
-    ],
-    "synonymMapping": [
-      "united states culture",
-      "us culture",
-      "u.s. culture",
-      "u.s.a culture"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL"],
+    "synonymMapping": ["united states culture", "us culture", "u.s. culture", "u.s.a culture"],
     "language": {
       "en": "american culture",
       "en-us": "american culture",
@@ -54,10 +47,7 @@
   {
     "_id": "K4riF2MBR4UFGCthEuDx",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "english learning",
@@ -76,10 +66,7 @@
   {
     "_id": "KIriF2MBR4UFGCthEuCI",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "diversity",
@@ -98,9 +85,7 @@
   {
     "_id": "KYriF2MBR4UFGCthEuCt",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL"],
     "synonymMapping": [],
     "language": {
       "en": "employment legislation",
@@ -119,18 +104,8 @@
   {
     "_id": "KoriF2MBR4UFGCthEuDP",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
-    "synonymMapping": [
-      "lgbt",
-      "lesbian",
-      "gay",
-      "bisexual",
-      "transgender",
-      "intersex "
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "nYriF2MBR4UFGCthJ-BQ"],
+    "synonymMapping": ["lgbt", "lesbian", "gay", "bisexual", "transgender", "intersex "],
     "language": {
       "en": "lgbti",
       "en-us": "lgbti",
@@ -148,10 +123,7 @@
   {
     "_id": "L4riF2MBR4UFGCthE-Bs",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "leadership & community action",
@@ -170,10 +142,7 @@
   {
     "_id": "LIriF2MBR4UFGCthE-AP",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OIriF2MBR4UFGCthFeDR"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OIriF2MBR4UFGCthFeDR"],
     "synonymMapping": [],
     "language": {
       "en": "entertainment",
@@ -192,11 +161,7 @@
   {
     "_id": "LYriF2MBR4UFGCthE-Az",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "WIriF2MBR4UFGCthHOCO",
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "WIriF2MBR4UFGCthHOCO", "bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "exchange",
@@ -215,10 +180,7 @@
   {
     "_id": "LoriF2MBR4UFGCthE-BR",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "leadership",
@@ -237,11 +199,7 @@
   {
     "_id": "M4riF2MBR4UFGCthFeAp",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OIriF2MBR4UFGCthFeDR",
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OIriF2MBR4UFGCthFeDR", "uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "sport event",
@@ -260,10 +218,7 @@
   {
     "_id": "MIriF2MBR4UFGCthE-CJ",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OIriF2MBR4UFGCthFeDR"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OIriF2MBR4UFGCthFeDR"],
     "synonymMapping": [],
     "language": {
       "en": "people",
@@ -282,10 +237,7 @@
   {
     "_id": "MYriF2MBR4UFGCthE-Cn",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "retirement",
@@ -304,10 +256,7 @@
   {
     "_id": "MoriF2MBR4UFGCthFeAE",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "social learning",
@@ -326,9 +275,7 @@
   {
     "_id": "N4riF2MBR4UFGCthFeC0",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL"],
     "synonymMapping": [],
     "language": {
       "en": "values",
@@ -347,10 +294,7 @@
   {
     "_id": "NIriF2MBR4UFGCthFeBG",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "study in the u.s.",
@@ -369,10 +313,7 @@
   {
     "_id": "NYriF2MBR4UFGCthFeB1",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "OIriF2MBR4UFGCthFeDR"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "OIriF2MBR4UFGCthFeDR"],
     "synonymMapping": [],
     "language": {
       "en": "travel to the u.s. ",
@@ -391,10 +332,7 @@
   {
     "_id": "NoriF2MBR4UFGCthFeCX",
     "primary": false,
-    "parents": [
-      "JoriF2MBR4UFGCthEuAL",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["JoriF2MBR4UFGCthEuAL", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "u.s. government",
@@ -413,10 +351,7 @@
   {
     "_id": "O4riF2MBR4UFGCthFuCE",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "anti-corruption",
@@ -436,10 +371,7 @@
     "_id": "OIriF2MBR4UFGCthFeDR",
     "primary": true,
     "parents": [],
-    "synonymMapping": [
-      "arts & entertainment",
-      "arts and society"
-    ],
+    "synonymMapping": ["arts & entertainment", "arts and society"],
     "language": {
       "en": "arts & culture",
       "en-us": "arts & culture",
@@ -457,10 +389,7 @@
   {
     "_id": "OYriF2MBR4UFGCthFeDt",
     "primary": false,
-    "parents": [
-      "OIriF2MBR4UFGCthFeDR",
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["OIriF2MBR4UFGCthFeDR", "uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "ceremony",
@@ -498,9 +427,7 @@
   {
     "_id": "P4riF2MBR4UFGCthGOAw",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "detainees",
@@ -519,9 +446,7 @@
   {
     "_id": "PIriF2MBR4UFGCthFuCh",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "civic leadership",
@@ -540,10 +465,7 @@
   {
     "_id": "PYriF2MBR4UFGCthFuC7",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "civil unrest",
@@ -562,9 +484,7 @@
   {
     "_id": "PoriF2MBR4UFGCthGOAO",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "communities",
@@ -583,10 +503,7 @@
   {
     "_id": "Q4riF2MBR4UFGCthGOC7",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "emergency incident",
@@ -605,10 +522,7 @@
   {
     "_id": "QIriF2MBR4UFGCthGOBM",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "development",
@@ -627,10 +541,7 @@
   {
     "_id": "QYriF2MBR4UFGCthGOCA",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "drug use",
@@ -649,10 +560,7 @@
   {
     "_id": "QoriF2MBR4UFGCthGOCa",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "election",
@@ -671,9 +579,7 @@
   {
     "_id": "R4riF2MBR4UFGCthGeAr",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "foreign aid",
@@ -692,10 +598,7 @@
   {
     "_id": "RIriF2MBR4UFGCthGODY",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "emergency planning",
@@ -714,10 +617,7 @@
   {
     "_id": "RYriF2MBR4UFGCthGOD0",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "emergency response",
@@ -736,9 +636,7 @@
   {
     "_id": "RoriF2MBR4UFGCthGeAQ",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "family",
@@ -757,10 +655,7 @@
   {
     "_id": "S4riF2MBR4UFGCthGeCq",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "interreligious dialogue",
@@ -779,10 +674,7 @@
   {
     "_id": "SIriF2MBR4UFGCthGeBK",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "government policy",
@@ -801,12 +693,8 @@
   {
     "_id": "SYriF2MBR4UFGCthGeBk",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
-    "synonymMapping": [
-      "mankind"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
+    "synonymMapping": ["mankind"],
     "language": {
       "en": "humankind",
       "en-us": "humankind",
@@ -824,11 +712,7 @@
   {
     "_id": "SoriF2MBR4UFGCthGeCK",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "h4riF2MBR4UFGCthI-Bb",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "h4riF2MBR4UFGCthI-Bb", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "international relations",
@@ -847,10 +731,7 @@
   {
     "_id": "T4riF2MBR4UFGCthGuBE",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "prisoners",
@@ -869,9 +750,7 @@
   {
     "_id": "TIriF2MBR4UFGCthGeDG",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "law enforcement",
@@ -890,10 +769,7 @@
   {
     "_id": "TYriF2MBR4UFGCthGuAN",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "non-governmental organization (ngo)",
@@ -912,10 +788,7 @@
   {
     "_id": "ToriF2MBR4UFGCthGuAo",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "post-war reconstruction",
@@ -934,10 +807,7 @@
   {
     "_id": "U4riF2MBR4UFGCthGuC4",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "state relations",
@@ -956,9 +826,7 @@
   {
     "_id": "UIriF2MBR4UFGCthGuBi",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "public management",
@@ -977,11 +845,7 @@
   {
     "_id": "UYriF2MBR4UFGCthGuB_",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "WIriF2MBR4UFGCthHOCO",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "WIriF2MBR4UFGCthHOCO", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "social condition",
@@ -1000,9 +864,7 @@
   {
     "_id": "UoriF2MBR4UFGCthGuCb",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm"],
     "synonymMapping": [],
     "language": {
       "en": "social problem",
@@ -1021,10 +883,7 @@
   {
     "_id": "V4riF2MBR4UFGCthG-Ar",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "women’s empowerment",
@@ -1043,10 +902,7 @@
   {
     "_id": "VIriF2MBR4UFGCthGuDY",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "transparency",
@@ -1065,10 +921,7 @@
   {
     "_id": "VYriF2MBR4UFGCthGuDz",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "women & girls",
@@ -1087,10 +940,7 @@
   {
     "_id": "VoriF2MBR4UFGCthG-AQ",
     "primary": false,
-    "parents": [
-      "OoriF2MBR4UFGCthFuBm",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["OoriF2MBR4UFGCthFuBm", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "women's issues",
@@ -1109,9 +959,7 @@
   {
     "_id": "W4riF2MBR4UFGCthHODh",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "business planning",
@@ -1157,10 +1005,7 @@
   {
     "_id": "WYriF2MBR4UFGCthHOCq",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO",
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO", "doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "agriculture",
@@ -1179,9 +1024,7 @@
   {
     "_id": "WoriF2MBR4UFGCthHODH",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "business and entrepreneurship",
@@ -1200,9 +1043,7 @@
   {
     "_id": "X4riF2MBR4UFGCthHeBN",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "entrepreneurship",
@@ -1221,9 +1062,7 @@
   {
     "_id": "XIriF2MBR4UFGCthHOD8",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "business plans & operations",
@@ -1242,9 +1081,7 @@
   {
     "_id": "XYriF2MBR4UFGCthHeAW",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "economic sector",
@@ -1263,10 +1100,7 @@
   {
     "_id": "XoriF2MBR4UFGCthHeAz",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "employment",
@@ -1285,9 +1119,7 @@
   {
     "_id": "Y4riF2MBR4UFGCthHeDR",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "labor relations",
@@ -1306,9 +1138,7 @@
   {
     "_id": "YIriF2MBR4UFGCthHeB3",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "funding",
@@ -1327,9 +1157,7 @@
   {
     "_id": "YYriF2MBR4UFGCthHeCW",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "international trade",
@@ -1348,9 +1176,7 @@
   {
     "_id": "YoriF2MBR4UFGCthHeC1",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "labor market",
@@ -1369,9 +1195,7 @@
   {
     "_id": "Z4riF2MBR4UFGCthHuCB",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "small family business",
@@ -1390,9 +1214,7 @@
   {
     "_id": "ZIriF2MBR4UFGCthHeDt",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "market",
@@ -1411,10 +1233,7 @@
   {
     "_id": "ZYriF2MBR4UFGCthHuAJ",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO",
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO", "doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "natural resources",
@@ -1433,10 +1252,7 @@
   {
     "_id": "ZoriF2MBR4UFGCthHuAj",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO",
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO", "bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "personal & professional development",
@@ -1455,10 +1271,7 @@
   {
     "_id": "a4riF2MBR4UFGCthH-AC",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO",
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO", "nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "unions",
@@ -1477,9 +1290,7 @@
   {
     "_id": "aIriF2MBR4UFGCthHuCv",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "social entrepreneurship",
@@ -1498,13 +1309,8 @@
   {
     "_id": "aYriF2MBR4UFGCthHuDL",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
-    "synonymMapping": [
-      "startup",
-      "start-up"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
+    "synonymMapping": ["startup", "start-up"],
     "language": {
       "en": "startups",
       "en-us": "startups",
@@ -1522,9 +1328,7 @@
   {
     "_id": "aoriF2MBR4UFGCthHuDl",
     "primary": false,
-    "parents": [
-      "WIriF2MBR4UFGCthHOCO"
-    ],
+    "parents": ["WIriF2MBR4UFGCthHOCO"],
     "synonymMapping": [],
     "language": {
       "en": "unemployment",
@@ -1543,10 +1347,7 @@
   {
     "_id": "b4riF2MBR4UFGCthH-Ce",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "mechanical engineering",
@@ -1584,9 +1385,7 @@
   {
     "_id": "bYriF2MBR4UFGCthH-A-",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "application information",
@@ -1605,10 +1404,7 @@
   {
     "_id": "boriF2MBR4UFGCthH-CD",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "mathematics",
@@ -1627,11 +1423,7 @@
   {
     "_id": "c4riF2MBR4UFGCthIOCE",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad",
-      "doriF2MBR4UFGCthIeAP",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad", "doriF2MBR4UFGCthIeAP", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "scientific institutions",
@@ -1650,10 +1442,7 @@
   {
     "_id": "cIriF2MBR4UFGCthIOAO",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad",
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad", "r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious education",
@@ -1672,10 +1461,7 @@
   {
     "_id": "cYriF2MBR4UFGCthIOAu",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "research",
@@ -1694,9 +1480,7 @@
   {
     "_id": "coriF2MBR4UFGCthIOBP",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "school",
@@ -1715,9 +1499,7 @@
   {
     "_id": "d4riF2MBR4UFGCthIeA7",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "animal",
@@ -1736,9 +1518,7 @@
   {
     "_id": "dIriF2MBR4UFGCthIODH",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "social sciences",
@@ -1757,9 +1537,7 @@
   {
     "_id": "dYriF2MBR4UFGCthIOD1",
     "primary": false,
-    "parents": [
-      "bIriF2MBR4UFGCthH-Ad"
-    ],
+    "parents": ["bIriF2MBR4UFGCthH-Ad"],
     "synonymMapping": [],
     "language": {
       "en": "teaching",
@@ -1797,9 +1575,7 @@
   {
     "_id": "e4riF2MBR4UFGCthIeCn",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "environmental politics",
@@ -1818,9 +1594,7 @@
   {
     "_id": "eIriF2MBR4UFGCthIeBY",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "climate",
@@ -1839,9 +1613,7 @@
   {
     "_id": "eYriF2MBR4UFGCthIeBz",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "climate change",
@@ -1860,9 +1632,7 @@
   {
     "_id": "eoriF2MBR4UFGCthIeCN",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "conservation",
@@ -1881,9 +1651,7 @@
   {
     "_id": "f4riF2MBR4UFGCthIuBb",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "oceans",
@@ -1902,9 +1670,7 @@
   {
     "_id": "fIriF2MBR4UFGCthIeDI",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "environmental pollution",
@@ -1923,9 +1689,7 @@
   {
     "_id": "fYriF2MBR4UFGCthIuAj",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "natural science",
@@ -1944,9 +1708,7 @@
   {
     "_id": "foriF2MBR4UFGCthIuA_",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "nature",
@@ -1965,9 +1727,7 @@
   {
     "_id": "g4riF2MBR4UFGCthIuDv",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "weather phenomena",
@@ -1986,9 +1746,7 @@
   {
     "_id": "gIriF2MBR4UFGCthIuB4",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "plant",
@@ -2007,10 +1765,7 @@
   {
     "_id": "gYriF2MBR4UFGCthIuC2",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP", "uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "scientific standards",
@@ -2029,9 +1784,7 @@
   {
     "_id": "goriF2MBR4UFGCthIuDR",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "weather forecast",
@@ -2051,9 +1804,7 @@
     "_id": "h4riF2MBR4UFGCthI-Bb",
     "primary": true,
     "parents": [],
-    "synonymMapping": [
-      "global"
-    ],
+    "synonymMapping": ["global"],
     "language": {
       "en": "geography",
       "en-us": "geography",
@@ -2071,9 +1822,7 @@
   {
     "_id": "hIriF2MBR4UFGCthI-AK",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "weather statistic",
@@ -2092,9 +1841,7 @@
   {
     "_id": "hYriF2MBR4UFGCthI-Ak",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "weather warning",
@@ -2113,9 +1860,7 @@
   {
     "_id": "horiF2MBR4UFGCthI-A_",
     "primary": false,
-    "parents": [
-      "doriF2MBR4UFGCthIeAP"
-    ],
+    "parents": ["doriF2MBR4UFGCthIeAP"],
     "synonymMapping": [],
     "language": {
       "en": "wildlife",
@@ -2134,9 +1879,7 @@
   {
     "_id": "i4riF2MBR4UFGCthI-DG",
     "primary": false,
-    "parents": [
-      "h4riF2MBR4UFGCthI-Bb"
-    ],
+    "parents": ["h4riF2MBR4UFGCthI-Bb"],
     "synonymMapping": [],
     "language": {
       "en": "geographical regions",
@@ -2155,9 +1898,7 @@
   {
     "_id": "iIriF2MBR4UFGCthI-B0",
     "primary": false,
-    "parents": [
-      "h4riF2MBR4UFGCthI-Bb"
-    ],
+    "parents": ["h4riF2MBR4UFGCthI-Bb"],
     "synonymMapping": [],
     "language": {
       "en": "continents",
@@ -2176,9 +1917,7 @@
   {
     "_id": "iYriF2MBR4UFGCthI-CP",
     "primary": false,
-    "parents": [
-      "h4riF2MBR4UFGCthI-Bb"
-    ],
+    "parents": ["h4riF2MBR4UFGCthI-Bb"],
     "synonymMapping": [],
     "language": {
       "en": "countries",
@@ -2197,9 +1936,7 @@
   {
     "_id": "ioriF2MBR4UFGCthI-Cs",
     "primary": false,
-    "parents": [
-      "h4riF2MBR4UFGCthI-Bb"
-    ],
+    "parents": ["h4riF2MBR4UFGCthI-Bb"],
     "synonymMapping": [],
     "language": {
       "en": "demographics",
@@ -2218,9 +1955,7 @@
   {
     "_id": "j4riF2MBR4UFGCthJOBV",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "countering violent extremism",
@@ -2263,9 +1998,7 @@
   {
     "_id": "jYriF2MBR4UFGCthJOAO",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "act of terror",
@@ -2284,9 +2017,7 @@
   {
     "_id": "joriF2MBR4UFGCthJOAp",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "armed conflict",
@@ -2324,10 +2055,7 @@
   {
     "_id": "kIriF2MBR4UFGCthJOBx",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "coup d’etat",
@@ -2346,9 +2074,7 @@
   {
     "_id": "kYriF2MBR4UFGCthJODg",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "massacre",
@@ -2367,10 +2093,7 @@
   {
     "_id": "koriF2MBR4UFGCthJOD6",
     "primary": false,
-    "parents": [
-      "jIriF2MBR4UFGCthI-Dv",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["jIriF2MBR4UFGCthI-Dv", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "peace process",
@@ -2389,9 +2112,7 @@
   {
     "_id": "l4riF2MBR4UFGCthJeDA",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "health organizations",
@@ -2408,33 +2129,28 @@
     }
   },
   {
-    "_id": "lIriF2MBR4UFGCthJeBV",
+    "_id": "jHPyT3EBmTM8gWMbCdxB",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5",
-      "uIriF2MBR4UFGCthLOCL"
-    ],
-    "synonymMapping": [],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
+    "synonymMapping": ["covid-19"],
     "language": {
-      "en": "biomedical science",
-      "en-us": "biomedical science",
-      "es-es": "ciencia Biomedica",
-      "fr-fr": "science biomédicale",
-      "pt-br": "Ciência biomédica",
-      "ar": "علم الطب الحيوي",
-      "fa-ir": "علم پزشکی",
-      "zh-cn": "生物醫學科學",
-      "ru-ru": "биомедицинская наука",
-      "id-id": "ilmu biomedis",
-      "ur": "حیاتیاتی سائنس"
+      "en": "coronavirus",
+      "en-us": "coronavirus",
+      "es-es": "coronavirus",
+      "fr-fr": "coronavirus",
+      "pt-br": "coronavirus",
+      "ar": "فيروس كورونا",
+      "fa-ir": "ویروس کرونا",
+      "zh-cn": "冠状病毒",
+      "ru-ru": "Коронавирус",
+      "id-id": "coronavirus",
+      "ur": "کورونا وائرس"
     }
   },
   {
     "_id": "lYriF2MBR4UFGCthJeBy",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "diseases",
@@ -2453,9 +2169,7 @@
   {
     "_id": "loriF2MBR4UFGCthJeCm",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "health facility",
@@ -2474,9 +2188,7 @@
   {
     "_id": "m4riF2MBR4UFGCthJ-AY",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "non-human diseases",
@@ -2495,9 +2207,7 @@
   {
     "_id": "mIriF2MBR4UFGCthJeDd",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "health treatment",
@@ -2516,9 +2226,7 @@
   {
     "_id": "mYriF2MBR4UFGCthJeD4",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "healthcare policy",
@@ -2537,9 +2245,7 @@
   {
     "_id": "moriF2MBR4UFGCthJuAa",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "medical profession",
@@ -2558,9 +2264,7 @@
   {
     "_id": "n4riF2MBR4UFGCthJ-Cb",
     "primary": false,
-    "parents": [
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "fundamental rights",
@@ -2579,9 +2283,7 @@
   {
     "_id": "nIriF2MBR4UFGCthJ-A0",
     "primary": false,
-    "parents": [
-      "k4riF2MBR4UFGCthJeA5"
-    ],
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
     "synonymMapping": [],
     "language": {
       "en": "treatment",
@@ -2619,9 +2321,7 @@
   {
     "_id": "noriF2MBR4UFGCthJ-Bt",
     "primary": false,
-    "parents": [
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "discrimination",
@@ -2659,9 +2359,7 @@
   {
     "_id": "oIriF2MBR4UFGCthJ-DK",
     "primary": false,
-    "parents": [
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "pride",
@@ -2680,9 +2378,7 @@
   {
     "_id": "oYriF2MBR4UFGCthKOAL",
     "primary": false,
-    "parents": [
-      "nYriF2MBR4UFGCthJ-BQ"
-    ],
+    "parents": ["nYriF2MBR4UFGCthJ-BQ"],
     "synonymMapping": [],
     "language": {
       "en": "rights",
@@ -2701,10 +2397,7 @@
   {
     "_id": "ooriF2MBR4UFGCthKOBI",
     "primary": false,
-    "parents": [
-      "nYriF2MBR4UFGCthJ-BQ",
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["nYriF2MBR4UFGCthJ-BQ", "poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "welfare",
@@ -2723,9 +2416,7 @@
   {
     "_id": "p4riF2MBR4UFGCthKeAp",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "democracy",
@@ -2744,9 +2435,7 @@
   {
     "_id": "pIriF2MBR4UFGCthKOC2",
     "primary": false,
-    "parents": [
-      "o4riF2MBR4UFGCthKOCY"
-    ],
+    "parents": ["o4riF2MBR4UFGCthKOCY"],
     "synonymMapping": [],
     "language": {
       "en": "mass media",
@@ -2765,13 +2454,8 @@
   {
     "_id": "pYriF2MBR4UFGCthKODS",
     "primary": false,
-    "parents": [
-      "o4riF2MBR4UFGCthKOCY"
-    ],
-    "synonymMapping": [
-      "media",
-      "press"
-    ],
+    "parents": ["o4riF2MBR4UFGCthKOCY"],
+    "synonymMapping": ["media", "press"],
     "language": {
       "en": "media & press",
       "en-us": "media & press",
@@ -2790,11 +2474,7 @@
     "_id": "poriF2MBR4UFGCthKODu",
     "primary": true,
     "parents": [],
-    "synonymMapping": [
-      "politics",
-      "governance",
-      "democratic governance"
-    ],
+    "synonymMapping": ["politics", "governance", "democratic governance"],
     "language": {
       "en": "good governance",
       "en-us": "good governance",
@@ -2812,9 +2492,7 @@
   {
     "_id": "q4riF2MBR4UFGCthKeDJ",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "policy",
@@ -2833,9 +2511,7 @@
   {
     "_id": "qIriF2MBR4UFGCthKeBU",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "governance",
@@ -2854,9 +2530,7 @@
   {
     "_id": "qYriF2MBR4UFGCthKeBv",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "government",
@@ -2875,9 +2549,7 @@
   {
     "_id": "qoriF2MBR4UFGCthKeCd",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "judiciary",
@@ -2915,9 +2587,7 @@
   {
     "_id": "rIriF2MBR4UFGCthKeDj",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "political crisis",
@@ -2936,9 +2606,7 @@
   {
     "_id": "rYriF2MBR4UFGCthKeD_",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "political dissent",
@@ -2957,9 +2625,7 @@
   {
     "_id": "roriF2MBR4UFGCthKuAa",
     "primary": false,
-    "parents": [
-      "poriF2MBR4UFGCthKODu"
-    ],
+    "parents": ["poriF2MBR4UFGCthKODu"],
     "synonymMapping": [],
     "language": {
       "en": "political process",
@@ -2978,9 +2644,7 @@
   {
     "_id": "s4riF2MBR4UFGCthKuD_",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious event",
@@ -2999,9 +2663,7 @@
   {
     "_id": "sIriF2MBR4UFGCthKuCO",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "interfaith",
@@ -3020,9 +2682,7 @@
   {
     "_id": "sYriF2MBR4UFGCthKuC4",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious belief",
@@ -3041,9 +2701,7 @@
   {
     "_id": "soriF2MBR4UFGCthKuDT",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious conflict",
@@ -3062,9 +2720,7 @@
   {
     "_id": "t4riF2MBR4UFGCthLOBv",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious text",
@@ -3083,9 +2739,7 @@
   {
     "_id": "tIriF2MBR4UFGCthLOAW",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious facilities",
@@ -3104,9 +2758,7 @@
   {
     "_id": "tYriF2MBR4UFGCthLOA4",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious institutions",
@@ -3125,9 +2777,7 @@
   {
     "_id": "toriF2MBR4UFGCthLOBT",
     "primary": false,
-    "parents": [
-      "r4riF2MBR4UFGCthKuBz"
-    ],
+    "parents": ["r4riF2MBR4UFGCthKuBz"],
     "synonymMapping": [],
     "language": {
       "en": "religious leader",
@@ -3146,9 +2796,7 @@
   {
     "_id": "u4riF2MBR4UFGCthLeBg",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "competition discipline",
@@ -3186,9 +2834,7 @@
   {
     "_id": "uYriF2MBR4UFGCthLeAJ",
     "primary": false,
-    "parents": [
-      "uIriF2MBR4UFGCthLOCL"
-    ],
+    "parents": ["uIriF2MBR4UFGCthLOCL"],
     "synonymMapping": [],
     "language": {
       "en": "engineering",
@@ -3226,9 +2872,7 @@
   {
     "_id": "v4riF2MBR4UFGCthLeDg",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "sport organization",
@@ -3247,9 +2891,7 @@
   {
     "_id": "vIriF2MBR4UFGCthLeB7",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "disciplinary action in sport",
@@ -3268,9 +2910,7 @@
   {
     "_id": "vYriF2MBR4UFGCthLeCV",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "drug use in sport",
@@ -3289,9 +2929,7 @@
   {
     "_id": "voriF2MBR4UFGCthLeDB",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "sport industry",
@@ -3310,9 +2948,7 @@
   {
     "_id": "wIriF2MBR4UFGCthLeD9",
     "primary": false,
-    "parents": [
-      "uoriF2MBR4UFGCthLeA3"
-    ],
+    "parents": ["uoriF2MBR4UFGCthLeA3"],
     "synonymMapping": [],
     "language": {
       "en": "sport venue",
