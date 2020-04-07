@@ -72,6 +72,7 @@ const createApolloServer = () => new ApolloServer( {
     // }
 
     const user = await fetchUser( req );
+    console.log( `USER ON CTX ${JSON.stringify( user )}` );
     return {
       req,
       res,

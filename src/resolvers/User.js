@@ -4,6 +4,7 @@ import { requiresLogin } from '../lib/authentication';
 export default {
   Query: {
     authenticatedUser( parent, args, ctx ) {
+      console.log( `USER ${ctx.user}` );
       return ctx.user;
     },
 
