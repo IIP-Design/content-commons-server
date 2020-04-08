@@ -60,5 +60,15 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.15.3",
     "rimraf": "^2.6.3"
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/"
+    ]
   }
 }
