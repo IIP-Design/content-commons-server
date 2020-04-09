@@ -4,16 +4,24 @@ const getS3Dir = value => value.substring( 0, value.lastIndexOf( '/' ) );
 
 
 export const getYouTubeId = url => {
-  const reShort = /https:\/\/youtu.be\/(.*)/;
-  const reLong = /https:\/\/www.youtube.com\/watch\?v=(.*)/;
-  const idShort = url.match( reShort );
-  const idLong = url.match( reLong );
-  if ( idShort ) {
-    return idShort[1];
-  } if ( idLong ) {
-    return idLong[1];
+  const array = url.split( /(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/ );
+
+  if ( array[2] !== undefined ) {
+    return array[2].split( /[^0-9a-z_-]/i )[0];
   }
+
   return null;
+
+  // const reShort = /https:\/\/youtu.be\/(.*)/;
+  // const reLong = /https:\/\/www.youtube.com\/watch\?v=(.*)/;
+  // const idShort = url.match( reShort );
+  // const idLong = url.match( reLong );
+  // if ( idShort ) {
+  //   return idShort[1];
+  // } if ( idLong ) {
+  //   return idLong[1];
+  // }
+  // return null;
 };
 
 export const getVimeoId = url => {
