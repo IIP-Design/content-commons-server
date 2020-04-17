@@ -1,96 +1,64 @@
 import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
+const USER_FRAGMENT = gql`
+  fragment userDetails on User {
+    id
+    firstName
+    lastName
+    email
+    jobTitle
+    country
+    city
+    howHeard
+    permissions
+    team {
+      id
+      name
+      organization
+      contentTypes
+      isConfirmed
+    }
+  }
+`;
+
 const AUTHENTICATED_USER_QUERY = gql`
   query AuthenticatedUser {
     authenticatedUser {
-      id
-      firstName
-      lastName
-      email
-      jobTitle
-      country
-      city
-      howHeard
-      permissions
-      team {
-        id
-        name
-        organization
-        contentTypes
-        isConfirmed
-      }
+      ...userDetails
     }
   }
+  ${USER_FRAGMENT}
 `;
 
 const USERS_QUERY = gql`
   query Users {
     users {
-      id
-      firstName
-      lastName
-      email
-      jobTitle
-      country
-      city
-      howHeard
-      permissions
-      team {
-        id
-        name
-        organization
-        contentTypes
-        isConfirmed
-      }
+      ...userDetails
     }
   }
+  ${USER_FRAGMENT}
 `;
 
 const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUser($data: UserUpdateInput! $where: UserWhereUniqueInput!) {
+  mutation UpdateUser(
+    $data: UserUpdateInput!
+    $where: UserWhereUniqueInput!
+  ) {
     updateUser(data: $data, where: $where) {
-      id
-      firstName
-      lastName
-      email
-      jobTitle
-      country
-      city
-      howHeard
-      permissions
-      team {
-        id
-        name
-        organization
-        contentTypes
-        isConfirmed
-      }
+      ...userDetails
     }
   }
+  ${USER_FRAGMENT}
 `;
 
 const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($where: UserWhereUniqueInput!) {
     deleteUser(where: $where) {
-      id
-      firstName
-      lastName
-      email
-      jobTitle
-      country
-      city
-      howHeard
-      permissions
-      team {
-        id
-        name
-        organization
-        contentTypes
-        isConfirmed
-      }
+      ...userDetails
     }
   }
+  ${USER_FRAGMENT}
 `;
 
 describe( 'Query:', () => {

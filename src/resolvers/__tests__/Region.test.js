@@ -1,79 +1,75 @@
 import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
-const REGIONS_QUERY = gql`
-  query Regions {
-    regions {
+const REGION_FRAGMENT = gql`
+  fragment regionDetails on Region {
+    id
+    name
+    abbr
+    countries {
       id
       name
       abbr
-      countries {
-        id
-        name
-        abbr
-      }
     }
   }
+`;
+
+const COUNTRY_FRAGMENT = gql`
+  fragment countryDetails on Country {
+    id
+    name
+    abbr
+    region {
+      id
+      name
+      abbr
+    }
+  }
+`;
+
+const REGIONS_QUERY = gql`
+  query Regions {
+    regions {
+      ...regionDetails
+    }
+  }
+  ${REGION_FRAGMENT}
 `;
 
 const REGION_QUERY = gql`
   query Region($id: ID!) {
     region(id: $id) {
-      id
-      name
-      abbr
-      countries {
-        id
-        name
-        abbr
-      }
+      ...regionDetails
     }
   }
+  ${REGION_FRAGMENT}
 `;
 
 const COUNTRIES_QUERY = gql`
   query Countries {
     countries {
-      id
-      name
-      abbr
-      region {
-        id
-        name
-        abbr
-      }
+      ...countryDetails
     }
   }
+  ${COUNTRY_FRAGMENT}
 `;
 
 const COUNTRY_QUERY = gql`
   query country($id: ID!) {
     country(id: $id) {
-      id
-      name
-      abbr
-      region {
-        id
-        name
-        abbr
-      }
+      ...countryDetails
     }
   }
+  ${COUNTRY_FRAGMENT}
 `;
 
 const CREATE_REGION_MUTATION = gql`
   mutation CreateRegion($data: RegionCreateInput!) {
     createRegion(data: $data) {
-      id
-      name
-      abbr
-      countries {
-        id
-        name
-        abbr
-      }
+      ...regionDetails
     }
   }
+  ${REGION_FRAGMENT}
 `;
 
 describe( 'Query:', () => {

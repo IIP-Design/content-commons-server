@@ -1,30 +1,33 @@
 import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
+const LANGUAGE_FRAGMENT = gql`
+  fragment languageDetails on Language {
+    id
+    languageCode
+    locale
+    textDirection
+    displayName
+    nativeName
+  }
+`;
+
 const LANGUAGES_QUERY = gql`
   query Languages {
     languages {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
+      ...languageDetails
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 const LANGUAGE_QUERY = gql`
   query Language($id: ID!) {
     language(id: $id) {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
+      ...languageDetails
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 const LANGUAGE_TRANSLATIONS_QUERY = gql`
@@ -33,15 +36,11 @@ const LANGUAGE_TRANSLATIONS_QUERY = gql`
       id
       name
       language {
-        id
-        languageCode
-        locale
-        textDirection
-        displayName
-        nativeName
+        ...languageDetails
       }
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 const LANGUAGE_TRANSLATION_QUERY = gql`
@@ -50,43 +49,32 @@ const LANGUAGE_TRANSLATION_QUERY = gql`
       id
       name
       language {
-        id
-        languageCode
-        locale
-        textDirection
-        displayName
-        nativeName
+        ...languageDetails
       }
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 const CREATE_LANGUAGE_MUTATION = gql`
   mutation CreateLanguage($data: LanguageCreateInput!) {
     createLanguage(data: $data) {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
+      ...languageDetails
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 const UPDATE_LANGUAGE_MUTATION = gql`
   mutation UpdateLanguage(
-    $data: LanguageUpdateInput! $where: LanguageWhereUniqueInput!
+    $data: LanguageUpdateInput!
+    $where: LanguageWhereUniqueInput!
   ) {
     updateLanguage(data: $data, where: $where) {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
+      ...languageDetails
     }
   }
+  ${LANGUAGE_FRAGMENT}
 `;
 
 describe( 'Query:', () => {

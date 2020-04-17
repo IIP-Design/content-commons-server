@@ -1,49 +1,44 @@
 import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
-const BUREAUS_QUERY = gql`
-  query Bureaus {
-    bureaus {
+const BUREAU_FRAGMENT = gql`
+  fragment bureauDetails on Bureau {
+    id
+    name
+    abbr
+    offices {
       id
       name
       abbr
-      offices {
-        id
-        name
-        abbr
-      }
     }
   }
+`;
+
+const BUREAUS_QUERY = gql`
+  query Bureaus {
+    bureaus {
+      ...bureauDetails
+    }
+  }
+  ${BUREAU_FRAGMENT}
 `;
 
 const BUREAU_QUERY = gql`
   query Bureau($id: ID!) {
     bureau(id: $id) {
-      id
-      name
-      abbr
-      offices {
-        id
-        name
-        abbr
-      }
+      ...bureauDetails
     }
   }
+  ${BUREAU_FRAGMENT}
 `;
 
 const CREATE_BUREAU_QUERY = gql`
   mutation CreateBureau($data: BureauCreateInput!) {
     createBureau(data: $data) {
-      id
-      name
-      abbr
-      offices {
-        id
-        name
-        abbr
-      }
+      ...bureauDetails
     }
   }
+  ${BUREAU_FRAGMENT}
 `;
 
 describe( 'Query:', () => {

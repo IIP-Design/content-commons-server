@@ -1,56 +1,60 @@
 import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
+const TEAM_FRAGMENT = gql`
+  fragment teamDetails on Team {
+    id
+    name
+    organization
+  }
+`;
+
 const TEAMS_QUERY = gql`
   query Teams {
     teams {
-      id
-      name
-      organization
+      ...teamDetails
     }
   }
+  ${TEAM_FRAGMENT}
 `;
 
 const TEAM_QUERY = gql`
   query Team($id: ID!) {
     team(id: $id) {
-      id
-      name
-      organization
+      ...teamDetails
     }
   }
+  ${TEAM_FRAGMENT}
 `;
 
 const CREATE_TEAM_MUTATION = gql`
   mutation CreateTeam($name: String! $organization: String!) {
     createTeam(name: $name, organization: $organization) {
-      id
-      name
-      organization
+      ...teamDetails
     }
   }
+  ${TEAM_FRAGMENT}
 `;
 
 const UPDATE_TEAM_MUTATION = gql`
   mutation UpdateTeam(
-    $data: TeamUpdateInput! $where: TeamWhereUniqueInput!
+    $data: TeamUpdateInput!
+    $where: TeamWhereUniqueInput!
   ) {
     updateTeam(data: $data, where: $where) {
-      id
-      name
-      organization
+      ...teamDetails
     }
   }
+  ${TEAM_FRAGMENT}
 `;
 
 const DELETE_TEAM_MUTATION = gql`
   mutation DeleteTeam($where: TeamWhereUniqueInput!) {
     deleteTeam(where: $where) {
-      id
-      name
-      organization
+      ...teamDetails
     }
   }
+  ${TEAM_FRAGMENT}
 `;
 
 describe( 'Query:', () => {
