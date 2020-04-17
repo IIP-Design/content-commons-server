@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import createTestServer from '../../testServer/createTestServer';
 
 const LANGUAGE_TRANSLATIONS_FRAGMENT = gql`
-  fragment languageTranslationsDetail on LanguageTranslation {
+  fragment languageTranslationsDetails on LanguageTranslation {
     id
     name
     language {
@@ -21,7 +21,7 @@ const CATEGORIES_QUERY = gql`
     categories {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -33,7 +33,7 @@ const CATEGORY_QUERY = gql`
     category(id: $id) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -45,7 +45,7 @@ const TAGS_QUERY = gql`
     tags {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -57,7 +57,7 @@ const TAG_QUERY = gql`
     tag(id: $id) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -69,7 +69,7 @@ const CREATE_CATEGORY_MUTATION = gql`
     createCategory(data: $data) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -84,7 +84,7 @@ const UPDATE_CATEGORY_MUTATION = gql`
     updateCategory(data: $data, where: $where) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -96,7 +96,7 @@ const CREATE_TAG_MUTATION = gql`
     createTag(data: $data) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
@@ -112,7 +112,7 @@ const UPDATE_TAG_MUTATION = gql`
     updateTag(data: $data, where: $where) {
       id
       translations {
-        ...languageTranslationsDetail
+        ...languageTranslationsDetails
       }
     }
   }
