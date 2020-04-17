@@ -136,58 +136,96 @@ const frLanguage = {
   nativeName: 'Français'
 };
 
+// categories
+const aboutAmerica = [
+  {
+    id: 'ck2lzfxab0hls0720o2sjmoqw',
+    name: 'about america',
+    language: enLanguage
+  },
+  {
+    id: 'ck2lzfxc90hm60720onv6tbro',
+    name: 'Amérique',
+    language: frLanguage
+  }
+];
+const artsCulture = [
+  {
+    id: 'ck2lzfxhj0hnq0720ea5fakmi',
+    name: 'arts & culture',
+    language: enLanguage
+  },
+  {
+    id: 'ck2lzfxj90ho40720w9yrade3',
+    name: 'Arts et culture',
+    language: frLanguage
+  }
+];
+const categories = [
+  {
+    id: 'ck2lzgu1c0re307202dlrnue2',
+    translations: aboutAmerica
+  },
+  {
+    id: 'ck2lzgu1c0re40720g36mhagr',
+    translations: artsCulture
+  }
+];
+
+// tags
+const americanCulture = [
+  {
+    id: 'ck2lzfzwr0iey0720hrigffxo',
+    name: 'american culture',
+    language: enLanguage
+  },
+  {
+    id: 'ck2lzfzxz0ifc0720ufzpx34l',
+    name: 'Culture américaine',
+    language: frLanguage
+  }
+];
+const englishLearning = [
+  {
+    id: 'ck2lzg03a0igw0720t5c0s2r2',
+    name: 'english learning',
+    language: enLanguage
+  },
+  {
+    id: 'ck2lzg04f0iha0720zkvmiruy',
+    name: 'Anglais langue étrangère',
+    language: frLanguage
+  }
+];
+const tags = [
+  {
+    id: 'ck2lzgu1i0rei07206gvy1ygg',
+    translations: americanCulture
+  },
+  {
+    id: 'ck2lzgu1i0rej0720evrgjbyb',
+    translations: englishLearning
+  }
+];
+
 describe( 'Query:', () => {
   it( 'categories returns the correct categories', async () => {
-    const translations1 = [
-      {
-        id: 'ck2lzfxab0hls0720o2sjmoqw',
-        name: 'about america',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzfxc90hm60720onv6tbro',
-        name: 'Amérique',
-        language: frLanguage
-      }
-    ];
-    const translations2 = [
-      {
-        id: 'ck2lzfxhj0hnq0720ea5fakmi',
-        name: 'arts & culture',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzfxj90ho40720w9yrade3',
-        name: 'Arts et culture',
-        language: frLanguage
-      }
-    ];
-    const categories = [
-      {
-        id: 'ck2lzgu1c0re307202dlrnue2',
-        translations: translations1
-      },
-      {
-        id: 'ck2lzgu1c0re40720g36mhagr',
-        translations: translations2
-      }
-    ];
     const ctx = {
       user: {},
       prisma: {
         category: jest.fn( () => ( {
           translations: jest.fn( () => {
-            if ( ctx.prisma.category.mock.calls.length === 1 ) {
-              return translations1;
+            if ( ctx.prisma.category.mock.calls.length % 2 > 0 ) {
+              return aboutAmerica;
             }
-            return translations2;
+            return artsCulture;
           } )
         } ) ),
         categories: jest.fn( () => categories ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -205,33 +243,18 @@ describe( 'Query:', () => {
   } );
 
   it( 'category returns a specific category', async () => {
-    const translations = [
-      {
-        id: 'ck2lzfxab0hls0720o2sjmoqw',
-        name: 'about america',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzfxc90hm60720onv6tbro',
-        name: 'Amérique',
-        language: frLanguage
-      }
-    ];
-    const category = {
-      id: 'ck2lzgu1c0re307202dlrnue2',
-      translations
-    };
+    const category = categories[0]; // about america
     const ctx = {
       user: {},
       prisma: {
         category: jest.fn( () => ( {
           ...category,
-          translations: jest.fn( () => translations )
+          translations: jest.fn( () => aboutAmerica )
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -252,56 +275,22 @@ describe( 'Query:', () => {
   } );
 
   it( 'tags returns the correct tags', async () => {
-    const translations1 = [
-      {
-        id: 'ck2lzfzwr0iey0720hrigffxo',
-        name: 'american culture',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzfzxz0ifc0720ufzpx34l',
-        name: 'Culture américaine',
-        language: frLanguage
-      }
-    ];
-    const translations2 = [
-      {
-        id: 'ck2lzg03a0igw0720t5c0s2r2',
-        name: 'english learning',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzg04f0iha0720zkvmiruy',
-        name: 'Anglais langue étrangère',
-        language: frLanguage
-      }
-    ];
-    const tags = [
-      {
-        id: 'ck2lzgu1i0rei07206gvy1ygg',
-        translations: translations1
-      },
-      {
-        id: 'ck2lzgu1i0rej0720evrgjbyb',
-        translations: translations2
-      }
-    ];
     const ctx = {
       user: {},
       prisma: {
         tag: jest.fn( () => ( {
           translations: jest.fn( () => {
-            if ( ctx.prisma.tag.mock.calls.length === 1 ) {
-              return translations1;
+            if ( ctx.prisma.tag.mock.calls.length % 2 > 0 ) {
+              return americanCulture;
             }
-            return translations2;
+            return englishLearning;
           } )
         } ) ),
         tags: jest.fn( () => tags ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -319,33 +308,18 @@ describe( 'Query:', () => {
   } );
 
   it( 'tag returns a specific tag', async () => {
-    const translations = [
-      {
-        id: 'ck2lzfzwr0iey0720hrigffxo',
-        name: 'american culture',
-        language: enLanguage
-      },
-      {
-        id: 'ck2lzfzxz0ifc0720ufzpx34l',
-        name: 'Culture américaine',
-        language: frLanguage
-      }
-    ];
-    const tag = {
-      id: 'ck2lzgu1i0rej0720evrgjbyb',
-      translations
-    };
+    const tag = tags[0]; // american culture
     const ctx = {
       user: {},
       prisma: {
         tag: jest.fn( () => ( {
           ...tag,
-          translations: jest.fn( () => translations )
+          translations: jest.fn( () => americanCulture )
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -368,21 +342,13 @@ describe( 'Query:', () => {
 
 describe( 'Mutation:', () => {
   const translations = [
-    {
-      id: 'ck2lzfxab0hls0720o2sjmoqw',
-      name: 'new',
-      language: enLanguage
-    },
-    {
-      id: 'ck2lzfxc90hm60720onv6tbro',
-      name: 'nouvelle',
-      language: frLanguage
-    }
+    { ...aboutAmerica[0], name: 'new' },
+    { ...aboutAmerica[1], name: 'nouvelle' }
   ];
 
   it( 'createCategory creates a category', async () => {
     const category = {
-      id: 'ck2lzgu1c0re307202dlrnue2',
+      ...categories[0],
       translations: {
         connect: [
           { id: enLanguage.id },
@@ -400,7 +366,7 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -425,7 +391,7 @@ describe( 'Mutation:', () => {
 
   it( 'updateCategory updates a category', async () => {
     const category = {
-      id: 'ck2lzgu1c0re307202dlrnue2',
+      ...categories[0],
       translations: {
         disconnect: {
           id: translations[1].id
@@ -442,7 +408,7 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -476,7 +442,7 @@ describe( 'Mutation:', () => {
 
   it( 'createTag creates a tag', async () => {
     const tag = {
-      id: 'ck2lzgu1i0rej0720evrgjbyb',
+      ...tags[1],
       translations: {
         connect: [
           { id: enLanguage.id },
@@ -494,7 +460,7 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;
@@ -519,7 +485,7 @@ describe( 'Mutation:', () => {
 
   it( 'updateTag updates a tag', async () => {
     const tag = {
-      id: 'ck2lzgu1i0rej0720evrgjbyb',
+      ...tags[1],
       translations: {
         disconnect: {
           id: translations[1].id
@@ -536,7 +502,7 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
-            if ( count % 2 !== 0 ) {
+            if ( count % 2 > 0 ) {
               return enLanguage;
             }
             return frLanguage;

@@ -62,26 +62,48 @@ const DELETE_USER_MUTATION = gql`
 `;
 
 describe( 'Query:', () => {
+  const team1 = {
+    id: 'ck2qgfbku0ubh0720iwhkvuyn',
+    name: 'GPA Press Office',
+    organization: 'Department of State',
+    contentTypes: ['PACKAGE'],
+    isConfirmed: true
+  };
+  const team2 = {
+    id: 'ck2lzfx640hig0720fw7j98yt',
+    name: 'GPA Video',
+    organization: 'Department of State',
+    contentTypes: ['VIDEO'],
+    isConfirmed: true
+  };
+  const user1 = {
+    id: 'ck2m042xo0rnp0720nb4gxjix',
+    firstName: 'Joe',
+    lastName: 'Schmoe',
+    email: 'schmoej@america.gov',
+    jobTitle: '',
+    country: 'United States',
+    city: 'Washington, DC',
+    howHeard: '',
+    permissions: ['EDITOR'],
+    team: team1
+  };
+  const user2 = {
+    id: 'ck2m93ks81ks9akldi19skdk2k',
+    firstName: 'Jane',
+    lastName: 'Doe',
+    email: 'doej@america.gov',
+    jobTitle: '',
+    country: 'United States',
+    city: 'Washington, DC',
+    howHeard: '',
+    permissions: ['ADMIN'],
+    team: team2
+  };
+
   it( 'authenticatedUser returns the user', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const user = {
-      id: 'ck2m042xo0rnp0720nb4gxjix',
-      firstName: 'Joe',
-      lastName: 'Schmoe',
-      email: 'schmoej@america.gov',
-      jobTitle: '',
-      country: 'United States',
-      city: 'Washington, DC',
-      howHeard: '',
-      permissions: ['EDITOR'],
-      team
-    };
+    const team = team1;
+    const user = user1;
     const ctx = {
       prisma: {
         user: jest.fn( () => ( {
@@ -101,51 +123,12 @@ describe( 'Query:', () => {
   } );
 
   it( 'users returns the correct users', async () => {
-    const team1 = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const team2 = {
-      id: 'ck2lzfx640hig0720fw7j98yt',
-      name: 'GPA Video',
-      organization: 'Department of State',
-      contentTypes: ['VIDEO'],
-      isConfirmed: true
-    };
-    const users = [
-      {
-        id: 'ck2m042xo0rnp0720nb4gxjix',
-        firstName: 'Joe',
-        lastName: 'Schmoe',
-        email: 'schmoej@america.gov',
-        jobTitle: '',
-        country: 'United States',
-        city: 'Washington, DC',
-        howHeard: '',
-        permissions: ['EDITOR'],
-        team: team1
-      },
-      {
-        id: 'ck2m93ks81ks9akldi19skdk2k',
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'doej@america.gov',
-        jobTitle: '',
-        country: 'United States',
-        city: 'Washington, DC',
-        howHeard: '',
-        permissions: ['ADMIN'],
-        team: team2
-      }
-    ];
+    const users = [user1, user2];
     const ctx = {
       prisma: {
         user: jest.fn( () => ( {
           team: jest.fn( () => {
-            if ( ctx.prisma.user.mock.calls.length === 1 ) {
+            if ( ctx.prisma.user.mock.calls.length % 2 > 0 ) {
               return team1;
             }
             return team2;
@@ -165,26 +148,27 @@ describe( 'Query:', () => {
 } );
 
 describe( 'Mutation:', () => {
+  const team = {
+    id: 'ck2qgfbku0ubh0720iwhkvuyn',
+    name: 'GPA Press Office',
+    organization: 'Department of State',
+    contentTypes: ['PACKAGE'],
+    isConfirmed: true
+  };
+  const user = {
+    id: 'ck2m042xo0rnp0720nb4gxjix',
+    firstName: 'Joe',
+    lastName: 'Schmoe',
+    email: 'schmoej@america.gov',
+    jobTitle: 'New Job Title',
+    country: 'United States',
+    city: 'Washington, DC',
+    howHeard: '',
+    permissions: ['EDITOR'],
+    team
+  };
+
   it( 'updateUser updates a user if the current user is logged in', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const user = {
-      id: 'ck2m042xo0rnp0720nb4gxjix',
-      firstName: 'Joe',
-      lastName: 'Schmoe',
-      email: 'schmoej@america.gov',
-      jobTitle: 'New Job Title',
-      country: 'United States',
-      city: 'Washington, DC',
-      howHeard: '',
-      permissions: ['EDITOR'],
-      team
-    };
     const variables = {
       data: { jobTitle: user.jobTitle },
       where: { id: user.id }
@@ -209,25 +193,6 @@ describe( 'Mutation:', () => {
   } );
 
   it( 'updateUser returns an Unauthorized error message if the current user is not logged in', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const user = {
-      id: 'ck2m042xo0rnp0720nb4gxjix',
-      firstName: 'Joe',
-      lastName: 'Schmoe',
-      email: 'schmoej@america.gov',
-      jobTitle: 'New Job Title',
-      country: 'United States',
-      city: 'Washington, DC',
-      howHeard: '',
-      permissions: ['EDITOR'],
-      team
-    };
     const variables = {
       data: { jobTitle: user.jobTitle },
       where: { id: user.id }
@@ -253,25 +218,6 @@ describe( 'Mutation:', () => {
   } );
 
   it( 'deleteUser deletes a user if the current user is logged in', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const user = {
-      id: 'ck2m042xo0rnp0720nb4gxjix',
-      firstName: 'Joe',
-      lastName: 'Schmoe',
-      email: 'schmoej@america.gov',
-      jobTitle: '',
-      country: 'United States',
-      city: 'Washington, DC',
-      howHeard: '',
-      permissions: ['EDITOR'],
-      team
-    };
     const variables = { where: { id: user.id } };
     const ctx = {
       user,
@@ -293,25 +239,6 @@ describe( 'Mutation:', () => {
   } );
 
   it( 'deleteUser returns an Unauthorized error message if the current user is not logged in', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State',
-      contentTypes: ['PACKAGE'],
-      isConfirmed: true
-    };
-    const user = {
-      id: 'ck2m042xo0rnp0720nb4gxjix',
-      firstName: 'Joe',
-      lastName: 'Schmoe',
-      email: 'schmoej@america.gov',
-      jobTitle: '',
-      country: 'United States',
-      city: 'Washington, DC',
-      howHeard: '',
-      permissions: ['EDITOR'],
-      team
-    };
     const variables = { where: { id: user.id } };
     const ctx = {
       // user, // missing ctx.user

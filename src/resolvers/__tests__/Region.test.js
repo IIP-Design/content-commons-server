@@ -73,8 +73,11 @@ const CREATE_REGION_MUTATION = gql`
 `;
 
 describe( 'Query:', () => {
-  it( 'regions returns the correct regions', async () => {
-    const afCountries = [
+  let countries;
+  let regions;
+
+  beforeEach( () => {
+    countries = [
       {
         id: 'ck6krp96x3f3n0720q1289gee',
         name: 'Angola',
@@ -84,9 +87,7 @@ describe( 'Query:', () => {
         id: 'ck6krp9773f420720i7aesohq',
         name: 'Benin',
         abbr: 'AF'
-      }
-    ];
-    const eapCountries = [
+      },
       {
         id: 'ck6krp9723f3x07209et0evkp',
         name: 'Australia',
@@ -98,31 +99,41 @@ describe( 'Query:', () => {
         abbr: 'EAP'
       }
     ];
-    const regions = [
+
+    regions = [
       {
         id: 'ck6krp96g3f3c0720c1w09bx1',
         name: 'Bureau of African Affairs',
         abbr: 'AF',
-        countries: afCountries
       },
       {
         id: 'ck6krp96o3f3g0720w7whw2pw',
         name: 'Bureau of East Asian and Pacific Affairs',
-        abbr: 'EAP',
-        countries: eapCountries
+        abbr: 'EAP'
       }
     ];
+  } );
+
+  const getCountry = country => countries.find( c => c.name === country );
+  const getRegion = region => regions.find( r => r.abbr === region );
+  const getCountries = country => countries.filter( r => r.abbr === country );
+
+  it( 'regions returns the correct regions', async () => {
+    const regionsWithCountries = regions.map( r => ( {
+      ...r,
+      countries: getCountries( r.abbr )
+    } ) );
     const ctx = {
       prisma: {
         region: jest.fn( () => ( {
           countries: jest.fn( () => {
-            if ( ctx.prisma.region.mock.calls.length === 1 ) {
-              return afCountries;
+            if ( ctx.prisma.region.mock.calls.length % 2 > 0 ) {
+              return getCountries( 'AF' );
             }
-            return eapCountries;
+            return getCountries( 'EAP' );
           } )
         } ) ),
-        regions: jest.fn( () => regions )
+        regions: jest.fn( () => regionsWithCountries )
       }
     };
     const server = createTestServer( ctx );
@@ -131,33 +142,19 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.regions ).toEqual( regions );
+    expect( result.data.regions ).toEqual( regionsWithCountries );
   } );
 
   it( 'region returns a specific region', async () => {
-    const countries = [
-      {
-        id: 'ck6krp96x3f3n0720q1289gee',
-        name: 'Angola',
-        abbr: 'AF'
-      },
-      {
-        id: 'ck6krp9773f420720i7aesohq',
-        name: 'Benin',
-        abbr: 'AF'
-      }
-    ];
     const region = {
-      id: 'ck6krp96g3f3c0720c1w09bx1',
-      name: 'Bureau of African Affairs',
-      abbr: 'AF',
-      countries
+      ...regions[0], // AF
+      countries: countries.filter( c => c.abbr === 'AF' )
     };
     const ctx = {
       prisma: {
         region: jest.fn( () => ( {
           ...region,
-          countries: jest.fn( () => countries )
+          countries: jest.fn( () => region.countries )
         } ) )
       }
     };
@@ -174,27 +171,15 @@ describe( 'Query:', () => {
   } );
 
   it( 'countries returns the correct countries', async () => {
-    const afRegion = {
-      id: 'ck6krp96g3f3c0720c1w09bx1',
-      name: 'Bureau of African Affairs',
-      abbr: 'AF'
-    };
-    const eapRegion = {
-      id: 'ck6krp96o3f3g0720w7whw2pw',
-      name: 'Bureau of East Asian and Pacific Affairs',
-      abbr: 'EAP'
-    };
-    const countries = [
+    const afRegion = getRegion( 'AF' );
+    const eapRegion = getRegion( 'EAP' );
+    const countriesWithRegion = [
       {
-        id: 'ck6krp96x3f3n0720q1289gee',
-        name: 'Angola',
-        abbr: 'AF',
+        ...getCountry( 'Angola' ),
         region: afRegion
       },
       {
-        id: 'ck6krp9723f3x07209et0evkp',
-        name: 'Australia',
-        abbr: 'EAP',
+        ...getCountry( 'Australia' ),
         region: eapRegion
       }
     ];
@@ -202,13 +187,13 @@ describe( 'Query:', () => {
       prisma: {
         country: jest.fn( () => ( {
           region: jest.fn( () => {
-            if ( ctx.prisma.country.mock.calls.length === 1 ) {
+            if ( ctx.prisma.country.mock.calls.length % 2 > 0 ) {
               return afRegion;
             }
             return eapRegion;
           } )
         } ) ),
-        countries: jest.fn( () => countries )
+        countries: jest.fn( () => countriesWithRegion )
       }
     };
     const server = createTestServer( ctx );
@@ -217,19 +202,13 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.countries ).toEqual( countries );
+    expect( result.data.countries ).toEqual( countriesWithRegion );
   } );
 
   it( 'country returns a specific country', async () => {
-    const region = {
-      id: 'ck6krp96g3f3c0720c1w09bx1',
-      name: 'Bureau of African Affairs',
-      abbr: 'AF'
-    };
+    const region = getRegion( 'AF' );
     const country = {
-      id: 'ck6krp96x3f3n0720q1289gee',
-      name: 'Angola',
-      abbr: 'AF',
+      ...getCountry( 'Angola' ),
       region
     };
     const ctx = {
@@ -289,7 +268,6 @@ describe( 'Mutation:', () => {
       variables: { data: { ...region } }
     };
     const result = await server.mutate( request );
-    console.log( result );
     const { createRegion } = result.data;
 
     expect( spy ).toHaveBeenCalledWith( request );

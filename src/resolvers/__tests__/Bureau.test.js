@@ -42,25 +42,27 @@ const CREATE_BUREAU_QUERY = gql`
 `;
 
 describe( 'Query:', () => {
+  const offices = [];
+
   it( 'bureaus returns the correct bureaus', async () => {
     const bureaus = [
       {
         id: 'ck5cvpjcu01k80720d2eouy43',
         name: 'Bureau of African Affairs',
         abbr: 'AF',
-        offices: []
+        offices
       },
       {
         id: 'ck5cvpjcv01k90720vvw2imhn',
         name: 'Bureau of Budget and Planning',
         abbr: 'BP',
-        offices: []
+        offices
       },
       {
         id: 'ck5cvpjcv01ka0720kruynq52',
         name: 'Bureau of Consular Affairs',
         abbr: 'CA',
-        offices: []
+        offices
       }
     ];
     const ctx = {
@@ -81,7 +83,6 @@ describe( 'Query:', () => {
   } );
 
   it( 'bureau returns a specific bureau', async () => {
-    const offices = [];
     const bureau = {
       id: 'ck5cvpjcu01k80720d2eouy43',
       name: 'Bureau of African Affairs',

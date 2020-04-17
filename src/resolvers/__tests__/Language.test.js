@@ -78,25 +78,25 @@ const UPDATE_LANGUAGE_MUTATION = gql`
 `;
 
 describe( 'Query:', () => {
+  const french = {
+    id: 'ck2lzfx710hkp07206oo0icbv',
+    languageCode: 'fr',
+    locale: 'fr-fr',
+    textDirection: 'LTR',
+    displayName: 'French',
+    nativeName: 'Français'
+  };
+  const english = {
+    id: 'ck2lzfx710hkq07206thus6pt',
+    languageCode: 'en',
+    locale: 'en-us',
+    textDirection: 'LTR',
+    displayName: 'English',
+    nativeName: 'English'
+  };
+
   it( 'languages returns the correct languages', async () => {
-    const languages = [
-      {
-        id: 'ck2lzfx710hkp07206oo0icbv',
-        languageCode: 'fr',
-        locale: 'fr-fr',
-        textDirection: 'LTR',
-        displayName: 'French',
-        nativeName: 'Français'
-      },
-      {
-        id: 'ck2lzfx710hkq07206thus6pt',
-        languageCode: 'en',
-        locale: 'en-us',
-        textDirection: 'LTR',
-        displayName: 'English',
-        nativeName: 'English'
-      }
-    ];
+    const languages = [french, english];
     const ctx = {
       prisma: { languages: jest.fn( () => languages ) }
     };
@@ -110,14 +110,7 @@ describe( 'Query:', () => {
   } );
 
   it( 'language returns a specific language', async () => {
-    const language = {
-      id: 'ck2lzfx710hkq07206thus6pt',
-      languageCode: 'en',
-      locale: 'en-us',
-      textDirection: 'LTR',
-      displayName: 'English',
-      nativeName: 'English'
-    };
+    const language = english;
     const ctx = {
       prisma: {
         language: jest.fn( () => ( { ...language } ) )
@@ -175,14 +168,7 @@ describe( 'Query:', () => {
   } );
 
   it( 'languageTranslation returns a specific languageTranslation', async () => {
-    const language = {
-      id: 'ck2lzfx710hkq07206thus6pt',
-      languageCode: 'en',
-      locale: 'en-us',
-      textDirection: 'LTR',
-      displayName: 'English',
-      nativeName: 'English'
-    };
+    const language = english;
     const languageTranslation = {
       id: 'ck2lzfxab0hls0720o2sjmoqw',
       name: 'about america',
@@ -210,15 +196,17 @@ describe( 'Query:', () => {
 } );
 
 describe( 'Mutation:', () => {
+  const newLanguage = {
+    id: 'new-lang-1234',
+    languageCode: 'zz',
+    locale: 'zz-zz',
+    textDirection: 'LTR',
+    displayName: 'New Language Name',
+    nativeName: 'New Language'
+  };
+
   it( 'createLanguage creates a language', async () => {
-    const language = {
-      id: 'new-lang-1234',
-      languageCode: 'zz',
-      locale: 'zz-zz',
-      textDirection: 'LTR',
-      displayName: 'New Language',
-      nativeName: 'New Language'
-    };
+    const language = newLanguage;
     const ctx = {
       prisma: {
         createLanguage: jest.fn( () => ( { ...language } ) )
@@ -238,14 +226,7 @@ describe( 'Mutation:', () => {
   } );
 
   it( 'updateLanguage updates a language', async () => {
-    const language = {
-      id: 'new-lang-1234',
-      languageCode: 'zz',
-      locale: 'zz-zz',
-      textDirection: 'LTR',
-      displayName: 'New Language Name',
-      nativeName: 'New Language'
-    };
+    const language = newLanguage;
     const variables = {
       data: { displayName: language.displayName },
       where: { id: language.id }
