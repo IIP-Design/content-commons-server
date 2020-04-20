@@ -1,76 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/region';
 import createTestServer from '../../testServer/createTestServer';
-
-const REGION_FRAGMENT = gql`
-  fragment regionDetails on Region {
-    id
-    name
-    abbr
-    countries {
-      id
-      name
-      abbr
-    }
-  }
-`;
-
-const COUNTRY_FRAGMENT = gql`
-  fragment countryDetails on Country {
-    id
-    name
-    abbr
-    region {
-      id
-      name
-      abbr
-    }
-  }
-`;
-
-const REGIONS_QUERY = gql`
-  query Regions {
-    regions {
-      ...regionDetails
-    }
-  }
-  ${REGION_FRAGMENT}
-`;
-
-const REGION_QUERY = gql`
-  query Region($id: ID!) {
-    region(id: $id) {
-      ...regionDetails
-    }
-  }
-  ${REGION_FRAGMENT}
-`;
-
-const COUNTRIES_QUERY = gql`
-  query Countries {
-    countries {
-      ...countryDetails
-    }
-  }
-  ${COUNTRY_FRAGMENT}
-`;
-
-const COUNTRY_QUERY = gql`
-  query country($id: ID!) {
-    country(id: $id) {
-      ...countryDetails
-    }
-  }
-  ${COUNTRY_FRAGMENT}
-`;
-
-const CREATE_REGION_MUTATION = gql`
-  mutation CreateRegion($data: RegionCreateInput!) {
-    createRegion(data: $data) {
-      ...regionDetails
-    }
-  }
-  ${REGION_FRAGMENT}
-`;
 
 describe( 'Query:', () => {
   let countries;
@@ -138,7 +67,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: REGIONS_QUERY };
+    const request = { query: query.REGIONS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -161,7 +90,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: REGION_QUERY,
+      query: query.REGION_QUERY,
       variables: { id: region.id }
     };
     const result = await server.query( request );
@@ -198,7 +127,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: COUNTRIES_QUERY };
+    const request = { query: query.COUNTRIES_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -222,7 +151,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: COUNTRY_QUERY,
+      query: query.COUNTRY_QUERY,
       variables: { id: country.id }
     };
     const result = await server.query( request );
@@ -264,7 +193,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_REGION_MUTATION,
+      query: query.CREATE_REGION_MUTATION,
       variables: { data: { ...region } }
     };
     const result = await server.mutate( request );

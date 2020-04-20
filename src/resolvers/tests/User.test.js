@@ -1,65 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/user';
 import createTestServer from '../../testServer/createTestServer';
-
-const USER_FRAGMENT = gql`
-  fragment userDetails on User {
-    id
-    firstName
-    lastName
-    email
-    jobTitle
-    country
-    city
-    howHeard
-    permissions
-    team {
-      id
-      name
-      organization
-      contentTypes
-      isConfirmed
-    }
-  }
-`;
-
-const AUTHENTICATED_USER_QUERY = gql`
-  query AuthenticatedUser {
-    authenticatedUser {
-      ...userDetails
-    }
-  }
-  ${USER_FRAGMENT}
-`;
-
-const USERS_QUERY = gql`
-  query Users {
-    users {
-      ...userDetails
-    }
-  }
-  ${USER_FRAGMENT}
-`;
-
-const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUser(
-    $data: UserUpdateInput!
-    $where: UserWhereUniqueInput!
-  ) {
-    updateUser(data: $data, where: $where) {
-      ...userDetails
-    }
-  }
-  ${USER_FRAGMENT}
-`;
-
-const DELETE_USER_MUTATION = gql`
-  mutation DeleteUser($where: UserWhereUniqueInput!) {
-    deleteUser(where: $where) {
-      ...userDetails
-    }
-  }
-  ${USER_FRAGMENT}
-`;
 
 const teams = [
   {
@@ -118,7 +58,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: AUTHENTICATED_USER_QUERY };
+    const request = { query: query.AUTHENTICATED_USER_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -141,7 +81,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: USERS_QUERY };
+    const request = { query: query.USERS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -174,7 +114,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: UPDATE_USER_MUTATION, variables };
+    const request = { query: query.UPDATE_USER_MUTATION, variables };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -202,7 +142,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: UPDATE_USER_MUTATION, variables };
+    const request = { query: query.UPDATE_USER_MUTATION, variables };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -224,7 +164,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: DELETE_USER_MUTATION, variables };
+    const request = { query: query.DELETE_USER_MUTATION, variables };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -245,7 +185,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: DELETE_USER_MUTATION, variables };
+    const request = { query: query.DELETE_USER_MUTATION, variables };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );

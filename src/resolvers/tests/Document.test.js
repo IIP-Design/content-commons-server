@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import * as query from './queries/document';
 import createTestServer from '../../testServer/createTestServer';
 
 jest.mock(
@@ -10,304 +10,6 @@ jest.mock(
     } )
   } )
 );
-
-const DOCUMENT_USE_FRAGMENT = gql`
-  fragment documentUseDetails on DocumentUse {
-    id
-    name
-  }
-`;
-
-const DOCUMENT_CONVERSION_FORMAT_FRAGMENT = gql`
-  fragment documentConversionFormatDetails on DocumentConversionFormat {
-    id
-    rawText
-    html
-    markdown
-  }
-`;
-
-const DOCUMENT_FILE_FRAGMENT = gql`
-  fragment documentFileDetails on DocumentFile {
-    id
-    createdAt
-    updatedAt
-    publishedAt
-    title
-    language {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
-    }
-    filetype
-    filename
-    filesize
-    status
-    excerpt
-    content { ...documentConversionFormatDetails }
-    image {
-      id
-      createdAt
-      updatedAt
-      filename
-      filetype
-      filesize
-      visibility
-      use {
-        id
-        name
-      }
-      url
-      signedUrl
-      language {
-        id
-        languageCode
-        locale
-        textDirection
-        displayName
-        nativeName
-      }
-    }
-    url
-    signedUrl
-    visibility
-    use { ...documentUseDetails }
-    bureaus {
-      id
-      name
-      abbr
-      offices {
-        id
-        name
-      }
-    }
-    countries {
-      id
-      name
-      abbr
-      region {
-        id
-        name
-        abbr
-      }
-    }
-  }
-`;
-
-// DocumentFile
-const DOCUMENT_FILES_QUERY = gql`
-  query DocumentFiles {
-    documentFiles {
-      ...documentFileDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-  ${DOCUMENT_USE_FRAGMENT}
-  ${DOCUMENT_FILE_FRAGMENT}
-`;
-
-const DOCUMENT_FILE_QUERY = gql`
-  query DocumentFile($id: ID!) {
-    documentFile(id: $id) {
-      ...documentFileDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-  ${DOCUMENT_USE_FRAGMENT}
-  ${DOCUMENT_FILE_FRAGMENT}
-`;
-
-const CREATE_DOCUMENT_FILE_MUTATION = gql`
-  mutation CreateDocumentFile($data: DocumentFileCreateInput!) {
-    createDocumentFile(data: $data) {
-      ...documentFileDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-  ${DOCUMENT_USE_FRAGMENT}
-  ${DOCUMENT_FILE_FRAGMENT}
-`;
-
-const UPDATE_DOCUMENT_FILE_MUTATION = gql`
-  mutation UpdateDocumentFile(
-    $data: DocumentFileUpdateInput!
-    $where: DocumentFileWhereUniqueInput!
-  ) {
-    updateDocumentFile(data: $data, where: $where) {
-      ...documentFileDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-  ${DOCUMENT_USE_FRAGMENT}
-  ${DOCUMENT_FILE_FRAGMENT}
-`;
-
-const DELETE_DOCUMENT_FILE_MUTATION = gql`
-  mutation DeleteDocumentFile($id: ID!) {
-    deleteDocumentFile(id: $id) {
-      ...documentFileDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-  ${DOCUMENT_USE_FRAGMENT}
-  ${DOCUMENT_FILE_FRAGMENT}
-`;
-
-const DELETE_MANY_DOCUMENT_FILES_MUTATION = gql`
-  mutation DeleteManyDocumentFiles(
-    $where: DocumentFileWhereInput
-  ) {
-    deleteManyDocumentFiles(where: $where) {
-      count
-    }
-  }
-`;
-
-// DocumentUse
-const DOCUMENT_USES_QUERY = gql`
-  query DocumentUses {
-    documentUses {
-      ...documentUseDetails
-    }
-  }
-  ${DOCUMENT_USE_FRAGMENT}
-`;
-
-const DOCUMENT_USE_QUERY = gql`
-  query DocumentUse($id: ID!) {
-    documentUse(id: $id) {
-      ...documentUseDetails
-    }
-  }
-  ${DOCUMENT_USE_FRAGMENT}
-`;
-
-const CREATE_DOCUMENT_USE_MUTATION = gql`
-  mutation CreateDocumentUse($name: String!) {
-    createDocumentUse(name: $name) {
-      ...documentUseDetails
-    }
-  }
-  ${DOCUMENT_USE_FRAGMENT}
-`;
-
-const UPDATE_DOCUMENT_USE_MUTATION = gql`
-  mutation UpdateDocumentUse(
-    $data: DocumentUseUpdateInput!
-    $where: DocumentUseWhereUniqueInput!
-  ) {
-    updateDocumentUse(data: $data, where: $where) {
-      ...documentUseDetails
-    }
-  }
-  ${DOCUMENT_USE_FRAGMENT}
-`;
-
-const UPDATE_MANY_DOCUMENT_USES_MUTATION = gql`
-  mutation UpdateManyDocumentUses(
-    $data: DocumentUseUpdateManyMutationInput!
-    $where: DocumentUseWhereInput
-  ) {
-    updateManyDocumentUses(data: $data, where: $where) {
-      count
-    }
-  }
-`;
-
-const DELETE_DOCUMENT_USE_MUTATION = gql`
-  mutation DeleteDocumentUse($id: ID!) {
-    deleteDocumentUse(id: $id) {
-      ...documentUseDetails
-    }
-  }
-  ${DOCUMENT_USE_FRAGMENT}
-`;
-
-
-const DELETE_MANY_DOCUMENT_USES_MUTATION = gql`
-  mutation DeleteManyDocumentUses(
-    $where: DocumentUseWhereInput
-  ) {
-    deleteManyDocumentUses(where: $where) {
-      count
-    }
-  }
-`;
-
-// DocumentConversionFormat
-const DOCUMENT_CONVERSION_FORMATS_QUERY = gql`
-  query DocumentConversionFormats {
-    documentConversionFormats {
-      ...documentConversionFormatDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-`;
-
-const DOCUMENT_CONVERSION_FORMAT_QUERY = gql`
-  query DocumentConversionFormat($id: ID!) {
-    documentConversionFormat(id: $id) {
-      ...documentConversionFormatDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-`;
-
-const CREATE_DOCUMENT_CONVERSION_FORMAT_MUTATION = gql`
-  mutation CreateDocumentConversionFormat(
-    $data: DocumentConversionFormatCreateInput!
-  ) {
-    createDocumentConversionFormat(data: $data) {
-      ...documentConversionFormatDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-`;
-
-const UPDATE_DOCUMENT_CONVERSION_FORMAT_MUTATION = gql`
-  mutation UpdateDocumentConversionFormat(
-    $data: DocumentConversionFormatUpdateInput!
-    $where: DocumentConversionFormatWhereUniqueInput!
-  ) {
-    updateDocumentConversionFormat(data: $data, where: $where) {
-      ...documentConversionFormatDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-`;
-
-const UPDATE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION = gql`
-  mutation UpdateManyDocumentConversionFormats(
-    $data: DocumentConversionFormatUpdateManyMutationInput!
-    $where: DocumentConversionFormatWhereInput
-  ) {
-    updateManyDocumentConversionFormats(data: $data, where: $where) {
-      count
-    }
-  }
-`;
-
-const DELETE_DOCUMENT_CONVERSION_FORMAT_MUTATION = gql`
-  mutation DeleteDocumentConversionFormat($id: ID!) {
-    deleteDocumentConversionFormat(id: $id) {
-      ...documentConversionFormatDetails
-    }
-  }
-  ${DOCUMENT_CONVERSION_FORMAT_FRAGMENT}
-`;
-
-const DELETE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION = gql`
-  mutation DeleteManyDocumentConversionFormats(
-    $where: DocumentConversionFormatWhereInput
-  ) {
-    deleteManyDocumentConversionFormats(where: $where) {
-      count
-    }
-  }
-`;
 
 const documentUses = [
   {
@@ -466,7 +168,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: DOCUMENT_FILES_QUERY };
+    const request = { query: query.DOCUMENT_FILES_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -499,7 +201,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: DOCUMENT_FILE_QUERY,
+      query: query.DOCUMENT_FILE_QUERY,
       variables: { id: documentFile.id }
     };
     const result = await server.query( request );
@@ -517,7 +219,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: DOCUMENT_USES_QUERY };
+    const request = { query: query.DOCUMENT_USES_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -535,7 +237,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: DOCUMENT_USE_QUERY,
+      query: query.DOCUMENT_USE_QUERY,
       variables: { id: documentUse.id }
     };
     const result = await server.query( request );
@@ -553,7 +255,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: DOCUMENT_CONVERSION_FORMATS_QUERY };
+    const request = { query: query.DOCUMENT_CONVERSION_FORMATS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -572,7 +274,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: DOCUMENT_CONVERSION_FORMAT_QUERY,
+      query: query.DOCUMENT_CONVERSION_FORMAT_QUERY,
       variables: { id: documentConversionFormat.id }
     };
     const result = await server.query( request );
@@ -596,7 +298,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_DOCUMENT_FILE_MUTATION,
+      query: query.CREATE_DOCUMENT_FILE_MUTATION,
       variables: { data: { id } }
     };
     const result = await server.mutate( request );
@@ -618,7 +320,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_DOCUMENT_FILE_MUTATION,
+      query: query.UPDATE_DOCUMENT_FILE_MUTATION,
       variables: {
         data: { title },
         where: { id }
@@ -644,7 +346,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_DOCUMENT_FILE_MUTATION,
+      query: query.DELETE_DOCUMENT_FILE_MUTATION,
       variables: { id }
     };
     const result = await server.mutate( request );
@@ -666,7 +368,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_MANY_DOCUMENT_FILES_MUTATION,
+      query: query.DELETE_MANY_DOCUMENT_FILES_MUTATION,
       variables: { where: { id_not: '' } }
     };
     const result = await server.mutate( request );
@@ -691,7 +393,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_DOCUMENT_USE_MUTATION,
+      query: query.CREATE_DOCUMENT_USE_MUTATION,
       variables: { name: newDocumentUse.name }
     };
     const result = await server.mutate( request );
@@ -716,7 +418,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_DOCUMENT_USE_MUTATION,
+      query: query.UPDATE_DOCUMENT_USE_MUTATION,
       variables: {
         data: { name: updatedDocumentUseName },
         where: { id: documentUses[0].id }
@@ -741,7 +443,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_MANY_DOCUMENT_USES_MUTATION,
+      query: query.UPDATE_MANY_DOCUMENT_USES_MUTATION,
       variables: {
         data: { name: updatedDocumentUseName },
         where: { id_not: '' }
@@ -765,7 +467,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_DOCUMENT_USE_MUTATION,
+      query: query.DELETE_DOCUMENT_USE_MUTATION,
       variables: { id: documentUses[0].id }
     };
     const result = await server.mutate( request );
@@ -786,7 +488,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_MANY_DOCUMENT_USES_MUTATION,
+      query: query.DELETE_MANY_DOCUMENT_USES_MUTATION,
       variables: { where: { id_not: '' } }
     };
     const result = await server.mutate( request );
@@ -815,7 +517,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
+      query: query.CREATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
       variables: {
         data: { ...newDocumentConversionFormat }
       }
@@ -844,7 +546,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
+      query: query.UPDATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
       variables: {
         data: { rawText: updatedRawText },
         where: { id: documentConversionFormats[0].id }
@@ -870,7 +572,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
+      query: query.UPDATE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
       variables: {
         data: { rawText: updatedRawText },
         where: { id_not: '' }
@@ -894,7 +596,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
+      query: query.DELETE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
       variables: { id: documentConversionFormats[0].id }
     };
     const result = await server.mutate( request );
@@ -916,7 +618,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: DELETE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
+      query: query.DELETE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
       variables: { where: { id_not: '' } }
     };
     const result = await server.mutate( request );

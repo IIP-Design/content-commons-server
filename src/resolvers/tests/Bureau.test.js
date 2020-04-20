@@ -1,45 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/bureau';
 import createTestServer from '../../testServer/createTestServer';
-
-const BUREAU_FRAGMENT = gql`
-  fragment bureauDetails on Bureau {
-    id
-    name
-    abbr
-    offices {
-      id
-      name
-      abbr
-    }
-  }
-`;
-
-const BUREAUS_QUERY = gql`
-  query Bureaus {
-    bureaus {
-      ...bureauDetails
-    }
-  }
-  ${BUREAU_FRAGMENT}
-`;
-
-const BUREAU_QUERY = gql`
-  query Bureau($id: ID!) {
-    bureau(id: $id) {
-      ...bureauDetails
-    }
-  }
-  ${BUREAU_FRAGMENT}
-`;
-
-const CREATE_BUREAU_QUERY = gql`
-  mutation CreateBureau($data: BureauCreateInput!) {
-    createBureau(data: $data) {
-      ...bureauDetails
-    }
-  }
-  ${BUREAU_FRAGMENT}
-`;
 
 describe( 'Query:', () => {
   const offices = [];
@@ -75,7 +35,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: BUREAUS_QUERY };
+    const request = { query: query.BUREAUS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -97,7 +57,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: BUREAU_QUERY,
+      query: query.BUREAU_QUERY,
       variables: { id: bureau.id }
     };
     const result = await server.query( request );
@@ -127,7 +87,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_BUREAU_QUERY,
+      query: query.CREATE_BUREAU_QUERY,
       variables: { data: { ...bureau } }
     };
     const result = await server.mutate( request );

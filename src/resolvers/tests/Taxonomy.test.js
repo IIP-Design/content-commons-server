@@ -1,123 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/taxonomy';
 import createTestServer from '../../testServer/createTestServer';
-
-const LANGUAGE_TRANSLATIONS_FRAGMENT = gql`
-  fragment languageTranslationsDetails on LanguageTranslation {
-    id
-    name
-    language {
-      id
-      languageCode
-      locale
-      textDirection
-      displayName
-      nativeName
-    }
-  }
-`;
-
-const CATEGORIES_QUERY = gql`
-  query Categories {
-    categories {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const CATEGORY_QUERY = gql`
-  query Category($id: ID!) {
-    category(id: $id) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const TAGS_QUERY = gql`
-  query Tags {
-    tags {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const TAG_QUERY = gql`
-  query Tag($id: ID!) {
-    tag(id: $id) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const CREATE_CATEGORY_MUTATION = gql`
-  mutation CreateCategory($data: CategoryCreateInput!) {
-    createCategory(data: $data) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const UPDATE_CATEGORY_MUTATION = gql`
-  mutation UpdateCategory(
-    $data: CategoryUpdateInput!
-    $where: CategoryWhereUniqueInput!
-  ) {
-    updateCategory(data: $data, where: $where) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-const CREATE_TAG_MUTATION = gql`
-  mutation CreateTag($data: TagCreateInput!) {
-    createTag(data: $data) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
-
-
-const UPDATE_TAG_MUTATION = gql`
-  mutation UpdateTag(
-    $data: TagUpdateInput!
-    $where: TagWhereUniqueInput!
-  ) {
-    updateTag(data: $data, where: $where) {
-      id
-      translations {
-        ...languageTranslationsDetails
-      }
-    }
-  }
-  ${LANGUAGE_TRANSLATIONS_FRAGMENT}
-`;
 
 const enLanguage = {
   id: 'ck2lzfx710hkq07206thus6pt',
@@ -235,7 +117,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: CATEGORIES_QUERY };
+    const request = { query: query.CATEGORIES_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -265,7 +147,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: CATEGORY_QUERY,
+      query: query.CATEGORY_QUERY,
       variables: { id: category.id }
     };
     const result = await server.query( request );
@@ -300,7 +182,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: TAGS_QUERY };
+    const request = { query: query.TAGS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -330,7 +212,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: TAG_QUERY,
+      query: query.TAG_QUERY,
       variables: { id: tag.id }
     };
     const result = await server.query( request );
@@ -378,7 +260,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_CATEGORY_MUTATION,
+      query: query.CREATE_CATEGORY_MUTATION,
       variables: { data: { ...category } }
     };
     const result = await server.mutate( request );
@@ -423,7 +305,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_CATEGORY_MUTATION,
+      query: query.UPDATE_CATEGORY_MUTATION,
       variables: {
         data: {
           translations: { ...category.translations }
@@ -472,7 +354,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_TAG_MUTATION,
+      query: query.CREATE_TAG_MUTATION,
       variables: { data: { ...tag } }
     };
     const result = await server.mutate( request );
@@ -517,7 +399,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: UPDATE_TAG_MUTATION,
+      query: query.UPDATE_TAG_MUTATION,
       variables: {
         data: {
           translations: { ...tag.translations }

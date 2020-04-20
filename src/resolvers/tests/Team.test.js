@@ -1,61 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/team';
 import createTestServer from '../../testServer/createTestServer';
-
-const TEAM_FRAGMENT = gql`
-  fragment teamDetails on Team {
-    id
-    name
-    organization
-  }
-`;
-
-const TEAMS_QUERY = gql`
-  query Teams {
-    teams {
-      ...teamDetails
-    }
-  }
-  ${TEAM_FRAGMENT}
-`;
-
-const TEAM_QUERY = gql`
-  query Team($id: ID!) {
-    team(id: $id) {
-      ...teamDetails
-    }
-  }
-  ${TEAM_FRAGMENT}
-`;
-
-const CREATE_TEAM_MUTATION = gql`
-  mutation CreateTeam($name: String! $organization: String!) {
-    createTeam(name: $name, organization: $organization) {
-      ...teamDetails
-    }
-  }
-  ${TEAM_FRAGMENT}
-`;
-
-const UPDATE_TEAM_MUTATION = gql`
-  mutation UpdateTeam(
-    $data: TeamUpdateInput!
-    $where: TeamWhereUniqueInput!
-  ) {
-    updateTeam(data: $data, where: $where) {
-      ...teamDetails
-    }
-  }
-  ${TEAM_FRAGMENT}
-`;
-
-const DELETE_TEAM_MUTATION = gql`
-  mutation DeleteTeam($where: TeamWhereUniqueInput!) {
-    deleteTeam(where: $where) {
-      ...teamDetails
-    }
-  }
-  ${TEAM_FRAGMENT}
-`;
 
 describe( 'Query:', () => {
   it( 'teams returns the correct teams', async () => {
@@ -131,7 +75,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: TEAMS_QUERY };
+    const request = { query: query.TEAMS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -151,7 +95,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: TEAM_QUERY, variables: { id: team.id } };
+    const request = { query: query.TEAM_QUERY, variables: { id: team.id } };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -171,7 +115,10 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: CREATE_TEAM_MUTATION, variables: { ...team } };
+    const request = {
+      query: query.CREATE_TEAM_MUTATION,
+      variables: { ...team }
+    };
     const result = await server.mutate( request );
     const { createTeam } = result.data;
 
@@ -198,7 +145,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: UPDATE_TEAM_MUTATION, variables };
+    const request = { query: query.UPDATE_TEAM_MUTATION, variables };
     const result = await server.mutate( request );
     const { updateTeam } = result.data;
 
@@ -224,7 +171,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: DELETE_TEAM_MUTATION, variables };
+    const request = { query: query.DELETE_TEAM_MUTATION, variables };
     const result = await server.mutate( request );
     const { deleteTeam } = result.data;
 

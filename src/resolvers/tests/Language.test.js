@@ -1,81 +1,5 @@
-import gql from 'graphql-tag';
+import * as query from './queries/language';
 import createTestServer from '../../testServer/createTestServer';
-
-const LANGUAGE_FRAGMENT = gql`
-  fragment languageDetails on Language {
-    id
-    languageCode
-    locale
-    textDirection
-    displayName
-    nativeName
-  }
-`;
-
-const LANGUAGES_QUERY = gql`
-  query Languages {
-    languages {
-      ...languageDetails
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
-
-const LANGUAGE_QUERY = gql`
-  query Language($id: ID!) {
-    language(id: $id) {
-      ...languageDetails
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
-
-const LANGUAGE_TRANSLATIONS_QUERY = gql`
-  query LanguageTranslations {
-    languageTranslations {
-      id
-      name
-      language {
-        ...languageDetails
-      }
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
-
-const LANGUAGE_TRANSLATION_QUERY = gql`
-  query LanguageTranslation($id: ID!) {
-    languageTranslation(id: $id) {
-      id
-      name
-      language {
-        ...languageDetails
-      }
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
-
-const CREATE_LANGUAGE_MUTATION = gql`
-  mutation CreateLanguage($data: LanguageCreateInput!) {
-    createLanguage(data: $data) {
-      ...languageDetails
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
-
-const UPDATE_LANGUAGE_MUTATION = gql`
-  mutation UpdateLanguage(
-    $data: LanguageUpdateInput!
-    $where: LanguageWhereUniqueInput!
-  ) {
-    updateLanguage(data: $data, where: $where) {
-      ...languageDetails
-    }
-  }
-  ${LANGUAGE_FRAGMENT}
-`;
 
 describe( 'Query:', () => {
   const french = {
@@ -102,7 +26,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: LANGUAGES_QUERY };
+    const request = { query: query.LANGUAGES_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -119,7 +43,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: LANGUAGE_QUERY,
+      query: query.LANGUAGE_QUERY,
       variables: { id: language.id }
     };
     const result = await server.query( request );
@@ -157,7 +81,7 @@ describe( 'Query:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
-    const request = { query: LANGUAGE_TRANSLATIONS_QUERY };
+    const request = { query: query.LANGUAGE_TRANSLATIONS_QUERY };
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -182,7 +106,7 @@ describe( 'Query:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
-      query: LANGUAGE_TRANSLATION_QUERY,
+      query: query.LANGUAGE_TRANSLATION_QUERY,
       variables: { id: languageTranslation.id }
     };
     const result = await server.query( request );
@@ -215,7 +139,7 @@ describe( 'Mutation:', () => {
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
-      query: CREATE_LANGUAGE_MUTATION,
+      query: query.CREATE_LANGUAGE_MUTATION,
       variables: { data: { ...language } }
     };
     const result = await server.mutate( request );
@@ -238,7 +162,7 @@ describe( 'Mutation:', () => {
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
-    const request = { query: UPDATE_LANGUAGE_MUTATION, variables };
+    const request = { query: query.UPDATE_LANGUAGE_MUTATION, variables };
     const result = await server.mutate( request );
     const { updateLanguage } = result.data;
 
