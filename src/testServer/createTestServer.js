@@ -32,12 +32,18 @@ const resolvers = merge(
   PackageResolvers
 );
 
+const mocks = {
+  DateTime: () => '2020-03-15T13:01:01.906Z',
+  Float: () => 25555,
+  String: () => 'mock string value'
+};
+
 const createTestServer = ctx => {
   const server = new ApolloServer( {
     typeDefs,
     resolvers,
     mockEntireSchema: false, // keeps existing resolvers in schema
-    mocks: true, // allows for custom mocks
+    mocks, // allows for custom mocks
     context: () => ctx
   } );
 
