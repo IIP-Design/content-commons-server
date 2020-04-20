@@ -1141,7 +1141,7 @@ export type ContentType =
   | "AUDIO"
   | "VIDEO"
   | "DOCUMENT"
-  | "IMAGE"
+  | "GRAPHIC"
   | "TEACHING_MATERIAL"
   | "PACKAGE";
 
