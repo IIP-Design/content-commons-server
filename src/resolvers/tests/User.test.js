@@ -61,22 +61,25 @@ const DELETE_USER_MUTATION = gql`
   ${USER_FRAGMENT}
 `;
 
-describe( 'Query:', () => {
-  const team1 = {
+const teams = [
+  {
     id: 'ck2qgfbku0ubh0720iwhkvuyn',
     name: 'GPA Press Office',
     organization: 'Department of State',
     contentTypes: ['PACKAGE'],
     isConfirmed: true
-  };
-  const team2 = {
+  },
+  {
     id: 'ck2lzfx640hig0720fw7j98yt',
     name: 'GPA Video',
     organization: 'Department of State',
     contentTypes: ['VIDEO'],
     isConfirmed: true
-  };
-  const user1 = {
+  }
+];
+
+const users = [
+  {
     id: 'ck2m042xo0rnp0720nb4gxjix',
     firstName: 'Joe',
     lastName: 'Schmoe',
@@ -86,9 +89,9 @@ describe( 'Query:', () => {
     city: 'Washington, DC',
     howHeard: '',
     permissions: ['EDITOR'],
-    team: team1
-  };
-  const user2 = {
+    team: teams[0]
+  },
+  {
     id: 'ck2m93ks81ks9akldi19skdk2k',
     firstName: 'Jane',
     lastName: 'Doe',
@@ -98,20 +101,20 @@ describe( 'Query:', () => {
     city: 'Washington, DC',
     howHeard: '',
     permissions: ['ADMIN'],
-    team: team2
-  };
+    team: teams[1]
+  }
+];
 
+describe( 'Query:', () => {
   it( 'authenticatedUser returns the user', async () => {
-    const team = team1;
-    const user = user1;
     const ctx = {
       prisma: {
         user: jest.fn( () => ( {
-          ...user,
-          team: jest.fn( () => team )
+          ...users[0],
+          team: jest.fn( () => teams[0] )
         } ) )
       },
-      user
+      user: users[0]
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -119,19 +122,18 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.authenticatedUser ).toEqual( user );
+    expect( result.data.authenticatedUser ).toEqual( users[0] );
   } );
 
   it( 'users returns the correct users', async () => {
-    const users = [user1, user2];
     const ctx = {
       prisma: {
         user: jest.fn( () => ( {
           team: jest.fn( () => {
             if ( ctx.prisma.user.mock.calls.length % 2 > 0 ) {
-              return team1;
+              return teams[0];
             }
-            return team2;
+            return teams[1];
           } )
         } ) ),
         users: jest.fn( () => users )
@@ -148,37 +150,24 @@ describe( 'Query:', () => {
 } );
 
 describe( 'Mutation:', () => {
-  const team = {
-    id: 'ck2qgfbku0ubh0720iwhkvuyn',
-    name: 'GPA Press Office',
-    organization: 'Department of State',
-    contentTypes: ['PACKAGE'],
-    isConfirmed: true
-  };
-  const user = {
-    id: 'ck2m042xo0rnp0720nb4gxjix',
-    firstName: 'Joe',
-    lastName: 'Schmoe',
-    email: 'schmoej@america.gov',
-    jobTitle: 'New Job Title',
-    country: 'United States',
-    city: 'Washington, DC',
-    howHeard: '',
-    permissions: ['EDITOR'],
-    team
-  };
+  const team = teams[0];
+  const user = users[0];
 
   it( 'updateUser updates a user if the current user is logged in', async () => {
+    const updatedUser = {
+      ...user,
+      firstName: 'Joe\'s new firstName'
+    };
     const variables = {
-      data: { jobTitle: user.jobTitle },
+      data: { firstName: updatedUser.firstName },
       where: { id: user.id }
     };
     const ctx = {
       user,
       prisma: {
-        updateUser: jest.fn( () => ( { ...user } ) ),
+        updateUser: jest.fn( () => updatedUser ),
         user: jest.fn( () => ( {
-          ...user,
+          ...updatedUser,
           team: jest.fn( () => team )
         } ) )
       }
@@ -189,20 +178,24 @@ describe( 'Mutation:', () => {
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.updateUser ).toEqual( { ...user } );
+    expect( result.data.updateUser ).toEqual( { ...updatedUser } );
   } );
 
   it( 'updateUser returns an Unauthorized error message if the current user is not logged in', async () => {
+    const updatedUser = {
+      ...user,
+      firstName: 'Joe\'s new firstName'
+    };
     const variables = {
-      data: { jobTitle: user.jobTitle },
+      data: { firstName: updatedUser.firstName },
       where: { id: user.id }
     };
     const ctx = {
       // user, // missing ctx.user
       prisma: {
-        updateUser: jest.fn( () => ( { ...user } ) ),
+        updateUser: jest.fn( () => ( { ...updatedUser } ) ),
         user: jest.fn( () => ( {
-          ...user,
+          ...updatedUser,
           team: jest.fn( () => team )
         } ) )
       }
