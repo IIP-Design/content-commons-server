@@ -1,4 +1,4 @@
-export default {
+const BureauResolvers = {
   Query: {
     bureaus( parent, args, ctx ) {
       return ctx.prisma.bureaus( { ...args } );
@@ -24,3 +24,5 @@ export default {
     }
   }
 };
+
+export default BureauResolvers;

@@ -1,7 +1,7 @@
 import { requiresLogin } from '../lib/authentication';
 import { getSignedUrlPromiseGet } from '../services/aws/s3';
 
-export default {
+const DocumentResolvers = {
   Query: requiresLogin( {
     documentFiles( parent, args, ctx ) {
       return ctx.prisma.documentFiles( { ...args } );
@@ -11,7 +11,7 @@ export default {
       return ctx.prisma.documentFile( { id: args.id } );
     },
 
-    documentUses ( parent, args, ctx ) {
+    documentUses( parent, args, ctx ) {
       return ctx.prisma.documentUses( { ...args } );
     },
 
@@ -19,11 +19,11 @@ export default {
       return ctx.prisma.documentUse( { id: args.id } );
     },
 
-    documentConversionFormats ( parent, args, ctx ) {
+    documentConversionFormats( parent, args, ctx ) {
       return ctx.prisma.documentConversionFormats( { ...args } );
     },
 
-    documentConversionFormat ( parent, args, ctx ) {
+    documentConversionFormat( parent, args, ctx ) {
       return ctx.prisma.documentConversionFormat( { id: args.id } );
     }
   } ),
@@ -36,9 +36,10 @@ export default {
       return documentFile;
     },
 
-    updateDocumentFile ( parent, args, ctx ) {
+    updateDocumentFile( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateDocumentFile( {
         data,
         where: { id }
@@ -67,6 +68,7 @@ export default {
         data,
         where: { id }
       } = updates;
+
       return ctx.prisma.updateDocumentUse( {
         data,
         where: { id }
@@ -76,6 +78,7 @@ export default {
     updateManyDocumentUses( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyDocumentUses( { data, where } );
     },
 
@@ -87,7 +90,7 @@ export default {
       return ctx.prisma.deleteManyDocumentUses( { ...where } );
     },
 
-    async createDocumentConversionFormat ( parent, args, ctx ) {
+    async createDocumentConversionFormat( parent, args, ctx ) {
       const { data } = args;
       const documentConversionFormat = await ctx.prisma.createDocumentConversionFormat( {
         ...data
@@ -96,26 +99,27 @@ export default {
       return documentConversionFormat;
     },
 
-    updateDocumentConversionFormat ( parent, args, ctx ) {
+    updateDocumentConversionFormat( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateDocumentConversionFormat( {
         data,
         where: { id }
       } );
     },
 
-    updateManyDocumentConversionFormats ( parent, args, ctx ) {
+    updateManyDocumentConversionFormats( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
       return ctx.prisma.updateManyDocumentConversionFormats( { data, where } );
     },
 
-    deleteDocumentConversionFormat ( parent, { id }, ctx ) {
+    deleteDocumentConversionFormat( parent, { id }, ctx ) {
       return ctx.prisma.deleteDocumentConversionFormat( { id } );
     },
 
-    deleteManyDocumentConversionFormats ( parent, { where }, ctx ) {
+    deleteManyDocumentConversionFormats( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentConversionFormats( { ...where } );
     }
   } ),
@@ -126,6 +130,7 @@ export default {
         key: parent.url,
         expires: 3600 // hour
       } );
+
       return signed.url;
     },
 
@@ -166,3 +171,5 @@ export default {
     }
   }
 };
+
+export default DocumentResolvers;

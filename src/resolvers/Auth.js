@@ -20,6 +20,7 @@ const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_
 // This should be handled on api server
 const generateESCookie = ctx => {
   const esToken = jwt.sign( { user: process.env.ES_APP_USER }, process.env.ES_APP_SECRET );
+
   ctx.res.cookie( 'ES_TOKEN', esToken, {
     maxAge: COOKIE_MAX_AGE,
     secure: !process.env.NODE_ENV === 'development'
@@ -30,6 +31,7 @@ const createToken = async () => {
   const randomBytesPromiseified = promisify( randomBytes );
   const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
   const tempTokenExpiry = Date.now() + 86400000; // 1 hour from now
+
   return {
     tempToken, tempTokenExpiry
   };
@@ -46,18 +48,20 @@ const setCookie = ( ctx, jwtToken ) => {
 };
 
 
-export default {
+const AuthResolvers = {
   Query: {
     async isWhitelisted( parent, args ) {
       if ( !ENFORCE_WHITELIST ) return true;
 
       const { email } = args;
+
       if ( !email ) {
         throw new ApolloError( 'An email address is not available.' );
       }
 
       try {
         const whitelisted = await isEmailWhitelisted( email );
+
         return whitelisted;
       } catch ( err ) {
         throw new ApolloError( err );
@@ -81,7 +85,7 @@ export default {
       if ( !cloudflareUser || cloudflareUser.message ) {
         // cloudflare message is error
         throw new AuthenticationError(
-          `Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.`
+          'Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.'
         );
       }
 
@@ -241,6 +245,7 @@ export default {
     async signUp( parent, args, ctx ) {
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( args.data.email );
+
         if ( !whitelisted ) {
           throw new UserInputError(
             'This america.gov account is not currently approved during our beta testing period.'
@@ -286,6 +291,7 @@ export default {
     signOut( parent, args, ctx ) {
       ctx.res.clearCookie( 'americaCommonsToken' );
       ctx.res.clearCookie( 'ES_TOKEN' );
+
       return 'loggedout';
     },
 
@@ -349,6 +355,7 @@ export default {
       const {
         email, subject, body, link, reply, page
       } = args;
+
       try {
         // 1. check if there is a user with that email and if they are confirmed.
         const user = await ctx.prisma
@@ -430,6 +437,7 @@ export default {
 
       try {
         const res = await getSignedUrlPromiseGet( { key } );
+
         return { key: res.key, url: res.url };
       } catch ( err ) {
         throw new ApolloError( err );
@@ -437,3 +445,5 @@ export default {
     } )
   }
 };
+
+export default AuthResolvers;

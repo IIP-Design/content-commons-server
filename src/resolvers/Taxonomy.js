@@ -1,4 +1,4 @@
-export default {
+const TaxonomyResolvers = {
   Query: {
     categories( parent, args, ctx ) {
       return ctx.prisma.categories( { ...args } );
@@ -23,6 +23,7 @@ export default {
       const category = await ctx.prisma.createCategory( {
         ...data
       } );
+
       return category;
     },
 
@@ -35,6 +36,7 @@ export default {
       const tag = await ctx.prisma.createTag( {
         ...data
       } );
+
       return tag;
     },
 
@@ -53,5 +55,7 @@ export default {
     translations( parent, args, ctx ) {
       return ctx.prisma.tag( { id: parent.id } ).translations( { ...args } );
     }
-  },
+  }
 };
+
+export default TaxonomyResolvers;
