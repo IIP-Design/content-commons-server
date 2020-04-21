@@ -16,7 +16,8 @@ enum ContentType {
 }
 
 enum ProjectType {
-  LANGUAGE
+  LANGUAGE 
+  SOCIAL_MEDIA
 }
 
 enum PackageType {
@@ -65,6 +66,16 @@ enum ThumbnailSize {
   MEDIUM
   LARGE
   FULL
+}
+
+type GraphicStyle {
+  id: ID! @id
+  name: String!
+}
+
+type SocialPlatform {
+  id: ID! @id
+  name: String!
 }
 
 type Country {
@@ -169,16 +180,38 @@ type Package {
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
   type: PackageType!
+  title: String!
   assetPath: String
   author: User
   team: Team
-  title: String!
   desc:  String
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: INTERNAL)
   categories: [Category]
   tags: [Tag]
   documents: [DocumentFile] 
+}
+
+type GraphicProject {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime
+  type: ProjectType! @default(value: SOCIAL_MEDIA)
+  title: String!
+  copyright: String 
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  author: User #[User|Author] # more than 1 author?
+  team: Team
+  status: PublishStatus @default(value: DRAFT)
+  visibility: Visibility @default(value: PUBLIC)
+  supportFiles: [SupportFile] @relation(onDelete: CASCADE)
+  images: [ImageFile] @relation(onDelete: CASCADE)
+  categories: [Category]
+  tags: [Tag]  
 }
 
 
@@ -229,6 +262,7 @@ type Dimensions {
   height: Int
 }
 
+
 # Press Guidance, meeting note
 type DocumentUse {
   id: ID! @id
@@ -264,32 +298,35 @@ type VideoFile {
   quality: VideoQuality
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
-  signedUrl: String
-  md5: String # may not need
+  signedUrl: String 
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
   stream: [VideoStream] @relation(onDelete: CASCADE)
+  md5: String
 }
 
 type ImageFile {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  visibility: Visibility @default(value: PUBLIC)
   language: Language
   dimensions: Dimensions
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
-  filesize: Float
-  visibility: Visibility @default(value: PUBLIC)
-  use: ImageUse
+  filesize: Float 
+  use: ImageUse 
+  quality: ImageQuality @default(value: WEB) 
+  style: GraphicStyle
+  social: SocialPlatform
   md5: String
-  url: String
-  signedUrl: String
 }
 
 type SupportFile {
@@ -299,12 +336,12 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String # srt, pdf
   filesize: Float
   visibility: Visibility @default(value: PUBLIC)
   use: SupportFileUse
+  md5: String
 }
 
 type DocumentFile {
@@ -320,7 +357,7 @@ type DocumentFile {
   status: PublishStatus @default(value: DRAFT)
   excerpt: String
   content: DocumentConversionFormat
-  image: [ImageFile]
+  image: [ImageFile] @relation(onDelete: CASCADE)
   url: String
   signedUrl: String
   visibility: Visibility @default(value: INTERNAL)
