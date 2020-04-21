@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-express';
 import { requiresLogin } from '../lib/authentication';
 
 export default {

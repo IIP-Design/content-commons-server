@@ -1,39 +1,12 @@
 import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
-import merge from 'lodash/merge';
 import path from 'path';
 import jwt from 'jsonwebtoken';
-import AuthResolvers from './resolvers/Auth';
-// import SharedResolvers from './resolvers/Shared';
-import LanguageResolvers from './resolvers/Language';
-import RegionResolvers from './resolvers/Region';
-import BureauResolvers from './resolvers/Bureau';
-import TaxonomyResolvers from './resolvers/Taxonomy';
-import TeamResolvers from './resolvers/Team';
-import UserResolvers from './resolvers/User';
-import UtilResolvers from './resolvers/Util';
-import DocumentResolvers from './resolvers/Document';
-import VideoResolvers from './resolvers/Video';
-import PackageResolvers from './resolvers/Package';
+import resolvers from './resolvers';
 import { prisma } from './schema/generated/prisma-client';
 
 
 const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
-
-const resolvers = merge(
-  AuthResolvers,
-  UtilResolvers,
-  // SharedResolvers,
-  LanguageResolvers,
-  TaxonomyResolvers,
-  RegionResolvers,
-  BureauResolvers,
-  UserResolvers,
-  TeamResolvers,
-  DocumentResolvers,
-  VideoResolvers,
-  PackageResolvers
-);
 
 const fetchUser = async req => {
   const { americaCommonsToken } = req.cookies;
