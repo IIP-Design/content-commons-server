@@ -1,5 +1,13 @@
 import gql from 'graphql-tag';
 
+export const TEAM_FRAGMENT = gql`
+  fragment teamDetails on Team {
+    id
+    name
+    organization
+  }
+`;
+
 export const LANGUAGE_FRAGMENT = gql`
   fragment languageDetails on Language {
     id

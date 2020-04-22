@@ -1,12 +1,5 @@
 import gql from 'graphql-tag';
-
-const TEAM_FRAGMENT = gql`
-  fragment teamDetails on Team {
-    id
-    name
-    organization
-  }
-`;
+import { TEAM_FRAGMENT } from './shared';
 
 export const TEAMS_QUERY = gql`
   query Teams {
