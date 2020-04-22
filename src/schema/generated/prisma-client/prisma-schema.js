@@ -31,6 +31,14 @@ type AggregateDocumentUse {
   count: Int!
 }
 
+type AggregateGraphicProject {
+  count: Int!
+}
+
+type AggregateGraphicStyle {
+  count: Int!
+}
+
 type AggregateImageFile {
   count: Int!
 }
@@ -56,6 +64,10 @@ type AggregatePackage {
 }
 
 type AggregateRegion {
+  count: Int!
+}
+
+type AggregateSocialPlatform {
   count: Int!
 }
 
@@ -487,7 +499,7 @@ enum ContentType {
   AUDIO
   VIDEO
   DOCUMENT
-  IMAGE
+  GRAPHIC
   TEACHING_MATERIAL
   PACKAGE
 }
@@ -1693,23 +1705,452 @@ input DocumentUseWhereUniqueInput {
   name: String
 }
 
+type GraphicProject {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  type: ProjectType!
+  title: String!
+  copyright: String
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  author: User
+  team: Team
+  status: PublishStatus
+  visibility: Visibility
+  supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
+  images(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile!]
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+}
+
+type GraphicProjectConnection {
+  pageInfo: PageInfo!
+  edges: [GraphicProjectEdge]!
+  aggregate: AggregateGraphicProject!
+}
+
+input GraphicProjectCreateInput {
+  id: ID
+  publishedAt: DateTime
+  type: ProjectType
+  title: String!
+  copyright: String
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  author: UserCreateOneInput
+  team: TeamCreateOneInput
+  status: PublishStatus
+  visibility: Visibility
+  supportFiles: SupportFileCreateManyInput
+  images: ImageFileCreateManyInput
+  categories: CategoryCreateManyInput
+  tags: TagCreateManyInput
+}
+
+type GraphicProjectEdge {
+  node: GraphicProject!
+  cursor: String!
+}
+
+enum GraphicProjectOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  type_ASC
+  type_DESC
+  title_ASC
+  title_DESC
+  copyright_ASC
+  copyright_DESC
+  alt_ASC
+  alt_DESC
+  descPublic_ASC
+  descPublic_DESC
+  descInternal_ASC
+  descInternal_DESC
+  assetPath_ASC
+  assetPath_DESC
+  status_ASC
+  status_DESC
+  visibility_ASC
+  visibility_DESC
+}
+
+type GraphicProjectPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  publishedAt: DateTime
+  type: ProjectType!
+  title: String!
+  copyright: String
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+type GraphicProjectSubscriptionPayload {
+  mutation: MutationType!
+  node: GraphicProject
+  updatedFields: [String!]
+  previousValues: GraphicProjectPreviousValues
+}
+
+input GraphicProjectSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GraphicProjectWhereInput
+  AND: [GraphicProjectSubscriptionWhereInput!]
+  OR: [GraphicProjectSubscriptionWhereInput!]
+  NOT: [GraphicProjectSubscriptionWhereInput!]
+}
+
+input GraphicProjectUpdateInput {
+  publishedAt: DateTime
+  type: ProjectType
+  title: String
+  copyright: String
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
+  status: PublishStatus
+  visibility: Visibility
+  supportFiles: SupportFileUpdateManyInput
+  images: ImageFileUpdateManyInput
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
+}
+
+input GraphicProjectUpdateManyMutationInput {
+  publishedAt: DateTime
+  type: ProjectType
+  title: String
+  copyright: String
+  alt: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+input GraphicProjectWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  type: ProjectType
+  type_not: ProjectType
+  type_in: [ProjectType!]
+  type_not_in: [ProjectType!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  copyright: String
+  copyright_not: String
+  copyright_in: [String!]
+  copyright_not_in: [String!]
+  copyright_lt: String
+  copyright_lte: String
+  copyright_gt: String
+  copyright_gte: String
+  copyright_contains: String
+  copyright_not_contains: String
+  copyright_starts_with: String
+  copyright_not_starts_with: String
+  copyright_ends_with: String
+  copyright_not_ends_with: String
+  alt: String
+  alt_not: String
+  alt_in: [String!]
+  alt_not_in: [String!]
+  alt_lt: String
+  alt_lte: String
+  alt_gt: String
+  alt_gte: String
+  alt_contains: String
+  alt_not_contains: String
+  alt_starts_with: String
+  alt_not_starts_with: String
+  alt_ends_with: String
+  alt_not_ends_with: String
+  descPublic: String
+  descPublic_not: String
+  descPublic_in: [String!]
+  descPublic_not_in: [String!]
+  descPublic_lt: String
+  descPublic_lte: String
+  descPublic_gt: String
+  descPublic_gte: String
+  descPublic_contains: String
+  descPublic_not_contains: String
+  descPublic_starts_with: String
+  descPublic_not_starts_with: String
+  descPublic_ends_with: String
+  descPublic_not_ends_with: String
+  descInternal: String
+  descInternal_not: String
+  descInternal_in: [String!]
+  descInternal_not_in: [String!]
+  descInternal_lt: String
+  descInternal_lte: String
+  descInternal_gt: String
+  descInternal_gte: String
+  descInternal_contains: String
+  descInternal_not_contains: String
+  descInternal_starts_with: String
+  descInternal_not_starts_with: String
+  descInternal_ends_with: String
+  descInternal_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
+  author: UserWhereInput
+  team: TeamWhereInput
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  supportFiles_every: SupportFileWhereInput
+  supportFiles_some: SupportFileWhereInput
+  supportFiles_none: SupportFileWhereInput
+  images_every: ImageFileWhereInput
+  images_some: ImageFileWhereInput
+  images_none: ImageFileWhereInput
+  categories_every: CategoryWhereInput
+  categories_some: CategoryWhereInput
+  categories_none: CategoryWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
+  AND: [GraphicProjectWhereInput!]
+  OR: [GraphicProjectWhereInput!]
+  NOT: [GraphicProjectWhereInput!]
+}
+
+input GraphicProjectWhereUniqueInput {
+  id: ID
+}
+
+type GraphicStyle {
+  id: ID!
+  name: String!
+}
+
+type GraphicStyleConnection {
+  pageInfo: PageInfo!
+  edges: [GraphicStyleEdge]!
+  aggregate: AggregateGraphicStyle!
+}
+
+input GraphicStyleCreateInput {
+  id: ID
+  name: String!
+}
+
+input GraphicStyleCreateOneInput {
+  create: GraphicStyleCreateInput
+  connect: GraphicStyleWhereUniqueInput
+}
+
+type GraphicStyleEdge {
+  node: GraphicStyle!
+  cursor: String!
+}
+
+enum GraphicStyleOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type GraphicStylePreviousValues {
+  id: ID!
+  name: String!
+}
+
+type GraphicStyleSubscriptionPayload {
+  mutation: MutationType!
+  node: GraphicStyle
+  updatedFields: [String!]
+  previousValues: GraphicStylePreviousValues
+}
+
+input GraphicStyleSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: GraphicStyleWhereInput
+  AND: [GraphicStyleSubscriptionWhereInput!]
+  OR: [GraphicStyleSubscriptionWhereInput!]
+  NOT: [GraphicStyleSubscriptionWhereInput!]
+}
+
+input GraphicStyleUpdateDataInput {
+  name: String
+}
+
+input GraphicStyleUpdateInput {
+  name: String
+}
+
+input GraphicStyleUpdateManyMutationInput {
+  name: String
+}
+
+input GraphicStyleUpdateOneInput {
+  create: GraphicStyleCreateInput
+  update: GraphicStyleUpdateDataInput
+  upsert: GraphicStyleUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GraphicStyleWhereUniqueInput
+}
+
+input GraphicStyleUpsertNestedInput {
+  update: GraphicStyleUpdateDataInput!
+  create: GraphicStyleCreateInput!
+}
+
+input GraphicStyleWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [GraphicStyleWhereInput!]
+  OR: [GraphicStyleWhereInput!]
+  NOT: [GraphicStyleWhereInput!]
+}
+
+input GraphicStyleWhereUniqueInput {
+  id: ID
+}
+
 type ImageFile {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  visibility: Visibility
   language: Language
   dimensions: Dimensions
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
   use: ImageUse
+  quality: ImageQuality
+  style: GraphicStyle
+  social: SocialPlatform
   md5: String
-  url: String
-  signedUrl: String
 }
 
 type ImageFileConnection {
@@ -1720,19 +2161,22 @@ type ImageFileConnection {
 
 input ImageFileCreateInput {
   id: ID
+  visibility: Visibility
   language: LanguageCreateOneInput
   dimensions: DimensionsCreateOneInput
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
   use: ImageUseCreateOneInput
+  quality: ImageQuality
+  style: GraphicStyleCreateOneInput
+  social: SocialPlatformCreateOneInput
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileCreateManyInput {
@@ -1757,6 +2201,12 @@ enum ImageFileOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  visibility_ASC
+  visibility_DESC
+  url_ASC
+  url_DESC
+  signedUrl_ASC
+  signedUrl_DESC
   alt_ASC
   alt_DESC
   longdesc_ASC
@@ -1769,30 +2219,27 @@ enum ImageFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
-  visibility_ASC
-  visibility_DESC
+  quality_ASC
+  quality_DESC
   md5_ASC
   md5_DESC
-  url_ASC
-  url_DESC
-  signedUrl_ASC
-  signedUrl_DESC
 }
 
 type ImageFilePreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  visibility: Visibility
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
+  quality: ImageQuality
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileScalarWhereInput {
@@ -1826,6 +2273,38 @@ input ImageFileScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -1904,10 +2383,10 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  visibility: Visibility
-  visibility_not: Visibility
-  visibility_in: [Visibility!]
-  visibility_not_in: [Visibility!]
+  quality: ImageQuality
+  quality_not: ImageQuality
+  quality_in: [ImageQuality!]
+  quality_not_in: [ImageQuality!]
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -1922,34 +2401,6 @@ input ImageFileScalarWhereInput {
   md5_not_starts_with: String
   md5_ends_with: String
   md5_not_ends_with: String
-  url: String
-  url_not: String
-  url_in: [String!]
-  url_not_in: [String!]
-  url_lt: String
-  url_lte: String
-  url_gt: String
-  url_gte: String
-  url_contains: String
-  url_not_contains: String
-  url_starts_with: String
-  url_not_starts_with: String
-  url_ends_with: String
-  url_not_ends_with: String
-  signedUrl: String
-  signedUrl_not: String
-  signedUrl_in: [String!]
-  signedUrl_not_in: [String!]
-  signedUrl_lt: String
-  signedUrl_lte: String
-  signedUrl_gt: String
-  signedUrl_gte: String
-  signedUrl_contains: String
-  signedUrl_not_contains: String
-  signedUrl_starts_with: String
-  signedUrl_not_starts_with: String
-  signedUrl_ends_with: String
-  signedUrl_not_ends_with: String
   AND: [ImageFileScalarWhereInput!]
   OR: [ImageFileScalarWhereInput!]
   NOT: [ImageFileScalarWhereInput!]
@@ -1974,48 +2425,55 @@ input ImageFileSubscriptionWhereInput {
 }
 
 input ImageFileUpdateDataInput {
+  visibility: Visibility
   language: LanguageUpdateOneInput
   dimensions: DimensionsUpdateOneInput
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
   use: ImageUseUpdateOneInput
+  quality: ImageQuality
+  style: GraphicStyleUpdateOneInput
+  social: SocialPlatformUpdateOneInput
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileUpdateInput {
+  visibility: Visibility
   language: LanguageUpdateOneInput
   dimensions: DimensionsUpdateOneInput
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
   use: ImageUseUpdateOneInput
+  quality: ImageQuality
+  style: GraphicStyleUpdateOneInput
+  social: SocialPlatformUpdateOneInput
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileUpdateManyDataInput {
+  visibility: Visibility
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
+  quality: ImageQuality
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileUpdateManyInput {
@@ -2031,16 +2489,17 @@ input ImageFileUpdateManyInput {
 }
 
 input ImageFileUpdateManyMutationInput {
+  visibility: Visibility
+  url: String
+  signedUrl: String
   alt: String
   longdesc: String
   caption: String
   filename: String
   filetype: String
   filesize: Float
-  visibility: Visibility
+  quality: ImageQuality
   md5: String
-  url: String
-  signedUrl: String
 }
 
 input ImageFileUpdateManyWithWhereNestedInput {
@@ -2104,8 +2563,40 @@ input ImageFileWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
   language: LanguageWhereInput
   dimensions: DimensionsWhereInput
+  url: String
+  url_not: String
+  url_in: [String!]
+  url_not_in: [String!]
+  url_lt: String
+  url_lte: String
+  url_gt: String
+  url_gte: String
+  url_contains: String
+  url_not_contains: String
+  url_starts_with: String
+  url_not_starts_with: String
+  url_ends_with: String
+  url_not_ends_with: String
+  signedUrl: String
+  signedUrl_not: String
+  signedUrl_in: [String!]
+  signedUrl_not_in: [String!]
+  signedUrl_lt: String
+  signedUrl_lte: String
+  signedUrl_gt: String
+  signedUrl_gte: String
+  signedUrl_contains: String
+  signedUrl_not_contains: String
+  signedUrl_starts_with: String
+  signedUrl_not_starts_with: String
+  signedUrl_ends_with: String
+  signedUrl_not_ends_with: String
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -2184,11 +2675,13 @@ input ImageFileWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  visibility: Visibility
-  visibility_not: Visibility
-  visibility_in: [Visibility!]
-  visibility_not_in: [Visibility!]
   use: ImageUseWhereInput
+  quality: ImageQuality
+  quality_not: ImageQuality
+  quality_in: [ImageQuality!]
+  quality_not_in: [ImageQuality!]
+  style: GraphicStyleWhereInput
+  social: SocialPlatformWhereInput
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -2203,34 +2696,6 @@ input ImageFileWhereInput {
   md5_not_starts_with: String
   md5_ends_with: String
   md5_not_ends_with: String
-  url: String
-  url_not: String
-  url_in: [String!]
-  url_not_in: [String!]
-  url_lt: String
-  url_lte: String
-  url_gt: String
-  url_gte: String
-  url_contains: String
-  url_not_contains: String
-  url_starts_with: String
-  url_not_starts_with: String
-  url_ends_with: String
-  url_not_ends_with: String
-  signedUrl: String
-  signedUrl_not: String
-  signedUrl_in: [String!]
-  signedUrl_not_in: [String!]
-  signedUrl_lt: String
-  signedUrl_lte: String
-  signedUrl_gt: String
-  signedUrl_gte: String
-  signedUrl_contains: String
-  signedUrl_not_contains: String
-  signedUrl_starts_with: String
-  signedUrl_not_starts_with: String
-  signedUrl_ends_with: String
-  signedUrl_not_ends_with: String
   AND: [ImageFileWhereInput!]
   OR: [ImageFileWhereInput!]
   NOT: [ImageFileWhereInput!]
@@ -2238,6 +2703,11 @@ input ImageFileWhereInput {
 
 input ImageFileWhereUniqueInput {
   id: ID
+}
+
+enum ImageQuality {
+  WEB
+  PRINT
 }
 
 type ImageUse {
@@ -2788,6 +3258,18 @@ type Mutation {
   upsertDocumentUse(where: DocumentUseWhereUniqueInput!, create: DocumentUseCreateInput!, update: DocumentUseUpdateInput!): DocumentUse!
   deleteDocumentUse(where: DocumentUseWhereUniqueInput!): DocumentUse
   deleteManyDocumentUses(where: DocumentUseWhereInput): BatchPayload!
+  createGraphicProject(data: GraphicProjectCreateInput!): GraphicProject!
+  updateGraphicProject(data: GraphicProjectUpdateInput!, where: GraphicProjectWhereUniqueInput!): GraphicProject
+  updateManyGraphicProjects(data: GraphicProjectUpdateManyMutationInput!, where: GraphicProjectWhereInput): BatchPayload!
+  upsertGraphicProject(where: GraphicProjectWhereUniqueInput!, create: GraphicProjectCreateInput!, update: GraphicProjectUpdateInput!): GraphicProject!
+  deleteGraphicProject(where: GraphicProjectWhereUniqueInput!): GraphicProject
+  deleteManyGraphicProjects(where: GraphicProjectWhereInput): BatchPayload!
+  createGraphicStyle(data: GraphicStyleCreateInput!): GraphicStyle!
+  updateGraphicStyle(data: GraphicStyleUpdateInput!, where: GraphicStyleWhereUniqueInput!): GraphicStyle
+  updateManyGraphicStyles(data: GraphicStyleUpdateManyMutationInput!, where: GraphicStyleWhereInput): BatchPayload!
+  upsertGraphicStyle(where: GraphicStyleWhereUniqueInput!, create: GraphicStyleCreateInput!, update: GraphicStyleUpdateInput!): GraphicStyle!
+  deleteGraphicStyle(where: GraphicStyleWhereUniqueInput!): GraphicStyle
+  deleteManyGraphicStyles(where: GraphicStyleWhereInput): BatchPayload!
   createImageFile(data: ImageFileCreateInput!): ImageFile!
   updateImageFile(data: ImageFileUpdateInput!, where: ImageFileWhereUniqueInput!): ImageFile
   updateManyImageFiles(data: ImageFileUpdateManyMutationInput!, where: ImageFileWhereInput): BatchPayload!
@@ -2830,6 +3312,12 @@ type Mutation {
   upsertRegion(where: RegionWhereUniqueInput!, create: RegionCreateInput!, update: RegionUpdateInput!): Region!
   deleteRegion(where: RegionWhereUniqueInput!): Region
   deleteManyRegions(where: RegionWhereInput): BatchPayload!
+  createSocialPlatform(data: SocialPlatformCreateInput!): SocialPlatform!
+  updateSocialPlatform(data: SocialPlatformUpdateInput!, where: SocialPlatformWhereUniqueInput!): SocialPlatform
+  updateManySocialPlatforms(data: SocialPlatformUpdateManyMutationInput!, where: SocialPlatformWhereInput): BatchPayload!
+  upsertSocialPlatform(where: SocialPlatformWhereUniqueInput!, create: SocialPlatformCreateInput!, update: SocialPlatformUpdateInput!): SocialPlatform!
+  deleteSocialPlatform(where: SocialPlatformWhereUniqueInput!): SocialPlatform
+  deleteManySocialPlatforms(where: SocialPlatformWhereInput): BatchPayload!
   createSupportFile(data: SupportFileCreateInput!): SupportFile!
   updateSupportFile(data: SupportFileUpdateInput!, where: SupportFileWhereUniqueInput!): SupportFile
   updateManySupportFiles(data: SupportFileUpdateManyMutationInput!, where: SupportFileWhereInput): BatchPayload!
@@ -3132,10 +3620,10 @@ type Package {
   updatedAt: DateTime!
   publishedAt: DateTime
   type: PackageType!
+  title: String!
   assetPath: String
   author: User
   team: Team
-  title: String!
   desc: String
   status: PublishStatus
   visibility: Visibility
@@ -3154,10 +3642,10 @@ input PackageCreateInput {
   id: ID
   publishedAt: DateTime
   type: PackageType!
+  title: String!
   assetPath: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
-  title: String!
   desc: String
   status: PublishStatus
   visibility: Visibility
@@ -3182,10 +3670,10 @@ enum PackageOrderByInput {
   publishedAt_DESC
   type_ASC
   type_DESC
-  assetPath_ASC
-  assetPath_DESC
   title_ASC
   title_DESC
+  assetPath_ASC
+  assetPath_DESC
   desc_ASC
   desc_DESC
   status_ASC
@@ -3200,8 +3688,8 @@ type PackagePreviousValues {
   updatedAt: DateTime!
   publishedAt: DateTime
   type: PackageType!
-  assetPath: String
   title: String!
+  assetPath: String
   desc: String
   status: PublishStatus
   visibility: Visibility
@@ -3232,10 +3720,10 @@ enum PackageType {
 input PackageUpdateInput {
   publishedAt: DateTime
   type: PackageType
+  title: String
   assetPath: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
-  title: String
   desc: String
   status: PublishStatus
   visibility: Visibility
@@ -3247,8 +3735,8 @@ input PackageUpdateInput {
 input PackageUpdateManyMutationInput {
   publishedAt: DateTime
   type: PackageType
-  assetPath: String
   title: String
+  assetPath: String
   desc: String
   status: PublishStatus
   visibility: Visibility
@@ -3297,6 +3785,20 @@ input PackageWhereInput {
   type_not: PackageType
   type_in: [PackageType!]
   type_not_in: [PackageType!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   assetPath: String
   assetPath_not: String
   assetPath_in: [String!]
@@ -3313,20 +3815,6 @@ input PackageWhereInput {
   assetPath_not_ends_with: String
   author: UserWhereInput
   team: TeamWhereInput
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
   desc: String
   desc_not: String
   desc_in: [String!]
@@ -3384,6 +3872,7 @@ enum Permission {
 
 enum ProjectType {
   LANGUAGE
+  SOCIAL_MEDIA
 }
 
 enum PublishStatus {
@@ -3419,6 +3908,12 @@ type Query {
   documentUse(where: DocumentUseWhereUniqueInput!): DocumentUse
   documentUses(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DocumentUse]!
   documentUsesConnection(where: DocumentUseWhereInput, orderBy: DocumentUseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DocumentUseConnection!
+  graphicProject(where: GraphicProjectWhereUniqueInput!): GraphicProject
+  graphicProjects(where: GraphicProjectWhereInput, orderBy: GraphicProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GraphicProject]!
+  graphicProjectsConnection(where: GraphicProjectWhereInput, orderBy: GraphicProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GraphicProjectConnection!
+  graphicStyle(where: GraphicStyleWhereUniqueInput!): GraphicStyle
+  graphicStyles(where: GraphicStyleWhereInput, orderBy: GraphicStyleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GraphicStyle]!
+  graphicStylesConnection(where: GraphicStyleWhereInput, orderBy: GraphicStyleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GraphicStyleConnection!
   imageFile(where: ImageFileWhereUniqueInput!): ImageFile
   imageFiles(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageFile]!
   imageFilesConnection(where: ImageFileWhereInput, orderBy: ImageFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageFileConnection!
@@ -3440,6 +3935,9 @@ type Query {
   region(where: RegionWhereUniqueInput!): Region
   regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
   regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
+  socialPlatform(where: SocialPlatformWhereUniqueInput!): SocialPlatform
+  socialPlatforms(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SocialPlatform]!
+  socialPlatformsConnection(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SocialPlatformConnection!
   supportFile(where: SupportFileWhereUniqueInput!): SupportFile
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile]!
   supportFilesConnection(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupportFileConnection!
@@ -3630,6 +4128,126 @@ input RegionWhereUniqueInput {
   id: ID
 }
 
+type SocialPlatform {
+  id: ID!
+  name: String!
+}
+
+type SocialPlatformConnection {
+  pageInfo: PageInfo!
+  edges: [SocialPlatformEdge]!
+  aggregate: AggregateSocialPlatform!
+}
+
+input SocialPlatformCreateInput {
+  id: ID
+  name: String!
+}
+
+input SocialPlatformCreateOneInput {
+  create: SocialPlatformCreateInput
+  connect: SocialPlatformWhereUniqueInput
+}
+
+type SocialPlatformEdge {
+  node: SocialPlatform!
+  cursor: String!
+}
+
+enum SocialPlatformOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type SocialPlatformPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type SocialPlatformSubscriptionPayload {
+  mutation: MutationType!
+  node: SocialPlatform
+  updatedFields: [String!]
+  previousValues: SocialPlatformPreviousValues
+}
+
+input SocialPlatformSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SocialPlatformWhereInput
+  AND: [SocialPlatformSubscriptionWhereInput!]
+  OR: [SocialPlatformSubscriptionWhereInput!]
+  NOT: [SocialPlatformSubscriptionWhereInput!]
+}
+
+input SocialPlatformUpdateDataInput {
+  name: String
+}
+
+input SocialPlatformUpdateInput {
+  name: String
+}
+
+input SocialPlatformUpdateManyMutationInput {
+  name: String
+}
+
+input SocialPlatformUpdateOneInput {
+  create: SocialPlatformCreateInput
+  update: SocialPlatformUpdateDataInput
+  upsert: SocialPlatformUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: SocialPlatformWhereUniqueInput
+}
+
+input SocialPlatformUpsertNestedInput {
+  update: SocialPlatformUpdateDataInput!
+  create: SocialPlatformCreateInput!
+}
+
+input SocialPlatformWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [SocialPlatformWhereInput!]
+  OR: [SocialPlatformWhereInput!]
+  NOT: [SocialPlatformWhereInput!]
+}
+
+input SocialPlatformWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   bureau(where: BureauSubscriptionWhereInput): BureauSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
@@ -3638,6 +4256,8 @@ type Subscription {
   documentConversionFormat(where: DocumentConversionFormatSubscriptionWhereInput): DocumentConversionFormatSubscriptionPayload
   documentFile(where: DocumentFileSubscriptionWhereInput): DocumentFileSubscriptionPayload
   documentUse(where: DocumentUseSubscriptionWhereInput): DocumentUseSubscriptionPayload
+  graphicProject(where: GraphicProjectSubscriptionWhereInput): GraphicProjectSubscriptionPayload
+  graphicStyle(where: GraphicStyleSubscriptionWhereInput): GraphicStyleSubscriptionPayload
   imageFile(where: ImageFileSubscriptionWhereInput): ImageFileSubscriptionPayload
   imageUse(where: ImageUseSubscriptionWhereInput): ImageUseSubscriptionPayload
   language(where: LanguageSubscriptionWhereInput): LanguageSubscriptionPayload
@@ -3645,6 +4265,7 @@ type Subscription {
   office(where: OfficeSubscriptionWhereInput): OfficeSubscriptionPayload
   package(where: PackageSubscriptionWhereInput): PackageSubscriptionPayload
   region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
+  socialPlatform(where: SocialPlatformSubscriptionWhereInput): SocialPlatformSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
   supportFileUse(where: SupportFileUseSubscriptionWhereInput): SupportFileUseSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
@@ -3665,12 +4286,12 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
   use: SupportFileUse
+  md5: String
 }
 
 type SupportFileConnection {
@@ -3684,12 +4305,12 @@ input SupportFileCreateInput {
   language: LanguageCreateOneInput!
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
   use: SupportFileUseCreateOneInput
+  md5: String
 }
 
 input SupportFileCreateManyInput {
@@ -3713,8 +4334,6 @@ enum SupportFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
-  md5_ASC
-  md5_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
@@ -3723,6 +4342,8 @@ enum SupportFileOrderByInput {
   filesize_DESC
   visibility_ASC
   visibility_DESC
+  md5_ASC
+  md5_DESC
 }
 
 type SupportFilePreviousValues {
@@ -3731,11 +4352,11 @@ type SupportFilePreviousValues {
   updatedAt: DateTime!
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  md5: String
 }
 
 input SupportFileScalarWhereInput {
@@ -3797,20 +4418,6 @@ input SupportFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -3851,6 +4458,20 @@ input SupportFileScalarWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -3878,34 +4499,34 @@ input SupportFileUpdateDataInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
   use: SupportFileUseUpdateOneInput
+  md5: String
 }
 
 input SupportFileUpdateInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
   use: SupportFileUseUpdateOneInput
+  md5: String
 }
 
 input SupportFileUpdateManyDataInput {
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  md5: String
 }
 
 input SupportFileUpdateManyInput {
@@ -3923,11 +4544,11 @@ input SupportFileUpdateManyInput {
 input SupportFileUpdateManyMutationInput {
   url: String
   signedUrl: String
-  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  md5: String
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -4127,20 +4748,6 @@ input SupportFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -4182,6 +4789,20 @@ input SupportFileWhereInput {
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
   use: SupportFileUseWhereInput
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
   NOT: [SupportFileWhereInput!]
@@ -5294,12 +5915,12 @@ type VideoFile {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
   stream(where: VideoStreamWhereInput, orderBy: VideoStreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoStream!]
+  md5: String
 }
 
 type VideoFileConnection {
@@ -5319,12 +5940,12 @@ input VideoFileCreateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsCreateOneInput
   stream: VideoStreamCreateManyInput
+  md5: String
 }
 
 input VideoFileCreateManyInput {
@@ -5358,14 +5979,14 @@ enum VideoFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
-  md5_ASC
-  md5_DESC
   duration_ASC
   duration_DESC
   bitrate_ASC
   bitrate_DESC
   filesize_ASC
   filesize_DESC
+  md5_ASC
+  md5_DESC
 }
 
 type VideoFilePreviousValues {
@@ -5379,10 +6000,10 @@ type VideoFilePreviousValues {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
+  md5: String
 }
 
 input VideoFileScalarWhereInput {
@@ -5484,20 +6105,6 @@ input VideoFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
@@ -5522,6 +6129,20 @@ input VideoFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   AND: [VideoFileScalarWhereInput!]
   OR: [VideoFileScalarWhereInput!]
   NOT: [VideoFileScalarWhereInput!]
@@ -5555,12 +6176,12 @@ input VideoFileUpdateDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
   stream: VideoStreamUpdateManyInput
+  md5: String
 }
 
 input VideoFileUpdateInput {
@@ -5573,12 +6194,12 @@ input VideoFileUpdateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
   stream: VideoStreamUpdateManyInput
+  md5: String
 }
 
 input VideoFileUpdateManyDataInput {
@@ -5589,10 +6210,10 @@ input VideoFileUpdateManyDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
+  md5: String
 }
 
 input VideoFileUpdateManyInput {
@@ -5615,10 +6236,10 @@ input VideoFileUpdateManyMutationInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
-  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
+  md5: String
 }
 
 input VideoFileUpdateManyWithWhereNestedInput {
@@ -5738,20 +6359,6 @@ input VideoFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
@@ -5780,6 +6387,20 @@ input VideoFileWhereInput {
   stream_every: VideoStreamWhereInput
   stream_some: VideoStreamWhereInput
   stream_none: VideoStreamWhereInput
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   AND: [VideoFileWhereInput!]
   OR: [VideoFileWhereInput!]
   NOT: [VideoFileWhereInput!]

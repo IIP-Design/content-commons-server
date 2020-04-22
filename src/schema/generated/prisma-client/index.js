@@ -49,6 +49,14 @@ var models = [
     embedded: false
   },
   {
+    name: "GraphicStyle",
+    embedded: false
+  },
+  {
+    name: "SocialPlatform",
+    embedded: false
+  },
+  {
     name: "Country",
     embedded: false
   },
@@ -98,6 +106,10 @@ var models = [
   },
   {
     name: "Package",
+    embedded: false
+  },
+  {
+    name: "GraphicProject",
     embedded: false
   },
   {
