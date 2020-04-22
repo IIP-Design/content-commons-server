@@ -1,0 +1,30 @@
+type Query {
+  graphicProjects(where: GraphicProjectWhereInput, orderBy: GraphicProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GraphicProject]!
+  graphicProject(id: ID!): GraphicProject
+
+  graphicStyles(where: GraphicStyleWhereInput, orderBy: GraphicStyleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GraphicStyle]!
+  graphicStyle(id: ID!): GraphicStyle
+
+  socialPlatforms(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SocialPlatform]!
+  socialPlatform(id: ID!): SocialPlatform
+}
+
+type Mutation {
+  createGraphicProject(data: GraphicProjectCreateInput!): GraphicProject!
+  updateGraphicProject(data: GraphicProjectUpdateInput!, where: GraphicProjectWhereUniqueInput!): GraphicProject
+  updateManyGraphicProjects(data: GraphicProjectUpdateManyMutationInput!, where: GraphicProjectWhereInput): BatchPayload!
+  deleteGraphicProject(id: ID!): GraphicProject!
+  deleteManyGraphicProjects(where: GraphicProjectWhereInput): BatchPayload!
+
+  createGraphicStyle(data: GraphicStyleCreateInput!): GraphicStyle!
+  updateGraphicStyle(data: GraphicStyleUpdateInput!, where: GraphicStyleWhereUniqueInput!): GraphicStyle
+  updateManyGraphicStyles(data: GraphicStyleUpdateManyMutationInput!, where: GraphicStyleWhereInput): BatchPayload!
+  deleteGraphicStyle(id: ID!): GraphicStyle!
+  deleteManyGraphicStyles(where: GraphicStyleWhereInput): BatchPayload!
+
+  createSocialPlatform(data: SocialPlatformCreateInput!): SocialPlatform!
+  updateSocialPlatform(data: SocialPlatformUpdateInput!, where: SocialPlatformWhereUniqueInput!): SocialPlatform
+  updateManySocialPlatforms(data: SocialPlatformUpdateManyMutationInput!, where: SocialPlatformWhereInput): BatchPayload!
+  deleteSocialPlatform(id: ID!): SocialPlatform!
+  deleteManySocialPlatforms(where: SocialPlatformWhereInput): BatchPayload!
+}
