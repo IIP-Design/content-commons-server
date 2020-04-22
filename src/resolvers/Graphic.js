@@ -89,11 +89,11 @@ const GraphicResolvers = {
     },
 
     deleteGraphicStyle( parent, { id }, ctx ) {
-      return ctx.prisma.deleteGraphicProject( { id } );
+      return ctx.prisma.deleteGraphicStyle( { id } );
     },
 
     deleteManyGraphicStyles( parent, { where }, ctx ) {
-      return ctx.prisma.deleteManyGraphicProjects( { ...where } );
+      return ctx.prisma.deleteManyGraphicStyles( { ...where } );
     },
 
     async createSocialPlatform( parent, args, ctx ) {
@@ -123,7 +123,7 @@ const GraphicResolvers = {
     },
 
     deleteSocialPlatform( parent, { id }, ctx ) {
-      return ctx.prisma.deleteGrSocialPlatform( { id } );
+      return ctx.prisma.deleteSocialPlatform( { id } );
     },
 
     deleteManySocialPlatforms( parent, { where }, ctx ) {
