@@ -9,111 +9,111 @@ import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllS3Assets, deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
 import transformVideo from '../services/es/video/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../services/rabbitmq/video';
-import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video.js';
+import { VIDEO_UNIT_VIDEO_FILES, VIDEO_FILE_FILES, VIDEO_PROJECT_FULL } from '../fragments/video';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
-export default {
+const VideoResolvers = {
   Query: requiresLogin( {
-    videoProjects ( parent, args, ctx ) {
+    videoProjects( parent, args, ctx ) {
       return ctx.prisma.videoProjects( { ...args } );
     },
 
-    videoProject ( parent, args, ctx ) {
+    videoProject( parent, args, ctx ) {
       return ctx.prisma.videoProject( { id: args.id } );
     },
 
-    videoUnits ( parent, args, ctx ) {
+    videoUnits( parent, args, ctx ) {
       return ctx.prisma.videoUnits( { ...args } );
     },
 
-    videoUnit ( parent, args, ctx ) {
+    videoUnit( parent, args, ctx ) {
       return ctx.prisma.videoUnit( { id: args.id } );
     },
 
-    videoFiles ( parent, args, ctx ) {
+    videoFiles( parent, args, ctx ) {
       return ctx.prisma.videoFiles( { ...args } );
     },
 
-    videoFile ( parent, args, ctx ) {
+    videoFile( parent, args, ctx ) {
       return ctx.prisma.videoFile( { id: args.id } );
     },
 
-    thumbnails ( parent, args, ctx ) {
+    thumbnails( parent, args, ctx ) {
       return ctx.prisma.thumbnails( { ...args } );
     },
 
-    thumbnail ( parent, args, ctx ) {
+    thumbnail( parent, args, ctx ) {
       return ctx.prisma.thumbnail( { id: args.id } );
     },
 
-    imageFiles ( parent, args, ctx ) {
+    imageFiles( parent, args, ctx ) {
       return ctx.prisma.imageFiles( { ...args } );
     },
 
-    imageFile ( parent, args, ctx ) {
+    imageFile( parent, args, ctx ) {
       return ctx.prisma.imageFile( { id: args.id } );
     },
 
-    supportFiles ( parent, args, ctx ) {
+    supportFiles( parent, args, ctx ) {
       return ctx.prisma.supportFiles( { ...args } );
     },
 
-    supportFile ( parent, args, ctx ) {
+    supportFile( parent, args, ctx ) {
       return ctx.prisma.supportFile( { id: args.id } );
     },
 
-    categories ( parent, args, ctx ) {
+    categories( parent, args, ctx ) {
       return ctx.prisma.categories( { ...args } );
     },
 
-    category ( parent, args, ctx ) {
+    category( parent, args, ctx ) {
       return ctx.prisma.category( { id: args.id } );
     },
 
-    tags ( parent, args, ctx ) {
+    tags( parent, args, ctx ) {
       return ctx.prisma.tags( { ...args } );
     },
 
-    tag ( parent, args, ctx ) {
+    tag( parent, args, ctx ) {
       return ctx.prisma.tag( { id: args.id } );
     },
 
-    videoUses ( parent, args, ctx ) {
+    videoUses( parent, args, ctx ) {
       return ctx.prisma.videoUses( { ...args } );
     },
 
-    videoUse ( parent, args, ctx ) {
+    videoUse( parent, args, ctx ) {
       return ctx.prisma.videoUse( { id: args.id } );
     },
 
-    imageUses ( parent, args, ctx ) {
+    imageUses( parent, args, ctx ) {
       return ctx.prisma.imageUses( { ...args } );
     },
 
-    imageUse ( parent, args, ctx ) {
+    imageUse( parent, args, ctx ) {
       return ctx.prisma.imageUse( { id: args.id } );
     },
 
-    dimensionses ( parent, args, ctx ) {
+    dimensionses( parent, args, ctx ) {
       return ctx.prisma.dimensionses( { ...args } );
     },
 
-    dimensions ( parent, args, ctx ) {
+    dimensions( parent, args, ctx ) {
       return ctx.prisma.dimensions( { id: args.id } );
     },
 
-    videoStreams ( parent, args, ctx ) {
+    videoStreams( parent, args, ctx ) {
       return ctx.prisma.videoStreams( { ...args } );
     },
 
-    videoStream ( parent, args, ctx ) {
+    videoStream( parent, args, ctx ) {
       return ctx.prisma.videoStream( { id: args.id } );
     }
   } ),
 
   Mutation: requiresLogin( {
-    async createVideoProject ( parent, args, ctx ) {
+    async createVideoProject( parent, args, ctx ) {
       const { data } = args;
       const videoProject = await ctx.prisma.createVideoProject( {
         ...data
@@ -122,7 +122,7 @@ export default {
       return videoProject;
     },
 
-    updateVideoProject ( parent, args, ctx ) {
+    updateVideoProject( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
 
@@ -184,9 +184,10 @@ export default {
       return videoProject;
     },
 
-    updateManyVideoProjects ( parent, args, ctx ) {
+    updateManyVideoProjects( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyVideoProjects( { data, where } );
     },
 
@@ -194,6 +195,7 @@ export default {
     async deleteVideoProject( parent, { id }, ctx ) {
       // 1. Verify we have a valid project before contnuing
       const doesProjectExist = await ctx.prisma.$exists.videoProject( { id } );
+
       if ( !doesProjectExist ) {
         throw new UserInputError( 'A project with that id does not exist in the database', {
           invalidArgs: 'id'
@@ -201,7 +203,8 @@ export default {
       }
 
       // 2. Fetch files that need to be removed from s3/vimeo
-      const units = await ctx.prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIDEO_FILES );
+      const units = await ctx.prisma.videoProject( { id } ).units()
+        .$fragment( VIDEO_UNIT_VIDEO_FILES );
 
       // 3. Delete vimeo files if they exist
       if ( units.length ) {
@@ -232,7 +235,7 @@ export default {
       return ctx.prisma.deleteManyVideoProjects( { ...where } );
     },
 
-    async createVideoUnit ( parent, args, ctx ) {
+    async createVideoUnit( parent, args, ctx ) {
       const { data } = args;
       const videoUnit = await ctx.prisma.createVideoUnit( {
         ...data
@@ -241,18 +244,20 @@ export default {
       return videoUnit;
     },
 
-    updateVideoUnit ( parent, args, ctx ) {
+    updateVideoUnit( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoUnit( {
         data,
         where: { id }
       } );
     },
 
-    updateManyVideoUnits ( parent, args, ctx ) {
+    updateManyVideoUnits( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyVideoUnits( { data, where } );
     },
 
@@ -264,7 +269,7 @@ export default {
       return ctx.prisma.deleteManyVideoUnits( { ...where } );
     },
 
-    async createVideoFile ( parent, args, ctx ) {
+    async createVideoFile( parent, args, ctx ) {
       const { data } = args;
       const videoFile = await ctx.prisma.createVideoFile( {
         ...data
@@ -273,25 +278,28 @@ export default {
       return videoFile;
     },
 
-    updateVideoFile ( parent, args, ctx ) {
+    updateVideoFile( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoFile( {
         data,
         where: { id }
       } );
     },
 
-    updateManyVideoFiles ( parent, args, ctx ) {
+    updateManyVideoFiles( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyVideoFiles( { data, where } );
     },
 
     // NOTE: Consider moving some of this delete logic to another file
-    async deleteVideoFile ( parent, { id }, ctx ) {
+    async deleteVideoFile( parent, { id }, ctx ) {
       // 1. Verify we have a valid project before contnuing
       const doesVideoFileExist = await ctx.prisma.$exists.videoFile( { id } );
+
       if ( !doesVideoFileExist ) {
         throw new UserInputError( 'A video file with that id does not exist in the database', {
           invalidArgs: 'id'
@@ -327,11 +335,11 @@ export default {
       return ctx.prisma.deleteVideoFile( { id } );
     },
 
-    deleteManyVideoFiles ( parent, { where }, ctx ) {
+    deleteManyVideoFiles( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyVideoFiles( { ...where } );
     },
 
-    async createThumbnail ( parent, args, ctx ) {
+    async createThumbnail( parent, args, ctx ) {
       const { data } = args;
       const thumbnailFile = await ctx.prisma.createThumbnail( {
         ...data
@@ -340,31 +348,33 @@ export default {
       return thumbnailFile;
     },
 
-    updateThumbnail ( parent, args, ctx ) {
+    updateThumbnail( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateThumbnail( {
         data,
         where: { id }
       } );
     },
 
-    updateManyThumbnails ( parent, args, ctx ) {
+    updateManyThumbnails( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyThumbnails( { data, where } );
     },
 
-    deleteThumbnail ( parent, { id }, ctx ) {
+    deleteThumbnail( parent, { id }, ctx ) {
       return ctx.prisma.deleteThumbnail( { id } );
     },
 
-    deleteManyThumbnails ( parent, { where }, ctx ) {
+    deleteManyThumbnails( parent, { where }, ctx ) {
       // check where clause
       return ctx.prisma.deleteManyThumbnails( { ...where } );
     },
 
-    async createImageFile ( parent, args, ctx ) {
+    async createImageFile( parent, args, ctx ) {
       const { data } = args;
       const imageFile = await ctx.prisma.createImageFile( {
         ...data
@@ -373,24 +383,27 @@ export default {
       return imageFile;
     },
 
-    updateImageFile ( parent, args, ctx ) {
+    updateImageFile( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateImageFile( {
         data,
         where: { id }
       } );
     },
 
-    updateManyImageFiles ( parent, args, ctx ) {
+    updateManyImageFiles( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyImageFiles( { data, where } );
     },
 
-    async deleteImageFile ( parent, { id }, ctx ) {
+    async deleteImageFile( parent, { id }, ctx ) {
       // 1. Verify we have a valid image file before contnuing
       const doesImageFileExist = await ctx.prisma.$exists.imageFile( { id } );
+
       if ( !doesImageFileExist ) {
         throw new UserInputError( `An image file with id: ${id} does not exist in the database`, {
           invalidArgs: 'id'
@@ -410,11 +423,11 @@ export default {
       return ctx.prisma.deleteImageFile( { id } );
     },
 
-    deleteManyImageFiles ( parent, { where }, ctx ) {
+    deleteManyImageFiles( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyImageFiles( { ...where } );
     },
 
-    async createSupportFile ( parent, args, ctx ) {
+    async createSupportFile( parent, args, ctx ) {
       const { data } = args;
       const supportFile = await ctx.prisma.createSupportFile( {
         ...data
@@ -423,24 +436,27 @@ export default {
       return supportFile;
     },
 
-    updateSupportFile ( parent, args, ctx ) {
+    updateSupportFile( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateSupportFile( {
         data,
         where: { id }
       } );
     },
 
-    updateManySupportFiles ( parent, args, ctx ) {
+    updateManySupportFiles( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManySupportFiles( { data, where } );
     },
 
-    async deleteSupportFile ( parent, { id }, ctx ) {
+    async deleteSupportFile( parent, { id }, ctx ) {
       // 1. Verify we have a valid support file before contnuing
       const doesSupportFileExist = await ctx.prisma.$exists.supportFile( { id } );
+
       if ( !doesSupportFileExist ) {
         throw new UserInputError( `A support file with id ${id} does not exist in the database`, {
           invalidArgs: 'id'
@@ -460,7 +476,7 @@ export default {
       return ctx.prisma.deleteSupportFile( { id } );
     },
 
-    deleteManySupportFiles ( parent, { where }, ctx ) {
+    deleteManySupportFiles( parent, { where }, ctx ) {
       return ctx.prisma.deleteManySupportFiles( { ...where } );
     },
 
@@ -518,7 +534,7 @@ export default {
     //   return ctx.prisma.deleteManyTags( { ...where } );
     // },
 
-    async createVideoUse ( parent, args, ctx ) {
+    async createVideoUse( parent, args, ctx ) {
       const videoUse = await ctx.prisma.createVideoUse( {
         ...args
       } );
@@ -526,30 +542,32 @@ export default {
       return videoUse;
     },
 
-    updateVideoUse ( parent, args, ctx ) {
+    updateVideoUse( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoUse( {
         data,
         where: { id }
       } );
     },
 
-    updateManyVideoUses ( parent, args, ctx ) {
+    updateManyVideoUses( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyVideoUses( { data, where } );
     },
 
-    deleteVideoUse ( parent, { id }, ctx ) {
+    deleteVideoUse( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoUse( { id } );
     },
 
-    deleteManyVideoUses ( parent, { where }, ctx ) {
+    deleteManyVideoUses( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyVideoUses( { ...where } );
     },
 
-    async createImageUse ( parent, args, ctx ) {
+    async createImageUse( parent, args, ctx ) {
       const imageUse = await ctx.prisma.createImageUse( {
         ...args
       } );
@@ -557,30 +575,32 @@ export default {
       return imageUse;
     },
 
-    updateImageUse ( parent, args, ctx ) {
+    updateImageUse( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateImageUse( {
         data,
         where: { id }
       } );
     },
 
-    updateManyImageUses ( parent, args, ctx ) {
+    updateManyImageUses( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyImageUses( { data, where } );
     },
 
-    deleteImageUse ( parent, { id }, ctx ) {
+    deleteImageUse( parent, { id }, ctx ) {
       return ctx.prisma.deleteImageUse( { id } );
     },
 
-    deleteManyImageUses ( parent, { where }, ctx ) {
+    deleteManyImageUses( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyImageUses( { ...where } );
     },
 
-    async createDimensions ( parent, args, ctx ) {
+    async createDimensions( parent, args, ctx ) {
       const dimensions = await ctx.prisma.createDimensions( {
         ...args
       } );
@@ -588,30 +608,32 @@ export default {
       return dimensions;
     },
 
-    updateDimensions ( parent, args, ctx ) {
+    updateDimensions( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateDimensions( {
         data,
         where: { id }
       } );
     },
 
-    updateManyDimensionses ( parent, args, ctx ) {
+    updateManyDimensionses( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyDimensionses( { data, where } );
     },
 
-    deleteDimensions ( parent, { id }, ctx ) {
+    deleteDimensions( parent, { id }, ctx ) {
       return ctx.prisma.deleteDimensions( { id } );
     },
 
-    deleteManyDimensionses ( parent, { where }, ctx ) {
+    deleteManyDimensionses( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDimensionses( { ...where } );
     },
 
-    async createVideoStream ( parent, args, ctx ) {
+    async createVideoStream( parent, args, ctx ) {
       const { data } = args;
       const videoStream = await ctx.prisma.createVideoStream( {
         ...data
@@ -620,26 +642,28 @@ export default {
       return videoStream;
     },
 
-    updateVideoStream ( parent, args, ctx ) {
+    updateVideoStream( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateVideoStream( {
         data,
         where: { id }
       } );
     },
 
-    updateManyVideoStreams ( parent, args, ctx ) {
+    updateManyVideoStreams( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyVideoStreams( { data, where } );
     },
 
-    deleteVideoStream ( parent, { id }, ctx ) {
+    deleteVideoStream( parent, { id }, ctx ) {
       return ctx.prisma.deleteVideoStream( { id } );
     },
 
-    deleteManyVideoStreams ( parent, { where }, ctx ) {
+    deleteManyVideoStreams( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyVideoStreams( { ...where } );
     }
   } ),
@@ -685,7 +709,7 @@ export default {
       return ctx.prisma
         .videoProject( { id: parent.id } )
         .thumbnails( { ...args } );
-    },
+    }
   },
 
   VideoUnit: {
@@ -717,7 +741,7 @@ export default {
       return ctx.prisma
         .videoUnit( { id: parent.id } )
         .thumbnails( { ...args } );
-    },
+    }
   },
 
   VideoFile: {
@@ -752,6 +776,7 @@ export default {
         key: parent.url,
         expires: 3600 // hour
       } );
+
       return signed.url;
     },
 
@@ -773,6 +798,7 @@ export default {
         key: parent.url,
         expires: 3600 // hour
       } );
+
       return signed.url;
     },
 
@@ -801,7 +827,7 @@ export default {
         .thumbnail( { id: parent.id } )
         .image( { ...args } );
     }
-  },
+  }
 
   // Category: {
   //   language( parent, args, ctx ) {
@@ -815,3 +841,5 @@ export default {
   //   }
   // }
 };
+
+export default VideoResolvers;
