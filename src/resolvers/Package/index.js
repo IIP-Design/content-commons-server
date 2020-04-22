@@ -9,10 +9,10 @@ import { deleteAssets } from './controller';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
-export default {
+const PackageResolvers = {
   Query: requiresLogin( {
     packages( parent, args, ctx ) {
-      return ctx.prisma.packages();
+      return ctx.prisma.packages( { ...args } );
     },
 
     package( parent, args, ctx ) {
@@ -23,11 +23,13 @@ export default {
   Mutation: requiresLogin( {
     async packageExists( parent, args, ctx ) {
       const { where } = args;
+
       return ctx.prisma.$exists.package( where );
     },
 
     async createPackage( parent, args, ctx ) {
       const { data } = args;
+
       try {
         const { id, type } = await ctx.prisma.createPackage( { ...data } );
 
@@ -57,6 +59,7 @@ export default {
       // 1. Delete documents
       if ( documents && documents.delete ) {
         const documentsToDelete = documents.delete;
+
         deleteAssets( ctx, documentsToDelete ).catch( err => `Unable to delete assets ${err.toString()}` );
       }
 
@@ -136,12 +139,14 @@ export default {
     updateManyPackages( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyPackages( { data, where } );
     },
 
     async deletePackage( parent, { id }, ctx ) {
       // 1. Verify we have a valid package before continuing
       const doesPackageExist = await ctx.prisma.$exists.package( { id } );
+
       if ( !doesPackageExist ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
           invalidArgs: 'id'
@@ -197,3 +202,5 @@ export default {
   }
 
 };
+
+export default PackageResolvers;
