@@ -12,13 +12,7 @@ const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 const PackageResolvers = {
   Query: requiresLogin( {
     packages( parent, args, ctx ) {
-      const pagination = {};
-
-      if ( args.first ) pagination.first = args.first;
-      if ( args.orderBy ) pagination.orderBy = args.orderBy;
-      if ( args.skip ) pagination.skip = args.skip;
-
-      return ctx.prisma.packages( pagination );
+      return ctx.prisma.packages( { ...args } );
     },
 
     package( parent, args, ctx ) {
