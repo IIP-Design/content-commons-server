@@ -81,3 +81,23 @@ export const IMAGE_DETAILS_FRAGMENT = gql`
   }
   ${LANGUAGE_FRAGMENT}
 `;
+
+export const SUPPORT_FILE_FRAGMENT = gql`
+  fragment supportFileDetails on SupportFile {
+    id
+    createdAt
+    updatedAt
+    url
+    signedUrl
+    filename
+    filetype
+    filesize
+    visibility
+    use {
+      id
+      name
+    }
+    language { ...languageDetails }  
+  }
+  ${LANGUAGE_FRAGMENT}
+`;
