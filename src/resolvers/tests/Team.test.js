@@ -1,75 +1,9 @@
 import * as query from './queries/team';
+import { teams } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {
   it( 'teams returns the correct teams', async () => {
-    const teams = [
-      {
-        id: 'ck2lzfx640hig0720fw7j98yt',
-        name: 'GPA Video',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx650hih0720mpgplsqr',
-        name: 'U.S. Speakers Program',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6f0hk607209lofxuzd',
-        name: 'American Spaces',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6f0hk707205r3a5xwk',
-        name: 'GPA Media Strategy',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6p0hkd0720h05lurvx',
-        name: 'ShareAmerica',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6p0hke0720t6zw8jde',
-        name: 'YLAI',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6r0hkg07201iym6ckg',
-        name: 'ECA',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6u0hkj0720f8n8mtda',
-        name: 'GPA Editorial & Design',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx6w0hkk07205vkfqtdk',
-        name: 'VOA Editorials',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2lzfx710hkn0720tog9i53x',
-        name: 'Global Engagement Center',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2qgfbke0ubc07209xmmjua2',
-        name: 'GPA Front Office',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck2qgfbku0ubh0720iwhkvuyn',
-        name: 'GPA Press Office',
-        organization: 'Department of State'
-      },
-      {
-        id: 'ck5cvpjdf01kq0720i4ovjo49',
-        name: 'U.S. Missions',
-        organization: 'Department of State'
-      }
-    ];
     const ctx = {
       prisma: { teams: jest.fn( () => teams ) }
     };
@@ -83,11 +17,7 @@ describe( 'Query:', () => {
   } );
 
   it( 'team returns a specific team', async () => {
-    const team = {
-      id: 'ck2qgfbku0ubh0720iwhkvuyn',
-      name: 'GPA Press Office',
-      organization: 'Department of State'
-    };
+    const team = teams[11];
     const ctx = {
       prisma: {
         team: jest.fn( () => ( { ...team } ) )

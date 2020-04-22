@@ -1,4 +1,5 @@
 import * as query from './queries/region';
+import { countries as mockCountries, regions as mockRegions } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {
@@ -6,41 +7,8 @@ describe( 'Query:', () => {
   let regions;
 
   beforeEach( () => {
-    countries = [
-      {
-        id: 'ck6krp96x3f3n0720q1289gee',
-        name: 'Angola',
-        abbr: 'AF'
-      },
-      {
-        id: 'ck6krp9773f420720i7aesohq',
-        name: 'Benin',
-        abbr: 'AF'
-      },
-      {
-        id: 'ck6krp9723f3x07209et0evkp',
-        name: 'Australia',
-        abbr: 'EAP'
-      },
-      {
-        id: 'ck6krp97d3f4a0720zpndfxd7',
-        name: 'Brunei',
-        abbr: 'EAP'
-      }
-    ];
-
-    regions = [
-      {
-        id: 'ck6krp96g3f3c0720c1w09bx1',
-        name: 'Bureau of African Affairs',
-        abbr: 'AF',
-      },
-      {
-        id: 'ck6krp96o3f3g0720w7whw2pw',
-        name: 'Bureau of East Asian and Pacific Affairs',
-        abbr: 'EAP'
-      }
-    ];
+    countries = mockCountries;
+    regions = mockRegions;
   } );
 
   const getCountry = country => countries.find( c => c.name === country );
@@ -59,6 +27,7 @@ describe( 'Query:', () => {
             if ( ctx.prisma.region.mock.calls.length % 2 > 0 ) {
               return getCountries( 'AF' );
             }
+
             return getCountries( 'EAP' );
           } )
         } ) ),
@@ -119,6 +88,7 @@ describe( 'Query:', () => {
             if ( ctx.prisma.country.mock.calls.length % 2 > 0 ) {
               return afRegion;
             }
+
             return eapRegion;
           } )
         } ) ),

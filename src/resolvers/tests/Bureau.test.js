@@ -1,30 +1,9 @@
 import * as query from './queries/bureau';
+import { bureaus } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {
-  const offices = [];
-
   it( 'bureaus returns the correct bureaus', async () => {
-    const bureaus = [
-      {
-        id: 'ck5cvpjcu01k80720d2eouy43',
-        name: 'Bureau of African Affairs',
-        abbr: 'AF',
-        offices
-      },
-      {
-        id: 'ck5cvpjcv01k90720vvw2imhn',
-        name: 'Bureau of Budget and Planning',
-        abbr: 'BP',
-        offices
-      },
-      {
-        id: 'ck5cvpjcv01ka0720kruynq52',
-        name: 'Bureau of Consular Affairs',
-        abbr: 'CA',
-        offices
-      }
-    ];
     const ctx = {
       prisma: {
         bureau: jest.fn( () => ( {
@@ -43,15 +22,13 @@ describe( 'Query:', () => {
   } );
 
   it( 'bureau returns a specific bureau', async () => {
-    const bureau = {
-      id: 'ck5cvpjcu01k80720d2eouy43',
-      name: 'Bureau of African Affairs',
-      abbr: 'AF',
-      offices: jest.fn( () => offices )
-    };
+    const bureau = bureaus[0];
     const ctx = {
       prisma: {
-        bureau: jest.fn( () => ( { ...bureau } ) )
+        bureau: jest.fn( () => ( {
+          ...bureau,
+          offices: jest.fn( () => bureau.offices )
+        } ) )
       }
     };
     const server = createTestServer( ctx );
@@ -63,7 +40,7 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.bureau ).toEqual( { ...bureau, offices } );
+    expect( result.data.bureau ).toEqual( bureau );
   } );
 } );
 
@@ -79,9 +56,9 @@ describe( 'Mutation:', () => {
       prisma: {
         bureau: jest.fn( () => ( {
           ...bureau,
-          offices: jest.fn( () => [] )
+          offices: jest.fn( () => bureau.offices )
         } ) ),
-        createBureau: jest.fn( () => ( { ...bureau } ) )
+        createBureau: jest.fn( () => bureau )
       }
     };
     const server = createTestServer( ctx );
@@ -94,6 +71,6 @@ describe( 'Mutation:', () => {
     const { createBureau } = result.data;
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( createBureau ).toEqual( { ...bureau } );
+    expect( createBureau ).toEqual( bureau );
   } );
 } );

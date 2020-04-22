@@ -1,4 +1,7 @@
 import * as query from './queries/graphic';
+import {
+  graphicProject, graphicStyles, socialPlatforms, languages
+} from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 jest.mock(
@@ -10,144 +13,6 @@ jest.mock(
     } )
   } )
 );
-
-const french = {
-  id: 'ck2lzfx710hkp07206oo0icbv',
-  languageCode: 'fr',
-  locale: 'fr-fr',
-  textDirection: 'LTR',
-  displayName: 'French',
-  nativeName: 'Français'
-};
-const english = {
-  id: 'ck2lzfx710hkq07206thus6pt',
-  languageCode: 'en',
-  locale: 'en-us',
-  textDirection: 'LTR',
-  displayName: 'English',
-  nativeName: 'English'
-};
-
-const graphicStyles = [
-  {
-    id: '123',
-    name: 'graphic-style-1'
-  },
-  {
-    id: '456',
-    name: 'graphic-style-2'
-  }
-];
-
-const socialPlatforms = [
-  {
-    id: 'tw382',
-    name: 'twitter'
-  },
-  {
-    id: 'ins3827',
-    name: 'instagram'
-  }
-];
-
-const graphicProject = {
-  id: 'ck8en7r8x0b7007652jpf9a59',
-  createdAt: '2020-03-30T15:44:20.145Z',
-  updatedAt: '2020-04-13T14:54:40.647Z',
-  publishedAt: '2020-03-30T15:44:51.511Z',
-  title: 'Coffee Growers',
-  type: 'SOCIAL_MEDIA',
-  copyright: 'GPA © 2020',
-  alt: '',
-  descPublic: 'Public description',
-  descInternal: 'Internal description',
-  assetPath: 'graphic/2020/03/commons.america.gov_ck8enbkxs0bdy076501iy0akv',
-  status: 'PUBLISHED',
-  visibility: 'PUBLIC',
-  author: {
-    id: 'ck8embiwq0b1n0765ps892v3n',
-    email: 'reganta@america.gov',
-    firstName: 'Terri',
-    lastName: 'Regan'
-  },
-  team: {
-    id: 'ck8em6gwa004p0765q6mjvh5f',
-    name: 'GPA Video',
-    organization: 'Department of State'
-  },
-  images: [
-    {
-      id: 'ck8en85go0b820765gcv0kgrx',
-      createdAt: '2020-03-30T15:44:38.502Z',
-      updatedAt: '2020-03-30T15:44:38.502Z',
-      visibility: 'PUBLIC',
-      language: english,
-      url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
-      signedUrl: 'https://signedurl.com',
-      filename: 'coffee.jpg',
-      filetype: 'image/jpeg',
-      filesize: 3193,
-      use: { id: 'a32asd', name: 'mock image use' },
-      style: {
-        id: 'graphic-style-d213',
-        name: 'Clean'
-      },
-      social: {
-        id: 'social-platform-tw28394',
-        name: 'Twitter'
-      }
-    }
-  ],
-  supportFiles: [
-    {
-      id: 'ck8en85go0b820765gcv0kgrx',
-      createdAt: '2020-03-30T15:44:38.502Z',
-      updatedAt: '2020-03-30T15:44:38.502Z',
-      language: english,
-      url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
-      signedUrl: 'https://signedurl.com',
-      filename: 'CAPTIONS Made in America ENGLISH_Output.srt',
-      filetype: 'application/x-subrip',
-      filesize: 3193,
-      visibility: 'PUBLIC',
-      use: { id: '3823', name: 'srt' }
-    }
-  ],
-  categories: [
-    {
-      id: 'ck8em77tg0arm0765sgq55glk',
-      translations: [
-        {
-          id: 'ck2lzfxab0hls0720o2sjmoqw',
-          name: 'about america',
-          language: english
-        },
-        {
-          id: 'ck2lzfxc90hm60720onv6tbro',
-          name: 'Amérique',
-          language: french
-        }
-      ]
-    }
-  ],
-  tags: [
-    {
-      id: 'ck8em77tk0at60765lecud41v',
-      translations: [
-        {
-          id: 'ck2lzfzwr0iey0720hrigffxo',
-          name: 'american culture',
-          language: english
-        },
-        {
-          id: 'ck2lzfzxz0ifc0720ufzpx34l',
-          name: 'Culture américaine',
-          language: french
-        }
-      ]
-    }
-  ]
-};
 
 const getGraphicProject = () => ( {
   ...graphicProject,
@@ -258,10 +123,10 @@ describe( 'Query:', () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
 
             if ( count % 2 > 0 ) {
-              return english;
+              return languages.english;
             }
 
-            return french;
+            return languages.french;
           } )
         } ) )
       }
@@ -361,10 +226,10 @@ describe( 'Mutation:', () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
 
             if ( count % 2 > 0 ) {
-              return english;
+              return languages.english;
             }
 
-            return french;
+            return languages.french;
           } )
         } ) ),
         createGraphicProject: jest.fn( () => graphicProject )
@@ -395,10 +260,10 @@ describe( 'Mutation:', () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
 
             if ( count % 2 > 0 ) {
-              return english;
+              return languages.english;
             }
 
-            return french;
+            return languages.french;
           } )
         } ) ),
         updateGraphicProject: jest.fn( () => updatedGraphicProject )
@@ -456,10 +321,10 @@ describe( 'Mutation:', () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
 
             if ( count % 2 > 0 ) {
-              return english;
+              return languages.english;
             }
 
-            return french;
+            return languages.french;
           } )
         } ) ),
         deleteGraphicProject: jest.fn( () => graphicProject )

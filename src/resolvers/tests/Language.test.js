@@ -1,26 +1,10 @@
 import * as query from './queries/language';
+import { languages as lang } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {
-  const french = {
-    id: 'ck2lzfx710hkp07206oo0icbv',
-    languageCode: 'fr',
-    locale: 'fr-fr',
-    textDirection: 'LTR',
-    displayName: 'French',
-    nativeName: 'Français'
-  };
-  const english = {
-    id: 'ck2lzfx710hkq07206thus6pt',
-    languageCode: 'en',
-    locale: 'en-us',
-    textDirection: 'LTR',
-    displayName: 'English',
-    nativeName: 'English'
-  };
-
   it( 'languages returns the correct languages', async () => {
-    const languages = [french, english];
+    const languages = [lang.french, lang.english];
     const ctx = {
       prisma: { languages: jest.fn( () => languages ) }
     };
@@ -34,7 +18,7 @@ describe( 'Query:', () => {
   } );
 
   it( 'language returns a specific language', async () => {
-    const language = english;
+    const language = lang.english;
     const ctx = {
       prisma: {
         language: jest.fn( () => ( { ...language } ) )
@@ -53,14 +37,6 @@ describe( 'Query:', () => {
   } );
 
   it( 'languageTranslations returns the correct languageTranslations', async () => {
-    const language = {
-      id: 'test-lang-1234',
-      languageCode: 'zz',
-      locale: 'zz-zz',
-      textDirection: 'LTR',
-      displayName: 'Test Language',
-      nativeName: 'Test Language'
-    };
     const languageTranslations = [
       {
         id: 'ck2lzfxab0hls0720o2sjmoqw',
@@ -74,7 +50,7 @@ describe( 'Query:', () => {
     const ctx = {
       prisma: {
         languageTranslation: jest.fn( () => ( {
-          language: jest.fn( () => language )
+          language: jest.fn( () => lang.testLanguage )
         } ) ),
         languageTranslations: jest.fn( () => languageTranslations )
       }
@@ -87,12 +63,12 @@ describe( 'Query:', () => {
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.languageTranslations )
       .toEqual( languageTranslations.map( translation => ( {
-        ...translation, language
+        ...translation, language: lang.testLanguage
       } ) ) );
   } );
 
   it( 'languageTranslation returns a specific languageTranslation', async () => {
-    const language = english;
+    const language = lang.english;
     const languageTranslation = {
       id: 'ck2lzfxab0hls0720o2sjmoqw',
       name: 'about america',
@@ -120,17 +96,8 @@ describe( 'Query:', () => {
 } );
 
 describe( 'Mutation:', () => {
-  const newLanguage = {
-    id: 'new-lang-1234',
-    languageCode: 'zz',
-    locale: 'zz-zz',
-    textDirection: 'LTR',
-    displayName: 'New Language Name',
-    nativeName: 'New Language'
-  };
-
   it( 'createLanguage creates a language', async () => {
-    const language = newLanguage;
+    const language = lang.testLanguage;
     const ctx = {
       prisma: {
         createLanguage: jest.fn( () => ( { ...language } ) )
@@ -150,7 +117,7 @@ describe( 'Mutation:', () => {
   } );
 
   it( 'updateLanguage updates a language', async () => {
-    const language = newLanguage;
+    const language = lang.testLanguage;
     const variables = {
       data: { displayName: language.displayName },
       where: { id: language.id }
