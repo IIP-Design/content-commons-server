@@ -14,7 +14,7 @@ jest.mock(
 const documentUses = [
   {
     id: 'a8es',
-    name: 'document use name',
+    name: 'document use name'
   },
   {
     id: 'aies',
@@ -73,6 +73,14 @@ const documentFile = {
       use: { id: 'a32asd', name: 'mock image use' },
       url: 'mock string value',
       signedUrl: 'https://signedurl.com',
+      social: {
+        id: 'social-id',
+        name: 'mock string value'
+      },
+      style: {
+        id: 'style-id',
+        name: 'mock string value'
+      },
       language: {
         id: 'ck2lzfx710hkq07206thus6pt',
         languageCode: 'en',
@@ -163,7 +171,7 @@ describe( 'Query:', () => {
           language: jest.fn(),
           use: jest.fn()
         } ) ),
-        documentFiles: jest.fn(),
+        documentFiles: jest.fn()
       }
     };
     const server = createTestServer( ctx );
@@ -181,12 +189,16 @@ describe( 'Query:', () => {
     expect( result.errors ).not.toBeDefined();
     result.data.documentFiles.forEach( doc => {
       const fields = Object.keys( doc );
+
       fields.forEach( field => {
         const value = doc[field];
+
         expect( value ).toBeTruthy();
+
         if ( typeof value === 'object' ) {
           const isArray = Array.isArray( value );
           const arr = isArray ? value : Object.keys( value );
+
           expect( arr.length ).toBeGreaterThan( 0 );
         }
       } );

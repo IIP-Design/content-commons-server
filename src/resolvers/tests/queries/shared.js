@@ -70,6 +70,14 @@ export const IMAGE_DETAILS_FRAGMENT = gql`
     url
     signedUrl
     language { ...languageDetails }
+    style {
+      id
+      name
+    }
+    social {
+      id
+      name
+    }
   }
   ${LANGUAGE_FRAGMENT}
 `;
