@@ -1,10 +1,10 @@
 import * as query from './mockQueries/language';
-import { languages as lang } from './mockData';
+import { categories, languages as lang } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {
   it( 'languages returns the correct languages', async () => {
-    const languages = [lang.french, lang.english];
+    const languages = [lang.english, lang.french];
     const ctx = {
       prisma: { languages: jest.fn( () => languages ) }
     };
@@ -21,7 +21,7 @@ describe( 'Query:', () => {
     const language = lang.english;
     const ctx = {
       prisma: {
-        language: jest.fn( () => ( { ...language } ) )
+        language: jest.fn( () => language )
       }
     };
     const server = createTestServer( ctx );
@@ -33,24 +33,23 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.language ).toEqual( { ...language } );
+    expect( result.data.language ).toEqual( language );
   } );
 
   it( 'languageTranslations returns the correct languageTranslations', async () => {
-    const languageTranslations = [
-      {
-        id: 'ck2lzfxab0hls0720o2sjmoqw',
-        name: 'about america'
-      },
-      {
-        id: 'ck2lzfxc90hm60720onv6tbro',
-        name: 'Amérique'
-      }
-    ];
+    const languageTranslations = categories[0].translations;
     const ctx = {
       prisma: {
         languageTranslation: jest.fn( () => ( {
-          language: jest.fn( () => lang.testLanguage )
+          language: jest.fn( () => {
+            const count = ctx.prisma.languageTranslation.mock.calls.length;
+
+            if ( count % 2 > 0 ) {
+              return lang.english;
+            }
+
+            return lang.french;
+          } )
         } ) ),
         languageTranslations: jest.fn( () => languageTranslations )
       }
@@ -61,22 +60,17 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.languageTranslations )
-      .toEqual( languageTranslations.map( translation => ( {
-        ...translation, language: lang.testLanguage
-      } ) ) );
+    expect( result.data.languageTranslations ).toEqual( languageTranslations );
   } );
 
   it( 'languageTranslation returns a specific languageTranslation', async () => {
-    const language = lang.english;
-    const languageTranslation = {
-      id: 'ck2lzfxab0hls0720o2sjmoqw',
-      name: 'about america',
-      language: jest.fn( () => language )
-    };
+    const languageTranslation = categories[0].translations[0];
     const ctx = {
       prisma: {
-        languageTranslation: jest.fn( () => languageTranslation )
+        languageTranslation: jest.fn( () => ( {
+          ...languageTranslation,
+          language: jest.fn( () => lang.english )
+        } ) )
       }
     };
     const server = createTestServer( ctx );
@@ -88,10 +82,7 @@ describe( 'Query:', () => {
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( result.data.languageTranslation ).toEqual( {
-      ...languageTranslation,
-      language
-    } );
+    expect( result.data.languageTranslation ).toEqual( languageTranslation );
   } );
 } );
 
@@ -100,7 +91,7 @@ describe( 'Mutation:', () => {
     const language = lang.testLanguage;
     const ctx = {
       prisma: {
-        createLanguage: jest.fn( () => ( { ...language } ) )
+        createLanguage: jest.fn( () => language )
       }
     };
     const server = createTestServer( ctx );
@@ -110,10 +101,9 @@ describe( 'Mutation:', () => {
       variables: { data: { ...language } }
     };
     const result = await server.mutate( request );
-    const { createLanguage } = result.data;
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( createLanguage ).toEqual( { ...language } );
+    expect( result.data.createLanguage ).toEqual( language );
   } );
 
   it( 'updateLanguage updates a language', async () => {
@@ -124,16 +114,15 @@ describe( 'Mutation:', () => {
     };
     const ctx = {
       prisma: {
-        updateLanguage: jest.fn( () => ( { ...language } ) )
+        updateLanguage: jest.fn( () => language )
       }
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = { query: query.UPDATE_LANGUAGE_MUTATION, variables };
     const result = await server.mutate( request );
-    const { updateLanguage } = result.data;
 
     expect( spy ).toHaveBeenCalledWith( request );
-    expect( updateLanguage ).toEqual( { ...language } );
+    expect( result.data.updateLanguage ).toEqual( language );
   } );
 } );
