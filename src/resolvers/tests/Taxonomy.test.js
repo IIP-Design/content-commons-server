@@ -1,4 +1,4 @@
-import * as query from './queries/taxonomy';
+import * as query from './mockQueries/taxonomy';
 import createTestServer from '../../testServer/createTestServer';
 
 const enLanguage = {

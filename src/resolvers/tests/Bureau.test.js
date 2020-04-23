@@ -1,4 +1,4 @@
-import * as query from './queries/bureau';
+import * as query from './mockQueries/bureau';
 import { bureaus } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 

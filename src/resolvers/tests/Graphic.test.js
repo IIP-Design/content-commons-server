@@ -1,4 +1,4 @@
-import * as query from './queries/graphic';
+import * as query from './mockQueries/graphic';
 import {
   graphicProject, graphicStyles, socialPlatforms, languages
 } from './mockData';

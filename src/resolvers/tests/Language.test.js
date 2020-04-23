@@ -1,4 +1,4 @@
-import * as query from './queries/language';
+import * as query from './mockQueries/language';
 import { languages as lang } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 

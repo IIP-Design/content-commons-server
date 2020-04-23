@@ -1,4 +1,4 @@
-import * as query from './queries/document';
+import * as query from './mockQueries/document';
 import {
   documentUses, documentConversionFormats, documentFile
 } from './mockData';

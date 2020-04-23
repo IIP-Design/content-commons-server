@@ -1,4 +1,4 @@
-import * as query from './queries/team';
+import * as query from './mockQueries/team';
 import { teams } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 

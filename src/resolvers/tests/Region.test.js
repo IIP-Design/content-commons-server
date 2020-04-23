@@ -1,4 +1,4 @@
-import * as query from './queries/region';
+import * as query from './mockQueries/region';
 import { countries as mockCountries, regions as mockRegions } from './mockData';
 import createTestServer from '../../testServer/createTestServer';
 
