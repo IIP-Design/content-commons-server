@@ -126,6 +126,72 @@ export const users = [
   }
 ];
 
+export const categories = [
+  {
+    id: 'ck2lzgu1c0re307202dlrnue2',
+    translations: [
+      {
+        id: 'ck2lzfxab0hls0720o2sjmoqw',
+        name: 'about america',
+        language: languages.english
+      },
+      {
+        id: 'ck2lzfxc90hm60720onv6tbro',
+        name: 'Amérique',
+        language: languages.french
+      }
+    ]
+  },
+  {
+    id: 'ck2lzgu1c0re40720g36mhagr',
+    translations: [
+      {
+        id: 'ck2lzfxhj0hnq0720ea5fakmi',
+        name: 'arts & culture',
+        language: languages.english
+      },
+      {
+        id: 'ck2lzfxj90ho40720w9yrade3',
+        name: 'Arts et culture',
+        language: languages.french
+      }
+    ]
+  }
+];
+
+export const tags = [
+  {
+    id: 'ck2lzgu1i0rei07206gvy1ygg',
+    translations: [
+      {
+        id: 'ck2lzfzwr0iey0720hrigffxo',
+        name: 'american culture',
+        language: languages.english
+      },
+      {
+        id: 'ck2lzfzxz0ifc0720ufzpx34l',
+        name: 'Culture américaine',
+        language: languages.french
+      }
+    ]
+  },
+  {
+    id: 'ck2lzgu1i0rej0720evrgjbyb',
+    translations: [
+      {
+        id: 'ck2lzg03a0igw0720t5c0s2r2',
+        name: 'english learning',
+        language: languages.english
+      },
+      {
+        id: 'ck2lzg04f0iha0720zkvmiruy',
+        name: 'Anglais langue étrangère',
+        language: languages.french
+      }
+    ]
+  }
+];
+
 export const bureaus = [
   {
     id: 'ck5cvpjcu01k80720d2eouy43',
@@ -203,14 +269,8 @@ export const graphicProject = {
       filetype: 'image/jpeg',
       filesize: 3193,
       use: { id: 'a32asd', name: 'mock image use' },
-      style: {
-        id: 'graphic-style-d213',
-        name: 'Clean'
-      },
-      social: {
-        id: 'social-platform-tw28394',
-        name: 'Twitter'
-      }
+      style: graphicStyles[0],
+      social: socialPlatforms[0]
     }
   ],
   supportFiles: [
@@ -228,40 +288,8 @@ export const graphicProject = {
       use: { id: '3823', name: 'srt' }
     }
   ],
-  categories: [
-    {
-      id: 'ck8em77tg0arm0765sgq55glk',
-      translations: [
-        {
-          id: 'ck2lzfxab0hls0720o2sjmoqw',
-          name: 'about america',
-          language: languages.english
-        },
-        {
-          id: 'ck2lzfxc90hm60720onv6tbro',
-          name: 'Amérique',
-          language: languages.french
-        }
-      ]
-    }
-  ],
-  tags: [
-    {
-      id: 'ck8em77tk0at60765lecud41v',
-      translations: [
-        {
-          id: 'ck2lzfzwr0iey0720hrigffxo',
-          name: 'american culture',
-          language: languages.english
-        },
-        {
-          id: 'ck2lzfzxz0ifc0720ufzpx34l',
-          name: 'Culture américaine',
-          language: languages.french
-        }
-      ]
-    }
-  ]
+  categories: [categories[0]],
+  tags: [tags[0]]
 };
 
 export const countries = [

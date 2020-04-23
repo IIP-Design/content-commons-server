@@ -54,6 +54,7 @@ describe( 'Query:', () => {
             if ( ctx.prisma.user.mock.calls.length % 2 > 0 ) {
               return teams[0];
             }
+
             return teams[1];
           } )
         } ) ),
