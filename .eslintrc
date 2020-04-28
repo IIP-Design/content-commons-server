@@ -1,4 +1,9 @@
 {
-  "extends": ["@gpa-lab/eslint-config"],
-  "parser": "babel-eslint"
+  "extends": [
+    "@gpa-lab/eslint-config"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-console": "off"
+  }
 }
