@@ -2143,6 +2143,7 @@ type ImageFile {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2168,6 +2169,7 @@ input ImageFileCreateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2211,6 +2213,8 @@ enum ImageFileOrderByInput {
   longdesc_DESC
   caption_ASC
   caption_DESC
+  title_ASC
+  title_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
@@ -2231,6 +2235,7 @@ type ImageFilePreviousValues {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2342,6 +2347,20 @@ input ImageFileScalarWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -2414,6 +2433,7 @@ input ImageFileUpdateDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2432,6 +2452,7 @@ input ImageFileUpdateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2448,6 +2469,7 @@ input ImageFileUpdateManyDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2473,6 +2495,7 @@ input ImageFileUpdateManyMutationInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2616,6 +2639,20 @@ input ImageFileWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]

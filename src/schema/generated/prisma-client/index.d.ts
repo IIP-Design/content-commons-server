@@ -1530,6 +1530,8 @@ export type ImageFileOrderByInput =
   | "longdesc_DESC"
   | "caption_ASC"
   | "caption_DESC"
+  | "title_ASC"
+  | "title_DESC"
   | "filename_ASC"
   | "filename_DESC"
   | "filetype_ASC"
@@ -1615,9 +1617,30 @@ export type ThumbnailOrderByInput =
   | "size_ASC"
   | "size_DESC";
 
+<<<<<<< HEAD
 export interface DimensionsUpdateDataInput {
   width?: Maybe<Int>;
   height?: Maybe<Int>;
+=======
+export interface ImageFileUpdateDataInput {
+  visibility?: Maybe<Visibility>;
+  language?: Maybe<LanguageUpdateOneInput>;
+  dimensions?: Maybe<DimensionsUpdateOneInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  use?: Maybe<ImageUseUpdateOneInput>;
+  quality?: Maybe<ImageQuality>;
+  style?: Maybe<GraphicStyleUpdateOneInput>;
+  social?: Maybe<SocialPlatformUpdateOneInput>;
+  md5?: Maybe<String>;
+>>>>>>> Add title field to ImageFile & return social & style fields
 }
 
 export type BureauWhereUniqueInput = AtLeastOne<{
@@ -2984,6 +3007,7 @@ export interface ImageFileCreateManyInput {
   connect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
 }
 
+<<<<<<< HEAD
 export interface VideoUnitUpdateDataInput {
   language?: Maybe<LanguageUpdateOneInput>;
   title?: Maybe<String>;
@@ -2993,6 +3017,11 @@ export interface VideoUnitUpdateDataInput {
   categories?: Maybe<CategoryUpdateManyInput>;
   thumbnails?: Maybe<ThumbnailUpdateManyInput>;
 }
+=======
+export type PackageWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+>>>>>>> Add title field to ImageFile & return social & style fields
 
 export interface ImageFileCreateInput {
   id?: Maybe<ID_Input>;
@@ -3004,12 +3033,17 @@ export interface ImageFileCreateInput {
   alt?: Maybe<String>;
   longdesc?: Maybe<String>;
   caption?: Maybe<String>;
+<<<<<<< HEAD
+=======
+  title?: Maybe<String>;
+>>>>>>> Add title field to ImageFile & return social & style fields
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
   filesize?: Maybe<Float>;
   use?: Maybe<ImageUseCreateOneInput>;
   quality?: Maybe<ImageQuality>;
   style?: Maybe<GraphicStyleCreateOneInput>;
+<<<<<<< HEAD
   social?: Maybe<SocialPlatformCreateManyInput>;
 }
 
@@ -3044,6 +3078,10 @@ export interface VideoProjectUpdateInput {
 export interface ImageUseCreateOneInput {
   create?: Maybe<ImageUseCreateInput>;
   connect?: Maybe<ImageUseWhereUniqueInput>;
+=======
+  social?: Maybe<SocialPlatformCreateOneInput>;
+  md5?: Maybe<String>;
+>>>>>>> Add title field to ImageFile & return social & style fields
 }
 
 export interface ThumbnailCreateManyInput {
@@ -3651,6 +3689,7 @@ export interface VideoFileWhereInput {
   signedUrl_not_starts_with?: Maybe<String>;
   signedUrl_ends_with?: Maybe<String>;
   signedUrl_not_ends_with?: Maybe<String>;
+<<<<<<< HEAD
   duration?: Maybe<Float>;
   duration_not?: Maybe<Float>;
   duration_in?: Maybe<Float[] | Float>;
@@ -3667,6 +3706,155 @@ export interface VideoFileWhereInput {
   bitrate_lte?: Maybe<Float>;
   bitrate_gt?: Maybe<Float>;
   bitrate_gte?: Maybe<Float>;
+=======
+  alt?: Maybe<String>;
+  alt_not?: Maybe<String>;
+  alt_in?: Maybe<String[] | String>;
+  alt_not_in?: Maybe<String[] | String>;
+  alt_lt?: Maybe<String>;
+  alt_lte?: Maybe<String>;
+  alt_gt?: Maybe<String>;
+  alt_gte?: Maybe<String>;
+  alt_contains?: Maybe<String>;
+  alt_not_contains?: Maybe<String>;
+  alt_starts_with?: Maybe<String>;
+  alt_not_starts_with?: Maybe<String>;
+  alt_ends_with?: Maybe<String>;
+  alt_not_ends_with?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  longdesc_not?: Maybe<String>;
+  longdesc_in?: Maybe<String[] | String>;
+  longdesc_not_in?: Maybe<String[] | String>;
+  longdesc_lt?: Maybe<String>;
+  longdesc_lte?: Maybe<String>;
+  longdesc_gt?: Maybe<String>;
+  longdesc_gte?: Maybe<String>;
+  longdesc_contains?: Maybe<String>;
+  longdesc_not_contains?: Maybe<String>;
+  longdesc_starts_with?: Maybe<String>;
+  longdesc_not_starts_with?: Maybe<String>;
+  longdesc_ends_with?: Maybe<String>;
+  longdesc_not_ends_with?: Maybe<String>;
+  caption?: Maybe<String>;
+  caption_not?: Maybe<String>;
+  caption_in?: Maybe<String[] | String>;
+  caption_not_in?: Maybe<String[] | String>;
+  caption_lt?: Maybe<String>;
+  caption_lte?: Maybe<String>;
+  caption_gt?: Maybe<String>;
+  caption_gte?: Maybe<String>;
+  caption_contains?: Maybe<String>;
+  caption_not_contains?: Maybe<String>;
+  caption_starts_with?: Maybe<String>;
+  caption_not_starts_with?: Maybe<String>;
+  caption_ends_with?: Maybe<String>;
+  caption_not_ends_with?: Maybe<String>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  filename?: Maybe<String>;
+  filename_not?: Maybe<String>;
+  filename_in?: Maybe<String[] | String>;
+  filename_not_in?: Maybe<String[] | String>;
+  filename_lt?: Maybe<String>;
+  filename_lte?: Maybe<String>;
+  filename_gt?: Maybe<String>;
+  filename_gte?: Maybe<String>;
+  filename_contains?: Maybe<String>;
+  filename_not_contains?: Maybe<String>;
+  filename_starts_with?: Maybe<String>;
+  filename_not_starts_with?: Maybe<String>;
+  filename_ends_with?: Maybe<String>;
+  filename_not_ends_with?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filetype_not?: Maybe<String>;
+  filetype_in?: Maybe<String[] | String>;
+  filetype_not_in?: Maybe<String[] | String>;
+  filetype_lt?: Maybe<String>;
+  filetype_lte?: Maybe<String>;
+  filetype_gt?: Maybe<String>;
+  filetype_gte?: Maybe<String>;
+  filetype_contains?: Maybe<String>;
+  filetype_not_contains?: Maybe<String>;
+  filetype_starts_with?: Maybe<String>;
+  filetype_not_starts_with?: Maybe<String>;
+  filetype_ends_with?: Maybe<String>;
+  filetype_not_ends_with?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  filesize_not?: Maybe<Float>;
+  filesize_in?: Maybe<Float[] | Float>;
+  filesize_not_in?: Maybe<Float[] | Float>;
+  filesize_lt?: Maybe<Float>;
+  filesize_lte?: Maybe<Float>;
+  filesize_gt?: Maybe<Float>;
+  filesize_gte?: Maybe<Float>;
+  quality?: Maybe<ImageQuality>;
+  quality_not?: Maybe<ImageQuality>;
+  quality_in?: Maybe<ImageQuality[] | ImageQuality>;
+  quality_not_in?: Maybe<ImageQuality[] | ImageQuality>;
+  md5?: Maybe<String>;
+  md5_not?: Maybe<String>;
+  md5_in?: Maybe<String[] | String>;
+  md5_not_in?: Maybe<String[] | String>;
+  md5_lt?: Maybe<String>;
+  md5_lte?: Maybe<String>;
+  md5_gt?: Maybe<String>;
+  md5_gte?: Maybe<String>;
+  md5_contains?: Maybe<String>;
+  md5_not_contains?: Maybe<String>;
+  md5_starts_with?: Maybe<String>;
+  md5_not_starts_with?: Maybe<String>;
+  md5_ends_with?: Maybe<String>;
+  md5_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+  OR?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+  NOT?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+}
+
+export type VideoStreamWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ImageFileUpdateManyWithWhereNestedInput {
+  where: ImageFileScalarWhereInput;
+  data: ImageFileUpdateManyDataInput;
+}
+
+export interface DocumentFileUpdateManyDataInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+}
+
+export interface ImageFileUpdateManyDataInput {
+  visibility?: Maybe<Visibility>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+>>>>>>> Add title field to ImageFile & return social & style fields
   filesize?: Maybe<Float>;
   filesize_not?: Maybe<Float>;
   filesize_in?: Maybe<Float[] | Float>;
@@ -4063,6 +4251,20 @@ export interface ImageFileScalarWhereInput {
   caption_not_starts_with?: Maybe<String>;
   caption_ends_with?: Maybe<String>;
   caption_not_ends_with?: Maybe<String>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   filename?: Maybe<String>;
   filename_not?: Maybe<String>;
   filename_in?: Maybe<String[] | String>;
@@ -6970,13 +7172,50 @@ export interface ImageFileUpdateInput {
   alt?: Maybe<String>;
   longdesc?: Maybe<String>;
   caption?: Maybe<String>;
+  title?: Maybe<String>;
   filename?: Maybe<String>;
   filetype?: Maybe<String>;
   filesize?: Maybe<Float>;
   use?: Maybe<ImageUseUpdateOneInput>;
   quality?: Maybe<ImageQuality>;
   style?: Maybe<GraphicStyleUpdateOneInput>;
+<<<<<<< HEAD
   social?: Maybe<SocialPlatformUpdateManyInput>;
+=======
+  social?: Maybe<SocialPlatformUpdateOneInput>;
+  md5?: Maybe<String>;
+}
+
+export interface TeamUpdateManyMutationInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface ImageFileUpdateManyMutationInput {
+  visibility?: Maybe<Visibility>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  quality?: Maybe<ImageQuality>;
+  md5?: Maybe<String>;
+}
+
+export interface CountryUpdateWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput;
+  data: CountryUpdateWithoutRegionDataInput;
+}
+
+export interface ImageUseUpdateInput {
+  name?: Maybe<String>;
+>>>>>>> Add title field to ImageFile & return social & style fields
 }
 
 export interface BureauWhereInput {
@@ -9686,6 +9925,7 @@ export interface ImageFilePreviousValues {
   alt?: String;
   longdesc?: String;
   caption?: String;
+  title?: String;
   filename?: String;
   filetype?: String;
   filesize?: Float;
@@ -9704,6 +9944,7 @@ export interface ImageFilePreviousValuesPromise
   alt: () => Promise<String>;
   longdesc: () => Promise<String>;
   caption: () => Promise<String>;
+  title: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
   filesize: () => Promise<Float>;
@@ -9722,6 +9963,7 @@ export interface ImageFilePreviousValuesSubscription
   alt: () => Promise<AsyncIterator<String>>;
   longdesc: () => Promise<AsyncIterator<String>>;
   caption: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
   filetype: () => Promise<AsyncIterator<String>>;
   filesize: () => Promise<AsyncIterator<Float>>;
@@ -10759,6 +11001,7 @@ export interface ImageFile {
   alt?: String;
   longdesc?: String;
   caption?: String;
+  title?: String;
   filename?: String;
   filetype?: String;
   filesize?: Float;
@@ -10777,6 +11020,7 @@ export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
   alt: () => Promise<String>;
   longdesc: () => Promise<String>;
   caption: () => Promise<String>;
+  title: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
   filesize: () => Promise<Float>;
@@ -10808,6 +11052,7 @@ export interface ImageFileSubscription
   alt: () => Promise<AsyncIterator<String>>;
   longdesc: () => Promise<AsyncIterator<String>>;
   caption: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
   filename: () => Promise<AsyncIterator<String>>;
   filetype: () => Promise<AsyncIterator<String>>;
   filesize: () => Promise<AsyncIterator<Float>>;
@@ -10839,6 +11084,7 @@ export interface ImageFileNullablePromise
   alt: () => Promise<String>;
   longdesc: () => Promise<String>;
   caption: () => Promise<String>;
+  title: () => Promise<String>;
   filename: () => Promise<String>;
   filetype: () => Promise<String>;
   filesize: () => Promise<Float>;
