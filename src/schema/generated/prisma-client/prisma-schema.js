@@ -504,6 +504,11 @@ enum ContentType {
   PACKAGE
 }
 
+enum Copyright {
+  COPYRIGHT
+  NO_COPYRIGHT
+}
+
 type Country {
   id: ID!
   name: String!
@@ -1712,7 +1717,7 @@ type GraphicProject {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1738,7 +1743,7 @@ input GraphicProjectCreateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1794,7 +1799,7 @@ type GraphicProjectPreviousValues {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1825,7 +1830,7 @@ input GraphicProjectUpdateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1844,7 +1849,7 @@ input GraphicProjectUpdateManyMutationInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1910,20 +1915,10 @@ input GraphicProjectWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  copyright: String
-  copyright_not: String
-  copyright_in: [String!]
-  copyright_not_in: [String!]
-  copyright_lt: String
-  copyright_lte: String
-  copyright_gt: String
-  copyright_gte: String
-  copyright_contains: String
-  copyright_not_contains: String
-  copyright_starts_with: String
-  copyright_not_starts_with: String
-  copyright_ends_with: String
-  copyright_not_ends_with: String
+  copyright: Copyright
+  copyright_not: Copyright
+  copyright_in: [Copyright!]
+  copyright_not_in: [Copyright!]
   alt: String
   alt_not: String
   alt_in: [String!]
