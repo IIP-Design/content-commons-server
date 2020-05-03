@@ -2149,8 +2149,7 @@ type ImageFile {
   use: ImageUse
   quality: ImageQuality
   style: GraphicStyle
-  social: SocialPlatform
-  md5: String
+  social(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SocialPlatform!]
 }
 
 type ImageFileConnection {
@@ -2175,8 +2174,7 @@ input ImageFileCreateInput {
   use: ImageUseCreateOneInput
   quality: ImageQuality
   style: GraphicStyleCreateOneInput
-  social: SocialPlatformCreateOneInput
-  md5: String
+  social: SocialPlatformCreateManyInput
 }
 
 input ImageFileCreateManyInput {
@@ -2221,8 +2219,6 @@ enum ImageFileOrderByInput {
   filesize_DESC
   quality_ASC
   quality_DESC
-  md5_ASC
-  md5_DESC
 }
 
 type ImageFilePreviousValues {
@@ -2239,7 +2235,6 @@ type ImageFilePreviousValues {
   filetype: String
   filesize: Float
   quality: ImageQuality
-  md5: String
 }
 
 input ImageFileScalarWhereInput {
@@ -2387,20 +2382,6 @@ input ImageFileScalarWhereInput {
   quality_not: ImageQuality
   quality_in: [ImageQuality!]
   quality_not_in: [ImageQuality!]
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   AND: [ImageFileScalarWhereInput!]
   OR: [ImageFileScalarWhereInput!]
   NOT: [ImageFileScalarWhereInput!]
@@ -2439,8 +2420,7 @@ input ImageFileUpdateDataInput {
   use: ImageUseUpdateOneInput
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
-  social: SocialPlatformUpdateOneInput
-  md5: String
+  social: SocialPlatformUpdateManyInput
 }
 
 input ImageFileUpdateInput {
@@ -2458,8 +2438,7 @@ input ImageFileUpdateInput {
   use: ImageUseUpdateOneInput
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
-  social: SocialPlatformUpdateOneInput
-  md5: String
+  social: SocialPlatformUpdateManyInput
 }
 
 input ImageFileUpdateManyDataInput {
@@ -2473,7 +2452,6 @@ input ImageFileUpdateManyDataInput {
   filetype: String
   filesize: Float
   quality: ImageQuality
-  md5: String
 }
 
 input ImageFileUpdateManyInput {
@@ -2499,7 +2477,6 @@ input ImageFileUpdateManyMutationInput {
   filetype: String
   filesize: Float
   quality: ImageQuality
-  md5: String
 }
 
 input ImageFileUpdateManyWithWhereNestedInput {
@@ -2681,21 +2658,9 @@ input ImageFileWhereInput {
   quality_in: [ImageQuality!]
   quality_not_in: [ImageQuality!]
   style: GraphicStyleWhereInput
-  social: SocialPlatformWhereInput
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
+  social_every: SocialPlatformWhereInput
+  social_some: SocialPlatformWhereInput
+  social_none: SocialPlatformWhereInput
   AND: [ImageFileWhereInput!]
   OR: [ImageFileWhereInput!]
   NOT: [ImageFileWhereInput!]
@@ -4144,9 +4109,9 @@ input SocialPlatformCreateInput {
   name: String!
 }
 
-input SocialPlatformCreateOneInput {
-  create: SocialPlatformCreateInput
-  connect: SocialPlatformWhereUniqueInput
+input SocialPlatformCreateManyInput {
+  create: [SocialPlatformCreateInput!]
+  connect: [SocialPlatformWhereUniqueInput!]
 }
 
 type SocialPlatformEdge {
@@ -4164,6 +4129,40 @@ enum SocialPlatformOrderByInput {
 type SocialPlatformPreviousValues {
   id: ID!
   name: String!
+}
+
+input SocialPlatformScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [SocialPlatformScalarWhereInput!]
+  OR: [SocialPlatformScalarWhereInput!]
+  NOT: [SocialPlatformScalarWhereInput!]
 }
 
 type SocialPlatformSubscriptionPayload {
@@ -4192,20 +4191,38 @@ input SocialPlatformUpdateInput {
   name: String
 }
 
+input SocialPlatformUpdateManyDataInput {
+  name: String
+}
+
+input SocialPlatformUpdateManyInput {
+  create: [SocialPlatformCreateInput!]
+  update: [SocialPlatformUpdateWithWhereUniqueNestedInput!]
+  upsert: [SocialPlatformUpsertWithWhereUniqueNestedInput!]
+  delete: [SocialPlatformWhereUniqueInput!]
+  connect: [SocialPlatformWhereUniqueInput!]
+  set: [SocialPlatformWhereUniqueInput!]
+  disconnect: [SocialPlatformWhereUniqueInput!]
+  deleteMany: [SocialPlatformScalarWhereInput!]
+  updateMany: [SocialPlatformUpdateManyWithWhereNestedInput!]
+}
+
 input SocialPlatformUpdateManyMutationInput {
   name: String
 }
 
-input SocialPlatformUpdateOneInput {
-  create: SocialPlatformCreateInput
-  update: SocialPlatformUpdateDataInput
-  upsert: SocialPlatformUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: SocialPlatformWhereUniqueInput
+input SocialPlatformUpdateManyWithWhereNestedInput {
+  where: SocialPlatformScalarWhereInput!
+  data: SocialPlatformUpdateManyDataInput!
 }
 
-input SocialPlatformUpsertNestedInput {
+input SocialPlatformUpdateWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput!
+  data: SocialPlatformUpdateDataInput!
+}
+
+input SocialPlatformUpsertWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput!
   update: SocialPlatformUpdateDataInput!
   create: SocialPlatformCreateInput!
 }

@@ -204,7 +204,7 @@ type GraphicProject {
   descPublic: String
   descInternal: String
   assetPath: String
-  author: User #[User|Author] # more than 1 author?
+  author: User
   team: Team
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: PUBLIC)
@@ -321,12 +321,11 @@ type ImageFile {
   caption: String
   filename: String
   filetype: String
-  filesize: Float 
-  use: ImageUse 
-  quality: ImageQuality @default(value: WEB) 
+  filesize: Float
+  use: ImageUse
+  quality: ImageQuality @default(value: WEB)
   style: GraphicStyle
-  social: SocialPlatform
-  md5: String
+  social: [SocialPlatform]
 }
 
 type SupportFile {
