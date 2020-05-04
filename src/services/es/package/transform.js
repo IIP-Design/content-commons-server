@@ -101,7 +101,7 @@ const transformDocument = ( document, team ) => {
 const transformPackage = pkg => {
   const now = new Date().toISOString();
   const {
-    id, title, visibility, team, desc
+    id, createdAt, title, visibility, team, desc
   } = pkg;
 
   const esData = {
@@ -111,6 +111,7 @@ const transformPackage = pkg => {
     type: 'package',
     published: now,
     modified: now,
+    created: createdAt,
     visibility,
     language: english,
     desc,
