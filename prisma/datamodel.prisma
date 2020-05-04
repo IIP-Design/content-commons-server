@@ -304,7 +304,6 @@ type VideoFile {
   filesize: Float
   dimensions: Dimensions
   stream: [VideoStream] @relation(onDelete: CASCADE)
-  md5: String
 }
 
 type ImageFile {
@@ -340,7 +339,6 @@ type SupportFile {
   filesize: Float
   visibility: Visibility @default(value: PUBLIC)
   use: SupportFileUse
-  md5: String
 }
 
 type DocumentFile {
