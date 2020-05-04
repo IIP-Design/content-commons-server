@@ -11,6 +11,7 @@ _This sections lists changes committed since most recent release_
 **Added:**
 - Set up testing framework and added initial tests
 - Added GRAPHIC schema & data model
+- Add `created` to package transform
 
 **Changed:**
 - Pass pagination arguments to package resolver
