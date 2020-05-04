@@ -27,7 +27,9 @@ const getGraphicProject = () => ( {
 const getImageFile = () => ( {
   ...graphicProject.images[0],
   language: jest.fn( () => graphicProject.images[0].language ),
-  use: jest.fn( () => graphicProject.images[0].use )
+  use: jest.fn( () => graphicProject.images[0].use ),
+  social: jest.fn( () => graphicProject.images[0].social ),
+  style: jest.fn( () => graphicProject.images[0].style )
 } );
 
 const getPrismaGraphicProjectFns = () => ( {
@@ -68,7 +70,9 @@ describe( 'Query:', () => {
         } ) ),
         imageFile: jest.fn( () => ( {
           language: jest.fn(),
-          use: jest.fn()
+          use: jest.fn(),
+          social: jest.fn(),
+          style: jest.fn()
         } ) ),
         category: jest.fn( () => ( {
           translations: jest.fn()

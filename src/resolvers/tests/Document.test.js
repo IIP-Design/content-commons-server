@@ -30,7 +30,9 @@ const getDocumentFile = () => ( {
 const getImageFile = () => ( {
   ...documentFile.image[0],
   language: jest.fn( () => documentFile.image[0].language ),
-  use: jest.fn( () => documentFile.image[0].use )
+  use: jest.fn( () => documentFile.image[0].use ),
+  social: jest.fn( () => documentFile.image[0].social ),
+  style: jest.fn( () => documentFile.image[0].style )
 } );
 
 const getPrismaDocumentFileFns = () => ( {
@@ -66,7 +68,9 @@ describe( 'Query:', () => {
         } ) ),
         imageFile: jest.fn( () => ( {
           language: jest.fn(),
-          use: jest.fn()
+          use: jest.fn(),
+          social: jest.fn(),
+          style: jest.fn()
         } ) ),
         documentFiles: jest.fn()
       }

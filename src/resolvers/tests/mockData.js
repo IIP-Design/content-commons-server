@@ -242,7 +242,7 @@ export const graphicProject = {
   publishedAt: '2020-03-30T15:44:51.511Z',
   title: 'Coffee Growers',
   type: 'SOCIAL_MEDIA',
-  copyright: 'GPA © 2020',
+  copyright: 'COPYRIGHT',
   alt: '',
   descPublic: 'Public description',
   descInternal: 'Internal description',
@@ -270,7 +270,7 @@ export const graphicProject = {
       filesize: 3193,
       use: { id: 'a32asd', name: 'mock image use' },
       style: graphicStyles[0],
-      social: socialPlatforms[0]
+      social: socialPlatforms
     }
   ],
   supportFiles: [
@@ -384,14 +384,8 @@ export const documentFile = {
       use: { id: 'a32asd', name: 'mock image use' },
       url: 'mock string value',
       signedUrl: 'https://signedurl.com',
-      social: {
-        id: 'social-id',
-        name: 'mock string value'
-      },
-      style: {
-        id: 'style-id',
-        name: 'mock string value'
-      },
+      social: [socialPlatforms[0]],
+      style: graphicStyles[0],
       language: languages.english
     }
   ],
