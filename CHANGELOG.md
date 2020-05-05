@@ -15,6 +15,11 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 - Pass pagination arguments to package resolver
 
+# [4.1.0](2020-05-05)
+
+**Added:**
+- Added `created` to package transform
+
 # [4.0.0](2020-04-27)
 
 **Added:**
