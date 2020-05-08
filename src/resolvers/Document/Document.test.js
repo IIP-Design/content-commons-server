@@ -1,4 +1,7 @@
-import * as query from './queries/document';
+import * as query from '../mocks/mockQueries/document';
+import {
+  documentUses, documentConversionFormats, documentFile
+} from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 jest.mock(
@@ -10,104 +13,6 @@ jest.mock(
     } )
   } )
 );
-
-const documentUses = [
-  {
-    id: 'a8es',
-    name: 'document use name',
-  },
-  {
-    id: 'aies',
-    name: 'document use name'
-  }
-];
-const documentConversionFormats = [
-  {
-    id: '123',
-    rawText: 'the content',
-    html: '<p>the content</p>',
-    markdown: 'the content'
-  },
-  {
-    id: '678',
-    rawText: 'the content',
-    html: '<p>the content</p>',
-    markdown: 'the content'
-  }
-];
-
-const documentFile = {
-  id: 'ck8k3zcoy102p0720k0xph2bv',
-  createdAt: '2020-03-15T13:01:01.906Z',
-  updatedAt: '2020-03-15T13:01:01.906Z',
-  publishedAt: '2020-03-15T13:01:01.906Z',
-  title: 'mock string value',
-  language: {
-    id: 'ck2lzfx710hkq07206thus6pt',
-    languageCode: 'mock string value',
-    locale: 'mock string value',
-    textDirection: 'LTR',
-    displayName: 'mock string value',
-    nativeName: 'mock string value'
-  },
-  filetype: 'mock string value',
-  filename: 'mock string value',
-  filesize: 25555,
-  status: 'PUBLISHED',
-  excerpt: '<p>the excerpt</p>',
-  content: {
-    id: '123',
-    rawText: 'the content',
-    html: '<p>the content</p>',
-    markdown: 'the content'
-  },
-  image: [
-    {
-      id: 'image-id-28uid',
-      createdAt: '2020-03-15T13:01:01.906Z',
-      updatedAt: '2020-03-15T13:01:01.906Z',
-      filename: 'mock string value',
-      filetype: 'mock string value',
-      filesize: 25555,
-      visibility: 'INTERNAL',
-      use: { id: 'a32asd', name: 'mock image use' },
-      url: 'mock string value',
-      signedUrl: 'https://signedurl.com',
-      language: {
-        id: 'ck2lzfx710hkq07206thus6pt',
-        languageCode: 'en',
-        locale: 'en-us',
-        textDirection: 'LTR',
-        displayName: 'English',
-        nativeName: 'English'
-      }
-    }
-  ],
-  url: 'mock string value',
-  signedUrl: 'https://signedurl.com',
-  visibility: 'INTERNAL',
-  use: documentUses[0],
-  bureaus: [
-    {
-      id: 'ck5cvpjcu01k80720d2eouy43',
-      name: 'Bureau of African Affairs',
-      abbr: 'AF',
-      offices: []
-    }
-  ],
-  countries: [
-    {
-      id: 'ck6krp96x3f3n0720q1289gee',
-      name: 'Angola',
-      abbr: 'AF',
-      region: {
-        id: 'ck6krp96g3f3c0720c1w09bx1',
-        name: 'Bureau of African Affairs',
-        abbr: 'AF'
-      }
-    }
-  ]
-};
 
 const getDocumentFile = () => ( {
   id: documentFile.id,
@@ -125,7 +30,9 @@ const getDocumentFile = () => ( {
 const getImageFile = () => ( {
   ...documentFile.image[0],
   language: jest.fn( () => documentFile.image[0].language ),
-  use: jest.fn( () => documentFile.image[0].use )
+  use: jest.fn( () => documentFile.image[0].use ),
+  social: jest.fn( () => documentFile.image[0].social ),
+  style: jest.fn( () => documentFile.image[0].style )
 } );
 
 const getPrismaDocumentFileFns = () => ( {
@@ -161,9 +68,11 @@ describe( 'Query:', () => {
         } ) ),
         imageFile: jest.fn( () => ( {
           language: jest.fn(),
-          use: jest.fn()
+          use: jest.fn(),
+          social: jest.fn(),
+          style: jest.fn()
         } ) ),
-        documentFiles: jest.fn(),
+        documentFiles: jest.fn()
       }
     };
     const server = createTestServer( ctx );
@@ -181,12 +90,16 @@ describe( 'Query:', () => {
     expect( result.errors ).not.toBeDefined();
     result.data.documentFiles.forEach( doc => {
       const fields = Object.keys( doc );
+
       fields.forEach( field => {
         const value = doc[field];
+
         expect( value ).toBeTruthy();
+
         if ( typeof value === 'object' ) {
           const isArray = Array.isArray( value );
           const arr = isArray ? value : Object.keys( value );
+
           expect( arr.length ).toBeGreaterThan( 0 );
         }
       } );

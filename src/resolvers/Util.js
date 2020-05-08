@@ -14,9 +14,9 @@ const probe = url => new Promise( ( resolve, reject ) => {
   } );
 } );
 
-export default {
+const UtilResolvers = {
   Mutation: {
-    async getFileInfo  ( parent, args ) {
+    async getFileInfo( parent, args ) {
       const { path } = args;
 
       if ( !path ) {
@@ -31,6 +31,7 @@ export default {
 
       if ( metadata && metadata.streams ) {
         const info = metadata.streams.find( stream => stream.codec_type === 'video' );
+
         if ( info ) {
           const {
             /* eslint-disable-next-line camelcase */
@@ -42,7 +43,7 @@ export default {
             /* eslint-disable-next-line camelcase */
             bitrate: exists( bit_rate ) ? bit_rate : null,
             width: exists( width ) ? width : null,
-            height: exists( height ) ? height : null,
+            height: exists( height ) ? height : null
           } );
         }
       }
@@ -51,3 +52,5 @@ export default {
     }
   }
 };
+
+export default UtilResolvers;

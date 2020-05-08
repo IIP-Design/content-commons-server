@@ -68,6 +68,11 @@ enum ThumbnailSize {
   FULL
 }
 
+enum Copyright {
+  COPYRIGHT
+  NO_COPYRIGHT
+}
+
 type GraphicStyle {
   id: ID! @id
   name: String!
@@ -199,7 +204,7 @@ type GraphicProject {
   publishedAt: DateTime
   type: ProjectType! @default(value: SOCIAL_MEDIA)
   title: String!
-  copyright: String 
+  copyright: Copyright @default(value: COPYRIGHT)
   alt: String
   descPublic: String
   descInternal: String
@@ -318,6 +323,7 @@ type ImageFile {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float

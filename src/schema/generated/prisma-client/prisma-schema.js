@@ -504,6 +504,11 @@ enum ContentType {
   PACKAGE
 }
 
+enum Copyright {
+  COPYRIGHT
+  NO_COPYRIGHT
+}
+
 type Country {
   id: ID!
   name: String!
@@ -1712,7 +1717,7 @@ type GraphicProject {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1738,7 +1743,7 @@ input GraphicProjectCreateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1794,7 +1799,7 @@ type GraphicProjectPreviousValues {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1825,7 +1830,7 @@ input GraphicProjectUpdateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1844,7 +1849,7 @@ input GraphicProjectUpdateManyMutationInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1910,20 +1915,10 @@ input GraphicProjectWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  copyright: String
-  copyright_not: String
-  copyright_in: [String!]
-  copyright_not_in: [String!]
-  copyright_lt: String
-  copyright_lte: String
-  copyright_gt: String
-  copyright_gte: String
-  copyright_contains: String
-  copyright_not_contains: String
-  copyright_starts_with: String
-  copyright_not_starts_with: String
-  copyright_ends_with: String
-  copyright_not_ends_with: String
+  copyright: Copyright
+  copyright_not: Copyright
+  copyright_in: [Copyright!]
+  copyright_not_in: [Copyright!]
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -2143,6 +2138,7 @@ type ImageFile {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2168,6 +2164,7 @@ input ImageFileCreateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2211,6 +2208,8 @@ enum ImageFileOrderByInput {
   longdesc_DESC
   caption_ASC
   caption_DESC
+  title_ASC
+  title_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
@@ -2231,6 +2230,7 @@ type ImageFilePreviousValues {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2342,6 +2342,20 @@ input ImageFileScalarWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -2414,6 +2428,7 @@ input ImageFileUpdateDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2432,6 +2447,7 @@ input ImageFileUpdateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2448,6 +2464,7 @@ input ImageFileUpdateManyDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2473,6 +2490,7 @@ input ImageFileUpdateManyMutationInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
@@ -2616,6 +2634,20 @@ input ImageFileWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
