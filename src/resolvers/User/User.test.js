@@ -1,5 +1,5 @@
-import * as query from './mockQueries/user';
-import { teams as mockTeams, users as mockUsers } from './mockData';
+import * as query from '../mocks/mockQueries/user';
+import { teams as mockTeams, users as mockUsers } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 const teams = [

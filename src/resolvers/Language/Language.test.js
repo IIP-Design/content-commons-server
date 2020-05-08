@@ -1,5 +1,5 @@
-import * as query from './mockQueries/language';
-import { categories, languages as lang } from './mockData';
+import * as query from '../mocks/mockQueries/language';
+import { categories, languages as lang } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {

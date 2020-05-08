@@ -1,7 +1,7 @@
-import * as query from './mockQueries/graphic';
+import * as query from '../mocks/mockQueries/graphic';
 import {
   graphicProject, graphicStyles, socialPlatforms, languages
-} from './mockData';
+} from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 jest.mock(

@@ -1,5 +1,5 @@
-import { requiresLogin } from '../lib/authentication';
-import { getSignedUrlPromiseGet } from '../services/aws/s3';
+import { requiresLogin } from '../../lib/authentication';
+import { getSignedUrlPromiseGet } from '../../services/aws/s3';
 
 const DocumentResolvers = {
   Query: requiresLogin( {
@@ -112,6 +112,7 @@ const DocumentResolvers = {
     updateManyDocumentConversionFormats( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where } = updates;
+
       return ctx.prisma.updateManyDocumentConversionFormats( { data, where } );
     },
 

@@ -1,4 +1,4 @@
-import { requiresLogin } from '../lib/authentication';
+import { requiresLogin } from '../../lib/authentication';
 
 const TeamResolvers = {
   Query: {

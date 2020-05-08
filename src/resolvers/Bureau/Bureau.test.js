@@ -1,5 +1,5 @@
-import * as query from './mockQueries/bureau';
-import { bureaus } from './mockData';
+import * as query from '../mocks/mockQueries/bureau';
+import { bureaus } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {

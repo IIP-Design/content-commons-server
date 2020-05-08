@@ -1,5 +1,5 @@
-import * as query from './mockQueries/team';
-import { teams } from './mockData';
+import * as query from '../mocks/mockQueries/team';
+import { teams } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {

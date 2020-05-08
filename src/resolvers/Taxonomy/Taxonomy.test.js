@@ -1,5 +1,5 @@
-import * as query from './mockQueries/taxonomy';
-import { categories, tags, languages } from './mockData';
+import * as query from '../mocks/mockQueries/taxonomy';
+import { categories, tags, languages } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {

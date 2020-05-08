@@ -1,5 +1,5 @@
-import * as query from './mockQueries/region';
-import { countries as mockCountries, regions as mockRegions } from './mockData';
+import * as query from '../mocks/mockQueries/region';
+import { countries as mockCountries, regions as mockRegions } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 describe( 'Query:', () => {

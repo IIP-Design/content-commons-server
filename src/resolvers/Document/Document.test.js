@@ -1,7 +1,7 @@
-import * as query from './mockQueries/document';
+import * as query from '../mocks/mockQueries/document';
 import {
   documentUses, documentConversionFormats, documentFile
-} from './mockData';
+} from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 jest.mock(
