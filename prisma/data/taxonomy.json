@@ -2148,6 +2148,25 @@
     }
   },
   {
+    "_id": "lIriF2MBR4UFGCthJeBV",
+    "primary": false,
+    "parents": ["k4riF2MBR4UFGCthJeA5", "uIriF2MBR4UFGCthLOCL"],
+    "synonymMapping": [],
+    "language": {
+      "en": "biomedical science",
+      "en-us": "biomedical science",
+      "es-es": "ciencia Biomedica",
+      "fr-fr": "science biomédicale",
+      "pt-br": "Ciência biomédica",
+      "ar": "علم الطب الحيوي",
+      "fa-ir": "علم پزشکی",
+      "zh-cn": "生物醫學科學",
+      "ru-ru": "биомедицинская наука",
+      "id-id": "ilmu biomedis",
+      "ur": "حیاتیاتی سائنس"
+    }
+  },
+  {
     "_id": "lYriF2MBR4UFGCthJeBy",
     "primary": false,
     "parents": ["k4riF2MBR4UFGCthJeA5"],
