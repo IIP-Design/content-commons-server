@@ -2129,25 +2129,6 @@
     }
   },
   {
-    "_id": "jHPyT3EBmTM8gWMbCdxB",
-    "primary": false,
-    "parents": ["k4riF2MBR4UFGCthJeA5"],
-    "synonymMapping": ["covid-19"],
-    "language": {
-      "en": "coronavirus",
-      "en-us": "coronavirus",
-      "es-es": "coronavirus",
-      "fr-fr": "coronavirus",
-      "pt-br": "coronavirus",
-      "ar": "فيروس كورونا",
-      "fa-ir": "ویروس کرونا",
-      "zh-cn": "冠状病毒",
-      "ru-ru": "Коронавирус",
-      "id-id": "coronavirus",
-      "ur": "کورونا وائرس"
-    }
-  },
-  {
     "_id": "lIriF2MBR4UFGCthJeBV",
     "primary": false,
     "parents": ["k4riF2MBR4UFGCthJeA5", "uIriF2MBR4UFGCthLOCL"],
@@ -2164,6 +2145,25 @@
       "ru-ru": "биомедицинская наука",
       "id-id": "ilmu biomedis",
       "ur": "حیاتیاتی سائنس"
+    }
+  },
+  {
+    "_id": "jHPyT3EBmTM8gWMbCdxB",
+    "primary": false,
+    "parents": ["k4riF2MBR4UFGCthJeA5"],
+    "synonymMapping": ["covid-19"],
+    "language": {
+      "en": "coronavirus",
+      "en-us": "coronavirus",
+      "es-es": "coronavirus",
+      "fr-fr": "coronavirus",
+      "pt-br": "coronavirus",
+      "ar": "فيروس كورونا",
+      "fa-ir": "ویروس کرونا",
+      "zh-cn": "冠状病毒",
+      "ru-ru": "Коронавирус",
+      "id-id": "coronavirus",
+      "ur": "کورونا وائرس"
     }
   },
   {
@@ -2986,7 +2986,7 @@
   {
     "_id": "nhGSm82N0ks83MKnsu0P",
     "primary": false,
-    "parents": [],
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
     "synonymMapping": [],
     "language": {
       "en": "repatriation",
