@@ -2963,5 +2963,24 @@
       "id-id": "tempat olahraga",
       "ur": "کھیل کا مقام"
     }
+  },
+  {
+    "_id": "nhGSm82N0ks83MKnsu0P",
+    "primary": false,
+    "parents": [],
+    "synonymMapping": [],
+    "language": {
+      "en": "repatriation",
+      "en-us": "repatriation",
+      "es-es": "repatriación",
+      "fr-fr": "rapatriement",
+      "pt-br": "repatriamento",
+      "ar": "استعادة",
+      "fa-ir": "بازگشت",
+      "zh-cn": "遣返",
+      "ru-ru": "репатриация",
+      "id-id": "pemulangan",
+      "ur": "وطن واپسی"
+    }
   }
 ]
