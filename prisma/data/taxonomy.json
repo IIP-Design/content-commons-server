@@ -2129,6 +2129,25 @@
     }
   },
   {
+    "_id": "lIriF2MBR4UFGCthJeBV",
+    "primary": false,
+    "parents": ["k4riF2MBR4UFGCthJeA5", "uIriF2MBR4UFGCthLOCL"],
+    "synonymMapping": [],
+    "language": {
+      "en": "biomedical science",
+      "en-us": "biomedical science",
+      "es-es": "ciencia Biomedica",
+      "fr-fr": "science biomédicale",
+      "pt-br": "Ciência biomédica",
+      "ar": "علم الطب الحيوي",
+      "fa-ir": "علم پزشکی",
+      "zh-cn": "生物醫學科學",
+      "ru-ru": "биомедицинская наука",
+      "id-id": "ilmu biomedis",
+      "ur": "حیاتیاتی سائنس"
+    }
+  },
+  {
     "_id": "jHPyT3EBmTM8gWMbCdxB",
     "primary": false,
     "parents": ["k4riF2MBR4UFGCthJeA5"],
@@ -2962,6 +2981,25 @@
       "ru-ru": "спортивное место",
       "id-id": "tempat olahraga",
       "ur": "کھیل کا مقام"
+    }
+  },
+  {
+    "_id": "nhGSm82N0ks83MKnsu0P",
+    "primary": false,
+    "parents": ["jIriF2MBR4UFGCthI-Dv"],
+    "synonymMapping": [],
+    "language": {
+      "en": "repatriation",
+      "en-us": "repatriation",
+      "es-es": "repatriación",
+      "fr-fr": "rapatriement",
+      "pt-br": "repatriação",
+      "ar": "الإعادة إلى الوطن",
+      "fa-ir": "برگرداندن به میهن",
+      "zh-cn": "撤侨",
+      "ru-ru": "репатриация",
+      "id-id": "pemulangan",
+      "ur": "وطن واپسی"
     }
   }
 ]
