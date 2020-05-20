@@ -12,8 +12,17 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const fetchUser = async req => {
   const { americaCommonsToken } = req.cookies;
 
+  const publicUser = {
+    email: '',
+    permissions: [],
+    isConfirmed: false,
+    lastName: '',
+    firstName: '',
+    id: 'public',
+  };
+
   if ( !americaCommonsToken ) {
-    return null;
+    return publicUser;
   }
 
   let user = null;
@@ -21,6 +30,8 @@ const fetchUser = async req => {
 
   if ( userId ) {
     user = await prisma.user( { id: userId } );
+  } else {
+    user = publicUser;
   }
 
   // return valid user if exists
