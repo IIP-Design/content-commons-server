@@ -304,6 +304,7 @@ type VideoFile {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String 
+  md5: String 
   duration: Float
   bitrate: Float
   filesize: Float
@@ -328,6 +329,7 @@ type ImageFile {
   filetype: String
   filesize: Float
   use: ImageUse
+  md5: String
   quality: ImageQuality @default(value: WEB)
   style: GraphicStyle
   social: [SocialPlatform]
@@ -340,6 +342,7 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String # srt, pdf
   filesize: Float
