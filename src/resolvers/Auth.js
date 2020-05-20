@@ -12,7 +12,9 @@ import { verifyGoogleToken } from '../services/googleAuth';
 import { verifyCloudflareToken } from '../services/cloudflareAuth';
 import { USER } from '../fragments/user';
 
-const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
+const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined
+  ? !process.env.WHITELISTED_EMAILS_ONLY
+  : true;
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24; // 24 hours, matches CloudFlare maxAge
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
@@ -23,7 +25,7 @@ const generateESCookie = ctx => {
 
   ctx.res.cookie( 'ES_TOKEN', esToken, {
     maxAge: COOKIE_MAX_AGE,
-    secure: !process.env.NODE_ENV === 'development'
+    secure: !process.env.NODE_ENV === 'development',
   } );
 };
 
@@ -33,7 +35,7 @@ const createToken = async () => {
   const tempTokenExpiry = Date.now() + 86400000; // 1 hour from now
 
   return {
-    tempToken, tempTokenExpiry
+    tempToken, tempTokenExpiry,
   };
 };
 
@@ -43,7 +45,7 @@ const setCookie = ( ctx, jwtToken ) => {
     httpOnly: true, // only allow access to cookie from the server
     maxAge: COOKIE_MAX_AGE,
     secure: !process.env.NODE_ENV === 'development',
-    sameSite: 'Lax'
+    sameSite: 'Lax',
   } );
 };
 
@@ -66,7 +68,7 @@ const AuthResolvers = {
       } catch ( err ) {
         throw new ApolloError( err );
       }
-    }
+    },
   },
 
   Mutation: {
@@ -79,13 +81,13 @@ const AuthResolvers = {
         throw new AuthenticationError( 'A valid Cloudflare token is not available' );
       }
 
-      // 2. Verify that the Cloudflare token sent is vaild
+      // 2. Verify that the Cloudflare token sent is valid
       const cloudflareUser = await verifyCloudflareToken( token );
 
       if ( !cloudflareUser || cloudflareUser.message ) {
         // cloudflare message is error
         throw new AuthenticationError(
-          'Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.'
+          'Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.',
         );
       }
 
@@ -103,8 +105,8 @@ const AuthResolvers = {
             lastName: '',
             isConfirmed: true,
             permissions: {
-              set: ['SUBSCRIBER']
-            }
+              set: ['SUBSCRIBER'],
+            },
           };
 
           user = await ctx.prisma.createUser( subscriber ).$fragment( USER );
@@ -137,7 +139,7 @@ const AuthResolvers = {
         throw new AuthenticationError( 'A valid Google token is not available' );
       }
 
-      // 2. Verify that the google token sent is vaild
+      // 2. Verify that the google token sent is valid
       const googleUser = await verifyGoogleToken( token );
 
       if ( !googleUser ) {
@@ -147,24 +149,26 @@ const AuthResolvers = {
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
         throw new AuthenticationError(
-          'You must first register using your america.gov email account to sign in.'
+          'You must first register using your america.gov email account to sign in.',
         );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( googleUser.email );
+
         if ( !whitelisted ) {
           throw new AuthenticationError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
 
       // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
+
       if ( !user ) {
         throw new AuthenticationError(
-          'You must first register your account before you can sign in.'
+          'You must first register your account before you can sign in.',
         );
       }
 
@@ -198,21 +202,22 @@ const AuthResolvers = {
 
       if ( !user && email.includes( 'america.gov' ) ) {
         throw new AuthenticationError(
-          'You must first register your account before you can sign in.'
+          'You must first register your account before you can sign in.',
         );
       }
 
       if ( !user ) {
         throw new AuthenticationError(
-          'You must first register using your america.gov email account to sign in.'
+          'You must first register using your america.gov email account to sign in.',
         );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( email );
+
         if ( !whitelisted ) {
           throw new AuthenticationError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
@@ -223,6 +228,7 @@ const AuthResolvers = {
 
       // 2. Check if their password is correct
       const valid = await bcrypt.compare( password, user.password );
+
       if ( !valid ) {
         throw new AuthenticationError( 'Invalid Password!' );
       }
@@ -248,7 +254,7 @@ const AuthResolvers = {
 
         if ( !whitelisted ) {
           throw new UserInputError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
@@ -259,12 +265,13 @@ const AuthResolvers = {
 
         // 1a. Until more permissions are enabled, force to editor
         const userWithTokenEditorOnly = userWithToken;
+
         userWithTokenEditorOnly.permissions.set = ['EDITOR'];
 
         // 2. Create an unconfirmed user in the db
         const user = await ctx.prisma
           .createUser( userWithTokenEditorOnly )
-          .$fragment( `fragment UserSignUp on User { id email team { name } }` );
+          .$fragment( 'fragment UserSignUp on User { id email team { name } }' );
 
         // 3. Email the user
         if ( user ) {
@@ -278,7 +285,7 @@ const AuthResolvers = {
         }
 
         return {
-          text: 'Please check your email for a link to confirm your registration'
+          text: 'Please check your email for a link to confirm your registration',
         };
       } catch ( err ) {
         throw new ApolloError( 'There is already a user with that email in the system.' );
@@ -314,8 +321,8 @@ const AuthResolvers = {
       const [user] = await ctx.prisma.users( {
         where: {
           tempToken: args.tempToken,
-          tempTokenExpiry_gte: Date.now() - 3600000
-        }
+          tempTokenExpiry_gte: Date.now() - 3600000,
+        },
       } );
 
       if ( !user ) {
@@ -332,8 +339,8 @@ const AuthResolvers = {
           password,
           isConfirmed: true,
           tempToken: null,
-          tempTokenExpiry: null
-        }
+          tempTokenExpiry: null,
+        },
       } );
 
       // 6. Generate JWT
@@ -353,14 +360,14 @@ const AuthResolvers = {
      */
     async requestAccountAction( parent, args, ctx ) {
       const {
-        email, subject, body, link, reply, page
+        email, subject, body, link, reply, page,
       } = args;
 
       try {
         // 1. check if there is a user with that email and if they are confirmed.
         const user = await ctx.prisma
           .user( { email } )
-          .$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
+          .$fragment( 'fragment UserAccountAction on User { id email team { name } isConfirmed }' );
 
         if ( !user ) {
           throw new AuthenticationError( `No user found for email ${email}` );
@@ -368,7 +375,7 @@ const AuthResolvers = {
 
         if ( page === 'passwordreset' && !user.isConfirmed ) {
           throw new AuthenticationError(
-            'You must confirm your account before you can reset your password.'
+            'You must confirm your account before you can reset your password.',
           );
         }
 
@@ -384,8 +391,8 @@ const AuthResolvers = {
         const updatedUser = await ctx.prisma.updateUser( {
           data: userWithToken,
           where: {
-            email
-          }
+            email,
+          },
         } );
 
         // 4. Email the user
@@ -401,7 +408,7 @@ const AuthResolvers = {
         }
 
         return {
-          text: reply
+          text: reply,
         };
       } catch ( err ) {
         throw new ApolloError( err ); // debugging
@@ -420,7 +427,7 @@ const AuthResolvers = {
         return await getSignedUrlPromisePut( {
           contentType,
           filename,
-          projectId
+          projectId,
         } );
       } catch ( err ) {
         console.dir( err );
@@ -432,7 +439,7 @@ const AuthResolvers = {
       const { key } = args;
 
       if ( !key ) {
-        throw new ApolloError( `There is no asset availble with key: ${key}` );
+        throw new ApolloError( `There is no asset available with key: ${key}` );
       }
 
       try {
@@ -442,8 +449,8 @@ const AuthResolvers = {
       } catch ( err ) {
         throw new ApolloError( err );
       }
-    } )
-  }
+    } ),
+  },
 };
 
 export default AuthResolvers;

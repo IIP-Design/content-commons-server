@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import path from 'path';
 import jwt from 'jsonwebtoken';
+
 import resolvers from './resolvers';
 import { prisma } from './schema/generated/prisma-client';
 
@@ -45,20 +46,21 @@ const createApolloServer = () => new ApolloServer( {
     // }
 
     const user = await fetchUser( req );
+
     return {
       req,
       res,
       prisma,
-      user
+      user,
     };
   },
   playground: {
     settings: {
       // Needed for auth
       // Docs: https://github.com/prisma/graphql-playground
-      'request.credentials': 'same-origin'
-    }
-  }
+      'request.credentials': 'same-origin',
+    },
+  },
 } );
 
 export default createApolloServer;

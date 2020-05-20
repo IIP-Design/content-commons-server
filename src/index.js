@@ -14,13 +14,13 @@ server.applyMiddleware( {
   app,
   cors: {
     origin: process.env.FRONTEND_URL,
-    credentials: true
-  }
+    credentials: true,
+  },
 } );
 
 const httpServer = http.createServer( app );
 
-/* Subscriptions are currebntly turned off
+/* Subscriptions are currently turned off
 server.installSubscriptionHandlers( httpServer );
 */
 
