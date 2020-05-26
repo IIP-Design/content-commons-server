@@ -13,7 +13,7 @@ import { verifyCloudflareToken } from '../services/cloudflareAuth';
 import { USER } from '../fragments/user';
 
 const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
-const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24; // 24 hours, matches CloudFlare maxAge
+const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7; // 1 week, matches CloudFlare maxAge
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
 
