@@ -15,6 +15,15 @@ _This sections lists changes committed since most recent release_
 **Changed:**
 - Pass pagination arguments to package resolver
 
+# [4.1.1](2020-05-22)
+**Added:**
+- Added repatriation and translations to the Tag list
+- Added United States to the Country list
+- Added Bureau of Oceans and International Environmental and Scientific Affairs (OES) to Bureaus list
+
+**Fxed:**
+- Corrected odd characters in a few country names
+
 # [4.1.0](2020-05-05)
 
 **Added:**
