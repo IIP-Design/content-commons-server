@@ -2143,6 +2143,7 @@ type ImageFile {
   filetype: String
   filesize: Float
   use: ImageUse
+  md5: String
   quality: ImageQuality
   style: GraphicStyle
   social(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SocialPlatform!]
@@ -2169,6 +2170,7 @@ input ImageFileCreateInput {
   filetype: String
   filesize: Float
   use: ImageUseCreateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleCreateOneInput
   social: SocialPlatformCreateManyInput
@@ -2216,6 +2218,8 @@ enum ImageFileOrderByInput {
   filetype_DESC
   filesize_ASC
   filesize_DESC
+  md5_ASC
+  md5_DESC
   quality_ASC
   quality_DESC
 }
@@ -2234,6 +2238,7 @@ type ImageFilePreviousValues {
   filename: String
   filetype: String
   filesize: Float
+  md5: String
   quality: ImageQuality
 }
 
@@ -2392,6 +2397,20 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   quality: ImageQuality
   quality_not: ImageQuality
   quality_in: [ImageQuality!]
@@ -2433,6 +2452,7 @@ input ImageFileUpdateDataInput {
   filetype: String
   filesize: Float
   use: ImageUseUpdateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
   social: SocialPlatformUpdateManyInput
@@ -2452,6 +2472,7 @@ input ImageFileUpdateInput {
   filetype: String
   filesize: Float
   use: ImageUseUpdateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
   social: SocialPlatformUpdateManyInput
@@ -2468,6 +2489,7 @@ input ImageFileUpdateManyDataInput {
   filename: String
   filetype: String
   filesize: Float
+  md5: String
   quality: ImageQuality
 }
 
@@ -2494,6 +2516,7 @@ input ImageFileUpdateManyMutationInput {
   filename: String
   filetype: String
   filesize: Float
+  md5: String
   quality: ImageQuality
 }
 
@@ -2685,6 +2708,20 @@ input ImageFileWhereInput {
   filesize_gt: Float
   filesize_gte: Float
   use: ImageUseWhereInput
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   quality: ImageQuality
   quality_not: ImageQuality
   quality_in: [ImageQuality!]
@@ -4335,6 +4372,7 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4353,6 +4391,7 @@ input SupportFileCreateInput {
   language: LanguageCreateOneInput!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4381,6 +4420,8 @@ enum SupportFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
+  md5_ASC
+  md5_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
@@ -4397,6 +4438,7 @@ type SupportFilePreviousValues {
   updatedAt: DateTime!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4462,6 +4504,20 @@ input SupportFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -4529,6 +4585,7 @@ input SupportFileUpdateDataInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4540,6 +4597,7 @@ input SupportFileUpdateInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4550,6 +4608,7 @@ input SupportFileUpdateInput {
 input SupportFileUpdateManyDataInput {
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4571,6 +4630,7 @@ input SupportFileUpdateManyInput {
 input SupportFileUpdateManyMutationInput {
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
@@ -4774,6 +4834,20 @@ input SupportFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -5927,6 +6001,7 @@ type VideoFile {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -5951,6 +6026,7 @@ input VideoFileCreateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -5989,6 +6065,8 @@ enum VideoFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
+  md5_ASC
+  md5_DESC
   duration_ASC
   duration_DESC
   bitrate_ASC
@@ -6008,6 +6086,7 @@ type VideoFilePreviousValues {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -6112,6 +6191,20 @@ input VideoFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
@@ -6169,6 +6262,7 @@ input VideoFileUpdateDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -6186,6 +6280,7 @@ input VideoFileUpdateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -6201,6 +6296,7 @@ input VideoFileUpdateManyDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -6226,6 +6322,7 @@ input VideoFileUpdateManyMutationInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
@@ -6348,6 +6445,20 @@ input VideoFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
