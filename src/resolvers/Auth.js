@@ -436,14 +436,14 @@ const AuthResolvers = {
     } ),
 
     getSignedS3UrlGet: requiresLogin( async ( parent, args ) => {
-      const { key } = args;
+      const { bucket, key } = args;
 
       if ( !key ) {
         throw new ApolloError( `There is no asset available with key: ${key}` );
       }
 
       try {
-        const res = await getSignedUrlPromiseGet( { key } );
+        const res = await getSignedUrlPromiseGet( { bucket, key } );
 
         return { key: res.key, url: res.url };
       } catch ( err ) {

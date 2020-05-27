@@ -1,13 +1,10 @@
-
 type SignedS3Url {
   key: String
   url: String
 }
 
 type Query {
-  isWhitelisted(
-    email: String!
-  ):Boolean
+  isWhitelisted(email: String!): Boolean
 }
 
 type Mutation {
@@ -16,11 +13,7 @@ type Mutation {
   signIn(email: String!, password: String!): User!
   googleSignin(token: String!): User
   cloudflareSignin(token: String!): User
-  updatePassword(
-    tempToken: String!
-    password: String!
-    confirmPassword: String!
-  ): User!
+  updatePassword(tempToken: String!, password: String!, confirmPassword: String!): User!
   requestAccountAction(
     email: String!
     subject: String!
@@ -29,12 +22,6 @@ type Mutation {
     reply: String!
     page: String!
   ): Message
-  getSignedS3UrlGet(
-    key: String!
-  ):SignedS3Url
-  getSignedS3UrlPut(
-    contentType: String!
-    filename: String!
-    projectId: String!
-  ):SignedS3Url
+  getSignedS3UrlGet(key: String!, bucket: String): SignedS3Url
+  getSignedS3UrlPut(contentType: String!, filename: String!, projectId: String!): SignedS3Url
 }
