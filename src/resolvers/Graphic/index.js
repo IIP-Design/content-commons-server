@@ -1,4 +1,7 @@
 import { requiresLogin } from '../../lib/authentication';
+import { getAssetPath } from '../../services/aws/s3';
+import { ApolloError } from 'apollo-server-express';
+import { GRAPHIC_ASSET_PATH } from '../../fragments/graphic';
 
 const GraphicResolvers = {
   Query: requiresLogin( {
@@ -30,16 +33,30 @@ const GraphicResolvers = {
   Mutation: requiresLogin( {
     async createGraphicProject( parent, args, ctx ) {
       const { data } = args;
-      const graphicProject = await ctx.prisma.createGraphicProject( {
-        ...data
-      } );
 
-      return graphicProject;
+      try {
+        const { id, type } = await ctx.prisma.createGraphicProject( { ...data } );
+
+        // Set the S3 assetPath using the returned package id
+        const assetPath = getAssetPath( id, type.toLowerCase() );
+
+        // Add assetPath to project
+        const project = await ctx.prisma
+          .updateGraphicProject( { data: { assetPath }, where: { id } } )
+          .$fragment( GRAPHIC_ASSET_PATH );
+
+        return project;
+      } catch ( err ) {
+        throw new ApolloError( err );
+      }
     },
 
     updateGraphicProject( parent, args, ctx ) {
       const updates = { ...args };
-      const { data, where: { id } } = updates;
+      const {
+        data,
+        where: { id }
+      } = updates;
 
       return ctx.prisma.updateGraphicProject( {
         data,
@@ -73,7 +90,10 @@ const GraphicResolvers = {
 
     updateGraphicStyle( parent, args, ctx ) {
       const updates = { ...args };
-      const { data, where: { id } } = updates;
+      const {
+        data,
+        where: { id }
+      } = updates;
 
       return ctx.prisma.updateGraphicStyle( {
         data,
@@ -107,7 +127,10 @@ const GraphicResolvers = {
 
     updateSocialPlatform( parent, args, ctx ) {
       const updates = { ...args };
-      const { data, where: { id } } = updates;
+      const {
+        data,
+        where: { id }
+      } = updates;
 
       return ctx.prisma.updateSocialPlatform( {
         data,
@@ -133,39 +156,27 @@ const GraphicResolvers = {
 
   GraphicProject: {
     author( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .author( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).author( { ...args } );
     },
 
     team( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .team( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).team( { ...args } );
     },
 
     images( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .images( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).images( { ...args } );
     },
 
     supportFiles( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .supportFiles( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).supportFiles( { ...args } );
     },
 
     categories( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .categories( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).categories( { ...args } );
     },
 
     tags( parent, args, ctx ) {
-      return ctx.prisma
-        .graphicProject( { id: parent.id } )
-        .tags( { ...args } );
+      return ctx.prisma.graphicProject( { id: parent.id } ).tags( { ...args } );
     }
   }
 };
