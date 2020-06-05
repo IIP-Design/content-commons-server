@@ -3,6 +3,7 @@ import amqp from 'amqplib';
 
 // RabbitMQ connection string
 let messageQueueConnectionString = `amqp://${process.env.RABBITMQ_DOMAIN}:${process.env.RABBITMQ_PORT}`;
+
 if ( process.env.RABBITMQ_VHOST ) {
   messageQueueConnectionString = `${messageQueueConnectionString}/%2F${process.env.RABBITMQ_VHOST}`;
 }
@@ -12,7 +13,7 @@ let publisherConnection = null;
 let _consumerChannel = null;
 let _publishChannel = null;
 
-const connect = async () => amqp.connect( messageQueueConnectionString );
+const connect = async() => amqp.connect( messageQueueConnectionString );
 
 const handleConnectionEvents = connection => {
   // handle connection closed
@@ -28,6 +29,7 @@ export const getConnection = async type => {
       return consumerConnection;
     }
     consumerConnection = await connect();
+
     return consumerConnection;
   }
 
@@ -40,7 +42,7 @@ export const getConnection = async type => {
 };
 
 // Use separaye publich and consumer channels for each thread (should we only be using 1 channel?)
-export const getPublishChannel = async () => {
+export const getPublishChannel = async() => {
   if ( _publishChannel ) {
     return _publishChannel;
   }
@@ -51,12 +53,13 @@ export const getPublishChannel = async () => {
   if ( connection ) {
     handleConnectionEvents( connection );
     _publishChannel = await connection.createConfirmChannel();
+
     return _publishChannel;
   }
 };
 
 // Use separaye publish and consumer channels for each thread (should we only be using 1 channel?)
-export const getConsumerChannel = async () => {
+export const getConsumerChannel = async() => {
   if ( _consumerChannel ) {
     return _consumerChannel;
   }
@@ -67,6 +70,7 @@ export const getConsumerChannel = async () => {
   if ( connection ) {
     handleConnectionEvents( connection );
     _consumerChannel = await connection.createChannel();
+
     return _consumerChannel;
   }
 };
@@ -76,7 +80,7 @@ const setUpExchanges = async channel => {
   await Promise.all( [
     channel.assertExchange( 'publish', 'topic', { durable: true } ),
     channel.assertExchange( 'publish.dlx', 'fanout', { durable: true } ),
-    channel.assertExchange( 'util', 'topic', { durable: true } ),
+    channel.assertExchange( 'util', 'topic', { durable: true } )
   ] );
 };
 
@@ -105,7 +109,7 @@ const bindExhangesToQueues = async channel => {
   ] );
 };
 
-const initalize = async () => {
+const initalize = async() => {
   console.log( 'Setting up RabbitMQ Exchanges/Queues' );
 
   // connect to RabbitMQ Instance

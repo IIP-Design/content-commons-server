@@ -1,5 +1,6 @@
 import initialize, { getPublishChannel, getConsumerChannel } from './initialize';
 import video from './video';
+import graphic from './graphic';
 import pkg from './package';
 
 // Utility function to parse messages
@@ -12,16 +13,18 @@ export const parseMessage = msg => {
 };
 
 // Utility function to publish messages to a channel
-export const publishToChannel = async ( { routingKey, exchangeName, data } ) => {
+export const publishToChannel = async( { routingKey, exchangeName, data } ) => {
   const channel = await getPublishChannel( 'publish' );
 
   if ( channel ) {
     return new Promise( ( resolve, reject ) => {
       channel.publish( exchangeName,
         routingKey,
-        Buffer.from( JSON.stringify( data ), 'utf-8' ), {
+        Buffer.from( JSON.stringify( data ), 'utf-8' ),
+        {
           persistent: true
-        }, err => {
+        },
+        err => {
           if ( err ) {
             return reject( err );
           }
@@ -32,18 +35,22 @@ export const publishToChannel = async ( { routingKey, exchangeName, data } ) => 
 };
 
 
-const consumePublishSuccess = async () => {
+const consumePublishSuccess = async() => {
   const channel = await getConsumerChannel();
+
   await channel.prefetch( 1 );
 
   channel.consume( 'publish.result', msg => {
     if ( msg && msg.fields ) {
       const { routingKey } = msg.fields; // result.create.video
+
       if ( routingKey ) {
         if ( routingKey.includes( 'video' ) ) {
           video.consumeSuccess( channel, msg );
         } else if ( routingKey.includes( 'package' ) ) {
           pkg.consumePublishSuccess( channel, msg );
+        } else if ( routingKey.includes( 'graphic' ) ) {
+          graphic.consumeSuccess( channel, msg );
         }
         // TODO handle not having handler for routing keu
       }
@@ -54,12 +61,14 @@ const consumePublishSuccess = async () => {
   } );
 };
 
-const consumeUtilSuccess = async () => {
+const consumeUtilSuccess = async() => {
   const channel = await getConsumerChannel();
+
   await channel.prefetch( 1 );
 
   channel.consume( 'util.result', msg => {
     const { routingKey } = msg.fields;
+
     console.log( `routingKey ${routingKey}` );
     if ( msg && msg.fields ) {
       if ( routingKey === 'convert.result' ) {
@@ -72,18 +81,22 @@ const consumeUtilSuccess = async () => {
   } );
 };
 
-const consumeErrors = async () => {
+const consumeErrors = async() => {
   const channel = await getConsumerChannel();
+
   await channel.prefetch( 1 );
 
   channel.consume( 'publish.dlq', msg => {
     if ( msg && msg.fields ) {
       const { routingKey } = msg.fields;
+
       if ( routingKey ) {
         if ( routingKey.includes( 'video' ) ) {
           video.consumeError( channel, msg );
         } else if ( routingKey.includes( 'package' ) ) {
           pkg.consumeError( channel, msg );
+        } else if ( routingKey.includes( 'graphic' ) ) {
+          graphic.consumeError( channel, msg );
         }
         // TODO handle not having error handler for routing key
       }
@@ -97,7 +110,7 @@ const consumeErrors = async () => {
 };
 
 
-const listenForResults = async () => {
+const listenForResults = async() => {
   // start consuming messages
   consumePublishSuccess();
   consumeUtilSuccess();
@@ -107,7 +120,7 @@ const listenForResults = async () => {
 };
 
 // Setup up RabbitMQ and start listening for publish results
-export const initQueueAndStartListening = async () => {
+export const initQueueAndStartListening = async() => {
   // initialize RabbitMQ Exchanges/Queues
   const isInitialized = await initialize().catch( err => console.error( err.cause ) );
 

@@ -229,9 +229,6 @@ const transformVideo = videoProject => {
     type: 'video',
     published: now,
     modified: now,
-    // owner: null,
-    // author: null,
-    // thumbnail: null,
     supportFiles: [],
     unit: []
   };
@@ -249,7 +246,7 @@ const transformVideo = videoProject => {
     const unit = transformVideoUnit( videoUnit, categories, tags );
 
     // Assign SRTs and Transcripts based on language
-    // TODO: Allow for user assigned SRT/Transcript that would get added at the unit level
+    // TO DO: Allow for user assigned SRT/Transcript that would get added at the unit level
 
     esData.unit.push( unit );
 
@@ -276,7 +273,7 @@ const transformVideo = videoProject => {
     esData.supportFiles = videoProject.supportFiles.map( file => ( {
       srcUrl: maybeGetUrlToProdS3( file.url ),
       language: transformLanguage( file.language ),
-      // TODO: Support additional file types in future
+      // TO DO: Support additional file types in future
       supportFileType: setSupportFileType( file ),
       visibility: file.visibility
     } ) );

@@ -1,7 +1,13 @@
 import { requiresLogin } from '../../lib/authentication';
-import { getAssetPath } from '../../services/aws/s3';
-import { ApolloError } from 'apollo-server-express';
-import { GRAPHIC_ASSET_PATH } from '../../fragments/graphic';
+import { getAssetPath, deleteAllS3Assets } from '../../services/aws/s3';
+import { ApolloError, UserInputError } from 'apollo-server-express';
+import transformGraphic from '../../services/es/graphic/transform';
+import { GRAPHIC_ASSET_PATH, GRAPHIC_PROJECT_FULL } from '../../fragments/graphic';
+import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/graphic';
+
+
+const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
+
 
 const GraphicResolvers = {
   Query: requiresLogin( {
@@ -71,7 +77,86 @@ const GraphicResolvers = {
       return ctx.prisma.updateManyGraphicProjects( { data, where } );
     },
 
-    deleteGraphicProject( parent, { id }, ctx ) {
+    async publishGraphicProject( parent, args, ctx ) {
+      const { id } = args;
+
+      // 1. Get data for project to publish from db
+      const graphicProject = await ctx.prisma.graphicProject( { id } ).$fragment( GRAPHIC_PROJECT_FULL );
+
+      if ( !graphicProject ) {
+        return ctx.prisma
+          .updateGraphicProject( { data: { status: 'PUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
+      }
+
+      // 2. Transform it into the acceptable elasticsearch data structure
+      const esData = transformGraphic( graphicProject );
+
+      const { status, assetPath } = graphicProject;
+
+      // 3. Put on the queue for processing
+      if ( status === 'DRAFT' ) {
+        publishCreate( id, esData, status, assetPath );
+      } else {
+        publishUpdate( id, esData, status, assetPath );
+      }
+
+      // 4. Update the project status
+      await ctx.prisma
+        .updateGraphicProject( { data: { status: 'PUBLISHING' }, where: args } )
+        .catch( err => {
+          throw new ApolloError( err );
+        } );
+
+      return graphicProject;
+    },
+
+    async unpublishGraphicProject( parent, args, ctx ) {
+      const { id } = args;
+
+      // 1. Fetch project to delete
+      const graphicProject = await ctx.prisma
+        .graphicProject( args )
+        .$fragment( GRAPHIC_PROJECT_FULL );
+
+      // 2. If unable to locate project, notify of failure
+      if ( !graphicProject ) {
+        return ctx.prisma
+          .updateGraphicProject( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
+      }
+
+      // 3. Put unpublish request on the queue
+      publishDelete( id, graphicProject.assetPath );
+
+      return graphicProject;
+    },
+
+    async deleteGraphicProject( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before continuing
+      const graphicProject = await ctx.prisma
+        .graphicProject( { id } )
+        .$fragment( GRAPHIC_PROJECT_FULL );
+
+      // 2. Notify user is we don't have aproject
+      if ( !graphicProject ) {
+        throw new UserInputError( 'A package with that id does not exist in the database', {
+          invalidArgs: 'id'
+        } );
+      }
+
+      // 3. Delete files if they exist
+      if ( graphicProject.images.length || graphicProject.supportFiles.length ) {
+        if ( graphicProject.assetPath ) {
+          await deleteAllS3Assets( graphicProject.assetPath, PUBLISHER_BUCKET ).catch(
+            err => console.log(
+              `Error in [deleteAllS3Assets] for project ${graphicProject.title} - ${graphicProject.id}. ${err}`
+            )
+          );
+        }
+      }
+
+      // 4. Return id of deleted project
       return ctx.prisma.deleteGraphicProject( { id } );
     },
 
