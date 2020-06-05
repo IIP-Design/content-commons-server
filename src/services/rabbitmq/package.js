@@ -1,8 +1,8 @@
-import { publishToChannel, parseMessage } from './index';
+import { publishToChannel, parseMessage } from '.';
 import { prisma } from '../../schema/generated/prisma-client';
 import { getLongestElement } from './util';
 
-const updateDatabase = async ( id, data ) => {
+const updateDatabase = async( id, data ) => {
   await prisma.updatePackage( { data, where: { id } } ).catch( err => console.error( err ) );
 };
 
@@ -11,10 +11,12 @@ const updateDatabase = async ( id, data ) => {
  *
  * @param {string} id project id
  * @param {object} data project data
+ * @param {object} status project stastus
+ * @param {object} projectDirectory path to S3 dir
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async ( id, data, status, projectDirectory ) => {
+export const publishCreate = async( id, data, status, projectDirectory ) => {
   // data.type: 'package'.  Also creates each document contained within package
   console.log( '[x] PUBLISHING a package publish create request' );
 
@@ -34,11 +36,11 @@ export const publishCreate = async ( id, data, status, projectDirectory ) => {
 /**
  * Put publish deletion request on publish.delete queue
  *
- * @param {string} id project id
- * @param {object} data project data
+ * @param {string} ids ids of packages to delete
+ * @param {object} projectDirectory path to S3 dir
  *
  */
-export const publishDelete = async ( ids, projectDirectory ) => {
+export const publishDelete = async( ids, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package delete request' );
 
   publishToChannel( {
@@ -52,7 +54,7 @@ export const publishDelete = async ( ids, projectDirectory ) => {
 };
 
 
-export const publishUpdate = async ( id, data, status, projectDirectory ) => {
+export const publishUpdate = async( id, data, status, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package upate request' );
 
   publishToChannel( {
@@ -68,7 +70,7 @@ export const publishUpdate = async ( id, data, status, projectDirectory ) => {
 };
 
 
-const consumePublishSuccess = async ( channel, msg ) => {
+const consumePublishSuccess = async( channel, msg ) => {
   // 1. Parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
@@ -88,7 +90,7 @@ const consumePublishSuccess = async ( channel, msg ) => {
   channel.ack( msg );
 };
 
-const consumeConvertSuccess = async ( channel, msg ) => {
+const consumeConvertSuccess = async( channel, msg ) => {
   // 1. Parse message
   const {
     routingKey, data: {
@@ -132,13 +134,14 @@ const consumeConvertSuccess = async ( channel, msg ) => {
 };
 
 
-const consumeError = async ( channel, msg ) => {
+const consumeError = async( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectIds } } = parseMessage( msg );
 
   // 2. Update db with failed status to alert the client (client polls for status changes)
   try {
     const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_FAILURE' : 'PUBLISH_FAILURE';
+
     updateDatabase( projectIds.id, { status } );
   } catch ( err ) {
     console.log( `[package consumeError]: cannot package status : ${err.message}` );
@@ -147,11 +150,15 @@ const consumeError = async ( channel, msg ) => {
   // 3. log error
   const id = projectIds && projectIds.id ? `: ${projectIds.id}` : '';
   const errorMessage = `Unable to process queue ${routingKey} request for project ${id} `;
+
   console.log( errorMessage );
 };
 
-export default {
+const consumer = {
   consumePublishSuccess,
   consumeConvertSuccess,
   consumeError
 };
+
+export default consumer;
+

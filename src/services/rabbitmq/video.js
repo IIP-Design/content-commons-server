@@ -1,16 +1,18 @@
-import { publishToChannel, parseMessage } from './index';
-import { getS3ProjectDirectory } from '../../lib/projectParser';
+import { publishToChannel, parseMessage } from '.';
 import { prisma } from '../../schema/generated/prisma-client';
+import { getS3ProjectDirectory } from '../../lib/projectParser';
 
 import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
 
 
-const updateDatabase = async ( id, data ) => {
+const updateDatabase = async( id, data ) => {
   await prisma.updateVideoProject( { data, where: { id } } ).catch( err => console.error( err ) );
 };
 
 const _getS3ProjectDirectory = async id => {
-  const units = await prisma.videoProject( { id } ).units().$fragment( VIDEO_UNIT_VIDEO_FILES );
+  const units = await prisma.videoProject( { id } ).units()
+    .$fragment( VIDEO_UNIT_VIDEO_FILES );
+
   return getS3ProjectDirectory( units );
 };
 
@@ -23,7 +25,7 @@ const _getS3ProjectDirectory = async id => {
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async ( id, data, status ) => {
+export const publishCreate = async( id, data, status ) => {
   // data.type: 'video'
   console.log( '[x] PUBLISHING a publish create request' );
 
@@ -66,7 +68,7 @@ export const publishDelete = async id => {
 };
 
 
-export const publishUpdate = async ( id, data, status ) => {
+export const publishUpdate = async( id, data, status ) => {
   const projectDirectory = await _getS3ProjectDirectory( id );
 
   console.log( '[x] PUBLISHING a publish upate request' );
@@ -84,7 +86,7 @@ export const publishUpdate = async ( id, data, status ) => {
 };
 
 
-const consumeSuccess = async ( channel, msg ) => {
+const consumeSuccess = async( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
@@ -102,7 +104,7 @@ const consumeSuccess = async ( channel, msg ) => {
   channel.ack( msg );
 };
 
-const consumeError = async ( channel, msg ) => {
+const consumeError = async( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
 
@@ -115,10 +117,13 @@ const consumeError = async ( channel, msg ) => {
 
   // 3. log error
   const errorMessage = `Unable to process queue ${routingKey} request for project : ${projectId} `;
+
   console.log( errorMessage );
 };
 
-export default {
+const consumer = {
   consumeSuccess,
   consumeError
 };
+
+export default consumer;

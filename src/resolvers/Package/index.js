@@ -107,13 +107,13 @@ const PackageResolvers = {
 
       // 2. Transform it into the acceptable elasticsearch data structure
       const esData = transformPackage( pkg );
-      const { status } = pkg;
+      const { status, assetPath } = pkg;
 
       // 3. Put on the queue for processing ( not sure we need to await here )
       if ( status === 'DRAFT' ) {
-        publishCreate( id, esData, status, pkg.assetPath );
+        publishCreate( id, esData, status, assetPath );
       } else {
-        publishUpdate( id, esData, status, pkg.assetPath );
+        publishUpdate( id, esData, status, assetPath );
       }
 
       return pkg;
