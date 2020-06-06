@@ -347,6 +347,7 @@ type SupportFile {
   filetype: String # srt, pdf
   filesize: Float
   visibility: Visibility @default(value: PUBLIC)
+  editable: Boolean @default(value: false)
   use: SupportFileUse
 }
 

@@ -45,6 +45,7 @@ export const GRAPHIC_PROJECT_FULL = `
       filetype
       filename
       visibility 
+      editable
     }
     images {
       id
