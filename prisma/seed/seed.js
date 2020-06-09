@@ -6,12 +6,14 @@ import seedTeams from './seedTeams';
 import seedBureaus from './seedBureaus';
 import seedUses from './seedUses';
 import seedRegions from './seedRegions';
+import seedGraphicStyles from "./seedGraphicStyles";
 
 export const files = {
   teams: './prisma/data/teams.csv',
   bureaus: './prisma/data/bureaus.csv',
   languages: './prisma/data/languages.csv',
   categories: './prisma/data/categories.csv',
+  graphicStyles: './prisma/data/graphicStyles.csv',
   tags: './prisma/data/tags.csv',
   uses: './prisma/data/uses.csv',
   regions: './prisma/data/regions.csv'
@@ -85,6 +87,17 @@ export const files = {
     promises.push( usesProm );
   } else {
     console.error( `CSV not found: ${files.uses}\nUses were not processed.` );
+  }
+
+  if ( fs.existsSync( files.graphicStyles ) ) {
+    const graphicStylesProm = seedGraphicStyles()
+      .then((graphicStyles) => {
+        console.log(`Created/updated ${graphicStyles.length} graphicStyles`);
+      })
+      .catch((err) => console.log(err));
+    promises.push( graphicStylesProm );
+  } else {
+    console.error( `CSV not found: ${files.graphicStyles}\ngraphicStyles were not processed.` );
   }
 
   if ( fs.existsSync( files.languages ) ) {
