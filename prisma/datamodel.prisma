@@ -75,12 +75,12 @@ enum Copyright {
 
 type GraphicStyle {
   id: ID! @id
-  name: String!
+  name: String! @unique
 }
 
 type SocialPlatform {
   id: ID! @id
-  name: String!
+  name: String! @unique
 }
 
 type Country {

@@ -6,6 +6,7 @@ import seedTeams from './seedTeams';
 import seedBureaus from './seedBureaus';
 import seedUses from './seedUses';
 import seedRegions from './seedRegions';
+import seedSocialPlatforms from './seedSocialPlatorms';
 
 export const files = {
   teams: './prisma/data/teams.csv',
@@ -14,7 +15,8 @@ export const files = {
   categories: './prisma/data/categories.csv',
   tags: './prisma/data/tags.csv',
   uses: './prisma/data/uses.csv',
-  regions: './prisma/data/regions.csv'
+  regions: './prisma/data/regions.csv',
+  socialPlatforms: './prisma/data/socialPlatforms.csv'
 };
 
 /**
@@ -85,6 +87,15 @@ export const files = {
     promises.push( usesProm );
   } else {
     console.error( `CSV not found: ${files.uses}\nUses were not processed.` );
+  }
+
+  if ( fs.existsSync( files.socialPlatforms ) ) {
+    const socialPlatformsProm = seedSocialPlatforms().then( socialPlatforms => {
+      console.log( `Created/updated ${socialPlatforms.length} socialPlatforms` );
+    } ).catch( err => console.log( err ) );
+    promises.push( socialPlatformsProm );
+  } else {
+    console.error( `CSV not found: ${files.socialPlatforms}\nsocialPlatforms were not processed.` );
   }
 
   if ( fs.existsSync( files.languages ) ) {
