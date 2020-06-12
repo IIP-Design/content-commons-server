@@ -4374,6 +4374,7 @@ type SupportFile {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUse
 }
 
@@ -4393,6 +4394,7 @@ input SupportFileCreateInput {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseCreateOneInput
 }
 
@@ -4427,6 +4429,8 @@ enum SupportFileOrderByInput {
   filesize_DESC
   visibility_ASC
   visibility_DESC
+  editable_ASC
+  editable_DESC
 }
 
 type SupportFilePreviousValues {
@@ -4440,6 +4444,7 @@ type SupportFilePreviousValues {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
 }
 
 input SupportFileScalarWhereInput {
@@ -4555,6 +4560,8 @@ input SupportFileScalarWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
+  editable: Boolean
+  editable_not: Boolean
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -4587,6 +4594,7 @@ input SupportFileUpdateDataInput {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseUpdateOneInput
 }
 
@@ -4599,6 +4607,7 @@ input SupportFileUpdateInput {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseUpdateOneInput
 }
 
@@ -4610,6 +4619,7 @@ input SupportFileUpdateManyDataInput {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
 }
 
 input SupportFileUpdateManyInput {
@@ -4632,6 +4642,7 @@ input SupportFileUpdateManyMutationInput {
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -4885,6 +4896,8 @@ input SupportFileWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
+  editable: Boolean
+  editable_not: Boolean
   use: SupportFileUseWhereInput
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]

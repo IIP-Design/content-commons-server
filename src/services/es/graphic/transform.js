@@ -16,12 +16,14 @@ const transformSupportFile = file => {
     filename,
     filetype,
     visibility,
+    editable,
     url
   } = file;
 
   const supportFile = {
     title,
     visibility,
+    editable: editable || false,
     filename,
     filetype,
     url: getUrlToProdS3( url ),
@@ -32,7 +34,16 @@ const transformSupportFile = file => {
 };
 
 const transformImage = ( file, alt ) => {
-  const { title, language, filename, filetype, filesize, visibility, url, dimensions, social, style } = file;
+  const { title,
+    language,
+    filename,
+    filetype,
+    filesize,
+    visibility,
+    url,
+    dimensions,
+    social,
+    style } = file;
 
   const image = {
     title,
@@ -124,7 +135,7 @@ const transformGraphic = graphicProject => {
     esData.images = images.map( image => transformImage( image, alt ) );
   }
 
-  console.log( 'graphicProject', JSON.stringify( graphicProject, null, 2 ) );
+  console.log( 'GRAPHIC PROJECT', JSON.stringify( graphicProject, null, 2 ) );
   console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
 
   return esData;
