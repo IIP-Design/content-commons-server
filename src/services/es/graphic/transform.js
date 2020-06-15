@@ -5,7 +5,7 @@ const transformLanguage = language => ( {
   locale: language.locale,
   text_direction: language.textDirection.toLowerCase(),
   display_name: language.displayName,
-  native_name: language.nativeName
+  native_name: language.nativeName,
 } );
 
 
@@ -17,7 +17,7 @@ const transformSupportFile = file => {
     filetype,
     visibility,
     editable,
-    url
+    url,
   } = file;
 
   const supportFile = {
@@ -27,7 +27,7 @@ const transformSupportFile = file => {
     filename,
     filetype,
     url: getUrlToProdS3( url ),
-    language: transformLanguage( language )
+    language: transformLanguage( language ),
   };
 
   return supportFile;
@@ -57,7 +57,7 @@ const transformImage = ( file, alt ) => {
     url: getUrlToProdS3( url ),
     language: transformLanguage( language ),
     style: style && style.name ? style.name : '',
-    social: social.map( _social => _social.name )
+    social: social.map( _social => _social.name ),
   };
 
   return image;
@@ -96,18 +96,21 @@ const transformTaxonomy = ( taxonomyTerms, locale ) => {
  */
 const transformGraphic = graphicProject => {
   const now = new Date().toISOString();
-  const { id,
+  const {
+    id,
     createdAt,
     title,
     copyright,
     visibility,
     alt,
     team,
-    desc,
+    descPublic,
+    descInternal,
     supportFiles,
     images,
     categories,
-    tags } = graphicProject;
+    tags,
+  } = graphicProject;
 
   const esData = {
     id,
@@ -117,14 +120,15 @@ const transformGraphic = graphicProject => {
     published: now,
     modified: now,
     created: createdAt,
-    desc,
+    descPublic,
+    descInternal,
     copyright,
     visibility,
     owner: team && team.name ? team.name : '',
     supportFiles: [],
     images: [],
     categories: transformTaxonomy( categories, 'en-us' ),
-    tags: transformTaxonomy( tags, 'en-us' )
+    tags: transformTaxonomy( tags, 'en-us' ),
   };
 
   if ( supportFiles && supportFiles.length ) {
