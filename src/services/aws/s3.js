@@ -2,12 +2,13 @@ const AWS = require( 'aws-sdk' );
 const fs = require( 'fs' );
 
 const AUTHORING_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
+const PROD_BUCKET = process.env.AWS_S3_PRODUCTION_BUCKET;
 
 // Pulls in configs from .env
 AWS.config.update( {
   accessKeyId: process.env.AWS_S3_AUTHORING_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_S3_AUTHORING_SECRET,
-  region: process.env.AWS_REGION
+  region: process.env.AWS_REGION,
 } );
 
 const s3 = new AWS.S3();
@@ -16,13 +17,14 @@ const getYrMonthPath = () => {
   const date = new Date();
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
+
   month = month < 10 ? `0${month}` : month;
 
   return `${year}/${month}`;
 };
 
 /**
- * Returns either the current s3 path for exisiting projects or creates a
+ * Returns either the current s3 path for existing projects or creates a
  * path to save new assets.
  * todo:  Should probably just store path prop in DB going forward
  *
@@ -55,7 +57,7 @@ export const getAssetPath = ( id, type ) => `${type}/${getYrMonthPath()}/commons
 
 export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject ) => {
   const {
-    contentType, filename, projectId
+    contentType, filename, projectId,
   } = params;
 
   const key = getKey( filename, projectId );
@@ -63,7 +65,7 @@ export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject )
   s3.getSignedUrl( 'putObject', {
     Bucket: AUTHORING_BUCKET,
     ContentType: contentType,
-    Key: key
+    Key: key,
   }, ( err, url ) => {
     if ( err ) {
       reject( err );
@@ -74,12 +76,12 @@ export const getSignedUrlPromisePut = params => new Promise( ( resolve, reject )
 } );
 
 export const getSignedUrlPromiseGet = params => new Promise( ( resolve, reject ) => {
-  const { key, expires } = params;
+  const { bucket, key, expires } = params;
 
   s3.getSignedUrl( 'getObject', {
-    Bucket: AUTHORING_BUCKET,
+    Bucket: bucket === 'prod' ? PROD_BUCKET : AUTHORING_BUCKET,
     Key: key,
-    Expires: expires || 900 // default 15 minutes
+    Expires: expires || 900, // default 15 minutes
   }, ( err, url ) => {
     if ( err ) {
       reject( err );
@@ -92,15 +94,16 @@ export const getSignedUrlPromiseGet = params => new Promise( ( resolve, reject )
 export const deleteAllS3Assets = async ( dir, bucket ) => {
   const listParams = {
     Bucket: bucket,
-    Prefix: dir
+    Prefix: dir,
   };
 
   const listedObjects = await s3.listObjectsV2( listParams ).promise();
+
   if ( listedObjects.Contents.length === 0 ) return;
 
   const deleteParams = {
     Bucket: bucket,
-    Delete: { Objects: [] }
+    Delete: { Objects: [] },
   };
 
   listedObjects.Contents.forEach( ( { Key } ) => {
@@ -116,7 +119,7 @@ export const deleteAllS3Assets = async ( dir, bucket ) => {
 export const deleteS3Asset = ( key, bucket ) => {
   const params = {
     Bucket: bucket,
-    Key: key
+    Key: key,
   };
 
   return s3.deleteObject( params ).promise();
@@ -126,8 +129,9 @@ export const copyS3Asset = async ( key, fromBucket, toBucket ) => {
   const copyParams = {
     Bucket: toBucket,
     CopySource: `/${fromBucket}/${key}`,
-    Key: key
+    Key: key,
   };
+
   return s3.copyObject( copyParams ).promise();
 };
 
@@ -136,10 +140,11 @@ export const copyS3Asset = async ( key, fromBucket, toBucket ) => {
 export const copyS3AllAssets = async ( dir, fromBucket, toBucket ) => {
   const listParams = {
     Bucket: fromBucket,
-    Prefix: dir
+    Prefix: dir,
   };
 
   const listedObjects = await s3.listObjectsV2( listParams ).promise();
+
   if ( listedObjects.Contents.length === 0 ) return;
 
   listedObjects.Contents.forEach( ( { Key } ) => {
@@ -156,7 +161,7 @@ export const uploadAsset = ( file, key ) => {
   const params = {
     Bucket: AUTHORING_BUCKET,
     Key: key,
-    Body: fileContent
+    Body: fileContent,
   };
 
   // Upload files to the bucket

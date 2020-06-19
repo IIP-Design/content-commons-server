@@ -818,6 +818,18 @@ const VideoResolvers = {
       return ctx.prisma
         .imageFile( { id: parent.id } )
         .use( { ...args } );
+    },
+
+    social( parent, args, ctx ) {
+      return ctx.prisma
+        .imageFile( { id: parent.id } )
+        .social( { ...args } );
+    },
+
+    style( parent, args, ctx ) {
+      return ctx.prisma
+        .imageFile( { id: parent.id } )
+        .style( { ...args } );
     }
   },
 

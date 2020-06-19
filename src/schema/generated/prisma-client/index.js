@@ -49,6 +49,10 @@ var models = [
     embedded: false
   },
   {
+    name: "Copyright",
+    embedded: false
+  },
+  {
     name: "GraphicStyle",
     embedded: false
   },

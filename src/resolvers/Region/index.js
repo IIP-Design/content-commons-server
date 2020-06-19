@@ -1,4 +1,4 @@
-export default {
+const RegionResolvers = {
   Query: {
     regions( parent, args, ctx ) {
       return ctx.prisma.regions( { ...args } );
@@ -38,3 +38,5 @@ export default {
     }
   }
 };
+
+export default RegionResolvers;

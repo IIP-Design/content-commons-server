@@ -1,20 +1,9 @@
 import { publishToChannel, parseMessage } from '.';
 import { prisma } from '../../schema/generated/prisma-client';
-import { getS3ProjectDirectory } from '../../lib/projectParser';
-
-import { VIDEO_UNIT_VIDEO_FILES } from '../../fragments/video';
 
 
-const updateDatabase = async( id, data ) => {
-  await prisma.updateVideoProject( { data, where: { id } } ).catch( err => console.error( err ) );
-};
-
-const _getS3ProjectDirectory = async id => {
-  const units = await prisma.videoProject( { id } ).units()
-    .$fragment( VIDEO_UNIT_VIDEO_FILES );
-
-  return getS3ProjectDirectory( units );
-};
+const updateDatabase = async( id, data ) => prisma.updateGraphicProject( { data, where: { id } } )
+  .catch( err => console.error( err ) );
 
 
 /**
@@ -22,18 +11,17 @@ const _getS3ProjectDirectory = async id => {
  *
  * @param {string} id project id
  * @param {object} data project data
+ * @param {object} status project status
+ * @param {object} projectDirectory path to S3 dir
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async( id, data, status ) => {
-  // data.type: 'video'
-  console.log( '[x] PUBLISHING a publish create request' );
-
-  const projectDirectory = await _getS3ProjectDirectory( id );
+export const publishCreate = async( id, data, status, projectDirectory ) => {
+  console.log( '[x] PUBLISHING a publish GRAPHIC create request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'create.video',
+    routingKey: 'create.graphic',
     data: {
       projectId: id,
       projectStatus: status,
@@ -47,19 +35,16 @@ export const publishCreate = async( id, data, status ) => {
 /**
  * Put publish deletion request on publish.delete queue
  *
- * @param {string} id project id
- * @param {object} data project data
+ * @param {string} id project id to delete
+ * @param {object} projectDirectory path to S3 dir
  *
  */
-export const publishDelete = async id => {
-  console.log( '[x] PUBLISHING a publish delete request' );
-
-  // connect to Rabbit MQ and create a channel
-  const projectDirectory = await _getS3ProjectDirectory( id );
+export const publishDelete = async( id, projectDirectory ) => {
+  console.log( '[x] PUBLISHING a publish GRAPHIC delete request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'delete.video',
+    routingKey: 'delete.graphic',
     data: {
       projectId: id,
       projectDirectory
@@ -68,14 +53,12 @@ export const publishDelete = async id => {
 };
 
 
-export const publishUpdate = async( id, data, status ) => {
-  const projectDirectory = await _getS3ProjectDirectory( id );
-
-  console.log( '[x] PUBLISHING a publish upate request' );
+export const publishUpdate = async( id, data, status, projectDirectory ) => {
+  console.log( '[x] PUBLISHING a publish GRAPHIC upate request' );
 
   await publishToChannel( {
     exchangeName: 'publish',
-    routingKey: 'update.video',
+    routingKey: 'update.graphic',
     data: {
       projectId: id,
       projectStatus: status,

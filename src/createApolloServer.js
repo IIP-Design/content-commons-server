@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { importSchema } from 'graphql-import';
 import path from 'path';
 import jwt from 'jsonwebtoken';
+
 import resolvers from './resolvers';
 import { prisma } from './schema/generated/prisma-client';
 
@@ -11,8 +12,17 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const fetchUser = async req => {
   const { americaCommonsToken } = req.cookies;
 
+  const publicUser = {
+    email: '',
+    permissions: [],
+    isConfirmed: false,
+    lastName: '',
+    firstName: '',
+    id: 'public',
+  };
+
   if ( !americaCommonsToken ) {
-    return null;
+    return publicUser;
   }
 
   let user = null;
@@ -20,6 +30,8 @@ const fetchUser = async req => {
 
   if ( userId ) {
     user = await prisma.user( { id: userId } );
+  } else {
+    user = publicUser;
   }
 
   // return valid user if exists
@@ -45,20 +57,21 @@ const createApolloServer = () => new ApolloServer( {
     // }
 
     const user = await fetchUser( req );
+
     return {
       req,
       res,
       prisma,
-      user
+      user,
     };
   },
   playground: {
     settings: {
       // Needed for auth
       // Docs: https://github.com/prisma/graphql-playground
-      'request.credentials': 'same-origin'
-    }
-  }
+      'request.credentials': 'same-origin',
+    },
+  },
 } );
 
 export default createApolloServer;

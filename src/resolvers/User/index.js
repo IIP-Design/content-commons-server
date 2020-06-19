@@ -1,6 +1,6 @@
-import { requiresLogin } from '../lib/authentication';
+import { requiresLogin } from '../../lib/authentication';
 
-export default {
+const UserResolvers = {
   Query: {
     authenticatedUser( parent, args, ctx ) {
       return ctx.user;
@@ -15,6 +15,7 @@ export default {
     async updateUser( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateUser( { data, where: { id } } );
     },
 
@@ -29,3 +30,5 @@ export default {
     }
   }
 };
+
+export default UserResolvers;

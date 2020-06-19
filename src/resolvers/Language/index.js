@@ -1,4 +1,4 @@
-export default {
+const LanguageResolvers = {
   Query: {
     languages( parent, args, ctx ) {
       return ctx.prisma.languages( { ...args } );
@@ -18,7 +18,7 @@ export default {
   },
 
   Mutation: {
-    async createLanguage ( parent, args, ctx ) {
+    async createLanguage( parent, args, ctx ) {
       const { data } = args;
       const language = await ctx.prisma.createLanguage( {
         ...data
@@ -30,6 +30,7 @@ export default {
     updateLanguage ( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
+
       return ctx.prisma.updateLanguage( {
         data,
         where: { id }
@@ -43,3 +44,5 @@ export default {
     }
   }
 };
+
+export default LanguageResolvers;

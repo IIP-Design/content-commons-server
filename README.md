@@ -74,7 +74,7 @@ Install the following if not already installed
 GraphQL Playground should now be accessible at:
 
 - Public api endpoint (based on application schema) : http://localhost:4000/graphql
-- Prisma database endpoint : http://localhost:4466
+- Everything - Prisma database endpoint : http://localhost:4466
 
 **NOTE:**
 Prisma database endpoint requires authorization. To add authorization to the playground:

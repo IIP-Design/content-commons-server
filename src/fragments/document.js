@@ -40,8 +40,7 @@ export const DOCUMENT_FILE_FULL = `
       use {
         id
         name
-      }
-      md5
+      } 
       url
       signedUrl
     }

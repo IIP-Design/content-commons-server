@@ -12,7 +12,9 @@ import { verifyGoogleToken } from '../services/googleAuth';
 import { verifyCloudflareToken } from '../services/cloudflareAuth';
 import { USER } from '../fragments/user';
 
-const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined ? !process.env.WHITELISTED_EMAILS_ONLY : true;
+const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined
+  ? !process.env.WHITELISTED_EMAILS_ONLY
+  : true;
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 7; // 1 week, matches CloudFlare maxAge
 
 const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_SECRET );
@@ -20,9 +22,10 @@ const generateToken = userId => jwt.sign( { userId }, process.env.PUBLISHER_APP_
 // This should be handled on api server
 const generateESCookie = ctx => {
   const esToken = jwt.sign( { user: process.env.ES_APP_USER }, process.env.ES_APP_SECRET );
+
   ctx.res.cookie( 'ES_TOKEN', esToken, {
     maxAge: COOKIE_MAX_AGE,
-    secure: !process.env.NODE_ENV === 'development'
+    secure: !process.env.NODE_ENV === 'development',
   } );
 };
 
@@ -30,8 +33,9 @@ const createToken = async () => {
   const randomBytesPromiseified = promisify( randomBytes );
   const tempToken = ( await randomBytesPromiseified( 20 ) ).toString( 'hex' );
   const tempTokenExpiry = Date.now() + 86400000; // 1 hour from now
+
   return {
-    tempToken, tempTokenExpiry
+    tempToken, tempTokenExpiry,
   };
 };
 
@@ -41,28 +45,30 @@ const setCookie = ( ctx, jwtToken ) => {
     httpOnly: true, // only allow access to cookie from the server
     maxAge: COOKIE_MAX_AGE,
     secure: !process.env.NODE_ENV === 'development',
-    sameSite: 'Lax'
+    sameSite: 'Lax',
   } );
 };
 
 
-export default {
+const AuthResolvers = {
   Query: {
     async isWhitelisted( parent, args ) {
       if ( !ENFORCE_WHITELIST ) return true;
 
       const { email } = args;
+
       if ( !email ) {
         throw new ApolloError( 'An email address is not available.' );
       }
 
       try {
         const whitelisted = await isEmailWhitelisted( email );
+
         return whitelisted;
       } catch ( err ) {
         throw new ApolloError( err );
       }
-    }
+    },
   },
 
   Mutation: {
@@ -75,13 +81,13 @@ export default {
         throw new AuthenticationError( 'A valid Cloudflare token is not available' );
       }
 
-      // 2. Verify that the Cloudflare token sent is vaild
+      // 2. Verify that the Cloudflare token sent is valid
       const cloudflareUser = await verifyCloudflareToken( token );
 
       if ( !cloudflareUser || cloudflareUser.message ) {
         // cloudflare message is error
         throw new AuthenticationError(
-          `Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.`
+          'Unable to verify Cloudflare Token. Please reload the page or, if the issue persists, contact support.',
         );
       }
 
@@ -99,8 +105,8 @@ export default {
             lastName: '',
             isConfirmed: true,
             permissions: {
-              set: ['SUBSCRIBER']
-            }
+              set: ['SUBSCRIBER'],
+            },
           };
 
           user = await ctx.prisma.createUser( subscriber ).$fragment( USER );
@@ -133,7 +139,7 @@ export default {
         throw new AuthenticationError( 'A valid Google token is not available' );
       }
 
-      // 2. Verify that the google token sent is vaild
+      // 2. Verify that the google token sent is valid
       const googleUser = await verifyGoogleToken( token );
 
       if ( !googleUser ) {
@@ -143,24 +149,26 @@ export default {
       // 3. Verify that the google token sent is within the america.gov domain
       if ( googleUser.hd !== 'america.gov' ) {
         throw new AuthenticationError(
-          'You must first register using your america.gov email account to sign in.'
+          'You must first register using your america.gov email account to sign in.',
         );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( googleUser.email );
+
         if ( !whitelisted ) {
           throw new AuthenticationError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
 
       // 4. Check to see if user is in the db
       const user = await ctx.prisma.user( { email: googleUser.email } );
+
       if ( !user ) {
         throw new AuthenticationError(
-          'You must first register your account before you can sign in.'
+          'You must first register your account before you can sign in.',
         );
       }
 
@@ -194,21 +202,22 @@ export default {
 
       if ( !user && email.includes( 'america.gov' ) ) {
         throw new AuthenticationError(
-          'You must first register your account before you can sign in.'
+          'You must first register your account before you can sign in.',
         );
       }
 
       if ( !user ) {
         throw new AuthenticationError(
-          'You must first register using your america.gov email account to sign in.'
+          'You must first register using your america.gov email account to sign in.',
         );
       }
 
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( email );
+
         if ( !whitelisted ) {
           throw new AuthenticationError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
@@ -219,6 +228,7 @@ export default {
 
       // 2. Check if their password is correct
       const valid = await bcrypt.compare( password, user.password );
+
       if ( !valid ) {
         throw new AuthenticationError( 'Invalid Password!' );
       }
@@ -241,9 +251,10 @@ export default {
     async signUp( parent, args, ctx ) {
       if ( ENFORCE_WHITELIST ) {
         const whitelisted = await isEmailWhitelisted( args.data.email );
+
         if ( !whitelisted ) {
           throw new UserInputError(
-            'This america.gov account is not currently approved during our beta testing period.'
+            'This america.gov account is not currently approved during our beta testing period.',
           );
         }
       }
@@ -254,12 +265,13 @@ export default {
 
         // 1a. Until more permissions are enabled, force to editor
         const userWithTokenEditorOnly = userWithToken;
+
         userWithTokenEditorOnly.permissions.set = ['EDITOR'];
 
         // 2. Create an unconfirmed user in the db
         const user = await ctx.prisma
           .createUser( userWithTokenEditorOnly )
-          .$fragment( `fragment UserSignUp on User { id email team { name } }` );
+          .$fragment( 'fragment UserSignUp on User { id email team { name } }' );
 
         // 3. Email the user
         if ( user ) {
@@ -273,7 +285,7 @@ export default {
         }
 
         return {
-          text: 'Please check your email for a link to confirm your registration'
+          text: 'Please check your email for a link to confirm your registration',
         };
       } catch ( err ) {
         throw new ApolloError( 'There is already a user with that email in the system.' );
@@ -286,6 +298,7 @@ export default {
     signOut( parent, args, ctx ) {
       ctx.res.clearCookie( 'americaCommonsToken' );
       ctx.res.clearCookie( 'ES_TOKEN' );
+
       return 'loggedout';
     },
 
@@ -308,8 +321,8 @@ export default {
       const [user] = await ctx.prisma.users( {
         where: {
           tempToken: args.tempToken,
-          tempTokenExpiry_gte: Date.now() - 3600000
-        }
+          tempTokenExpiry_gte: Date.now() - 3600000,
+        },
       } );
 
       if ( !user ) {
@@ -326,8 +339,8 @@ export default {
           password,
           isConfirmed: true,
           tempToken: null,
-          tempTokenExpiry: null
-        }
+          tempTokenExpiry: null,
+        },
       } );
 
       // 6. Generate JWT
@@ -347,13 +360,14 @@ export default {
      */
     async requestAccountAction( parent, args, ctx ) {
       const {
-        email, subject, body, link, reply, page
+        email, subject, body, link, reply, page,
       } = args;
+
       try {
         // 1. check if there is a user with that email and if they are confirmed.
         const user = await ctx.prisma
           .user( { email } )
-          .$fragment( `fragment UserAccountAction on User { id email team { name } isConfirmed }` );
+          .$fragment( 'fragment UserAccountAction on User { id email team { name } isConfirmed }' );
 
         if ( !user ) {
           throw new AuthenticationError( `No user found for email ${email}` );
@@ -361,7 +375,7 @@ export default {
 
         if ( page === 'passwordreset' && !user.isConfirmed ) {
           throw new AuthenticationError(
-            'You must confirm your account before you can reset your password.'
+            'You must confirm your account before you can reset your password.',
           );
         }
 
@@ -377,8 +391,8 @@ export default {
         const updatedUser = await ctx.prisma.updateUser( {
           data: userWithToken,
           where: {
-            email
-          }
+            email,
+          },
         } );
 
         // 4. Email the user
@@ -394,7 +408,7 @@ export default {
         }
 
         return {
-          text: reply
+          text: reply,
         };
       } catch ( err ) {
         throw new ApolloError( err ); // debugging
@@ -413,7 +427,7 @@ export default {
         return await getSignedUrlPromisePut( {
           contentType,
           filename,
-          projectId
+          projectId,
         } );
       } catch ( err ) {
         console.dir( err );
@@ -422,18 +436,21 @@ export default {
     } ),
 
     getSignedS3UrlGet: requiresLogin( async ( parent, args ) => {
-      const { key } = args;
+      const { bucket, key } = args;
 
       if ( !key ) {
-        throw new ApolloError( `There is no asset availble with key: ${key}` );
+        throw new ApolloError( `There is no asset available with key: ${key}` );
       }
 
       try {
-        const res = await getSignedUrlPromiseGet( { key } );
+        const res = await getSignedUrlPromiseGet( { bucket, key } );
+
         return { key: res.key, url: res.url };
       } catch ( err ) {
         throw new ApolloError( err );
       }
-    } )
-  }
+    } ),
+  },
 };
+
+export default AuthResolvers;

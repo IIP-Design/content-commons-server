@@ -62,7 +62,6 @@ export const VIDEO_PROJECT_FULL = `
         quality
         videoBurnedInStatus
         url
-        md5
         duration
         bitrate
         filesize
@@ -109,8 +108,7 @@ export const VIDEO_PROJECT_FULL = `
           visibility
           use {
             name
-          }
-          md5
+          } 
           url
         }
       }
@@ -118,8 +116,7 @@ export const VIDEO_PROJECT_FULL = `
     supportFiles {
       id
       language { id languageCode locale textDirection displayName nativeName }
-      url
-      md5
+      url 
       filename
       filetype
       filename
@@ -144,7 +141,6 @@ export const VIDEO_PROJECT_FULL = `
       use {
         name
       }
-      md5
       url
     }
     categories {

@@ -11,6 +11,7 @@ import UtilResolvers from './Util';
 import DocumentResolvers from './Document';
 import VideoResolvers from './Video';
 import PackageResolvers from './Package';
+import GraphicResolvers from './Graphic';
 
 const resolvers = merge(
   AuthResolvers,
@@ -24,7 +25,8 @@ const resolvers = merge(
   TeamResolvers,
   DocumentResolvers,
   VideoResolvers,
-  PackageResolvers
+  PackageResolvers,
+  GraphicResolvers
 );
 
 export default resolvers;

@@ -1,5 +1,5 @@
 import { getVimeoId, getYouTubeId } from '../../../lib/projectParser';
-import { maybeGetUrlToProdS3 } from '../index';
+import { maybeGetUrlToProdS3 } from '..';
 
 const ENGLISH_LOCALE = 'en-us';
 const THUMBNAIL_USE = 'Thumbnail/Cover Image';
@@ -14,6 +14,7 @@ function getEmbedUrl( url ) {
   if ( url.includes( 'vimeo' ) ) {
     return `https://player.vimeo.com/video/${getVimeoId( url )}`;
   }
+
   return url;
 }
 
@@ -53,6 +54,7 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
       full: null
     }
   };
+
   if ( !thumbnails || !thumbnails.length ) return esThumb;
 
   if ( hasSize ) {
@@ -72,6 +74,7 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
   } else {
     // Project level thumbnails use ImageFile schema which does not include size
     const image = thumbnails[0];
+
     esThumb.sizes.full = transformThumbnail( image );
     esThumb.name = image.filename;
     esThumb.alt = image.alt;
@@ -79,6 +82,7 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
     esThumb.longdesc = image.longdesc;
     esThumb.visibility = image.visibility || 'PUBLIC';
   }
+
   return esThumb;
 };
 
@@ -92,12 +96,15 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
 const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
   if ( !taxonomyTerms || !taxonomyTerms.length ) return [];
   const terms = [];
+
   taxonomyTerms.forEach( ( { translations = [] } ) => {
     const translation = translations.find( trans => trans.language.id === unitLanguage.id );
+
     if ( translation ) {
       terms.push( translation.name );
     }
   } );
+
   return terms;
 };
 
@@ -117,7 +124,6 @@ const transformVideoFile = file => {
     filetype: file.filetype,
     video_quality: file.quality,
     visibility: file.visibility,
-    md5: file.md5,
     size: {
       width: file.dimensions && file.dimensions.width ? file.dimensions.width : null,
       height: file.dimensions && file.dimensions.height ? file.dimensions.height : null,
@@ -125,6 +131,7 @@ const transformVideoFile = file => {
       bitrate: file.bitrate
     }
   };
+
   file.stream.forEach( stream => {
     if ( stream.site === 'youtube' ) {
       source.stream = {
@@ -140,6 +147,7 @@ const transformVideoFile = file => {
         site: 'vimeo',
         uid: getVimeoId( stream.url )
       };
+
       source.streamUrl.push( streamObj );
       if ( !source.stream ) {
         source.stream = streamObj;
@@ -151,6 +159,7 @@ const transformVideoFile = file => {
       } );
     }
   } );
+
   return source;
 };
 
@@ -173,14 +182,13 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
     thumbnail: null,
     transcript: {
       srcUrl: null,
-      md5: null,
       text: null
     },
     srt: {
-      srcUrl: null,
-      md5: null
-    },
+      srcUrl: null
+    }
   };
+
   if ( publisherUnit.categories && publisherUnit.categories.length > 0 ) {
     esUnit.categories = transformTaxonomy( publisherUnit.categories, publisherUnit.language );
   } else if ( projectCategories && projectCategories.length ) {
@@ -197,9 +205,11 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
   if ( publisherUnit.files ) {
     publisherUnit.files.forEach( file => {
       const src = transformVideoFile( file );
+
       esUnit.source.push( src );
     } );
   }
+
   return esUnit;
 };
 
@@ -211,7 +221,7 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
  * @returns object
  */
 const transformVideo = videoProject => {
-  const now = ( new Date() ).toISOString();
+  const now = new Date().toISOString();
 
   const esData = {
     post_id: videoProject.id,
@@ -219,11 +229,8 @@ const transformVideo = videoProject => {
     type: 'video',
     published: now,
     modified: now,
-    // owner: null,
-    // author: null,
-    // thumbnail: null,
     supportFiles: [],
-    unit: [],
+    unit: []
   };
 
   if ( videoProject.team ) {
@@ -239,7 +246,7 @@ const transformVideo = videoProject => {
     const unit = transformVideoUnit( videoUnit, categories, tags );
 
     // Assign SRTs and Transcripts based on language
-    // TODO: Allow for user assigned SRT/Transcript that would get added at the unit level
+    // TO DO: Allow for user assigned SRT/Transcript that would get added at the unit level
 
     esData.unit.push( unit );
 
@@ -259,15 +266,16 @@ const transformVideo = videoProject => {
 
       if ( srtFile ) return 'srt';
       if ( vttFile ) return 'vtt';
+
       return 'transcript';
     };
 
     esData.supportFiles = videoProject.supportFiles.map( file => ( {
       srcUrl: maybeGetUrlToProdS3( file.url ),
       language: transformLanguage( file.language ),
-      // TODO: Support additional file types in future
+      // TO DO: Support additional file types in future
       supportFileType: setSupportFileType( file ),
-      visibility: file.visibility,
+      visibility: file.visibility
     } ) );
     console.log( videoProject.supportFiles );
     console.log( esData.supportFiles );
@@ -276,11 +284,13 @@ const transformVideo = videoProject => {
   // If still no project thumbnail, try to use the project level ImageFiles
   if ( !esData.thumbnail && videoProject.thumbnails && videoProject.thumbnails.length > 0 ) {
     const thumbs = videoProject.thumbnails.filter( thumb => thumb.use.name === THUMBNAIL_USE );
+
     esData.thumbnail = transformThumbnails( thumbs, false );
   }
 
   console.log( 'videoProject', JSON.stringify( videoProject, null, 2 ) );
   console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
+
   return esData;
 };
 

@@ -1,4 +1,4 @@
-import { getUrlToProdS3 } from '../index';
+import { getUrlToProdS3 } from '..';
 
 const english = {
   language_code: 'en',
@@ -19,12 +19,15 @@ const english = {
 const transformTaxonomy = ( taxonomyTerms, language ) => {
   if ( !taxonomyTerms || !taxonomyTerms.length ) return [];
   const terms = [];
+
   taxonomyTerms.forEach( ( { translations = [] } ) => {
     const translation = translations.find( trans => trans.language.id === language.id );
+
     if ( translation ) {
       terms.push( translation.name );
     }
   } );
+
   return terms;
 };
 
@@ -76,6 +79,7 @@ const transformDocument = ( document, team ) => {
   if ( bureaus && bureaus.length ) {
     doc.bureaus = bureaus.map( bureau => {
       const { id, name, abbr } = bureau;
+
       return { id, name, abbr };
     } );
   }
@@ -83,6 +87,7 @@ const transformDocument = ( document, team ) => {
   if ( countries && countries.length ) {
     doc.countries = countries.map( country => {
       const { id, name, abbr } = country;
+
       return { id, name, abbr };
     } );
   }
@@ -125,6 +130,7 @@ const transformPackage = pkg => {
 
   console.log( 'package', JSON.stringify( pkg, null, 2 ) );
   console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
+
   return esData;
 };
 

@@ -1,5 +1,13 @@
 import gql from 'graphql-tag';
 
+export const TEAM_FRAGMENT = gql`
+  fragment teamDetails on Team {
+    id
+    name
+    organization
+  }
+`;
+
 export const LANGUAGE_FRAGMENT = gql`
   fragment languageDetails on Language {
     id
@@ -62,6 +70,34 @@ export const IMAGE_DETAILS_FRAGMENT = gql`
     url
     signedUrl
     language { ...languageDetails }
+    style {
+      id
+      name
+    }
+    social {
+      id
+      name
+    }
+  }
+  ${LANGUAGE_FRAGMENT}
+`;
+
+export const SUPPORT_FILE_FRAGMENT = gql`
+  fragment supportFileDetails on SupportFile {
+    id
+    createdAt
+    updatedAt
+    url
+    signedUrl
+    filename
+    filetype
+    filesize
+    visibility
+    use {
+      id
+      name
+    }
+    language { ...languageDetails }  
   }
   ${LANGUAGE_FRAGMENT}
 `;

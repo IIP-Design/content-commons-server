@@ -1,94 +1,6 @@
-import * as query from './queries/taxonomy';
+import * as query from '../mocks/mockQueries/taxonomy';
+import { categories, tags, languages } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
-
-const enLanguage = {
-  id: 'ck2lzfx710hkq07206thus6pt',
-  languageCode: 'en',
-  locale: 'en-us',
-  textDirection: 'LTR',
-  displayName: 'English',
-  nativeName: 'English'
-};
-const frLanguage = {
-  id: 'ck2lzfx710hkp07206oo0icbv',
-  languageCode: 'fr',
-  locale: 'fr-fr',
-  textDirection: 'LTR',
-  displayName: 'French',
-  nativeName: 'Français'
-};
-
-// categories
-const aboutAmerica = [
-  {
-    id: 'ck2lzfxab0hls0720o2sjmoqw',
-    name: 'about america',
-    language: enLanguage
-  },
-  {
-    id: 'ck2lzfxc90hm60720onv6tbro',
-    name: 'Amérique',
-    language: frLanguage
-  }
-];
-const artsCulture = [
-  {
-    id: 'ck2lzfxhj0hnq0720ea5fakmi',
-    name: 'arts & culture',
-    language: enLanguage
-  },
-  {
-    id: 'ck2lzfxj90ho40720w9yrade3',
-    name: 'Arts et culture',
-    language: frLanguage
-  }
-];
-const categories = [
-  {
-    id: 'ck2lzgu1c0re307202dlrnue2',
-    translations: aboutAmerica
-  },
-  {
-    id: 'ck2lzgu1c0re40720g36mhagr',
-    translations: artsCulture
-  }
-];
-
-// tags
-const americanCulture = [
-  {
-    id: 'ck2lzfzwr0iey0720hrigffxo',
-    name: 'american culture',
-    language: enLanguage
-  },
-  {
-    id: 'ck2lzfzxz0ifc0720ufzpx34l',
-    name: 'Culture américaine',
-    language: frLanguage
-  }
-];
-const englishLearning = [
-  {
-    id: 'ck2lzg03a0igw0720t5c0s2r2',
-    name: 'english learning',
-    language: enLanguage
-  },
-  {
-    id: 'ck2lzg04f0iha0720zkvmiruy',
-    name: 'Anglais langue étrangère',
-    language: frLanguage
-  }
-];
-const tags = [
-  {
-    id: 'ck2lzgu1i0rei07206gvy1ygg',
-    translations: americanCulture
-  },
-  {
-    id: 'ck2lzgu1i0rej0720evrgjbyb',
-    translations: englishLearning
-  }
-];
 
 describe( 'Query:', () => {
   it( 'categories returns the correct categories', async () => {
@@ -98,19 +10,22 @@ describe( 'Query:', () => {
         category: jest.fn( () => ( {
           translations: jest.fn( () => {
             if ( ctx.prisma.category.mock.calls.length % 2 > 0 ) {
-              return aboutAmerica;
+              return categories[0].translations;
             }
-            return artsCulture;
+
+            return categories[1].translations;
           } )
         } ) ),
         categories: jest.fn( () => categories ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) )
       }
@@ -131,15 +46,17 @@ describe( 'Query:', () => {
       prisma: {
         category: jest.fn( () => ( {
           ...category,
-          translations: jest.fn( () => aboutAmerica )
+          translations: jest.fn( () => categories[0].translations )
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) )
       }
@@ -163,19 +80,22 @@ describe( 'Query:', () => {
         tag: jest.fn( () => ( {
           translations: jest.fn( () => {
             if ( ctx.prisma.tag.mock.calls.length % 2 > 0 ) {
-              return americanCulture;
+              return tags[0].translations;
             }
-            return englishLearning;
+
+            return tags[1].translations;
           } )
         } ) ),
         tags: jest.fn( () => tags ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) )
       }
@@ -196,15 +116,17 @@ describe( 'Query:', () => {
       prisma: {
         tag: jest.fn( () => ( {
           ...tag,
-          translations: jest.fn( () => americanCulture )
+          translations: jest.fn( () => tags[0].translations )
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) )
       }
@@ -224,8 +146,8 @@ describe( 'Query:', () => {
 
 describe( 'Mutation:', () => {
   const translations = [
-    { ...aboutAmerica[0], name: 'new' },
-    { ...aboutAmerica[1], name: 'nouvelle' }
+    { ...categories[0].translations[0], name: 'new' },
+    { ...categories[0].translations[1], name: 'nouvelle' }
   ];
 
   it( 'createCategory creates a category', async () => {
@@ -233,8 +155,8 @@ describe( 'Mutation:', () => {
       ...categories[0],
       translations: {
         connect: [
-          { id: enLanguage.id },
-          { id: frLanguage.id }
+          { id: languages.english.id },
+          { id: languages.french.id }
         ]
       }
     };
@@ -248,10 +170,12 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) ),
         createCategory: jest.fn( () => ( { ...category } ) ),
@@ -290,16 +214,18 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) ),
         updateCategory: jest.fn( () => ( {
           ...category,
           translations: translations.slice( 0, 1 )
-        } ) ),
+        } ) )
       }
     };
     const server = createTestServer( ctx );
@@ -327,8 +253,8 @@ describe( 'Mutation:', () => {
       ...tags[1],
       translations: {
         connect: [
-          { id: enLanguage.id },
-          { id: frLanguage.id }
+          { id: languages.english.id },
+          { id: languages.french.id }
         ]
       }
     };
@@ -342,10 +268,12 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) ),
         createTag: jest.fn( () => ( { ...tag } ) ),
@@ -384,16 +312,18 @@ describe( 'Mutation:', () => {
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
             const count = ctx.prisma.languageTranslation.mock.calls.length;
+
             if ( count % 2 > 0 ) {
-              return enLanguage;
+              return languages.english;
             }
-            return frLanguage;
+
+            return languages.french;
           } )
         } ) ),
         updateTag: jest.fn( () => ( {
           ...tag,
           translations: translations.slice( 0, 1 )
-        } ) ),
+        } ) )
       }
     };
     const server = createTestServer( ctx );

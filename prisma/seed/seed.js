@@ -6,15 +6,19 @@ import seedTeams from './seedTeams';
 import seedBureaus from './seedBureaus';
 import seedUses from './seedUses';
 import seedRegions from './seedRegions';
+import seedGraphicStyles from "./seedGraphicStyles";
+import seedSocialPlatforms from './seedSocialPlatorms';
 
 export const files = {
   teams: './prisma/data/teams.csv',
   bureaus: './prisma/data/bureaus.csv',
   languages: './prisma/data/languages.csv',
   categories: './prisma/data/categories.csv',
+  graphicStyles: './prisma/data/graphicStyles.csv',
   tags: './prisma/data/tags.csv',
   uses: './prisma/data/uses.csv',
-  regions: './prisma/data/regions.csv'
+  regions: './prisma/data/regions.csv',
+  socialPlatforms: './prisma/data/socialPlatforms.csv'
 };
 
 /**
@@ -26,6 +30,8 @@ export const files = {
  * ./data/tags.csv
  * ./data/teams.csv
  * ./data/uses.csv
+ * ./data/socialPlatforms.csv
+ * ./data/graphicStyles.csv
  */
 ( async () => {
   const promises = [];
@@ -85,6 +91,25 @@ export const files = {
     promises.push( usesProm );
   } else {
     console.error( `CSV not found: ${files.uses}\nUses were not processed.` );
+  }
+
+  if ( fs.existsSync( files.graphicStyles ) ) {
+    const graphicStylesProm = seedGraphicStyles()
+      .then((graphicStyles) => {
+        console.log(`Created/updated ${graphicStyles.length} graphicStyles`);
+      })
+      .catch((err) => console.log(err));
+    promises.push( graphicStylesProm );
+  } else {
+    console.error( `CSV not found: ${files.graphicStyles}\ngraphicStyles were not processed.` );
+    
+  if ( fs.existsSync( files.socialPlatforms ) ) {
+    const socialPlatformsProm = seedSocialPlatforms().then( socialPlatforms => {
+      console.log( `Created/updated ${socialPlatforms.length} socialPlatforms` );
+    } ).catch( err => console.log( err ) );
+    promises.push( socialPlatformsProm );
+  } else {
+    console.error( `CSV not found: ${files.socialPlatforms}\nsocialPlatforms were not processed.` );
   }
 
   if ( fs.existsSync( files.languages ) ) {

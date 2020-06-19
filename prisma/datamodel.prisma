@@ -68,14 +68,19 @@ enum ThumbnailSize {
   FULL
 }
 
+enum Copyright {
+  COPYRIGHT
+  NO_COPYRIGHT
+}
+
 type GraphicStyle {
   id: ID! @id
-  name: String!
+  name: String! @unique
 }
 
 type SocialPlatform {
   id: ID! @id
-  name: String!
+  name: String! @unique
 }
 
 type Country {
@@ -199,12 +204,12 @@ type GraphicProject {
   publishedAt: DateTime
   type: ProjectType! @default(value: SOCIAL_MEDIA)
   title: String!
-  copyright: String 
+  copyright: Copyright @default(value: COPYRIGHT)
   alt: String
   descPublic: String
   descInternal: String
   assetPath: String
-  author: User #[User|Author] # more than 1 author?
+  author: User
   team: Team
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: PUBLIC)
@@ -299,12 +304,12 @@ type VideoFile {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String 
+  md5: String 
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
   stream: [VideoStream] @relation(onDelete: CASCADE)
-  md5: String
 }
 
 type ImageFile {
@@ -319,14 +324,15 @@ type ImageFile {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
-  filesize: Float 
-  use: ImageUse 
-  quality: ImageQuality @default(value: WEB) 
-  style: GraphicStyle
-  social: SocialPlatform
+  filesize: Float
+  use: ImageUse
   md5: String
+  quality: ImageQuality @default(value: WEB)
+  style: GraphicStyle
+  social: [SocialPlatform]
 }
 
 type SupportFile {
@@ -336,12 +342,13 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String # srt, pdf
   filesize: Float
   visibility: Visibility @default(value: PUBLIC)
+  editable: Boolean @default(value: false)
   use: SupportFileUse
-  md5: String
 }
 
 type DocumentFile {

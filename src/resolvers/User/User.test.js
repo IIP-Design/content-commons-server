@@ -1,18 +1,15 @@
-import * as query from './queries/user';
+import * as query from '../mocks/mockQueries/user';
+import { teams as mockTeams, users as mockUsers } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
 const teams = [
   {
-    id: 'ck2qgfbku0ubh0720iwhkvuyn',
-    name: 'GPA Press Office',
-    organization: 'Department of State',
+    ...mockTeams[11],
     contentTypes: ['PACKAGE'],
     isConfirmed: true
   },
   {
-    id: 'ck2lzfx640hig0720fw7j98yt',
-    name: 'GPA Video',
-    organization: 'Department of State',
+    ...mockTeams[0],
     contentTypes: ['VIDEO'],
     isConfirmed: true
   }
@@ -20,27 +17,11 @@ const teams = [
 
 const users = [
   {
-    id: 'ck2m042xo0rnp0720nb4gxjix',
-    firstName: 'Joe',
-    lastName: 'Schmoe',
-    email: 'schmoej@america.gov',
-    jobTitle: '',
-    country: 'United States',
-    city: 'Washington, DC',
-    howHeard: '',
-    permissions: ['EDITOR'],
+    ...mockUsers[0],
     team: teams[0]
   },
   {
-    id: 'ck2m93ks81ks9akldi19skdk2k',
-    firstName: 'Jane',
-    lastName: 'Doe',
-    email: 'doej@america.gov',
-    jobTitle: '',
-    country: 'United States',
-    city: 'Washington, DC',
-    howHeard: '',
-    permissions: ['ADMIN'],
+    ...mockUsers[1],
     team: teams[1]
   }
 ];
@@ -73,6 +54,7 @@ describe( 'Query:', () => {
             if ( ctx.prisma.user.mock.calls.length % 2 > 0 ) {
               return teams[0];
             }
+
             return teams[1];
           } )
         } ) ),

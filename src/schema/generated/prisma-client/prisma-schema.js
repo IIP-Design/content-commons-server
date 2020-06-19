@@ -504,6 +504,11 @@ enum ContentType {
   PACKAGE
 }
 
+enum Copyright {
+  COPYRIGHT
+  NO_COPYRIGHT
+}
+
 type Country {
   id: ID!
   name: String!
@@ -1712,7 +1717,7 @@ type GraphicProject {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1738,7 +1743,7 @@ input GraphicProjectCreateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1794,7 +1799,7 @@ type GraphicProjectPreviousValues {
   publishedAt: DateTime
   type: ProjectType!
   title: String!
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1825,7 +1830,7 @@ input GraphicProjectUpdateInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1844,7 +1849,7 @@ input GraphicProjectUpdateManyMutationInput {
   publishedAt: DateTime
   type: ProjectType
   title: String
-  copyright: String
+  copyright: Copyright
   alt: String
   descPublic: String
   descInternal: String
@@ -1910,20 +1915,10 @@ input GraphicProjectWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  copyright: String
-  copyright_not: String
-  copyright_in: [String!]
-  copyright_not_in: [String!]
-  copyright_lt: String
-  copyright_lte: String
-  copyright_gt: String
-  copyright_gte: String
-  copyright_contains: String
-  copyright_not_contains: String
-  copyright_starts_with: String
-  copyright_not_starts_with: String
-  copyright_ends_with: String
-  copyright_not_ends_with: String
+  copyright: Copyright
+  copyright_not: Copyright
+  copyright_in: [Copyright!]
+  copyright_not_in: [Copyright!]
   alt: String
   alt_not: String
   alt_in: [String!]
@@ -2129,6 +2124,7 @@ input GraphicStyleWhereInput {
 
 input GraphicStyleWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type ImageFile {
@@ -2143,14 +2139,15 @@ type ImageFile {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
   use: ImageUse
+  md5: String
   quality: ImageQuality
   style: GraphicStyle
-  social: SocialPlatform
-  md5: String
+  social(where: SocialPlatformWhereInput, orderBy: SocialPlatformOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SocialPlatform!]
 }
 
 type ImageFileConnection {
@@ -2169,14 +2166,15 @@ input ImageFileCreateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
   use: ImageUseCreateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleCreateOneInput
-  social: SocialPlatformCreateOneInput
-  md5: String
+  social: SocialPlatformCreateManyInput
 }
 
 input ImageFileCreateManyInput {
@@ -2213,16 +2211,18 @@ enum ImageFileOrderByInput {
   longdesc_DESC
   caption_ASC
   caption_DESC
+  title_ASC
+  title_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
   filetype_DESC
   filesize_ASC
   filesize_DESC
-  quality_ASC
-  quality_DESC
   md5_ASC
   md5_DESC
+  quality_ASC
+  quality_DESC
 }
 
 type ImageFilePreviousValues {
@@ -2235,11 +2235,12 @@ type ImageFilePreviousValues {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
-  quality: ImageQuality
   md5: String
+  quality: ImageQuality
 }
 
 input ImageFileScalarWhereInput {
@@ -2347,6 +2348,20 @@ input ImageFileScalarWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -2383,10 +2398,6 @@ input ImageFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  quality: ImageQuality
-  quality_not: ImageQuality
-  quality_in: [ImageQuality!]
-  quality_not_in: [ImageQuality!]
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -2401,6 +2412,10 @@ input ImageFileScalarWhereInput {
   md5_not_starts_with: String
   md5_ends_with: String
   md5_not_ends_with: String
+  quality: ImageQuality
+  quality_not: ImageQuality
+  quality_in: [ImageQuality!]
+  quality_not_in: [ImageQuality!]
   AND: [ImageFileScalarWhereInput!]
   OR: [ImageFileScalarWhereInput!]
   NOT: [ImageFileScalarWhereInput!]
@@ -2433,14 +2448,15 @@ input ImageFileUpdateDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
   use: ImageUseUpdateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
-  social: SocialPlatformUpdateOneInput
-  md5: String
+  social: SocialPlatformUpdateManyInput
 }
 
 input ImageFileUpdateInput {
@@ -2452,14 +2468,15 @@ input ImageFileUpdateInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
   use: ImageUseUpdateOneInput
+  md5: String
   quality: ImageQuality
   style: GraphicStyleUpdateOneInput
-  social: SocialPlatformUpdateOneInput
-  md5: String
+  social: SocialPlatformUpdateManyInput
 }
 
 input ImageFileUpdateManyDataInput {
@@ -2469,11 +2486,12 @@ input ImageFileUpdateManyDataInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
-  quality: ImageQuality
   md5: String
+  quality: ImageQuality
 }
 
 input ImageFileUpdateManyInput {
@@ -2495,11 +2513,12 @@ input ImageFileUpdateManyMutationInput {
   alt: String
   longdesc: String
   caption: String
+  title: String
   filename: String
   filetype: String
   filesize: Float
-  quality: ImageQuality
   md5: String
+  quality: ImageQuality
 }
 
 input ImageFileUpdateManyWithWhereNestedInput {
@@ -2639,6 +2658,20 @@ input ImageFileWhereInput {
   caption_not_starts_with: String
   caption_ends_with: String
   caption_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -2676,12 +2709,6 @@ input ImageFileWhereInput {
   filesize_gt: Float
   filesize_gte: Float
   use: ImageUseWhereInput
-  quality: ImageQuality
-  quality_not: ImageQuality
-  quality_in: [ImageQuality!]
-  quality_not_in: [ImageQuality!]
-  style: GraphicStyleWhereInput
-  social: SocialPlatformWhereInput
   md5: String
   md5_not: String
   md5_in: [String!]
@@ -2696,6 +2723,14 @@ input ImageFileWhereInput {
   md5_not_starts_with: String
   md5_ends_with: String
   md5_not_ends_with: String
+  quality: ImageQuality
+  quality_not: ImageQuality
+  quality_in: [ImageQuality!]
+  quality_not_in: [ImageQuality!]
+  style: GraphicStyleWhereInput
+  social_every: SocialPlatformWhereInput
+  social_some: SocialPlatformWhereInput
+  social_none: SocialPlatformWhereInput
   AND: [ImageFileWhereInput!]
   OR: [ImageFileWhereInput!]
   NOT: [ImageFileWhereInput!]
@@ -4144,9 +4179,9 @@ input SocialPlatformCreateInput {
   name: String!
 }
 
-input SocialPlatformCreateOneInput {
-  create: SocialPlatformCreateInput
-  connect: SocialPlatformWhereUniqueInput
+input SocialPlatformCreateManyInput {
+  create: [SocialPlatformCreateInput!]
+  connect: [SocialPlatformWhereUniqueInput!]
 }
 
 type SocialPlatformEdge {
@@ -4164,6 +4199,40 @@ enum SocialPlatformOrderByInput {
 type SocialPlatformPreviousValues {
   id: ID!
   name: String!
+}
+
+input SocialPlatformScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [SocialPlatformScalarWhereInput!]
+  OR: [SocialPlatformScalarWhereInput!]
+  NOT: [SocialPlatformScalarWhereInput!]
 }
 
 type SocialPlatformSubscriptionPayload {
@@ -4192,20 +4261,38 @@ input SocialPlatformUpdateInput {
   name: String
 }
 
+input SocialPlatformUpdateManyDataInput {
+  name: String
+}
+
+input SocialPlatformUpdateManyInput {
+  create: [SocialPlatformCreateInput!]
+  update: [SocialPlatformUpdateWithWhereUniqueNestedInput!]
+  upsert: [SocialPlatformUpsertWithWhereUniqueNestedInput!]
+  delete: [SocialPlatformWhereUniqueInput!]
+  connect: [SocialPlatformWhereUniqueInput!]
+  set: [SocialPlatformWhereUniqueInput!]
+  disconnect: [SocialPlatformWhereUniqueInput!]
+  deleteMany: [SocialPlatformScalarWhereInput!]
+  updateMany: [SocialPlatformUpdateManyWithWhereNestedInput!]
+}
+
 input SocialPlatformUpdateManyMutationInput {
   name: String
 }
 
-input SocialPlatformUpdateOneInput {
-  create: SocialPlatformCreateInput
-  update: SocialPlatformUpdateDataInput
-  upsert: SocialPlatformUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: SocialPlatformWhereUniqueInput
+input SocialPlatformUpdateManyWithWhereNestedInput {
+  where: SocialPlatformScalarWhereInput!
+  data: SocialPlatformUpdateManyDataInput!
 }
 
-input SocialPlatformUpsertNestedInput {
+input SocialPlatformUpdateWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput!
+  data: SocialPlatformUpdateDataInput!
+}
+
+input SocialPlatformUpsertWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput!
   update: SocialPlatformUpdateDataInput!
   create: SocialPlatformCreateInput!
 }
@@ -4246,6 +4333,7 @@ input SocialPlatformWhereInput {
 
 input SocialPlatformWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type Subscription {
@@ -4286,12 +4374,13 @@ type SupportFile {
   language: Language!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUse
-  md5: String
 }
 
 type SupportFileConnection {
@@ -4305,12 +4394,13 @@ input SupportFileCreateInput {
   language: LanguageCreateOneInput!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseCreateOneInput
-  md5: String
 }
 
 input SupportFileCreateManyInput {
@@ -4334,6 +4424,8 @@ enum SupportFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
+  md5_ASC
+  md5_DESC
   filename_ASC
   filename_DESC
   filetype_ASC
@@ -4342,8 +4434,8 @@ enum SupportFileOrderByInput {
   filesize_DESC
   visibility_ASC
   visibility_DESC
-  md5_ASC
-  md5_DESC
+  editable_ASC
+  editable_DESC
 }
 
 type SupportFilePreviousValues {
@@ -4352,11 +4444,12 @@ type SupportFilePreviousValues {
   updatedAt: DateTime!
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
-  md5: String
+  editable: Boolean
 }
 
 input SupportFileScalarWhereInput {
@@ -4418,6 +4511,20 @@ input SupportFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -4458,20 +4565,8 @@ input SupportFileScalarWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
+  editable: Boolean
+  editable_not: Boolean
   AND: [SupportFileScalarWhereInput!]
   OR: [SupportFileScalarWhereInput!]
   NOT: [SupportFileScalarWhereInput!]
@@ -4499,34 +4594,37 @@ input SupportFileUpdateDataInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseUpdateOneInput
-  md5: String
 }
 
 input SupportFileUpdateInput {
   language: LanguageUpdateOneRequiredInput
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
+  editable: Boolean
   use: SupportFileUseUpdateOneInput
-  md5: String
 }
 
 input SupportFileUpdateManyDataInput {
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
-  md5: String
+  editable: Boolean
 }
 
 input SupportFileUpdateManyInput {
@@ -4544,11 +4642,12 @@ input SupportFileUpdateManyInput {
 input SupportFileUpdateManyMutationInput {
   url: String
   signedUrl: String
+  md5: String
   filename: String
   filetype: String
   filesize: Float
   visibility: Visibility
-  md5: String
+  editable: Boolean
 }
 
 input SupportFileUpdateManyWithWhereNestedInput {
@@ -4748,6 +4847,20 @@ input SupportFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   filename: String
   filename_not: String
   filename_in: [String!]
@@ -4788,21 +4901,9 @@ input SupportFileWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
+  editable: Boolean
+  editable_not: Boolean
   use: SupportFileUseWhereInput
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   AND: [SupportFileWhereInput!]
   OR: [SupportFileWhereInput!]
   NOT: [SupportFileWhereInput!]
@@ -5915,12 +6016,12 @@ type VideoFile {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: Dimensions
   stream(where: VideoStreamWhereInput, orderBy: VideoStreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoStream!]
-  md5: String
 }
 
 type VideoFileConnection {
@@ -5940,12 +6041,12 @@ input VideoFileCreateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsCreateOneInput
   stream: VideoStreamCreateManyInput
-  md5: String
 }
 
 input VideoFileCreateManyInput {
@@ -5979,14 +6080,14 @@ enum VideoFileOrderByInput {
   url_DESC
   signedUrl_ASC
   signedUrl_DESC
+  md5_ASC
+  md5_DESC
   duration_ASC
   duration_DESC
   bitrate_ASC
   bitrate_DESC
   filesize_ASC
   filesize_DESC
-  md5_ASC
-  md5_DESC
 }
 
 type VideoFilePreviousValues {
@@ -6000,10 +6101,10 @@ type VideoFilePreviousValues {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
-  md5: String
 }
 
 input VideoFileScalarWhereInput {
@@ -6105,6 +6206,20 @@ input VideoFileScalarWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
@@ -6129,20 +6244,6 @@ input VideoFileScalarWhereInput {
   filesize_lte: Float
   filesize_gt: Float
   filesize_gte: Float
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   AND: [VideoFileScalarWhereInput!]
   OR: [VideoFileScalarWhereInput!]
   NOT: [VideoFileScalarWhereInput!]
@@ -6176,12 +6277,12 @@ input VideoFileUpdateDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
   stream: VideoStreamUpdateManyInput
-  md5: String
 }
 
 input VideoFileUpdateInput {
@@ -6194,12 +6295,12 @@ input VideoFileUpdateInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
   dimensions: DimensionsUpdateOneInput
   stream: VideoStreamUpdateManyInput
-  md5: String
 }
 
 input VideoFileUpdateManyDataInput {
@@ -6210,10 +6311,10 @@ input VideoFileUpdateManyDataInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
-  md5: String
 }
 
 input VideoFileUpdateManyInput {
@@ -6236,10 +6337,10 @@ input VideoFileUpdateManyMutationInput {
   videoBurnedInStatus: VideoBurnedInStatus
   url: String
   signedUrl: String
+  md5: String
   duration: Float
   bitrate: Float
   filesize: Float
-  md5: String
 }
 
 input VideoFileUpdateManyWithWhereNestedInput {
@@ -6359,6 +6460,20 @@ input VideoFileWhereInput {
   signedUrl_not_starts_with: String
   signedUrl_ends_with: String
   signedUrl_not_ends_with: String
+  md5: String
+  md5_not: String
+  md5_in: [String!]
+  md5_not_in: [String!]
+  md5_lt: String
+  md5_lte: String
+  md5_gt: String
+  md5_gte: String
+  md5_contains: String
+  md5_not_contains: String
+  md5_starts_with: String
+  md5_not_starts_with: String
+  md5_ends_with: String
+  md5_not_ends_with: String
   duration: Float
   duration_not: Float
   duration_in: [Float!]
@@ -6387,20 +6502,6 @@ input VideoFileWhereInput {
   stream_every: VideoStreamWhereInput
   stream_some: VideoStreamWhereInput
   stream_none: VideoStreamWhereInput
-  md5: String
-  md5_not: String
-  md5_in: [String!]
-  md5_not_in: [String!]
-  md5_lt: String
-  md5_lte: String
-  md5_gt: String
-  md5_gte: String
-  md5_contains: String
-  md5_not_contains: String
-  md5_starts_with: String
-  md5_not_starts_with: String
-  md5_ends_with: String
-  md5_not_ends_with: String
   AND: [VideoFileWhereInput!]
   OR: [VideoFileWhereInput!]
   NOT: [VideoFileWhereInput!]
