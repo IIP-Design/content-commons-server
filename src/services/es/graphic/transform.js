@@ -86,6 +86,11 @@ const transformTaxonomy = ( taxonomyTerms, locale ) => {
   return terms;
 };
 
+const transformDesc = desc => {
+  const { content, visibility } = desc;
+
+  return { content, visibility };
+};
 
 /**
  * Transforms data from a GraphicProject into a format accepted by the Public API
@@ -120,8 +125,6 @@ const transformGraphic = graphicProject => {
     published: now,
     modified: now,
     created: createdAt,
-    descPublic,
-    descInternal,
     copyright,
     visibility,
     owner: team && team.name ? team.name : '',
@@ -130,6 +133,14 @@ const transformGraphic = graphicProject => {
     categories: transformTaxonomy( categories, 'en-us' ),
     tags: transformTaxonomy( tags, 'en-us' ),
   };
+
+  if ( descPublic && descPublic.content ) {
+    esData.descPublic = transformDesc( descPublic );
+  }
+
+  if ( descInternal && descInternal.content ) {
+    esData.descInternal = transformDesc( descInternal );
+  }
 
   if ( supportFiles && supportFiles.length ) {
     esData.supportFiles = supportFiles.map( file => transformSupportFile( file ) );

@@ -53,6 +53,10 @@ var models = [
     embedded: false
   },
   {
+    name: "ContentField",
+    embedded: false
+  },
+  {
     name: "GraphicStyle",
     embedded: false
   },

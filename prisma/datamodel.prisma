@@ -73,6 +73,13 @@ enum Copyright {
   NO_COPYRIGHT
 }
 
+type ContentField {
+  id: ID! @id
+  type: String  
+  visibility: Visibility @default(value: PUBLIC)
+  content: String
+}
+
 type GraphicStyle {
   id: ID! @id
   name: String! @unique
@@ -205,9 +212,9 @@ type GraphicProject {
   type: ProjectType! @default(value: SOCIAL_MEDIA)
   title: String!
   copyright: Copyright @default(value: COPYRIGHT)
-  alt: String
-  descPublic: String
-  descInternal: String
+  alt: String 
+  descPublic: ContentField @relation(name: "GraphicProjectPublicDescToContentField")
+  descInternal: ContentField @relation(name: "GraphicProjectInternalDescToContentField") 
   assetPath: String
   author: User
   team: Team

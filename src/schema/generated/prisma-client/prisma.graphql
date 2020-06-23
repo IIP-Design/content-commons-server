@@ -6,6 +6,10 @@ type AggregateCategory {
   count: Int!
 }
 
+type AggregateContentField {
+  count: Int!
+}
+
 type AggregateCountry {
   count: Int!
 }
@@ -487,6 +491,160 @@ input CategoryWhereInput {
 }
 
 input CategoryWhereUniqueInput {
+  id: ID
+}
+
+type ContentField {
+  id: ID!
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+type ContentFieldConnection {
+  pageInfo: PageInfo!
+  edges: [ContentFieldEdge]!
+  aggregate: AggregateContentField!
+}
+
+input ContentFieldCreateInput {
+  id: ID
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+input ContentFieldCreateOneInput {
+  create: ContentFieldCreateInput
+  connect: ContentFieldWhereUniqueInput
+}
+
+type ContentFieldEdge {
+  node: ContentField!
+  cursor: String!
+}
+
+enum ContentFieldOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  visibility_ASC
+  visibility_DESC
+  content_ASC
+  content_DESC
+}
+
+type ContentFieldPreviousValues {
+  id: ID!
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+type ContentFieldSubscriptionPayload {
+  mutation: MutationType!
+  node: ContentField
+  updatedFields: [String!]
+  previousValues: ContentFieldPreviousValues
+}
+
+input ContentFieldSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ContentFieldWhereInput
+  AND: [ContentFieldSubscriptionWhereInput!]
+  OR: [ContentFieldSubscriptionWhereInput!]
+  NOT: [ContentFieldSubscriptionWhereInput!]
+}
+
+input ContentFieldUpdateDataInput {
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+input ContentFieldUpdateInput {
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+input ContentFieldUpdateManyMutationInput {
+  type: String
+  visibility: Visibility
+  content: String
+}
+
+input ContentFieldUpdateOneInput {
+  create: ContentFieldCreateInput
+  update: ContentFieldUpdateDataInput
+  upsert: ContentFieldUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ContentFieldWhereUniqueInput
+}
+
+input ContentFieldUpsertNestedInput {
+  update: ContentFieldUpdateDataInput!
+  create: ContentFieldCreateInput!
+}
+
+input ContentFieldWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  AND: [ContentFieldWhereInput!]
+  OR: [ContentFieldWhereInput!]
+  NOT: [ContentFieldWhereInput!]
+}
+
+input ContentFieldWhereUniqueInput {
   id: ID
 }
 
@@ -1714,8 +1872,8 @@ type GraphicProject {
   title: String!
   copyright: Copyright
   alt: String
-  descPublic: String
-  descInternal: String
+  descPublic: ContentField
+  descInternal: ContentField
   assetPath: String
   author: User
   team: Team
@@ -1740,8 +1898,8 @@ input GraphicProjectCreateInput {
   title: String!
   copyright: Copyright
   alt: String
-  descPublic: String
-  descInternal: String
+  descPublic: ContentFieldCreateOneInput
+  descInternal: ContentFieldCreateOneInput
   assetPath: String
   author: UserCreateOneInput
   team: TeamCreateOneInput
@@ -1775,10 +1933,6 @@ enum GraphicProjectOrderByInput {
   copyright_DESC
   alt_ASC
   alt_DESC
-  descPublic_ASC
-  descPublic_DESC
-  descInternal_ASC
-  descInternal_DESC
   assetPath_ASC
   assetPath_DESC
   status_ASC
@@ -1796,8 +1950,6 @@ type GraphicProjectPreviousValues {
   title: String!
   copyright: Copyright
   alt: String
-  descPublic: String
-  descInternal: String
   assetPath: String
   status: PublishStatus
   visibility: Visibility
@@ -1827,8 +1979,8 @@ input GraphicProjectUpdateInput {
   title: String
   copyright: Copyright
   alt: String
-  descPublic: String
-  descInternal: String
+  descPublic: ContentFieldUpdateOneInput
+  descInternal: ContentFieldUpdateOneInput
   assetPath: String
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
@@ -1846,8 +1998,6 @@ input GraphicProjectUpdateManyMutationInput {
   title: String
   copyright: Copyright
   alt: String
-  descPublic: String
-  descInternal: String
   assetPath: String
   status: PublishStatus
   visibility: Visibility
@@ -1928,34 +2078,8 @@ input GraphicProjectWhereInput {
   alt_not_starts_with: String
   alt_ends_with: String
   alt_not_ends_with: String
-  descPublic: String
-  descPublic_not: String
-  descPublic_in: [String!]
-  descPublic_not_in: [String!]
-  descPublic_lt: String
-  descPublic_lte: String
-  descPublic_gt: String
-  descPublic_gte: String
-  descPublic_contains: String
-  descPublic_not_contains: String
-  descPublic_starts_with: String
-  descPublic_not_starts_with: String
-  descPublic_ends_with: String
-  descPublic_not_ends_with: String
-  descInternal: String
-  descInternal_not: String
-  descInternal_in: [String!]
-  descInternal_not_in: [String!]
-  descInternal_lt: String
-  descInternal_lte: String
-  descInternal_gt: String
-  descInternal_gte: String
-  descInternal_contains: String
-  descInternal_not_contains: String
-  descInternal_starts_with: String
-  descInternal_not_starts_with: String
-  descInternal_ends_with: String
-  descInternal_not_ends_with: String
+  descPublic: ContentFieldWhereInput
+  descInternal: ContentFieldWhereInput
   assetPath: String
   assetPath_not: String
   assetPath_in: [String!]
@@ -3258,6 +3382,12 @@ type Mutation {
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  createContentField(data: ContentFieldCreateInput!): ContentField!
+  updateContentField(data: ContentFieldUpdateInput!, where: ContentFieldWhereUniqueInput!): ContentField
+  updateManyContentFields(data: ContentFieldUpdateManyMutationInput!, where: ContentFieldWhereInput): BatchPayload!
+  upsertContentField(where: ContentFieldWhereUniqueInput!, create: ContentFieldCreateInput!, update: ContentFieldUpdateInput!): ContentField!
+  deleteContentField(where: ContentFieldWhereUniqueInput!): ContentField
+  deleteManyContentFields(where: ContentFieldWhereInput): BatchPayload!
   createCountry(data: CountryCreateInput!): Country!
   updateCountry(data: CountryUpdateInput!, where: CountryWhereUniqueInput!): Country
   updateManyCountries(data: CountryUpdateManyMutationInput!, where: CountryWhereInput): BatchPayload!
@@ -3923,6 +4053,9 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  contentField(where: ContentFieldWhereUniqueInput!): ContentField
+  contentFields(where: ContentFieldWhereInput, orderBy: ContentFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ContentField]!
+  contentFieldsConnection(where: ContentFieldWhereInput, orderBy: ContentFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ContentFieldConnection!
   country(where: CountryWhereUniqueInput!): Country
   countries(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Country]!
   countriesConnection(where: CountryWhereInput, orderBy: CountryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CountryConnection!
@@ -4334,6 +4467,7 @@ input SocialPlatformWhereUniqueInput {
 type Subscription {
   bureau(where: BureauSubscriptionWhereInput): BureauSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  contentField(where: ContentFieldSubscriptionWhereInput): ContentFieldSubscriptionPayload
   country(where: CountrySubscriptionWhereInput): CountrySubscriptionPayload
   dimensions(where: DimensionsSubscriptionWhereInput): DimensionsSubscriptionPayload
   documentConversionFormat(where: DocumentConversionFormatSubscriptionWhereInput): DocumentConversionFormatSubscriptionPayload

@@ -15,8 +15,16 @@ export const GRAPHIC_PROJECT_FULL = `
     title
     copyright
     alt
-    descPublic
-    descInternal
+    descPublic {
+      id 
+      visibility
+      content
+    } 
+    descInternal {
+      id 
+      visibility
+      content
+    } 
     author {
       id
       firstName
