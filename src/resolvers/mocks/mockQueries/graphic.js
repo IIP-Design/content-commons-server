@@ -4,7 +4,7 @@ import {
   LANGUAGE_TRANSLATIONS_FRAGMENT,
   IMAGE_DETAILS_FRAGMENT,
   SUPPORT_FILE_FRAGMENT,
-  TEAM_FRAGMENT
+  TEAM_FRAGMENT,
 } from './shared';
 
 // Fragments
@@ -18,8 +18,14 @@ const GRAPHIC_PROJECT_FRAGMENT = gql`
     title
     copyright
     alt
-    descPublic
-    descInternal
+    descPublic {
+      visibility
+      content
+    }
+    descInternal {
+      visibility
+      content
+    }
     assetPath
     author {
       id
@@ -27,18 +33,28 @@ const GRAPHIC_PROJECT_FRAGMENT = gql`
       lastName
       email
     }
-    team { ...teamDetails }
+    team {
+      ...teamDetails
+    }
     status
     visibility
-    supportFiles { ...supportFileDetails }
-    images { ...imageDetails }
+    supportFiles {
+      ...supportFileDetails
+    }
+    images {
+      ...imageDetails
+    }
     categories {
       id
-      translations { ...languageTranslationsDetails }
+      translations {
+        ...languageTranslationsDetails
+      }
     }
     tags {
       id
-      translations { ...languageTranslationsDetails }
+      translations {
+        ...languageTranslationsDetails
+      }
     }
   }
   ${LANGUAGE_FRAGMENT}

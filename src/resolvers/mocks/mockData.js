@@ -5,7 +5,7 @@ export const languages = {
     locale: 'en-us',
     textDirection: 'LTR',
     displayName: 'English',
-    nativeName: 'English'
+    nativeName: 'English',
   },
   french: {
     id: 'ck2lzfx710hkp07206oo0icbv',
@@ -13,7 +13,7 @@ export const languages = {
     locale: 'fr-fr',
     textDirection: 'LTR',
     displayName: 'French',
-    nativeName: 'Français'
+    nativeName: 'Français',
   },
   testLanguage: {
     id: 'test-lang-1234',
@@ -21,7 +21,7 @@ export const languages = {
     locale: 'zz-zz',
     textDirection: 'LTR',
     displayName: 'Test Language Name',
-    nativeName: 'Test Language'
+    nativeName: 'Test Language',
   },
   mockLanguage: {
     id: 'ck2lzfx710hkq07206thus6pt',
@@ -29,76 +29,76 @@ export const languages = {
     locale: 'mock string value',
     textDirection: 'LTR',
     displayName: 'mock string value',
-    nativeName: 'mock string value'
-  }
+    nativeName: 'mock string value',
+  },
 };
 
 export const teams = [
   {
     id: 'ck2lzfx640hig0720fw7j98yt',
     name: 'GPA Video',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx650hih0720mpgplsqr',
     name: 'U.S. Speakers Program',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6f0hk607209lofxuzd',
     name: 'American Spaces',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6f0hk707205r3a5xwk',
     name: 'GPA Media Strategy',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6p0hkd0720h05lurvx',
     name: 'ShareAmerica',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6p0hke0720t6zw8jde',
     name: 'YLAI',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6r0hkg07201iym6ckg',
     name: 'ECA',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6u0hkj0720f8n8mtda',
     name: 'GPA Editorial & Design',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx6w0hkk07205vkfqtdk',
     name: 'VOA Editorials',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2lzfx710hkn0720tog9i53x',
     name: 'Global Engagement Center',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2qgfbke0ubc07209xmmjua2',
     name: 'GPA Front Office',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck2qgfbku0ubh0720iwhkvuyn',
     name: 'GPA Press Office',
-    organization: 'Department of State'
+    organization: 'Department of State',
   },
   {
     id: 'ck5cvpjdf01kq0720i4ovjo49',
     name: 'U.S. Missions',
-    organization: 'Department of State'
-  }
+    organization: 'Department of State',
+  },
 ];
 
 export const users = [
@@ -111,7 +111,7 @@ export const users = [
     country: 'United States',
     city: 'Washington, DC',
     howHeard: '',
-    permissions: ['EDITOR']
+    permissions: ['EDITOR'],
   },
   {
     id: 'ck2m93ks81ks9akldi19skdk2k',
@@ -122,8 +122,8 @@ export const users = [
     country: 'United States',
     city: 'Washington, DC',
     howHeard: '',
-    permissions: ['ADMIN']
-  }
+    permissions: ['ADMIN'],
+  },
 ];
 
 export const categories = [
@@ -133,14 +133,14 @@ export const categories = [
       {
         id: 'ck2lzfxab0hls0720o2sjmoqw',
         name: 'about america',
-        language: languages.english
+        language: languages.english,
       },
       {
         id: 'ck2lzfxc90hm60720onv6tbro',
         name: 'Amérique',
-        language: languages.french
-      }
-    ]
+        language: languages.french,
+      },
+    ],
   },
   {
     id: 'ck2lzgu1c0re40720g36mhagr',
@@ -148,15 +148,15 @@ export const categories = [
       {
         id: 'ck2lzfxhj0hnq0720ea5fakmi',
         name: 'arts & culture',
-        language: languages.english
+        language: languages.english,
       },
       {
         id: 'ck2lzfxj90ho40720w9yrade3',
         name: 'Arts et culture',
-        language: languages.french
-      }
-    ]
-  }
+        language: languages.french,
+      },
+    ],
+  },
 ];
 
 export const tags = [
@@ -166,14 +166,14 @@ export const tags = [
       {
         id: 'ck2lzfzwr0iey0720hrigffxo',
         name: 'american culture',
-        language: languages.english
+        language: languages.english,
       },
       {
         id: 'ck2lzfzxz0ifc0720ufzpx34l',
         name: 'Culture américaine',
-        language: languages.french
-      }
-    ]
+        language: languages.french,
+      },
+    ],
   },
   {
     id: 'ck2lzgu1i0rej0720evrgjbyb',
@@ -181,15 +181,15 @@ export const tags = [
       {
         id: 'ck2lzg03a0igw0720t5c0s2r2',
         name: 'english learning',
-        language: languages.english
+        language: languages.english,
       },
       {
         id: 'ck2lzg04f0iha0720zkvmiruy',
         name: 'Anglais langue étrangère',
-        language: languages.french
-      }
-    ]
-  }
+        language: languages.french,
+      },
+    ],
+  },
 ];
 
 export const bureaus = [
@@ -197,42 +197,42 @@ export const bureaus = [
     id: 'ck5cvpjcu01k80720d2eouy43',
     name: 'Bureau of African Affairs',
     abbr: 'AF',
-    offices: []
+    offices: [],
   },
   {
     id: 'ck5cvpjcv01k90720vvw2imhn',
     name: 'Bureau of Budget and Planning',
     abbr: 'BP',
-    offices: []
+    offices: [],
   },
   {
     id: 'ck5cvpjcv01ka0720kruynq52',
     name: 'Bureau of Consular Affairs',
     abbr: 'CA',
-    offices: []
-  }
+    offices: [],
+  },
 ];
 
 export const graphicStyles = [
   {
     id: '123',
-    name: 'graphic-style-1'
+    name: 'graphic-style-1',
   },
   {
     id: '456',
-    name: 'graphic-style-2'
-  }
+    name: 'graphic-style-2',
+  },
 ];
 
 export const socialPlatforms = [
   {
     id: 'tw382',
-    name: 'twitter'
+    name: 'twitter',
   },
   {
     id: 'ins3827',
-    name: 'instagram'
-  }
+    name: 'instagram',
+  },
 ];
 
 export const graphicProject = {
@@ -244,8 +244,14 @@ export const graphicProject = {
   type: 'SOCIAL_MEDIA',
   copyright: 'COPYRIGHT',
   alt: '',
-  descPublic: 'Public description',
-  descInternal: 'Internal description',
+  descPublic: {
+    visibility: 'PUBLIC',
+    content: 'Public description',
+  },
+  descInternal: {
+    visibility: 'INTERNAL',
+    content: 'Internal description',
+  },
   assetPath: 'graphic/2020/03/commons.america.gov_ck8enbkxs0bdy076501iy0akv',
   status: 'PUBLISHED',
   visibility: 'PUBLIC',
@@ -253,7 +259,7 @@ export const graphicProject = {
     id: 'ck8embiwq0b1n0765ps892v3n',
     email: 'reganta@america.gov',
     firstName: 'Terri',
-    lastName: 'Regan'
+    lastName: 'Regan',
   },
   team: teams[0],
   images: [
@@ -263,15 +269,16 @@ export const graphicProject = {
       updatedAt: '2020-03-30T15:44:38.502Z',
       visibility: 'PUBLIC',
       language: languages.english,
-      url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
+      url:
+               '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
       signedUrl: 'https://signedurl.com',
       filename: 'coffee.jpg',
       filetype: 'image/jpeg',
       filesize: 3193,
       use: { id: 'a32asd', name: 'mock image use' },
       style: graphicStyles[0],
-      social: socialPlatforms
-    }
+      social: socialPlatforms,
+    },
   ],
   supportFiles: [
     {
@@ -279,64 +286,65 @@ export const graphicProject = {
       createdAt: '2020-03-30T15:44:38.502Z',
       updatedAt: '2020-03-30T15:44:38.502Z',
       language: languages.english,
-      url: '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
+      url:
+               '2020/03/commons.america.gov_ck8en7r8x0b7007652jpf9a59/CAPTIONS_Made_in_America_ENGLISH_Output.srt',
       signedUrl: 'https://signedurl.com',
       filename: 'CAPTIONS Made in America ENGLISH_Output.srt',
       filetype: 'application/x-subrip',
       filesize: 3193,
       visibility: 'PUBLIC',
-      use: { id: '3823', name: 'srt' }
-    }
+      use: { id: '3823', name: 'srt' },
+    },
   ],
   categories: [categories[0]],
-  tags: [tags[0]]
+  tags: [tags[0]],
 };
 
 export const countries = [
   {
     id: 'ck6krp96x3f3n0720q1289gee',
     name: 'Angola',
-    abbr: 'AF'
+    abbr: 'AF',
   },
   {
     id: 'ck6krp9773f420720i7aesohq',
     name: 'Benin',
-    abbr: 'AF'
+    abbr: 'AF',
   },
   {
     id: 'ck6krp9723f3x07209et0evkp',
     name: 'Australia',
-    abbr: 'EAP'
+    abbr: 'EAP',
   },
   {
     id: 'ck6krp97d3f4a0720zpndfxd7',
     name: 'Brunei',
-    abbr: 'EAP'
-  }
+    abbr: 'EAP',
+  },
 ];
 
 export const regions = [
   {
     id: 'ck6krp96g3f3c0720c1w09bx1',
     name: 'Bureau of African Affairs',
-    abbr: 'AF'
+    abbr: 'AF',
   },
   {
     id: 'ck6krp96o3f3g0720w7whw2pw',
     name: 'Bureau of East Asian and Pacific Affairs',
-    abbr: 'EAP'
-  }
+    abbr: 'EAP',
+  },
 ];
 
 export const documentUses = [
   {
     id: 'a8es',
-    name: 'document use name'
+    name: 'document use name',
   },
   {
     id: 'aies',
-    name: 'document use name'
-  }
+    name: 'document use name',
+  },
 ];
 
 export const documentConversionFormats = [
@@ -344,14 +352,14 @@ export const documentConversionFormats = [
     id: '123',
     rawText: 'the content',
     html: '<p>the content</p>',
-    markdown: 'the content'
+    markdown: 'the content',
   },
   {
     id: '678',
     rawText: 'the content',
     html: '<p>the content</p>',
-    markdown: 'the content'
-  }
+    markdown: 'the content',
+  },
 ];
 
 export const documentFile = {
@@ -370,7 +378,7 @@ export const documentFile = {
     id: '123',
     rawText: 'the content',
     html: '<p>the content</p>',
-    markdown: 'the content'
+    markdown: 'the content',
   },
   image: [
     {
@@ -386,8 +394,8 @@ export const documentFile = {
       signedUrl: 'https://signedurl.com',
       social: [socialPlatforms[0]],
       style: graphicStyles[0],
-      language: languages.english
-    }
+      language: languages.english,
+    },
   ],
   url: 'mock string value',
   signedUrl: 'https://signedurl.com',
@@ -402,8 +410,8 @@ export const documentFile = {
       region: {
         id: 'ck6krp96g3f3c0720c1w09bx1',
         name: 'Bureau of African Affairs',
-        abbr: 'AF'
-      }
-    }
-  ]
+        abbr: 'AF',
+      },
+    },
+  ],
 };

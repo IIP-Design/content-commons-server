@@ -33,7 +33,7 @@ const GraphicResolvers = {
 
     socialPlatform( parent, args, ctx ) {
       return ctx.prisma.socialPlatform( { id: args.id } );
-    }
+    },
   } ),
 
   Mutation: requiresLogin( {
@@ -61,12 +61,12 @@ const GraphicResolvers = {
       const updates = { ...args };
       const {
         data,
-        where: { id }
+        where: { id },
       } = updates;
 
       return ctx.prisma.updateGraphicProject( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -81,7 +81,9 @@ const GraphicResolvers = {
       const { id } = args;
 
       // 1. Get data for project to publish from db
-      const graphicProject = await ctx.prisma.graphicProject( { id } ).$fragment( GRAPHIC_PROJECT_FULL );
+      const graphicProject = await ctx.prisma
+        .graphicProject( { id } )
+        .$fragment( GRAPHIC_PROJECT_FULL );
 
       if ( !graphicProject ) {
         return ctx.prisma
@@ -115,9 +117,7 @@ const GraphicResolvers = {
       const { id } = args;
 
       // 1. Fetch project to delete
-      const graphicProject = await ctx.prisma
-        .graphicProject( args )
-        .$fragment( GRAPHIC_PROJECT_FULL );
+      const graphicProject = await ctx.prisma.graphicProject( args ).$fragment( GRAPHIC_PROJECT_FULL );
 
       // 2. If unable to locate project, notify of failure
       if ( !graphicProject ) {
@@ -141,18 +141,16 @@ const GraphicResolvers = {
       // 2. Notify user is we don't have aproject
       if ( !graphicProject ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
       // 3. Delete files if they exist
       if ( graphicProject.images.length || graphicProject.supportFiles.length ) {
         if ( graphicProject.assetPath ) {
-          await deleteAllS3Assets( graphicProject.assetPath, PUBLISHER_BUCKET ).catch(
-            err => console.log(
-              `Error in [deleteAllS3Assets] for project ${graphicProject.title} - ${graphicProject.id}. ${err}`
-            )
-          );
+          await deleteAllS3Assets( graphicProject.assetPath, PUBLISHER_BUCKET ).catch( err => console.log(
+            `Error in [deleteAllS3Assets] for project ${graphicProject.title} - ${graphicProject.id}. ${err}`,
+          ) );
         }
       }
 
@@ -167,7 +165,7 @@ const GraphicResolvers = {
     async createGraphicStyle( parent, args, ctx ) {
       const { data } = args;
       const graphicStyle = await ctx.prisma.createGraphicStyle( {
-        ...data
+        ...data,
       } );
 
       return graphicStyle;
@@ -177,12 +175,12 @@ const GraphicResolvers = {
       const updates = { ...args };
       const {
         data,
-        where: { id }
+        where: { id },
       } = updates;
 
       return ctx.prisma.updateGraphicStyle( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -204,7 +202,7 @@ const GraphicResolvers = {
     async createSocialPlatform( parent, args, ctx ) {
       const { data } = args;
       const socialPlatform = await ctx.prisma.createSocialPlatform( {
-        ...data
+        ...data,
       } );
 
       return socialPlatform;
@@ -214,12 +212,12 @@ const GraphicResolvers = {
       const updates = { ...args };
       const {
         data,
-        where: { id }
+        where: { id },
       } = updates;
 
       return ctx.prisma.updateSocialPlatform( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -236,7 +234,7 @@ const GraphicResolvers = {
 
     deleteManySocialPlatforms( parent, { where }, ctx ) {
       return ctx.prisma.deleteManySocialPlatforms( { ...where } );
-    }
+    },
   } ),
 
   GraphicProject: {
@@ -246,6 +244,14 @@ const GraphicResolvers = {
 
     team( parent, args, ctx ) {
       return ctx.prisma.graphicProject( { id: parent.id } ).team( { ...args } );
+    },
+
+    descPublic( parent, args, ctx ) {
+      return ctx.prisma.graphicProject( { id: parent.id } ).descPublic( { ...args } );
+    },
+
+    descInternal( parent, args, ctx ) {
+      return ctx.prisma.graphicProject( { id: parent.id } ).descInternal( { ...args } );
     },
 
     images( parent, args, ctx ) {
@@ -262,8 +268,8 @@ const GraphicResolvers = {
 
     tags( parent, args, ctx ) {
       return ctx.prisma.graphicProject( { id: parent.id } ).tags( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default GraphicResolvers;

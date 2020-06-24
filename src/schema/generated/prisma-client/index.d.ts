@@ -18,6 +18,7 @@ export type Maybe<T> = T | undefined | null;
 export interface Exists {
   bureau: (where?: BureauWhereInput) => Promise<boolean>;
   category: (where?: CategoryWhereInput) => Promise<boolean>;
+  contentField: (where?: ContentFieldWhereInput) => Promise<boolean>;
   country: (where?: CountryWhereInput) => Promise<boolean>;
   dimensions: (where?: DimensionsWhereInput) => Promise<boolean>;
   documentConversionFormat: (
@@ -107,6 +108,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CategoryConnectionPromise;
+  contentField: (
+    where: ContentFieldWhereUniqueInput
+  ) => ContentFieldNullablePromise;
+  contentFields: (args?: {
+    where?: ContentFieldWhereInput;
+    orderBy?: ContentFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<ContentField>;
+  contentFieldsConnection: (args?: {
+    where?: ContentFieldWhereInput;
+    orderBy?: ContentFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ContentFieldConnectionPromise;
   country: (where: CountryWhereUniqueInput) => CountryNullablePromise;
   countries: (args?: {
     where?: CountryWhereInput;
@@ -657,6 +679,26 @@ export interface Prisma {
   }) => CategoryPromise;
   deleteCategory: (where: CategoryWhereUniqueInput) => CategoryPromise;
   deleteManyCategories: (where?: CategoryWhereInput) => BatchPayloadPromise;
+  createContentField: (data: ContentFieldCreateInput) => ContentFieldPromise;
+  updateContentField: (args: {
+    data: ContentFieldUpdateInput;
+    where: ContentFieldWhereUniqueInput;
+  }) => ContentFieldPromise;
+  updateManyContentFields: (args: {
+    data: ContentFieldUpdateManyMutationInput;
+    where?: ContentFieldWhereInput;
+  }) => BatchPayloadPromise;
+  upsertContentField: (args: {
+    where: ContentFieldWhereUniqueInput;
+    create: ContentFieldCreateInput;
+    update: ContentFieldUpdateInput;
+  }) => ContentFieldPromise;
+  deleteContentField: (
+    where: ContentFieldWhereUniqueInput
+  ) => ContentFieldPromise;
+  deleteManyContentFields: (
+    where?: ContentFieldWhereInput
+  ) => BatchPayloadPromise;
   createCountry: (data: CountryCreateInput) => CountryPromise;
   updateCountry: (args: {
     data: CountryUpdateInput;
@@ -1132,6 +1174,9 @@ export interface Subscription {
   category: (
     where?: CategorySubscriptionWhereInput
   ) => CategorySubscriptionPayloadSubscription;
+  contentField: (
+    where?: ContentFieldSubscriptionWhereInput
+  ) => ContentFieldSubscriptionPayloadSubscription;
   country: (
     where?: CountrySubscriptionWhereInput
   ) => CountrySubscriptionPayloadSubscription;
@@ -1226,15 +1271,13 @@ export type ImageUseOrderByInput =
   | "name_ASC"
   | "name_DESC";
 
-export type DocumentConversionFormatOrderByInput =
+export type DimensionsOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "rawText_ASC"
-  | "rawText_DESC"
-  | "html_ASC"
-  | "html_DESC"
-  | "markdown_ASC"
-  | "markdown_DESC";
+  | "width_ASC"
+  | "width_DESC"
+  | "height_ASC"
+  | "height_DESC";
 
 export type GraphicStyleOrderByInput =
   | "id_ASC"
@@ -1279,10 +1322,6 @@ export type GraphicProjectOrderByInput =
   | "copyright_DESC"
   | "alt_ASC"
   | "alt_DESC"
-  | "descPublic_ASC"
-  | "descPublic_DESC"
-  | "descInternal_ASC"
-  | "descInternal_DESC"
   | "assetPath_ASC"
   | "assetPath_DESC"
   | "status_ASC"
@@ -1403,7 +1442,7 @@ export type SupportFileUseOrderByInput =
   | "name_ASC"
   | "name_DESC";
 
-export type Copyright = "COPYRIGHT" | "NO_COPYRIGHT";
+export type Visibility = "INTERNAL" | "PUBLIC";
 
 export type PackageOrderByInput =
   | "id_ASC"
@@ -1427,15 +1466,19 @@ export type PackageOrderByInput =
   | "visibility_ASC"
   | "visibility_DESC";
 
-export type ProjectType = "LANGUAGE" | "SOCIAL_MEDIA";
+export type Copyright = "COPYRIGHT" | "NO_COPYRIGHT";
 
 export type TextDirection = "LTR" | "RTL";
 
-export type DocumentUseOrderByInput =
+export type ContentFieldOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC";
+  | "type_ASC"
+  | "type_DESC"
+  | "visibility_ASC"
+  | "visibility_DESC"
+  | "content_ASC"
+  | "content_DESC";
 
 export type LanguageOrderByInput =
   | "id_ASC"
@@ -1451,13 +1494,7 @@ export type LanguageOrderByInput =
   | "nativeName_ASC"
   | "nativeName_DESC";
 
-export type CountryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "abbr_ASC"
-  | "abbr_DESC";
+export type ProjectType = "LANGUAGE" | "SOCIAL_MEDIA";
 
 export type VideoProjectOrderByInput =
   | "id_ASC"
@@ -1482,6 +1519,22 @@ export type VideoProjectOrderByInput =
   | "status_DESC"
   | "visibility_ASC"
   | "visibility_DESC";
+
+export type DocumentUseOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type VideoStreamOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "site_ASC"
+  | "site_DESC"
+  | "url_ASC"
+  | "url_DESC"
+  | "embedUrl_ASC"
+  | "embedUrl_DESC";
 
 export type DocumentFileOrderByInput =
   | "id_ASC"
@@ -1511,29 +1564,13 @@ export type DocumentFileOrderByInput =
   | "visibility_ASC"
   | "visibility_DESC";
 
-export type VideoStreamOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "site_ASC"
-  | "site_DESC"
-  | "url_ASC"
-  | "url_DESC"
-  | "embedUrl_ASC"
-  | "embedUrl_DESC";
-
-export type TagOrderByInput = "id_ASC" | "id_DESC";
-
 export type ThumbnailOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "size_ASC"
   | "size_DESC";
 
-export type SocialPlatformOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC";
+export type TagOrderByInput = "id_ASC" | "id_DESC";
 
 export type RegionOrderByInput =
   | "id_ASC"
@@ -1542,6 +1579,18 @@ export type RegionOrderByInput =
   | "name_DESC"
   | "abbr_ASC"
   | "abbr_DESC";
+
+export type SocialPlatformOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type LanguageTranslationOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
 
 export type ImageFileOrderByInput =
   | "id_ASC"
@@ -1575,11 +1624,31 @@ export type ImageFileOrderByInput =
   | "quality_ASC"
   | "quality_DESC";
 
-export type LanguageTranslationOrderByInput =
+export type OfficeOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
-  | "name_DESC";
+  | "name_DESC"
+  | "abbr_ASC"
+  | "abbr_DESC";
+
+export type DocumentConversionFormatOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "rawText_ASC"
+  | "rawText_DESC"
+  | "html_ASC"
+  | "html_DESC"
+  | "markdown_ASC"
+  | "markdown_DESC";
+
+export type CountryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "abbr_ASC"
+  | "abbr_DESC";
 
 export type PublishStatus =
   | "DRAFT"
@@ -1591,17 +1660,9 @@ export type PublishStatus =
   | "PUBLISHED"
   | "EMBARGOED";
 
-export type DimensionsOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "width_ASC"
-  | "width_DESC"
-  | "height_ASC"
-  | "height_DESC";
-
-export type Visibility = "INTERNAL" | "PUBLIC";
-
 export type ImageQuality = "WEB" | "PRINT";
+
+export type VideoBurnedInStatus = "SUBTITLED" | "CAPTIONED" | "CLEAN";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -1617,24 +1678,40 @@ export type TeamOrderByInput =
   | "isConfirmed_ASC"
   | "isConfirmed_DESC";
 
-export type VideoBurnedInStatus = "SUBTITLED" | "CAPTIONED" | "CLEAN";
-
-export type OfficeOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "abbr_ASC"
-  | "abbr_DESC";
-
-export interface DimensionsUpdateDataInput {
-  width?: Maybe<Int>;
-  height?: Maybe<Int>;
+export interface ImageFileUpdateDataInput {
+  visibility?: Maybe<Visibility>;
+  language?: Maybe<LanguageUpdateOneInput>;
+  dimensions?: Maybe<DimensionsUpdateOneInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  use?: Maybe<ImageUseUpdateOneInput>;
+  md5?: Maybe<String>;
+  quality?: Maybe<ImageQuality>;
+  style?: Maybe<GraphicStyleUpdateOneInput>;
+  social?: Maybe<SocialPlatformUpdateManyInput>;
 }
 
 export type BureauWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
+
+export interface BureauUpdateInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  offices?: Maybe<OfficeUpdateManyWithoutBureauInput>;
+}
+
+export interface BureauCreateOneWithoutOfficesInput {
+  create?: Maybe<BureauCreateWithoutOfficesInput>;
+  connect?: Maybe<BureauWhereUniqueInput>;
+}
 
 export interface OfficeUpdateManyWithoutBureauInput {
   create?: Maybe<
@@ -1659,13 +1736,8 @@ export interface OfficeUpdateManyWithoutBureauInput {
   >;
 }
 
-export interface BureauUpdateOneWithoutOfficesInput {
-  create?: Maybe<BureauCreateWithoutOfficesInput>;
-  update?: Maybe<BureauUpdateWithoutOfficesDataInput>;
-  upsert?: Maybe<BureauUpsertWithoutOfficesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<BureauWhereUniqueInput>;
+export interface DocumentUseUpdateDataInput {
+  name?: Maybe<String>;
 }
 
 export interface OfficeUpdateWithWhereUniqueWithoutBureauInput {
@@ -1673,17 +1745,7 @@ export interface OfficeUpdateWithWhereUniqueWithoutBureauInput {
   data: OfficeUpdateWithoutBureauDataInput;
 }
 
-export interface DocumentUseUpsertNestedInput {
-  update: DocumentUseUpdateDataInput;
-  create: DocumentUseCreateInput;
-}
-
-export interface OfficeUpdateWithoutBureauDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export interface DocumentConversionFormatWhereInput {
+export interface DimensionsWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -1698,63 +1760,30 @@ export interface DocumentConversionFormatWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  rawText?: Maybe<String>;
-  rawText_not?: Maybe<String>;
-  rawText_in?: Maybe<String[] | String>;
-  rawText_not_in?: Maybe<String[] | String>;
-  rawText_lt?: Maybe<String>;
-  rawText_lte?: Maybe<String>;
-  rawText_gt?: Maybe<String>;
-  rawText_gte?: Maybe<String>;
-  rawText_contains?: Maybe<String>;
-  rawText_not_contains?: Maybe<String>;
-  rawText_starts_with?: Maybe<String>;
-  rawText_not_starts_with?: Maybe<String>;
-  rawText_ends_with?: Maybe<String>;
-  rawText_not_ends_with?: Maybe<String>;
-  html?: Maybe<String>;
-  html_not?: Maybe<String>;
-  html_in?: Maybe<String[] | String>;
-  html_not_in?: Maybe<String[] | String>;
-  html_lt?: Maybe<String>;
-  html_lte?: Maybe<String>;
-  html_gt?: Maybe<String>;
-  html_gte?: Maybe<String>;
-  html_contains?: Maybe<String>;
-  html_not_contains?: Maybe<String>;
-  html_starts_with?: Maybe<String>;
-  html_not_starts_with?: Maybe<String>;
-  html_ends_with?: Maybe<String>;
-  html_not_ends_with?: Maybe<String>;
-  markdown?: Maybe<String>;
-  markdown_not?: Maybe<String>;
-  markdown_in?: Maybe<String[] | String>;
-  markdown_not_in?: Maybe<String[] | String>;
-  markdown_lt?: Maybe<String>;
-  markdown_lte?: Maybe<String>;
-  markdown_gt?: Maybe<String>;
-  markdown_gte?: Maybe<String>;
-  markdown_contains?: Maybe<String>;
-  markdown_not_contains?: Maybe<String>;
-  markdown_starts_with?: Maybe<String>;
-  markdown_not_starts_with?: Maybe<String>;
-  markdown_ends_with?: Maybe<String>;
-  markdown_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
-  >;
-  OR?: Maybe<
-    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
-  >;
-  NOT?: Maybe<
-    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
-  >;
+  width?: Maybe<Int>;
+  width_not?: Maybe<Int>;
+  width_in?: Maybe<Int[] | Int>;
+  width_not_in?: Maybe<Int[] | Int>;
+  width_lt?: Maybe<Int>;
+  width_lte?: Maybe<Int>;
+  width_gt?: Maybe<Int>;
+  width_gte?: Maybe<Int>;
+  height?: Maybe<Int>;
+  height_not?: Maybe<Int>;
+  height_in?: Maybe<Int[] | Int>;
+  height_not_in?: Maybe<Int[] | Int>;
+  height_lt?: Maybe<Int>;
+  height_lte?: Maybe<Int>;
+  height_gt?: Maybe<Int>;
+  height_gte?: Maybe<Int>;
+  AND?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
+  OR?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
+  NOT?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
 }
 
-export interface OfficeUpsertWithWhereUniqueWithoutBureauInput {
-  where: OfficeWhereUniqueInput;
-  update: OfficeUpdateWithoutBureauDataInput;
-  create: OfficeCreateWithoutBureauInput;
+export interface OfficeUpdateWithoutBureauDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
 }
 
 export interface VideoStreamSubscriptionWhereInput {
@@ -1771,6 +1800,29 @@ export interface VideoStreamSubscriptionWhereInput {
   >;
   NOT?: Maybe<
     VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput
+  >;
+}
+
+export interface OfficeUpsertWithWhereUniqueWithoutBureauInput {
+  where: OfficeWhereUniqueInput;
+  update: OfficeUpdateWithoutBureauDataInput;
+  create: OfficeCreateWithoutBureauInput;
+}
+
+export interface VideoFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoFileWhereInput>;
+  AND?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
   >;
 }
 
@@ -1822,28 +1874,6 @@ export interface OfficeScalarWhereInput {
   NOT?: Maybe<OfficeScalarWhereInput[] | OfficeScalarWhereInput>;
 }
 
-export interface VideoFileSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<VideoFileWhereInput>;
-  AND?: Maybe<
-    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
-  >;
-}
-
-export interface OfficeUpdateManyWithWhereNestedInput {
-  where: OfficeScalarWhereInput;
-  data: OfficeUpdateManyDataInput;
-}
-
 export interface UserSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -1855,9 +1885,2711 @@ export interface UserSubscriptionWhereInput {
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
+export interface OfficeUpdateManyWithWhereNestedInput {
+  where: OfficeScalarWhereInput;
+  data: OfficeUpdateManyDataInput;
+}
+
+export interface ThumbnailSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ThumbnailWhereInput>;
+  AND?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+}
+
 export interface OfficeUpdateManyDataInput {
   name?: Maybe<String>;
   abbr?: Maybe<String>;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TagWhereInput>;
+  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+}
+
+export interface BureauUpdateManyMutationInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export type DocumentFileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface BureauUpdateOneWithoutOfficesInput {
+  create?: Maybe<BureauCreateWithoutOfficesInput>;
+  update?: Maybe<BureauUpdateWithoutOfficesDataInput>;
+  upsert?: Maybe<BureauUpsertWithoutOfficesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<BureauWhereUniqueInput>;
+}
+
+export interface SocialPlatformSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SocialPlatformWhereInput>;
+  AND?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+}
+
+export interface OfficeUpdateInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  bureau?: Maybe<BureauUpdateOneWithoutOfficesInput>;
+}
+
+export interface RegionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  abbr?: Maybe<String>;
+  abbr_not?: Maybe<String>;
+  abbr_in?: Maybe<String[] | String>;
+  abbr_not_in?: Maybe<String[] | String>;
+  abbr_lt?: Maybe<String>;
+  abbr_lte?: Maybe<String>;
+  abbr_gt?: Maybe<String>;
+  abbr_gte?: Maybe<String>;
+  abbr_contains?: Maybe<String>;
+  abbr_not_contains?: Maybe<String>;
+  abbr_starts_with?: Maybe<String>;
+  abbr_not_starts_with?: Maybe<String>;
+  abbr_ends_with?: Maybe<String>;
+  abbr_not_ends_with?: Maybe<String>;
+  countries_every?: Maybe<CountryWhereInput>;
+  countries_some?: Maybe<CountryWhereInput>;
+  countries_none?: Maybe<CountryWhereInput>;
+  AND?: Maybe<RegionWhereInput[] | RegionWhereInput>;
+  OR?: Maybe<RegionWhereInput[] | RegionWhereInput>;
+  NOT?: Maybe<RegionWhereInput[] | RegionWhereInput>;
+}
+
+export interface CategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  translations?: Maybe<LanguageTranslationCreateManyInput>;
+}
+
+export interface ImageUseWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
+  OR?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
+  NOT?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
+}
+
+export interface LanguageTranslationCreateManyInput {
+  create?: Maybe<
+    LanguageTranslationCreateInput[] | LanguageTranslationCreateInput
+  >;
+  connect?: Maybe<
+    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
+  >;
+}
+
+export interface GraphicStyleWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
+  OR?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
+  NOT?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
+}
+
+export interface LanguageTranslationCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  language?: Maybe<LanguageCreateOneInput>;
+}
+
+export interface PackageSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PackageWhereInput>;
+  AND?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+  OR?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+  NOT?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+}
+
+export interface LanguageCreateOneInput {
+  create?: Maybe<LanguageCreateInput>;
+  connect?: Maybe<LanguageWhereUniqueInput>;
+}
+
+export interface LanguageTranslationSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LanguageTranslationWhereInput>;
+  AND?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
+}
+
+export interface LanguageCreateInput {
+  id?: Maybe<ID_Input>;
+  languageCode: String;
+  locale: String;
+  textDirection?: Maybe<TextDirection>;
+  displayName: String;
+  nativeName: String;
+}
+
+export interface ImageUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ImageUseWhereInput>;
+  AND?: Maybe<
+    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput>;
+  NOT?: Maybe<
+    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
+  >;
+}
+
+export interface CategoryUpdateInput {
+  translations?: Maybe<LanguageTranslationUpdateManyInput>;
+}
+
+export interface GraphicStyleSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GraphicStyleWhereInput>;
+  AND?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
+}
+
+export interface LanguageTranslationUpdateManyInput {
+  create?: Maybe<
+    LanguageTranslationCreateInput[] | LanguageTranslationCreateInput
+  >;
+  update?: Maybe<
+    | LanguageTranslationUpdateWithWhereUniqueNestedInput[]
+    | LanguageTranslationUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | LanguageTranslationUpsertWithWhereUniqueNestedInput[]
+    | LanguageTranslationUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<
+    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
+  >;
+  connect?: Maybe<
+    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
+  >;
+  set?: Maybe<
+    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | LanguageTranslationUpdateManyWithWhereNestedInput[]
+    | LanguageTranslationUpdateManyWithWhereNestedInput
+  >;
+}
+
+export type CountryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  data: LanguageTranslationUpdateDataInput;
+}
+
+export interface DocumentFileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  publishedAt_not?: Maybe<DateTimeInput>;
+  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_lt?: Maybe<DateTimeInput>;
+  publishedAt_lte?: Maybe<DateTimeInput>;
+  publishedAt_gt?: Maybe<DateTimeInput>;
+  publishedAt_gte?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  language?: Maybe<LanguageWhereInput>;
+  filetype?: Maybe<String>;
+  filetype_not?: Maybe<String>;
+  filetype_in?: Maybe<String[] | String>;
+  filetype_not_in?: Maybe<String[] | String>;
+  filetype_lt?: Maybe<String>;
+  filetype_lte?: Maybe<String>;
+  filetype_gt?: Maybe<String>;
+  filetype_gte?: Maybe<String>;
+  filetype_contains?: Maybe<String>;
+  filetype_not_contains?: Maybe<String>;
+  filetype_starts_with?: Maybe<String>;
+  filetype_not_starts_with?: Maybe<String>;
+  filetype_ends_with?: Maybe<String>;
+  filetype_not_ends_with?: Maybe<String>;
+  filename?: Maybe<String>;
+  filename_not?: Maybe<String>;
+  filename_in?: Maybe<String[] | String>;
+  filename_not_in?: Maybe<String[] | String>;
+  filename_lt?: Maybe<String>;
+  filename_lte?: Maybe<String>;
+  filename_gt?: Maybe<String>;
+  filename_gte?: Maybe<String>;
+  filename_contains?: Maybe<String>;
+  filename_not_contains?: Maybe<String>;
+  filename_starts_with?: Maybe<String>;
+  filename_not_starts_with?: Maybe<String>;
+  filename_ends_with?: Maybe<String>;
+  filename_not_ends_with?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  filesize_not?: Maybe<Float>;
+  filesize_in?: Maybe<Float[] | Float>;
+  filesize_not_in?: Maybe<Float[] | Float>;
+  filesize_lt?: Maybe<Float>;
+  filesize_lte?: Maybe<Float>;
+  filesize_gt?: Maybe<Float>;
+  filesize_gte?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  status_not?: Maybe<PublishStatus>;
+  status_in?: Maybe<PublishStatus[] | PublishStatus>;
+  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
+  excerpt?: Maybe<String>;
+  excerpt_not?: Maybe<String>;
+  excerpt_in?: Maybe<String[] | String>;
+  excerpt_not_in?: Maybe<String[] | String>;
+  excerpt_lt?: Maybe<String>;
+  excerpt_lte?: Maybe<String>;
+  excerpt_gt?: Maybe<String>;
+  excerpt_gte?: Maybe<String>;
+  excerpt_contains?: Maybe<String>;
+  excerpt_not_contains?: Maybe<String>;
+  excerpt_starts_with?: Maybe<String>;
+  excerpt_not_starts_with?: Maybe<String>;
+  excerpt_ends_with?: Maybe<String>;
+  excerpt_not_ends_with?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatWhereInput>;
+  image_every?: Maybe<ImageFileWhereInput>;
+  image_some?: Maybe<ImageFileWhereInput>;
+  image_none?: Maybe<ImageFileWhereInput>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  use?: Maybe<DocumentUseWhereInput>;
+  bureaus_every?: Maybe<BureauWhereInput>;
+  bureaus_some?: Maybe<BureauWhereInput>;
+  bureaus_none?: Maybe<BureauWhereInput>;
+  countries_every?: Maybe<CountryWhereInput>;
+  countries_some?: Maybe<CountryWhereInput>;
+  countries_none?: Maybe<CountryWhereInput>;
+  categories_every?: Maybe<CategoryWhereInput>;
+  categories_some?: Maybe<CategoryWhereInput>;
+  categories_none?: Maybe<CategoryWhereInput>;
+  tags_every?: Maybe<TagWhereInput>;
+  tags_some?: Maybe<TagWhereInput>;
+  tags_none?: Maybe<TagWhereInput>;
+  AND?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
+  OR?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
+  NOT?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
+}
+
+export interface LanguageTranslationUpdateDataInput {
+  name?: Maybe<String>;
+  language?: Maybe<LanguageUpdateOneInput>;
+}
+
+export interface DocumentUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentUseWhereInput>;
+  AND?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+}
+
+export interface LanguageUpdateOneInput {
+  create?: Maybe<LanguageCreateInput>;
+  update?: Maybe<LanguageUpdateDataInput>;
+  upsert?: Maybe<LanguageUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<LanguageWhereUniqueInput>;
+}
+
+export interface DocumentConversionFormatSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentConversionFormatWhereInput>;
+  AND?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
+}
+
+export interface LanguageUpdateDataInput {
+  languageCode?: Maybe<String>;
+  locale?: Maybe<String>;
+  textDirection?: Maybe<TextDirection>;
+  displayName?: Maybe<String>;
+  nativeName?: Maybe<String>;
+}
+
+export type DocumentUseWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface LanguageUpsertNestedInput {
+  update: LanguageUpdateDataInput;
+  create: LanguageCreateInput;
+}
+
+export interface ContentFieldSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ContentFieldWhereInput>;
+  AND?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
+  >;
+}
+
+export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
+  where: LanguageTranslationWhereUniqueInput;
+  update: LanguageTranslationUpdateDataInput;
+  create: LanguageTranslationCreateInput;
+}
+
+export interface BureauSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<BureauWhereInput>;
+  AND?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  OR?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  NOT?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+}
+
+export interface LanguageTranslationScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
+  >;
+  OR?: Maybe<
+    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
+  >;
+  NOT?: Maybe<
+    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
+  >;
+}
+
+export interface VideoUseUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface LanguageTranslationUpdateManyWithWhereNestedInput {
+  where: LanguageTranslationScalarWhereInput;
+  data: LanguageTranslationUpdateManyDataInput;
+}
+
+export interface ContentFieldWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  type?: Maybe<String>;
+  type_not?: Maybe<String>;
+  type_in?: Maybe<String[] | String>;
+  type_not_in?: Maybe<String[] | String>;
+  type_lt?: Maybe<String>;
+  type_lte?: Maybe<String>;
+  type_gt?: Maybe<String>;
+  type_gte?: Maybe<String>;
+  type_contains?: Maybe<String>;
+  type_not_contains?: Maybe<String>;
+  type_starts_with?: Maybe<String>;
+  type_not_starts_with?: Maybe<String>;
+  type_ends_with?: Maybe<String>;
+  type_not_ends_with?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ContentFieldWhereInput[] | ContentFieldWhereInput>;
+  OR?: Maybe<ContentFieldWhereInput[] | ContentFieldWhereInput>;
+  NOT?: Maybe<ContentFieldWhereInput[] | ContentFieldWhereInput>;
+}
+
+export interface LanguageTranslationUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface VideoUnitUpdateInput {
+  language?: Maybe<LanguageUpdateOneInput>;
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  files?: Maybe<VideoFileUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
+}
+
+export interface ContentFieldCreateInput {
+  id?: Maybe<ID_Input>;
+  type?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  content?: Maybe<String>;
+}
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempToken_not?: Maybe<String>;
+  tempToken_in?: Maybe<String[] | String>;
+  tempToken_not_in?: Maybe<String[] | String>;
+  tempToken_lt?: Maybe<String>;
+  tempToken_lte?: Maybe<String>;
+  tempToken_gt?: Maybe<String>;
+  tempToken_gte?: Maybe<String>;
+  tempToken_contains?: Maybe<String>;
+  tempToken_not_contains?: Maybe<String>;
+  tempToken_starts_with?: Maybe<String>;
+  tempToken_not_starts_with?: Maybe<String>;
+  tempToken_ends_with?: Maybe<String>;
+  tempToken_not_ends_with?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  tempTokenExpiry_not?: Maybe<Float>;
+  tempTokenExpiry_in?: Maybe<Float[] | Float>;
+  tempTokenExpiry_not_in?: Maybe<Float[] | Float>;
+  tempTokenExpiry_lt?: Maybe<Float>;
+  tempTokenExpiry_lte?: Maybe<Float>;
+  tempTokenExpiry_gt?: Maybe<Float>;
+  tempTokenExpiry_gte?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  jobTitle_not?: Maybe<String>;
+  jobTitle_in?: Maybe<String[] | String>;
+  jobTitle_not_in?: Maybe<String[] | String>;
+  jobTitle_lt?: Maybe<String>;
+  jobTitle_lte?: Maybe<String>;
+  jobTitle_gt?: Maybe<String>;
+  jobTitle_gte?: Maybe<String>;
+  jobTitle_contains?: Maybe<String>;
+  jobTitle_not_contains?: Maybe<String>;
+  jobTitle_starts_with?: Maybe<String>;
+  jobTitle_not_starts_with?: Maybe<String>;
+  jobTitle_ends_with?: Maybe<String>;
+  jobTitle_not_ends_with?: Maybe<String>;
+  country?: Maybe<String>;
+  country_not?: Maybe<String>;
+  country_in?: Maybe<String[] | String>;
+  country_not_in?: Maybe<String[] | String>;
+  country_lt?: Maybe<String>;
+  country_lte?: Maybe<String>;
+  country_gt?: Maybe<String>;
+  country_gte?: Maybe<String>;
+  country_contains?: Maybe<String>;
+  country_not_contains?: Maybe<String>;
+  country_starts_with?: Maybe<String>;
+  country_not_starts_with?: Maybe<String>;
+  country_ends_with?: Maybe<String>;
+  country_not_ends_with?: Maybe<String>;
+  city?: Maybe<String>;
+  city_not?: Maybe<String>;
+  city_in?: Maybe<String[] | String>;
+  city_not_in?: Maybe<String[] | String>;
+  city_lt?: Maybe<String>;
+  city_lte?: Maybe<String>;
+  city_gt?: Maybe<String>;
+  city_gte?: Maybe<String>;
+  city_contains?: Maybe<String>;
+  city_not_contains?: Maybe<String>;
+  city_starts_with?: Maybe<String>;
+  city_not_starts_with?: Maybe<String>;
+  city_ends_with?: Maybe<String>;
+  city_not_ends_with?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  howHeard_not?: Maybe<String>;
+  howHeard_in?: Maybe<String[] | String>;
+  howHeard_not_in?: Maybe<String[] | String>;
+  howHeard_lt?: Maybe<String>;
+  howHeard_lte?: Maybe<String>;
+  howHeard_gt?: Maybe<String>;
+  howHeard_gte?: Maybe<String>;
+  howHeard_contains?: Maybe<String>;
+  howHeard_not_contains?: Maybe<String>;
+  howHeard_starts_with?: Maybe<String>;
+  howHeard_not_starts_with?: Maybe<String>;
+  howHeard_ends_with?: Maybe<String>;
+  howHeard_not_ends_with?: Maybe<String>;
+  team?: Maybe<TeamWhereInput>;
+  isConfirmed?: Maybe<Boolean>;
+  isConfirmed_not?: Maybe<Boolean>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface ContentFieldUpdateInput {
+  type?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  content?: Maybe<String>;
+}
+
+export type ContentFieldWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ContentFieldUpdateManyMutationInput {
+  type?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  content?: Maybe<String>;
+}
+
+export interface SupportFileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  language?: Maybe<LanguageWhereInput>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
+  md5?: Maybe<String>;
+  md5_not?: Maybe<String>;
+  md5_in?: Maybe<String[] | String>;
+  md5_not_in?: Maybe<String[] | String>;
+  md5_lt?: Maybe<String>;
+  md5_lte?: Maybe<String>;
+  md5_gt?: Maybe<String>;
+  md5_gte?: Maybe<String>;
+  md5_contains?: Maybe<String>;
+  md5_not_contains?: Maybe<String>;
+  md5_starts_with?: Maybe<String>;
+  md5_not_starts_with?: Maybe<String>;
+  md5_ends_with?: Maybe<String>;
+  md5_not_ends_with?: Maybe<String>;
+  filename?: Maybe<String>;
+  filename_not?: Maybe<String>;
+  filename_in?: Maybe<String[] | String>;
+  filename_not_in?: Maybe<String[] | String>;
+  filename_lt?: Maybe<String>;
+  filename_lte?: Maybe<String>;
+  filename_gt?: Maybe<String>;
+  filename_gte?: Maybe<String>;
+  filename_contains?: Maybe<String>;
+  filename_not_contains?: Maybe<String>;
+  filename_starts_with?: Maybe<String>;
+  filename_not_starts_with?: Maybe<String>;
+  filename_ends_with?: Maybe<String>;
+  filename_not_ends_with?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filetype_not?: Maybe<String>;
+  filetype_in?: Maybe<String[] | String>;
+  filetype_not_in?: Maybe<String[] | String>;
+  filetype_lt?: Maybe<String>;
+  filetype_lte?: Maybe<String>;
+  filetype_gt?: Maybe<String>;
+  filetype_gte?: Maybe<String>;
+  filetype_contains?: Maybe<String>;
+  filetype_not_contains?: Maybe<String>;
+  filetype_starts_with?: Maybe<String>;
+  filetype_not_starts_with?: Maybe<String>;
+  filetype_ends_with?: Maybe<String>;
+  filetype_not_ends_with?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  filesize_not?: Maybe<Float>;
+  filesize_in?: Maybe<Float[] | Float>;
+  filesize_not_in?: Maybe<Float[] | Float>;
+  filesize_lt?: Maybe<Float>;
+  filesize_lte?: Maybe<Float>;
+  filesize_gt?: Maybe<Float>;
+  filesize_gte?: Maybe<Float>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  editable?: Maybe<Boolean>;
+  editable_not?: Maybe<Boolean>;
+  use?: Maybe<SupportFileUseWhereInput>;
+  AND?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
+  OR?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
+  NOT?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
+}
+
+export interface CountryCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+  region?: Maybe<RegionCreateOneWithoutCountriesInput>;
+}
+
+export interface VideoProjectUpdateManyMutationInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  projectType?: Maybe<ProjectType>;
+  projectTitle?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+}
+
+export interface RegionCreateOneWithoutCountriesInput {
+  create?: Maybe<RegionCreateWithoutCountriesInput>;
+  connect?: Maybe<RegionWhereUniqueInput>;
+}
+
+export interface VideoUnitUpdateManyWithWhereNestedInput {
+  where: VideoUnitScalarWhereInput;
+  data: VideoUnitUpdateManyDataInput;
+}
+
+export interface RegionCreateWithoutCountriesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+}
+
+export interface VideoUnitScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descPublic_not?: Maybe<String>;
+  descPublic_in?: Maybe<String[] | String>;
+  descPublic_not_in?: Maybe<String[] | String>;
+  descPublic_lt?: Maybe<String>;
+  descPublic_lte?: Maybe<String>;
+  descPublic_gt?: Maybe<String>;
+  descPublic_gte?: Maybe<String>;
+  descPublic_contains?: Maybe<String>;
+  descPublic_not_contains?: Maybe<String>;
+  descPublic_starts_with?: Maybe<String>;
+  descPublic_not_starts_with?: Maybe<String>;
+  descPublic_ends_with?: Maybe<String>;
+  descPublic_not_ends_with?: Maybe<String>;
+  AND?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+  OR?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+  NOT?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+}
+
+export interface CountryUpdateInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  region?: Maybe<RegionUpdateOneWithoutCountriesInput>;
+}
+
+export interface ThumbnailUpdateManyDataInput {
+  size?: Maybe<ThumbnailSize>;
+}
+
+export interface RegionUpdateOneWithoutCountriesInput {
+  create?: Maybe<RegionCreateWithoutCountriesInput>;
+  update?: Maybe<RegionUpdateWithoutCountriesDataInput>;
+  upsert?: Maybe<RegionUpsertWithoutCountriesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<RegionWhereUniqueInput>;
+}
+
+export type GraphicStyleWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface RegionUpdateWithoutCountriesDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface ThumbnailScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  size?: Maybe<ThumbnailSize>;
+  size_not?: Maybe<ThumbnailSize>;
+  size_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
+  size_not_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
+  AND?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
+  OR?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
+  NOT?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
+}
+
+export interface RegionUpsertWithoutCountriesInput {
+  update: RegionUpdateWithoutCountriesDataInput;
+  create: RegionCreateWithoutCountriesInput;
+}
+
+export interface ThumbnailUpdateDataInput {
+  size?: Maybe<ThumbnailSize>;
+  image?: Maybe<ImageFileUpdateOneInput>;
+}
+
+export interface CountryUpdateManyMutationInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface ThumbnailUpdateWithWhereUniqueNestedInput {
+  where: ThumbnailWhereUniqueInput;
+  data: ThumbnailUpdateDataInput;
+}
+
+export interface DimensionsCreateInput {
+  id?: Maybe<ID_Input>;
+  width?: Maybe<Int>;
+  height?: Maybe<Int>;
+}
+
+export interface VideoFileUpdateManyDataInput {
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+}
+
+export interface DimensionsUpdateInput {
+  width?: Maybe<Int>;
+  height?: Maybe<Int>;
+}
+
+export interface VideoFileUpdateManyWithWhereNestedInput {
+  where: VideoFileScalarWhereInput;
+  data: VideoFileUpdateManyDataInput;
+}
+
+export interface DimensionsUpdateManyMutationInput {
+  width?: Maybe<Int>;
+  height?: Maybe<Int>;
+}
+
+export interface VideoFileUpsertWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  update: VideoFileUpdateDataInput;
+  create: VideoFileCreateInput;
+}
+
+export interface DocumentConversionFormatCreateInput {
+  id?: Maybe<ID_Input>;
+  rawText?: Maybe<String>;
+  html?: Maybe<String>;
+  markdown?: Maybe<String>;
+}
+
+export type LanguageWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  locale?: Maybe<String>;
+}>;
+
+export interface DocumentConversionFormatUpdateInput {
+  rawText?: Maybe<String>;
+  html?: Maybe<String>;
+  markdown?: Maybe<String>;
+}
+
+export interface VideoFileUpdateManyInput {
+  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
+  update?: Maybe<
+    | VideoFileUpdateWithWhereUniqueNestedInput[]
+    | VideoFileUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | VideoFileUpsertWithWhereUniqueNestedInput[]
+    | VideoFileUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  set?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  disconnect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  deleteMany?: Maybe<VideoFileScalarWhereInput[] | VideoFileScalarWhereInput>;
+  updateMany?: Maybe<
+    | VideoFileUpdateManyWithWhereNestedInput[]
+    | VideoFileUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface DocumentConversionFormatUpdateManyMutationInput {
+  rawText?: Maybe<String>;
+  html?: Maybe<String>;
+  markdown?: Maybe<String>;
+}
+
+export interface VideoUnitUpdateWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  data: VideoUnitUpdateDataInput;
+}
+
+export interface DocumentFileCreateInput {
+  id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  language?: Maybe<LanguageCreateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatCreateOneInput>;
+  image?: Maybe<ImageFileCreateManyInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<DocumentUseCreateOneInput>;
+  bureaus?: Maybe<BureauCreateManyInput>;
+  countries?: Maybe<CountryCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface VideoUnitUpdateManyInput {
+  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
+  update?: Maybe<
+    | VideoUnitUpdateWithWhereUniqueNestedInput[]
+    | VideoUnitUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | VideoUnitUpsertWithWhereUniqueNestedInput[]
+    | VideoUnitUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  set?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  disconnect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  deleteMany?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+  updateMany?: Maybe<
+    | VideoUnitUpdateManyWithWhereNestedInput[]
+    | VideoUnitUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface DocumentConversionFormatCreateOneInput {
+  create?: Maybe<DocumentConversionFormatCreateInput>;
+  connect?: Maybe<DocumentConversionFormatWhereUniqueInput>;
+}
+
+export interface ThumbnailCreateManyInput {
+  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
+  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+}
+
+export interface ImageFileCreateManyInput {
+  create?: Maybe<ImageFileCreateInput[] | ImageFileCreateInput>;
+  connect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
+}
+
+export interface VideoFileCreateManyInput {
+  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
+  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+}
+
+export interface ImageFileCreateInput {
+  id?: Maybe<ID_Input>;
+  visibility?: Maybe<Visibility>;
+  language?: Maybe<LanguageCreateOneInput>;
+  dimensions?: Maybe<DimensionsCreateOneInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  use?: Maybe<ImageUseCreateOneInput>;
+  md5?: Maybe<String>;
+  quality?: Maybe<ImageQuality>;
+  style?: Maybe<GraphicStyleCreateOneInput>;
+  social?: Maybe<SocialPlatformCreateManyInput>;
+}
+
+export interface VideoUnitCreateManyInput {
+  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
+  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+}
+
+export interface DimensionsCreateOneInput {
+  create?: Maybe<DimensionsCreateInput>;
+  connect?: Maybe<DimensionsWhereUniqueInput>;
+}
+
+export interface VideoProjectCreateInput {
+  id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
+  projectType?: Maybe<ProjectType>;
+  projectTitle: String;
+  descPublic?: Maybe<String>;
+  descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserCreateOneInput>;
+  team?: Maybe<TeamCreateOneInput>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  units?: Maybe<VideoUnitCreateManyInput>;
+  supportFiles?: Maybe<SupportFileCreateManyInput>;
+  thumbnails?: Maybe<ImageFileCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface ImageUseCreateOneInput {
+  create?: Maybe<ImageUseCreateInput>;
+  connect?: Maybe<ImageUseWhereUniqueInput>;
+}
+
+export interface PackageWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  publishedAt_not?: Maybe<DateTimeInput>;
+  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_lt?: Maybe<DateTimeInput>;
+  publishedAt_lte?: Maybe<DateTimeInput>;
+  publishedAt_gt?: Maybe<DateTimeInput>;
+  publishedAt_gte?: Maybe<DateTimeInput>;
+  type?: Maybe<PackageType>;
+  type_not?: Maybe<PackageType>;
+  type_in?: Maybe<PackageType[] | PackageType>;
+  type_not_in?: Maybe<PackageType[] | PackageType>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  assetPath_not?: Maybe<String>;
+  assetPath_in?: Maybe<String[] | String>;
+  assetPath_not_in?: Maybe<String[] | String>;
+  assetPath_lt?: Maybe<String>;
+  assetPath_lte?: Maybe<String>;
+  assetPath_gt?: Maybe<String>;
+  assetPath_gte?: Maybe<String>;
+  assetPath_contains?: Maybe<String>;
+  assetPath_not_contains?: Maybe<String>;
+  assetPath_starts_with?: Maybe<String>;
+  assetPath_not_starts_with?: Maybe<String>;
+  assetPath_ends_with?: Maybe<String>;
+  assetPath_not_ends_with?: Maybe<String>;
+  author?: Maybe<UserWhereInput>;
+  team?: Maybe<TeamWhereInput>;
+  desc?: Maybe<String>;
+  desc_not?: Maybe<String>;
+  desc_in?: Maybe<String[] | String>;
+  desc_not_in?: Maybe<String[] | String>;
+  desc_lt?: Maybe<String>;
+  desc_lte?: Maybe<String>;
+  desc_gt?: Maybe<String>;
+  desc_gte?: Maybe<String>;
+  desc_contains?: Maybe<String>;
+  desc_not_contains?: Maybe<String>;
+  desc_starts_with?: Maybe<String>;
+  desc_not_starts_with?: Maybe<String>;
+  desc_ends_with?: Maybe<String>;
+  desc_not_ends_with?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  status_not?: Maybe<PublishStatus>;
+  status_in?: Maybe<PublishStatus[] | PublishStatus>;
+  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  categories_every?: Maybe<CategoryWhereInput>;
+  categories_some?: Maybe<CategoryWhereInput>;
+  categories_none?: Maybe<CategoryWhereInput>;
+  tags_every?: Maybe<TagWhereInput>;
+  tags_some?: Maybe<TagWhereInput>;
+  tags_none?: Maybe<TagWhereInput>;
+  documents_every?: Maybe<DocumentFileWhereInput>;
+  documents_some?: Maybe<DocumentFileWhereInput>;
+  documents_none?: Maybe<DocumentFileWhereInput>;
+  AND?: Maybe<PackageWhereInput[] | PackageWhereInput>;
+  OR?: Maybe<PackageWhereInput[] | PackageWhereInput>;
+  NOT?: Maybe<PackageWhereInput[] | PackageWhereInput>;
+}
+
+export interface ImageUseCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface VideoFileUpdateManyMutationInput {
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+}
+
+export interface GraphicStyleCreateOneInput {
+  create?: Maybe<GraphicStyleCreateInput>;
+  connect?: Maybe<GraphicStyleWhereUniqueInput>;
+}
+
+export interface VideoStreamUpdateManyWithWhereNestedInput {
+  where: VideoStreamScalarWhereInput;
+  data: VideoStreamUpdateManyDataInput;
+}
+
+export interface GraphicStyleCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface VideoStreamScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  site?: Maybe<String>;
+  site_not?: Maybe<String>;
+  site_in?: Maybe<String[] | String>;
+  site_not_in?: Maybe<String[] | String>;
+  site_lt?: Maybe<String>;
+  site_lte?: Maybe<String>;
+  site_gt?: Maybe<String>;
+  site_gte?: Maybe<String>;
+  site_contains?: Maybe<String>;
+  site_not_contains?: Maybe<String>;
+  site_starts_with?: Maybe<String>;
+  site_not_starts_with?: Maybe<String>;
+  site_ends_with?: Maybe<String>;
+  site_not_ends_with?: Maybe<String>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+  embedUrl_not?: Maybe<String>;
+  embedUrl_in?: Maybe<String[] | String>;
+  embedUrl_not_in?: Maybe<String[] | String>;
+  embedUrl_lt?: Maybe<String>;
+  embedUrl_lte?: Maybe<String>;
+  embedUrl_gt?: Maybe<String>;
+  embedUrl_gte?: Maybe<String>;
+  embedUrl_contains?: Maybe<String>;
+  embedUrl_not_contains?: Maybe<String>;
+  embedUrl_starts_with?: Maybe<String>;
+  embedUrl_not_starts_with?: Maybe<String>;
+  embedUrl_ends_with?: Maybe<String>;
+  embedUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
+  OR?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
+  NOT?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
+}
+
+export interface SocialPlatformCreateManyInput {
+  create?: Maybe<SocialPlatformCreateInput[] | SocialPlatformCreateInput>;
+  connect?: Maybe<
+    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
+  >;
+}
+
+export interface VideoStreamUpdateDataInput {
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+}
+
+export interface SocialPlatformCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export type SocialPlatformWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface DocumentUseCreateOneInput {
+  create?: Maybe<DocumentUseCreateInput>;
+  connect?: Maybe<DocumentUseWhereUniqueInput>;
+}
+
+export interface VideoUseUpsertNestedInput {
+  update: VideoUseUpdateDataInput;
+  create: VideoUseCreateInput;
+}
+
+export interface DocumentUseCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export type SupportFileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface BureauCreateManyInput {
+  create?: Maybe<BureauCreateInput[] | BureauCreateInput>;
+  connect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
+}
+
+export interface VideoFileUpdateInput {
+  language?: Maybe<LanguageUpdateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<VideoUseUpdateOneInput>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+  dimensions?: Maybe<DimensionsUpdateOneInput>;
+  stream?: Maybe<VideoStreamUpdateManyInput>;
+}
+
+export interface CountryCreateManyInput {
+  create?: Maybe<CountryCreateInput[] | CountryCreateInput>;
+  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+}
+
+export type SupportFileUseWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface CategoryCreateManyInput {
+  create?: Maybe<CategoryCreateInput[] | CategoryCreateInput>;
+  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
+}
+
+export interface VideoStreamCreateManyInput {
+  create?: Maybe<VideoStreamCreateInput[] | VideoStreamCreateInput>;
+  connect?: Maybe<VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput>;
+}
+
+export interface TagCreateManyInput {
+  create?: Maybe<TagCreateInput[] | TagCreateInput>;
+  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
+}
+
+export interface VideoUseCreateOneInput {
+  create?: Maybe<VideoUseCreateInput>;
+  connect?: Maybe<VideoUseWhereUniqueInput>;
+}
+
+export interface TagCreateInput {
+  id?: Maybe<ID_Input>;
+  translations?: Maybe<LanguageTranslationCreateManyInput>;
+}
+
+export interface VideoFileCreateInput {
+  id?: Maybe<ID_Input>;
+  language?: Maybe<LanguageCreateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<VideoUseCreateOneInput>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+  dimensions?: Maybe<DimensionsCreateOneInput>;
+  stream?: Maybe<VideoStreamCreateManyInput>;
+}
+
+export interface DocumentFileUpdateInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  language?: Maybe<LanguageUpdateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
+  image?: Maybe<ImageFileUpdateManyInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<DocumentUseUpdateOneInput>;
+  bureaus?: Maybe<BureauUpdateManyInput>;
+  countries?: Maybe<CountryUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface UserUpdateInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  country?: Maybe<String>;
+  city?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface DocumentConversionFormatUpdateOneInput {
+  create?: Maybe<DocumentConversionFormatCreateInput>;
+  update?: Maybe<DocumentConversionFormatUpdateDataInput>;
+  upsert?: Maybe<DocumentConversionFormatUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<DocumentConversionFormatWhereUniqueInput>;
+}
+
+export interface ThumbnailUpdateManyMutationInput {
+  size?: Maybe<ThumbnailSize>;
+}
+
+export interface DocumentConversionFormatUpdateDataInput {
+  rawText?: Maybe<String>;
+  html?: Maybe<String>;
+  markdown?: Maybe<String>;
+}
+
+export interface ImageFileUpdateOneInput {
+  create?: Maybe<ImageFileCreateInput>;
+  update?: Maybe<ImageFileUpdateDataInput>;
+  upsert?: Maybe<ImageFileUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ImageFileWhereUniqueInput>;
+}
+
+export interface DocumentConversionFormatUpsertNestedInput {
+  update: DocumentConversionFormatUpdateDataInput;
+  create: DocumentConversionFormatCreateInput;
+}
+
+export type ThumbnailWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ImageFileUpdateManyInput {
+  create?: Maybe<ImageFileCreateInput[] | ImageFileCreateInput>;
+  update?: Maybe<
+    | ImageFileUpdateWithWhereUniqueNestedInput[]
+    | ImageFileUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | ImageFileUpsertWithWhereUniqueNestedInput[]
+    | ImageFileUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
+  connect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
+  set?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
+  disconnect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
+  deleteMany?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+  updateMany?: Maybe<
+    | ImageFileUpdateManyWithWhereNestedInput[]
+    | ImageFileUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ThumbnailCreateInput {
+  id?: Maybe<ID_Input>;
+  size?: Maybe<ThumbnailSize>;
+  image?: Maybe<ImageFileCreateOneInput>;
+}
+
+export interface ImageFileUpdateWithWhereUniqueNestedInput {
+  where: ImageFileWhereUniqueInput;
+  data: ImageFileUpdateDataInput;
+}
+
+export interface TeamUpdateManyMutationInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface BureauCreateWithoutOfficesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+}
+
+export interface TagUpdateInput {
+  translations?: Maybe<LanguageTranslationUpdateManyInput>;
+}
+
+export interface DimensionsUpdateOneInput {
+  create?: Maybe<DimensionsCreateInput>;
+  update?: Maybe<DimensionsUpdateDataInput>;
+  upsert?: Maybe<DimensionsUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<DimensionsWhereUniqueInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export interface DimensionsUpdateDataInput {
+  width?: Maybe<Int>;
+  height?: Maybe<Int>;
+}
+
+export interface SupportFileUpdateManyMutationInput {
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  visibility?: Maybe<Visibility>;
+  editable?: Maybe<Boolean>;
+}
+
+export interface DimensionsUpsertNestedInput {
+  update: DimensionsUpdateDataInput;
+  create: DimensionsCreateInput;
+}
+
+export type VideoFileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ImageUseUpdateOneInput {
+  create?: Maybe<ImageUseCreateInput>;
+  update?: Maybe<ImageUseUpdateDataInput>;
+  upsert?: Maybe<ImageUseUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ImageUseWhereUniqueInput>;
+}
+
+export interface SocialPlatformUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface ImageUseUpdateDataInput {
+  name?: Maybe<String>;
+}
+
+export interface CountryUpsertWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput;
+  update: CountryUpdateWithoutRegionDataInput;
+  create: CountryCreateWithoutRegionInput;
+}
+
+export interface ImageUseUpsertNestedInput {
+  update: ImageUseUpdateDataInput;
+  create: ImageUseCreateInput;
+}
+
+export interface CountryUpdateWithoutRegionDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface GraphicStyleUpdateOneInput {
+  create?: Maybe<GraphicStyleCreateInput>;
+  update?: Maybe<GraphicStyleUpdateDataInput>;
+  upsert?: Maybe<GraphicStyleUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<GraphicStyleWhereUniqueInput>;
+}
+
+export interface VideoFileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  language?: Maybe<LanguageWhereInput>;
+  filetype?: Maybe<String>;
+  filetype_not?: Maybe<String>;
+  filetype_in?: Maybe<String[] | String>;
+  filetype_not_in?: Maybe<String[] | String>;
+  filetype_lt?: Maybe<String>;
+  filetype_lte?: Maybe<String>;
+  filetype_gt?: Maybe<String>;
+  filetype_gte?: Maybe<String>;
+  filetype_contains?: Maybe<String>;
+  filetype_not_contains?: Maybe<String>;
+  filetype_starts_with?: Maybe<String>;
+  filetype_not_starts_with?: Maybe<String>;
+  filetype_ends_with?: Maybe<String>;
+  filetype_not_ends_with?: Maybe<String>;
+  filename?: Maybe<String>;
+  filename_not?: Maybe<String>;
+  filename_in?: Maybe<String[] | String>;
+  filename_not_in?: Maybe<String[] | String>;
+  filename_lt?: Maybe<String>;
+  filename_lte?: Maybe<String>;
+  filename_gt?: Maybe<String>;
+  filename_gte?: Maybe<String>;
+  filename_contains?: Maybe<String>;
+  filename_not_contains?: Maybe<String>;
+  filename_starts_with?: Maybe<String>;
+  filename_not_starts_with?: Maybe<String>;
+  filename_ends_with?: Maybe<String>;
+  filename_not_ends_with?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  use?: Maybe<VideoUseWhereInput>;
+  quality?: Maybe<VideoQuality>;
+  quality_not?: Maybe<VideoQuality>;
+  quality_in?: Maybe<VideoQuality[] | VideoQuality>;
+  quality_not_in?: Maybe<VideoQuality[] | VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  videoBurnedInStatus_not?: Maybe<VideoBurnedInStatus>;
+  videoBurnedInStatus_in?: Maybe<VideoBurnedInStatus[] | VideoBurnedInStatus>;
+  videoBurnedInStatus_not_in?: Maybe<
+    VideoBurnedInStatus[] | VideoBurnedInStatus
+  >;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
+  md5?: Maybe<String>;
+  md5_not?: Maybe<String>;
+  md5_in?: Maybe<String[] | String>;
+  md5_not_in?: Maybe<String[] | String>;
+  md5_lt?: Maybe<String>;
+  md5_lte?: Maybe<String>;
+  md5_gt?: Maybe<String>;
+  md5_gte?: Maybe<String>;
+  md5_contains?: Maybe<String>;
+  md5_not_contains?: Maybe<String>;
+  md5_starts_with?: Maybe<String>;
+  md5_not_starts_with?: Maybe<String>;
+  md5_ends_with?: Maybe<String>;
+  md5_not_ends_with?: Maybe<String>;
+  duration?: Maybe<Float>;
+  duration_not?: Maybe<Float>;
+  duration_in?: Maybe<Float[] | Float>;
+  duration_not_in?: Maybe<Float[] | Float>;
+  duration_lt?: Maybe<Float>;
+  duration_lte?: Maybe<Float>;
+  duration_gt?: Maybe<Float>;
+  duration_gte?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  bitrate_not?: Maybe<Float>;
+  bitrate_in?: Maybe<Float[] | Float>;
+  bitrate_not_in?: Maybe<Float[] | Float>;
+  bitrate_lt?: Maybe<Float>;
+  bitrate_lte?: Maybe<Float>;
+  bitrate_gt?: Maybe<Float>;
+  bitrate_gte?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+  filesize_not?: Maybe<Float>;
+  filesize_in?: Maybe<Float[] | Float>;
+  filesize_not_in?: Maybe<Float[] | Float>;
+  filesize_lt?: Maybe<Float>;
+  filesize_lte?: Maybe<Float>;
+  filesize_gt?: Maybe<Float>;
+  filesize_gte?: Maybe<Float>;
+  dimensions?: Maybe<DimensionsWhereInput>;
+  stream_every?: Maybe<VideoStreamWhereInput>;
+  stream_some?: Maybe<VideoStreamWhereInput>;
+  stream_none?: Maybe<VideoStreamWhereInput>;
+  AND?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
+  OR?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
+  NOT?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
+}
+
+export interface GraphicStyleUpdateDataInput {
+  name?: Maybe<String>;
+}
+
+export interface CountryUpdateManyWithoutRegionInput {
+  create?: Maybe<
+    CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput
+  >;
+  delete?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  set?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  disconnect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  update?: Maybe<
+    | CountryUpdateWithWhereUniqueWithoutRegionInput[]
+    | CountryUpdateWithWhereUniqueWithoutRegionInput
+  >;
+  upsert?: Maybe<
+    | CountryUpsertWithWhereUniqueWithoutRegionInput[]
+    | CountryUpsertWithWhereUniqueWithoutRegionInput
+  >;
+  deleteMany?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
+  updateMany?: Maybe<
+    | CountryUpdateManyWithWhereNestedInput[]
+    | CountryUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface GraphicStyleUpsertNestedInput {
+  update: GraphicStyleUpdateDataInput;
+  create: GraphicStyleCreateInput;
+}
+
+export interface CountryCreateWithoutRegionInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+}
+
+export interface SocialPlatformUpdateManyInput {
+  create?: Maybe<SocialPlatformCreateInput[] | SocialPlatformCreateInput>;
+  update?: Maybe<
+    | SocialPlatformUpdateWithWhereUniqueNestedInput[]
+    | SocialPlatformUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | SocialPlatformUpsertWithWhereUniqueNestedInput[]
+    | SocialPlatformUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<
+    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
+  >;
+  connect?: Maybe<
+    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
+  >;
+  set?: Maybe<
+    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | SocialPlatformUpdateManyWithWhereNestedInput[]
+    | SocialPlatformUpdateManyWithWhereNestedInput
+  >;
+}
+
+export type VideoProjectWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SocialPlatformUpdateWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput;
+  data: SocialPlatformUpdateDataInput;
+}
+
+export interface VideoUnitWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  language?: Maybe<LanguageWhereInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descPublic_not?: Maybe<String>;
+  descPublic_in?: Maybe<String[] | String>;
+  descPublic_not_in?: Maybe<String[] | String>;
+  descPublic_lt?: Maybe<String>;
+  descPublic_lte?: Maybe<String>;
+  descPublic_gt?: Maybe<String>;
+  descPublic_gte?: Maybe<String>;
+  descPublic_contains?: Maybe<String>;
+  descPublic_not_contains?: Maybe<String>;
+  descPublic_starts_with?: Maybe<String>;
+  descPublic_not_starts_with?: Maybe<String>;
+  descPublic_ends_with?: Maybe<String>;
+  descPublic_not_ends_with?: Maybe<String>;
+  files_every?: Maybe<VideoFileWhereInput>;
+  files_some?: Maybe<VideoFileWhereInput>;
+  files_none?: Maybe<VideoFileWhereInput>;
+  tags_every?: Maybe<TagWhereInput>;
+  tags_some?: Maybe<TagWhereInput>;
+  tags_none?: Maybe<TagWhereInput>;
+  categories_every?: Maybe<CategoryWhereInput>;
+  categories_some?: Maybe<CategoryWhereInput>;
+  categories_none?: Maybe<CategoryWhereInput>;
+  thumbnails_every?: Maybe<ThumbnailWhereInput>;
+  thumbnails_some?: Maybe<ThumbnailWhereInput>;
+  thumbnails_none?: Maybe<ThumbnailWhereInput>;
+  AND?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+  OR?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+  NOT?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+}
+
+export interface SocialPlatformUpdateDataInput {
+  name?: Maybe<String>;
+}
+
+export interface PackageUpdateManyMutationInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  type?: Maybe<PackageType>;
+  title?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  desc?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+}
+
+export interface SocialPlatformUpsertWithWhereUniqueNestedInput {
+  where: SocialPlatformWhereUniqueInput;
+  update: SocialPlatformUpdateDataInput;
+  create: SocialPlatformCreateInput;
+}
+
+export interface OfficeWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  abbr?: Maybe<String>;
+  abbr_not?: Maybe<String>;
+  abbr_in?: Maybe<String[] | String>;
+  abbr_not_in?: Maybe<String[] | String>;
+  abbr_lt?: Maybe<String>;
+  abbr_lte?: Maybe<String>;
+  abbr_gt?: Maybe<String>;
+  abbr_gte?: Maybe<String>;
+  abbr_contains?: Maybe<String>;
+  abbr_not_contains?: Maybe<String>;
+  abbr_starts_with?: Maybe<String>;
+  abbr_not_starts_with?: Maybe<String>;
+  abbr_ends_with?: Maybe<String>;
+  abbr_not_ends_with?: Maybe<String>;
+  bureau?: Maybe<BureauWhereInput>;
+  AND?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
+  OR?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
+  NOT?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
+}
+
+export interface SocialPlatformScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
+  >;
+  OR?: Maybe<SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput>;
+  NOT?: Maybe<
+    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
+  >;
+}
+
+export interface DocumentFileUpdateManyWithWhereNestedInput {
+  where: DocumentFileScalarWhereInput;
+  data: DocumentFileUpdateManyDataInput;
+}
+
+export interface SocialPlatformUpdateManyWithWhereNestedInput {
+  where: SocialPlatformScalarWhereInput;
+  data: SocialPlatformUpdateManyDataInput;
+}
+
+export type VideoStreamWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SocialPlatformUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface DocumentFileUpdateDataInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  language?: Maybe<LanguageUpdateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
+  image?: Maybe<ImageFileUpdateManyInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<DocumentUseUpdateOneInput>;
+  bureaus?: Maybe<BureauUpdateManyInput>;
+  countries?: Maybe<CountryUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface ImageFileUpsertWithWhereUniqueNestedInput {
+  where: ImageFileWhereUniqueInput;
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
+}
+
+export type VideoUnitWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ImageFileScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  signedUrl_not?: Maybe<String>;
+  signedUrl_in?: Maybe<String[] | String>;
+  signedUrl_not_in?: Maybe<String[] | String>;
+  signedUrl_lt?: Maybe<String>;
+  signedUrl_lte?: Maybe<String>;
+  signedUrl_gt?: Maybe<String>;
+  signedUrl_gte?: Maybe<String>;
+  signedUrl_contains?: Maybe<String>;
+  signedUrl_not_contains?: Maybe<String>;
+  signedUrl_starts_with?: Maybe<String>;
+  signedUrl_not_starts_with?: Maybe<String>;
+  signedUrl_ends_with?: Maybe<String>;
+  signedUrl_not_ends_with?: Maybe<String>;
+  alt?: Maybe<String>;
+  alt_not?: Maybe<String>;
+  alt_in?: Maybe<String[] | String>;
+  alt_not_in?: Maybe<String[] | String>;
+  alt_lt?: Maybe<String>;
+  alt_lte?: Maybe<String>;
+  alt_gt?: Maybe<String>;
+  alt_gte?: Maybe<String>;
+  alt_contains?: Maybe<String>;
+  alt_not_contains?: Maybe<String>;
+  alt_starts_with?: Maybe<String>;
+  alt_not_starts_with?: Maybe<String>;
+  alt_ends_with?: Maybe<String>;
+  alt_not_ends_with?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  longdesc_not?: Maybe<String>;
+  longdesc_in?: Maybe<String[] | String>;
+  longdesc_not_in?: Maybe<String[] | String>;
+  longdesc_lt?: Maybe<String>;
+  longdesc_lte?: Maybe<String>;
+  longdesc_gt?: Maybe<String>;
+  longdesc_gte?: Maybe<String>;
+  longdesc_contains?: Maybe<String>;
+  longdesc_not_contains?: Maybe<String>;
+  longdesc_starts_with?: Maybe<String>;
+  longdesc_not_starts_with?: Maybe<String>;
+  longdesc_ends_with?: Maybe<String>;
+  longdesc_not_ends_with?: Maybe<String>;
+  caption?: Maybe<String>;
+  caption_not?: Maybe<String>;
+  caption_in?: Maybe<String[] | String>;
+  caption_not_in?: Maybe<String[] | String>;
+  caption_lt?: Maybe<String>;
+  caption_lte?: Maybe<String>;
+  caption_gt?: Maybe<String>;
+  caption_gte?: Maybe<String>;
+  caption_contains?: Maybe<String>;
+  caption_not_contains?: Maybe<String>;
+  caption_starts_with?: Maybe<String>;
+  caption_not_starts_with?: Maybe<String>;
+  caption_ends_with?: Maybe<String>;
+  caption_not_ends_with?: Maybe<String>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  filename?: Maybe<String>;
+  filename_not?: Maybe<String>;
+  filename_in?: Maybe<String[] | String>;
+  filename_not_in?: Maybe<String[] | String>;
+  filename_lt?: Maybe<String>;
+  filename_lte?: Maybe<String>;
+  filename_gt?: Maybe<String>;
+  filename_gte?: Maybe<String>;
+  filename_contains?: Maybe<String>;
+  filename_not_contains?: Maybe<String>;
+  filename_starts_with?: Maybe<String>;
+  filename_not_starts_with?: Maybe<String>;
+  filename_ends_with?: Maybe<String>;
+  filename_not_ends_with?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filetype_not?: Maybe<String>;
+  filetype_in?: Maybe<String[] | String>;
+  filetype_not_in?: Maybe<String[] | String>;
+  filetype_lt?: Maybe<String>;
+  filetype_lte?: Maybe<String>;
+  filetype_gt?: Maybe<String>;
+  filetype_gte?: Maybe<String>;
+  filetype_contains?: Maybe<String>;
+  filetype_not_contains?: Maybe<String>;
+  filetype_starts_with?: Maybe<String>;
+  filetype_not_starts_with?: Maybe<String>;
+  filetype_ends_with?: Maybe<String>;
+  filetype_not_ends_with?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  filesize_not?: Maybe<Float>;
+  filesize_in?: Maybe<Float[] | Float>;
+  filesize_not_in?: Maybe<Float[] | Float>;
+  filesize_lt?: Maybe<Float>;
+  filesize_lte?: Maybe<Float>;
+  filesize_gt?: Maybe<Float>;
+  filesize_gte?: Maybe<Float>;
+  md5?: Maybe<String>;
+  md5_not?: Maybe<String>;
+  md5_in?: Maybe<String[] | String>;
+  md5_not_in?: Maybe<String[] | String>;
+  md5_lt?: Maybe<String>;
+  md5_lte?: Maybe<String>;
+  md5_gt?: Maybe<String>;
+  md5_gte?: Maybe<String>;
+  md5_contains?: Maybe<String>;
+  md5_not_contains?: Maybe<String>;
+  md5_starts_with?: Maybe<String>;
+  md5_not_starts_with?: Maybe<String>;
+  md5_ends_with?: Maybe<String>;
+  md5_not_ends_with?: Maybe<String>;
+  quality?: Maybe<ImageQuality>;
+  quality_not?: Maybe<ImageQuality>;
+  quality_in?: Maybe<ImageQuality[] | ImageQuality>;
+  quality_not_in?: Maybe<ImageQuality[] | ImageQuality>;
+  AND?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+  OR?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+  NOT?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
+}
+
+export interface PackageUpdateInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  type?: Maybe<PackageType>;
+  title?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserUpdateOneInput>;
+  team?: Maybe<TeamUpdateOneInput>;
+  desc?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+  documents?: Maybe<DocumentFileUpdateManyInput>;
+}
+
+export interface ImageFileUpdateManyWithWhereNestedInput {
+  where: ImageFileScalarWhereInput;
+  data: ImageFileUpdateManyDataInput;
+}
+
+export type VideoUseWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface ImageFileUpdateManyDataInput {
+  visibility?: Maybe<Visibility>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  md5?: Maybe<String>;
+  quality?: Maybe<ImageQuality>;
+}
+
+export interface OfficeUpdateManyMutationInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface DocumentUseUpdateOneInput {
+  create?: Maybe<DocumentUseCreateInput>;
+  update?: Maybe<DocumentUseUpdateDataInput>;
+  upsert?: Maybe<DocumentUseUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<DocumentUseWhereUniqueInput>;
+}
+
+export interface BureauUpdateWithoutOfficesDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export type DimensionsWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface BureauCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+  offices?: Maybe<OfficeCreateManyWithoutBureauInput>;
+}
+
+export interface DocumentUseUpsertNestedInput {
+  update: DocumentUseUpdateDataInput;
+  create: DocumentUseCreateInput;
+}
+
+export interface OfficeCreateWithoutBureauInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+}
+
+export interface BureauUpdateManyInput {
+  create?: Maybe<BureauCreateInput[] | BureauCreateInput>;
+  update?: Maybe<
+    | BureauUpdateWithWhereUniqueNestedInput[]
+    | BureauUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | BureauUpsertWithWhereUniqueNestedInput[]
+    | BureauUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
+  connect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
+  set?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
+  disconnect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
+  deleteMany?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
+  updateMany?: Maybe<
+    | BureauUpdateManyWithWhereNestedInput[]
+    | BureauUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VideoUnitSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoUnitWhereInput>;
+  AND?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+}
+
+export interface BureauUpdateWithWhereUniqueNestedInput {
+  where: BureauWhereUniqueInput;
+  data: BureauUpdateDataInput;
+}
+
+export type DocumentConversionFormatWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface BureauUpdateDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  offices?: Maybe<OfficeUpdateManyWithoutBureauInput>;
 }
 
 export interface TeamSubscriptionWhereInput {
@@ -1871,9 +4603,75 @@ export interface TeamSubscriptionWhereInput {
   NOT?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
 }
 
-export interface BureauUpdateManyMutationInput {
+export interface BureauUpsertWithWhereUniqueNestedInput {
+  where: BureauWhereUniqueInput;
+  update: BureauUpdateDataInput;
+  create: BureauCreateInput;
+}
+
+export interface SupportFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SupportFileWhereInput>;
+  AND?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
+}
+
+export interface BureauScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
   name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
   abbr?: Maybe<String>;
+  abbr_not?: Maybe<String>;
+  abbr_in?: Maybe<String[] | String>;
+  abbr_not_in?: Maybe<String[] | String>;
+  abbr_lt?: Maybe<String>;
+  abbr_lte?: Maybe<String>;
+  abbr_gt?: Maybe<String>;
+  abbr_gte?: Maybe<String>;
+  abbr_contains?: Maybe<String>;
+  abbr_not_contains?: Maybe<String>;
+  abbr_starts_with?: Maybe<String>;
+  abbr_not_starts_with?: Maybe<String>;
+  abbr_ends_with?: Maybe<String>;
+  abbr_not_ends_with?: Maybe<String>;
+  AND?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
+  OR?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
+  NOT?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
 }
 
 export interface ImageFileWhereInput {
@@ -2061,2554 +4859,6 @@ export interface ImageFileWhereInput {
   NOT?: Maybe<ImageFileWhereInput[] | ImageFileWhereInput>;
 }
 
-export interface OfficeUpdateManyMutationInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export interface ImageUseWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
-  OR?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
-  NOT?: Maybe<ImageUseWhereInput[] | ImageUseWhereInput>;
-}
-
-export interface BureauUpsertWithoutOfficesInput {
-  update: BureauUpdateWithoutOfficesDataInput;
-  create: BureauCreateWithoutOfficesInput;
-}
-
-export interface GraphicStyleWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
-  OR?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
-  NOT?: Maybe<GraphicStyleWhereInput[] | GraphicStyleWhereInput>;
-}
-
-export interface CategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  translations?: Maybe<LanguageTranslationCreateManyInput>;
-}
-
-export type DimensionsWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface LanguageTranslationCreateManyInput {
-  create?: Maybe<
-    LanguageTranslationCreateInput[] | LanguageTranslationCreateInput
-  >;
-  connect?: Maybe<
-    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
-  >;
-}
-
-export interface SocialPlatformSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<SocialPlatformWhereInput>;
-  AND?: Maybe<
-    | SocialPlatformSubscriptionWhereInput[]
-    | SocialPlatformSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | SocialPlatformSubscriptionWhereInput[]
-    | SocialPlatformSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | SocialPlatformSubscriptionWhereInput[]
-    | SocialPlatformSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageTranslationCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  language?: Maybe<LanguageCreateOneInput>;
-}
-
-export interface PackageSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PackageWhereInput>;
-  AND?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
-  OR?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
-  NOT?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
-}
-
-export interface LanguageCreateOneInput {
-  create?: Maybe<LanguageCreateInput>;
-  connect?: Maybe<LanguageWhereUniqueInput>;
-}
-
-export interface LanguageTranslationSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LanguageTranslationWhereInput>;
-  AND?: Maybe<
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | LanguageTranslationSubscriptionWhereInput[]
-    | LanguageTranslationSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageCreateInput {
-  id?: Maybe<ID_Input>;
-  languageCode: String;
-  locale: String;
-  textDirection?: Maybe<TextDirection>;
-  displayName: String;
-  nativeName: String;
-}
-
-export interface LanguageSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<LanguageWhereInput>;
-  AND?: Maybe<
-    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
-  >;
-  OR?: Maybe<LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput>;
-  NOT?: Maybe<
-    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
-  >;
-}
-
-export interface CategoryUpdateInput {
-  translations?: Maybe<LanguageTranslationUpdateManyInput>;
-}
-
-export interface DocumentFileWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  language?: Maybe<LanguageWhereInput>;
-  filetype?: Maybe<String>;
-  filetype_not?: Maybe<String>;
-  filetype_in?: Maybe<String[] | String>;
-  filetype_not_in?: Maybe<String[] | String>;
-  filetype_lt?: Maybe<String>;
-  filetype_lte?: Maybe<String>;
-  filetype_gt?: Maybe<String>;
-  filetype_gte?: Maybe<String>;
-  filetype_contains?: Maybe<String>;
-  filetype_not_contains?: Maybe<String>;
-  filetype_starts_with?: Maybe<String>;
-  filetype_not_starts_with?: Maybe<String>;
-  filetype_ends_with?: Maybe<String>;
-  filetype_not_ends_with?: Maybe<String>;
-  filename?: Maybe<String>;
-  filename_not?: Maybe<String>;
-  filename_in?: Maybe<String[] | String>;
-  filename_not_in?: Maybe<String[] | String>;
-  filename_lt?: Maybe<String>;
-  filename_lte?: Maybe<String>;
-  filename_gt?: Maybe<String>;
-  filename_gte?: Maybe<String>;
-  filename_contains?: Maybe<String>;
-  filename_not_contains?: Maybe<String>;
-  filename_starts_with?: Maybe<String>;
-  filename_not_starts_with?: Maybe<String>;
-  filename_ends_with?: Maybe<String>;
-  filename_not_ends_with?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  filesize_not?: Maybe<Float>;
-  filesize_in?: Maybe<Float[] | Float>;
-  filesize_not_in?: Maybe<Float[] | Float>;
-  filesize_lt?: Maybe<Float>;
-  filesize_lte?: Maybe<Float>;
-  filesize_gt?: Maybe<Float>;
-  filesize_gte?: Maybe<Float>;
-  status?: Maybe<PublishStatus>;
-  status_not?: Maybe<PublishStatus>;
-  status_in?: Maybe<PublishStatus[] | PublishStatus>;
-  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
-  excerpt?: Maybe<String>;
-  excerpt_not?: Maybe<String>;
-  excerpt_in?: Maybe<String[] | String>;
-  excerpt_not_in?: Maybe<String[] | String>;
-  excerpt_lt?: Maybe<String>;
-  excerpt_lte?: Maybe<String>;
-  excerpt_gt?: Maybe<String>;
-  excerpt_gte?: Maybe<String>;
-  excerpt_contains?: Maybe<String>;
-  excerpt_not_contains?: Maybe<String>;
-  excerpt_starts_with?: Maybe<String>;
-  excerpt_not_starts_with?: Maybe<String>;
-  excerpt_ends_with?: Maybe<String>;
-  excerpt_not_ends_with?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatWhereInput>;
-  image_every?: Maybe<ImageFileWhereInput>;
-  image_some?: Maybe<ImageFileWhereInput>;
-  image_none?: Maybe<ImageFileWhereInput>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  signedUrl_not?: Maybe<String>;
-  signedUrl_in?: Maybe<String[] | String>;
-  signedUrl_not_in?: Maybe<String[] | String>;
-  signedUrl_lt?: Maybe<String>;
-  signedUrl_lte?: Maybe<String>;
-  signedUrl_gt?: Maybe<String>;
-  signedUrl_gte?: Maybe<String>;
-  signedUrl_contains?: Maybe<String>;
-  signedUrl_not_contains?: Maybe<String>;
-  signedUrl_starts_with?: Maybe<String>;
-  signedUrl_not_starts_with?: Maybe<String>;
-  signedUrl_ends_with?: Maybe<String>;
-  signedUrl_not_ends_with?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  use?: Maybe<DocumentUseWhereInput>;
-  bureaus_every?: Maybe<BureauWhereInput>;
-  bureaus_some?: Maybe<BureauWhereInput>;
-  bureaus_none?: Maybe<BureauWhereInput>;
-  countries_every?: Maybe<CountryWhereInput>;
-  countries_some?: Maybe<CountryWhereInput>;
-  countries_none?: Maybe<CountryWhereInput>;
-  categories_every?: Maybe<CategoryWhereInput>;
-  categories_some?: Maybe<CategoryWhereInput>;
-  categories_none?: Maybe<CategoryWhereInput>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
-  AND?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
-  OR?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
-  NOT?: Maybe<DocumentFileWhereInput[] | DocumentFileWhereInput>;
-}
-
-export interface LanguageTranslationUpdateManyInput {
-  create?: Maybe<
-    LanguageTranslationCreateInput[] | LanguageTranslationCreateInput
-  >;
-  update?: Maybe<
-    | LanguageTranslationUpdateWithWhereUniqueNestedInput[]
-    | LanguageTranslationUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | LanguageTranslationUpsertWithWhereUniqueNestedInput[]
-    | LanguageTranslationUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<
-    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
-  >;
-  connect?: Maybe<
-    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
-  >;
-  set?: Maybe<
-    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    LanguageTranslationWhereUniqueInput[] | LanguageTranslationWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | LanguageTranslationUpdateManyWithWhereNestedInput[]
-    | LanguageTranslationUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ImageFileSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ImageFileWhereInput>;
-  AND?: Maybe<
-    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageTranslationUpdateWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  data: LanguageTranslationUpdateDataInput;
-}
-
-export interface GraphicProjectSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<GraphicProjectWhereInput>;
-  AND?: Maybe<
-    | GraphicProjectSubscriptionWhereInput[]
-    | GraphicProjectSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | GraphicProjectSubscriptionWhereInput[]
-    | GraphicProjectSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | GraphicProjectSubscriptionWhereInput[]
-    | GraphicProjectSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageTranslationUpdateDataInput {
-  name?: Maybe<String>;
-  language?: Maybe<LanguageUpdateOneInput>;
-}
-
-export type DocumentUseWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface LanguageUpdateOneInput {
-  create?: Maybe<LanguageCreateInput>;
-  update?: Maybe<LanguageUpdateDataInput>;
-  upsert?: Maybe<LanguageUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<LanguageWhereUniqueInput>;
-}
-
-export interface DocumentFileSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DocumentFileWhereInput>;
-  AND?: Maybe<
-    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageUpdateDataInput {
-  languageCode?: Maybe<String>;
-  locale?: Maybe<String>;
-  textDirection?: Maybe<TextDirection>;
-  displayName?: Maybe<String>;
-  nativeName?: Maybe<String>;
-}
-
-export interface DimensionsSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DimensionsWhereInput>;
-  AND?: Maybe<
-    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
-  >;
-}
-
-export interface LanguageUpsertNestedInput {
-  update: LanguageUpdateDataInput;
-  create: LanguageCreateInput;
-}
-
-export interface CountrySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<CountryWhereInput>;
-  AND?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
-  OR?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
-  NOT?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
-}
-
-export interface LanguageTranslationUpsertWithWhereUniqueNestedInput {
-  where: LanguageTranslationWhereUniqueInput;
-  update: LanguageTranslationUpdateDataInput;
-  create: LanguageTranslationCreateInput;
-}
-
-export interface CategorySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<CategoryWhereInput>;
-  AND?: Maybe<
-    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
-  >;
-  OR?: Maybe<CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput>;
-  NOT?: Maybe<
-    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
-  >;
-}
-
-export interface LanguageTranslationScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
-  >;
-  OR?: Maybe<
-    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
-  >;
-  NOT?: Maybe<
-    LanguageTranslationScalarWhereInput[] | LanguageTranslationScalarWhereInput
-  >;
-}
-
-export interface VideoUseUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface LanguageTranslationUpdateManyWithWhereNestedInput {
-  where: LanguageTranslationScalarWhereInput;
-  data: LanguageTranslationUpdateManyDataInput;
-}
-
-export interface UserWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  firstName?: Maybe<String>;
-  firstName_not?: Maybe<String>;
-  firstName_in?: Maybe<String[] | String>;
-  firstName_not_in?: Maybe<String[] | String>;
-  firstName_lt?: Maybe<String>;
-  firstName_lte?: Maybe<String>;
-  firstName_gt?: Maybe<String>;
-  firstName_gte?: Maybe<String>;
-  firstName_contains?: Maybe<String>;
-  firstName_not_contains?: Maybe<String>;
-  firstName_starts_with?: Maybe<String>;
-  firstName_not_starts_with?: Maybe<String>;
-  firstName_ends_with?: Maybe<String>;
-  firstName_not_ends_with?: Maybe<String>;
-  lastName?: Maybe<String>;
-  lastName_not?: Maybe<String>;
-  lastName_in?: Maybe<String[] | String>;
-  lastName_not_in?: Maybe<String[] | String>;
-  lastName_lt?: Maybe<String>;
-  lastName_lte?: Maybe<String>;
-  lastName_gt?: Maybe<String>;
-  lastName_gte?: Maybe<String>;
-  lastName_contains?: Maybe<String>;
-  lastName_not_contains?: Maybe<String>;
-  lastName_starts_with?: Maybe<String>;
-  lastName_not_starts_with?: Maybe<String>;
-  lastName_ends_with?: Maybe<String>;
-  lastName_not_ends_with?: Maybe<String>;
-  email?: Maybe<String>;
-  email_not?: Maybe<String>;
-  email_in?: Maybe<String[] | String>;
-  email_not_in?: Maybe<String[] | String>;
-  email_lt?: Maybe<String>;
-  email_lte?: Maybe<String>;
-  email_gt?: Maybe<String>;
-  email_gte?: Maybe<String>;
-  email_contains?: Maybe<String>;
-  email_not_contains?: Maybe<String>;
-  email_starts_with?: Maybe<String>;
-  email_not_starts_with?: Maybe<String>;
-  email_ends_with?: Maybe<String>;
-  email_not_ends_with?: Maybe<String>;
-  password?: Maybe<String>;
-  password_not?: Maybe<String>;
-  password_in?: Maybe<String[] | String>;
-  password_not_in?: Maybe<String[] | String>;
-  password_lt?: Maybe<String>;
-  password_lte?: Maybe<String>;
-  password_gt?: Maybe<String>;
-  password_gte?: Maybe<String>;
-  password_contains?: Maybe<String>;
-  password_not_contains?: Maybe<String>;
-  password_starts_with?: Maybe<String>;
-  password_not_starts_with?: Maybe<String>;
-  password_ends_with?: Maybe<String>;
-  password_not_ends_with?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempToken_not?: Maybe<String>;
-  tempToken_in?: Maybe<String[] | String>;
-  tempToken_not_in?: Maybe<String[] | String>;
-  tempToken_lt?: Maybe<String>;
-  tempToken_lte?: Maybe<String>;
-  tempToken_gt?: Maybe<String>;
-  tempToken_gte?: Maybe<String>;
-  tempToken_contains?: Maybe<String>;
-  tempToken_not_contains?: Maybe<String>;
-  tempToken_starts_with?: Maybe<String>;
-  tempToken_not_starts_with?: Maybe<String>;
-  tempToken_ends_with?: Maybe<String>;
-  tempToken_not_ends_with?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  tempTokenExpiry_not?: Maybe<Float>;
-  tempTokenExpiry_in?: Maybe<Float[] | Float>;
-  tempTokenExpiry_not_in?: Maybe<Float[] | Float>;
-  tempTokenExpiry_lt?: Maybe<Float>;
-  tempTokenExpiry_lte?: Maybe<Float>;
-  tempTokenExpiry_gt?: Maybe<Float>;
-  tempTokenExpiry_gte?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  jobTitle_not?: Maybe<String>;
-  jobTitle_in?: Maybe<String[] | String>;
-  jobTitle_not_in?: Maybe<String[] | String>;
-  jobTitle_lt?: Maybe<String>;
-  jobTitle_lte?: Maybe<String>;
-  jobTitle_gt?: Maybe<String>;
-  jobTitle_gte?: Maybe<String>;
-  jobTitle_contains?: Maybe<String>;
-  jobTitle_not_contains?: Maybe<String>;
-  jobTitle_starts_with?: Maybe<String>;
-  jobTitle_not_starts_with?: Maybe<String>;
-  jobTitle_ends_with?: Maybe<String>;
-  jobTitle_not_ends_with?: Maybe<String>;
-  country?: Maybe<String>;
-  country_not?: Maybe<String>;
-  country_in?: Maybe<String[] | String>;
-  country_not_in?: Maybe<String[] | String>;
-  country_lt?: Maybe<String>;
-  country_lte?: Maybe<String>;
-  country_gt?: Maybe<String>;
-  country_gte?: Maybe<String>;
-  country_contains?: Maybe<String>;
-  country_not_contains?: Maybe<String>;
-  country_starts_with?: Maybe<String>;
-  country_not_starts_with?: Maybe<String>;
-  country_ends_with?: Maybe<String>;
-  country_not_ends_with?: Maybe<String>;
-  city?: Maybe<String>;
-  city_not?: Maybe<String>;
-  city_in?: Maybe<String[] | String>;
-  city_not_in?: Maybe<String[] | String>;
-  city_lt?: Maybe<String>;
-  city_lte?: Maybe<String>;
-  city_gt?: Maybe<String>;
-  city_gte?: Maybe<String>;
-  city_contains?: Maybe<String>;
-  city_not_contains?: Maybe<String>;
-  city_starts_with?: Maybe<String>;
-  city_not_starts_with?: Maybe<String>;
-  city_ends_with?: Maybe<String>;
-  city_not_ends_with?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  howHeard_not?: Maybe<String>;
-  howHeard_in?: Maybe<String[] | String>;
-  howHeard_not_in?: Maybe<String[] | String>;
-  howHeard_lt?: Maybe<String>;
-  howHeard_lte?: Maybe<String>;
-  howHeard_gt?: Maybe<String>;
-  howHeard_gte?: Maybe<String>;
-  howHeard_contains?: Maybe<String>;
-  howHeard_not_contains?: Maybe<String>;
-  howHeard_starts_with?: Maybe<String>;
-  howHeard_not_starts_with?: Maybe<String>;
-  howHeard_ends_with?: Maybe<String>;
-  howHeard_not_ends_with?: Maybe<String>;
-  team?: Maybe<TeamWhereInput>;
-  isConfirmed?: Maybe<Boolean>;
-  isConfirmed_not?: Maybe<Boolean>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
-}
-
-export interface LanguageTranslationUpdateManyDataInput {
-  name?: Maybe<String>;
-}
-
-export type CountryWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface CountryCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-  region?: Maybe<RegionCreateOneWithoutCountriesInput>;
-}
-
-export interface SupportFileWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  language?: Maybe<LanguageWhereInput>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  signedUrl_not?: Maybe<String>;
-  signedUrl_in?: Maybe<String[] | String>;
-  signedUrl_not_in?: Maybe<String[] | String>;
-  signedUrl_lt?: Maybe<String>;
-  signedUrl_lte?: Maybe<String>;
-  signedUrl_gt?: Maybe<String>;
-  signedUrl_gte?: Maybe<String>;
-  signedUrl_contains?: Maybe<String>;
-  signedUrl_not_contains?: Maybe<String>;
-  signedUrl_starts_with?: Maybe<String>;
-  signedUrl_not_starts_with?: Maybe<String>;
-  signedUrl_ends_with?: Maybe<String>;
-  signedUrl_not_ends_with?: Maybe<String>;
-  md5?: Maybe<String>;
-  md5_not?: Maybe<String>;
-  md5_in?: Maybe<String[] | String>;
-  md5_not_in?: Maybe<String[] | String>;
-  md5_lt?: Maybe<String>;
-  md5_lte?: Maybe<String>;
-  md5_gt?: Maybe<String>;
-  md5_gte?: Maybe<String>;
-  md5_contains?: Maybe<String>;
-  md5_not_contains?: Maybe<String>;
-  md5_starts_with?: Maybe<String>;
-  md5_not_starts_with?: Maybe<String>;
-  md5_ends_with?: Maybe<String>;
-  md5_not_ends_with?: Maybe<String>;
-  filename?: Maybe<String>;
-  filename_not?: Maybe<String>;
-  filename_in?: Maybe<String[] | String>;
-  filename_not_in?: Maybe<String[] | String>;
-  filename_lt?: Maybe<String>;
-  filename_lte?: Maybe<String>;
-  filename_gt?: Maybe<String>;
-  filename_gte?: Maybe<String>;
-  filename_contains?: Maybe<String>;
-  filename_not_contains?: Maybe<String>;
-  filename_starts_with?: Maybe<String>;
-  filename_not_starts_with?: Maybe<String>;
-  filename_ends_with?: Maybe<String>;
-  filename_not_ends_with?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filetype_not?: Maybe<String>;
-  filetype_in?: Maybe<String[] | String>;
-  filetype_not_in?: Maybe<String[] | String>;
-  filetype_lt?: Maybe<String>;
-  filetype_lte?: Maybe<String>;
-  filetype_gt?: Maybe<String>;
-  filetype_gte?: Maybe<String>;
-  filetype_contains?: Maybe<String>;
-  filetype_not_contains?: Maybe<String>;
-  filetype_starts_with?: Maybe<String>;
-  filetype_not_starts_with?: Maybe<String>;
-  filetype_ends_with?: Maybe<String>;
-  filetype_not_ends_with?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  filesize_not?: Maybe<Float>;
-  filesize_in?: Maybe<Float[] | Float>;
-  filesize_not_in?: Maybe<Float[] | Float>;
-  filesize_lt?: Maybe<Float>;
-  filesize_lte?: Maybe<Float>;
-  filesize_gt?: Maybe<Float>;
-  filesize_gte?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  editable?: Maybe<Boolean>;
-  editable_not?: Maybe<Boolean>;
-  use?: Maybe<SupportFileUseWhereInput>;
-  AND?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
-  OR?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
-  NOT?: Maybe<SupportFileWhereInput[] | SupportFileWhereInput>;
-}
-
-export interface RegionCreateOneWithoutCountriesInput {
-  create?: Maybe<RegionCreateWithoutCountriesInput>;
-  connect?: Maybe<RegionWhereUniqueInput>;
-}
-
-export interface VideoUnitUpdateInput {
-  language?: Maybe<LanguageUpdateOneInput>;
-  title?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  files?: Maybe<VideoFileUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
-}
-
-export interface RegionCreateWithoutCountriesInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-}
-
-export interface VideoStreamUpdateInput {
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-}
-
-export interface CountryUpdateInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  region?: Maybe<RegionUpdateOneWithoutCountriesInput>;
-}
-
-export interface VideoProjectUpdateManyMutationInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface RegionUpdateOneWithoutCountriesInput {
-  create?: Maybe<RegionCreateWithoutCountriesInput>;
-  update?: Maybe<RegionUpdateWithoutCountriesDataInput>;
-  upsert?: Maybe<RegionUpsertWithoutCountriesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<RegionWhereUniqueInput>;
-}
-
-export interface VideoUnitUpdateManyWithWhereNestedInput {
-  where: VideoUnitScalarWhereInput;
-  data: VideoUnitUpdateManyDataInput;
-}
-
-export interface RegionUpdateWithoutCountriesDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export type GraphicStyleWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface RegionUpsertWithoutCountriesInput {
-  update: RegionUpdateWithoutCountriesDataInput;
-  create: RegionCreateWithoutCountriesInput;
-}
-
-export interface VideoUnitUpsertWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  update: VideoUnitUpdateDataInput;
-  create: VideoUnitCreateInput;
-}
-
-export interface CountryUpdateManyMutationInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export interface ThumbnailUpdateManyWithWhereNestedInput {
-  where: ThumbnailScalarWhereInput;
-  data: ThumbnailUpdateManyDataInput;
-}
-
-export interface DimensionsCreateInput {
-  id?: Maybe<ID_Input>;
-  width?: Maybe<Int>;
-  height?: Maybe<Int>;
-}
-
-export interface ThumbnailScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  size?: Maybe<ThumbnailSize>;
-  size_not?: Maybe<ThumbnailSize>;
-  size_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
-  size_not_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
-  AND?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
-  OR?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
-  NOT?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
-}
-
-export interface DimensionsUpdateInput {
-  width?: Maybe<Int>;
-  height?: Maybe<Int>;
-}
-
-export interface ThumbnailUpdateDataInput {
-  size?: Maybe<ThumbnailSize>;
-  image?: Maybe<ImageFileUpdateOneInput>;
-}
-
-export interface DimensionsUpdateManyMutationInput {
-  width?: Maybe<Int>;
-  height?: Maybe<Int>;
-}
-
-export interface ThumbnailUpdateWithWhereUniqueNestedInput {
-  where: ThumbnailWhereUniqueInput;
-  data: ThumbnailUpdateDataInput;
-}
-
-export interface DocumentConversionFormatCreateInput {
-  id?: Maybe<ID_Input>;
-  rawText?: Maybe<String>;
-  html?: Maybe<String>;
-  markdown?: Maybe<String>;
-}
-
-export interface VideoFileUpdateManyDataInput {
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-}
-
-export interface DocumentConversionFormatUpdateInput {
-  rawText?: Maybe<String>;
-  html?: Maybe<String>;
-  markdown?: Maybe<String>;
-}
-
-export type LanguageWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  locale?: Maybe<String>;
-}>;
-
-export interface DocumentConversionFormatUpdateManyMutationInput {
-  rawText?: Maybe<String>;
-  html?: Maybe<String>;
-  markdown?: Maybe<String>;
-}
-
-export interface VideoFileUpsertWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  update: VideoFileUpdateDataInput;
-  create: VideoFileCreateInput;
-}
-
-export interface DocumentFileCreateInput {
-  id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  language?: Maybe<LanguageCreateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  status?: Maybe<PublishStatus>;
-  excerpt?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatCreateOneInput>;
-  image?: Maybe<ImageFileCreateManyInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<DocumentUseCreateOneInput>;
-  bureaus?: Maybe<BureauCreateManyInput>;
-  countries?: Maybe<CountryCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-}
-
-export interface VideoFileUpdateWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  data: VideoFileUpdateDataInput;
-}
-
-export interface DocumentConversionFormatCreateOneInput {
-  create?: Maybe<DocumentConversionFormatCreateInput>;
-  connect?: Maybe<DocumentConversionFormatWhereUniqueInput>;
-}
-
-export interface VideoFileUpdateManyInput {
-  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
-  update?: Maybe<
-    | VideoFileUpdateWithWhereUniqueNestedInput[]
-    | VideoFileUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | VideoFileUpsertWithWhereUniqueNestedInput[]
-    | VideoFileUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
-  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
-  set?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
-  disconnect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
-  deleteMany?: Maybe<VideoFileScalarWhereInput[] | VideoFileScalarWhereInput>;
-  updateMany?: Maybe<
-    | VideoFileUpdateManyWithWhereNestedInput[]
-    | VideoFileUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ImageFileCreateManyInput {
-  create?: Maybe<ImageFileCreateInput[] | ImageFileCreateInput>;
-  connect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
-}
-
-export interface VideoUnitUpdateWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  data: VideoUnitUpdateDataInput;
-}
-
-export interface ImageFileCreateInput {
-  id?: Maybe<ID_Input>;
-  visibility?: Maybe<Visibility>;
-  language?: Maybe<LanguageCreateOneInput>;
-  dimensions?: Maybe<DimensionsCreateOneInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  alt?: Maybe<String>;
-  longdesc?: Maybe<String>;
-  caption?: Maybe<String>;
-  title?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  use?: Maybe<ImageUseCreateOneInput>;
-  md5?: Maybe<String>;
-  quality?: Maybe<ImageQuality>;
-  style?: Maybe<GraphicStyleCreateOneInput>;
-  social?: Maybe<SocialPlatformCreateManyInput>;
-}
-
-export interface VideoUnitUpdateManyInput {
-  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
-  update?: Maybe<
-    | VideoUnitUpdateWithWhereUniqueNestedInput[]
-    | VideoUnitUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | VideoUnitUpsertWithWhereUniqueNestedInput[]
-    | VideoUnitUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
-  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
-  set?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
-  disconnect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
-  deleteMany?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
-  updateMany?: Maybe<
-    | VideoUnitUpdateManyWithWhereNestedInput[]
-    | VideoUnitUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface DimensionsCreateOneInput {
-  create?: Maybe<DimensionsCreateInput>;
-  connect?: Maybe<DimensionsWhereUniqueInput>;
-}
-
-export interface ThumbnailCreateManyInput {
-  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
-  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
-}
-
-export interface ImageUseCreateOneInput {
-  create?: Maybe<ImageUseCreateInput>;
-  connect?: Maybe<ImageUseWhereUniqueInput>;
-}
-
-export interface VideoFileCreateManyInput {
-  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
-  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
-}
-
-export interface ImageUseCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface PackageWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  type_not?: Maybe<PackageType>;
-  type_in?: Maybe<PackageType[] | PackageType>;
-  type_not_in?: Maybe<PackageType[] | PackageType>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  assetPath_not?: Maybe<String>;
-  assetPath_in?: Maybe<String[] | String>;
-  assetPath_not_in?: Maybe<String[] | String>;
-  assetPath_lt?: Maybe<String>;
-  assetPath_lte?: Maybe<String>;
-  assetPath_gt?: Maybe<String>;
-  assetPath_gte?: Maybe<String>;
-  assetPath_contains?: Maybe<String>;
-  assetPath_not_contains?: Maybe<String>;
-  assetPath_starts_with?: Maybe<String>;
-  assetPath_not_starts_with?: Maybe<String>;
-  assetPath_ends_with?: Maybe<String>;
-  assetPath_not_ends_with?: Maybe<String>;
-  author?: Maybe<UserWhereInput>;
-  team?: Maybe<TeamWhereInput>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  status_not?: Maybe<PublishStatus>;
-  status_in?: Maybe<PublishStatus[] | PublishStatus>;
-  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  categories_every?: Maybe<CategoryWhereInput>;
-  categories_some?: Maybe<CategoryWhereInput>;
-  categories_none?: Maybe<CategoryWhereInput>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
-  documents_every?: Maybe<DocumentFileWhereInput>;
-  documents_some?: Maybe<DocumentFileWhereInput>;
-  documents_none?: Maybe<DocumentFileWhereInput>;
-  AND?: Maybe<PackageWhereInput[] | PackageWhereInput>;
-  OR?: Maybe<PackageWhereInput[] | PackageWhereInput>;
-  NOT?: Maybe<PackageWhereInput[] | PackageWhereInput>;
-}
-
-export interface GraphicStyleCreateOneInput {
-  create?: Maybe<GraphicStyleCreateInput>;
-  connect?: Maybe<GraphicStyleWhereUniqueInput>;
-}
-
-export interface VideoUnitCreateInput {
-  id?: Maybe<ID_Input>;
-  language?: Maybe<LanguageCreateOneInput>;
-  title: String;
-  descPublic?: Maybe<String>;
-  files?: Maybe<VideoFileCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  thumbnails?: Maybe<ThumbnailCreateManyInput>;
-}
-
-export interface GraphicStyleCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface VideoProjectCreateInput {
-  id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle: String;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserCreateOneInput>;
-  team?: Maybe<TeamCreateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  units?: Maybe<VideoUnitCreateManyInput>;
-  supportFiles?: Maybe<SupportFileCreateManyInput>;
-  thumbnails?: Maybe<ImageFileCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-}
-
-export interface SocialPlatformCreateManyInput {
-  create?: Maybe<SocialPlatformCreateInput[] | SocialPlatformCreateInput>;
-  connect?: Maybe<
-    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
-  >;
-}
-
-export interface VideoFileUpdateManyMutationInput {
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-}
-
-export interface SocialPlatformCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface VideoStreamUpdateManyWithWhereNestedInput {
-  where: VideoStreamScalarWhereInput;
-  data: VideoStreamUpdateManyDataInput;
-}
-
-export interface DocumentUseCreateOneInput {
-  create?: Maybe<DocumentUseCreateInput>;
-  connect?: Maybe<DocumentUseWhereUniqueInput>;
-}
-
-export type SocialPlatformWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface DocumentUseCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface VideoStreamUpdateDataInput {
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-}
-
-export interface BureauCreateManyInput {
-  create?: Maybe<BureauCreateInput[] | BureauCreateInput>;
-  connect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
-}
-
-export type SupportFileWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface CountryCreateManyInput {
-  create?: Maybe<CountryCreateInput[] | CountryCreateInput>;
-  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
-}
-
-export interface VideoUseUpsertNestedInput {
-  update: VideoUseUpdateDataInput;
-  create: VideoUseCreateInput;
-}
-
-export interface CategoryCreateManyInput {
-  create?: Maybe<CategoryCreateInput[] | CategoryCreateInput>;
-  connect?: Maybe<CategoryWhereUniqueInput[] | CategoryWhereUniqueInput>;
-}
-
-export type SupportFileUseWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface TagCreateManyInput {
-  create?: Maybe<TagCreateInput[] | TagCreateInput>;
-  connect?: Maybe<TagWhereUniqueInput[] | TagWhereUniqueInput>;
-}
-
-export interface VideoUseUpdateOneInput {
-  create?: Maybe<VideoUseCreateInput>;
-  update?: Maybe<VideoUseUpdateDataInput>;
-  upsert?: Maybe<VideoUseUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<VideoUseWhereUniqueInput>;
-}
-
-export interface TagCreateInput {
-  id?: Maybe<ID_Input>;
-  translations?: Maybe<LanguageTranslationCreateManyInput>;
-}
-
-export interface VideoStreamCreateInput {
-  id?: Maybe<ID_Input>;
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-}
-
-export interface DocumentFileUpdateInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  language?: Maybe<LanguageUpdateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  status?: Maybe<PublishStatus>;
-  excerpt?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
-  image?: Maybe<ImageFileUpdateManyInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<DocumentUseUpdateOneInput>;
-  bureaus?: Maybe<BureauUpdateManyInput>;
-  countries?: Maybe<CountryUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface VideoStreamCreateManyInput {
-  create?: Maybe<VideoStreamCreateInput[] | VideoStreamCreateInput>;
-  connect?: Maybe<VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput>;
-}
-
-export interface DocumentConversionFormatUpdateOneInput {
-  create?: Maybe<DocumentConversionFormatCreateInput>;
-  update?: Maybe<DocumentConversionFormatUpdateDataInput>;
-  upsert?: Maybe<DocumentConversionFormatUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<DocumentConversionFormatWhereUniqueInput>;
-}
-
-export interface VideoUseCreateOneInput {
-  create?: Maybe<VideoUseCreateInput>;
-  connect?: Maybe<VideoUseWhereUniqueInput>;
-}
-
-export interface DocumentConversionFormatUpdateDataInput {
-  rawText?: Maybe<String>;
-  html?: Maybe<String>;
-  markdown?: Maybe<String>;
-}
-
-export interface VideoFileCreateInput {
-  id?: Maybe<ID_Input>;
-  language?: Maybe<LanguageCreateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<VideoUseCreateOneInput>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-  dimensions?: Maybe<DimensionsCreateOneInput>;
-  stream?: Maybe<VideoStreamCreateManyInput>;
-}
-
-export interface DocumentConversionFormatUpsertNestedInput {
-  update: DocumentConversionFormatUpdateDataInput;
-  create: DocumentConversionFormatCreateInput;
-}
-
-export interface UserUpdateInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  country?: Maybe<String>;
-  city?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface ImageFileUpdateManyInput {
-  create?: Maybe<ImageFileCreateInput[] | ImageFileCreateInput>;
-  update?: Maybe<
-    | ImageFileUpdateWithWhereUniqueNestedInput[]
-    | ImageFileUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ImageFileUpsertWithWhereUniqueNestedInput[]
-    | ImageFileUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
-  connect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
-  set?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
-  disconnect?: Maybe<ImageFileWhereUniqueInput[] | ImageFileWhereUniqueInput>;
-  deleteMany?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
-  updateMany?: Maybe<
-    | ImageFileUpdateManyWithWhereNestedInput[]
-    | ImageFileUpdateManyWithWhereNestedInput
-  >;
-}
-
-export type ThumbnailWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ImageFileUpdateWithWhereUniqueNestedInput {
-  where: ImageFileWhereUniqueInput;
-  data: ImageFileUpdateDataInput;
-}
-
-export interface ImageFileUpdateOneInput {
-  create?: Maybe<ImageFileCreateInput>;
-  update?: Maybe<ImageFileUpdateDataInput>;
-  upsert?: Maybe<ImageFileUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ImageFileWhereUniqueInput>;
-}
-
-export interface ImageFileUpdateDataInput {
-  visibility?: Maybe<Visibility>;
-  language?: Maybe<LanguageUpdateOneInput>;
-  dimensions?: Maybe<DimensionsUpdateOneInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  alt?: Maybe<String>;
-  longdesc?: Maybe<String>;
-  caption?: Maybe<String>;
-  title?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  use?: Maybe<ImageUseUpdateOneInput>;
-  md5?: Maybe<String>;
-  quality?: Maybe<ImageQuality>;
-  style?: Maybe<GraphicStyleUpdateOneInput>;
-  social?: Maybe<SocialPlatformUpdateManyInput>;
-}
-
-export interface ThumbnailUpdateInput {
-  size?: Maybe<ThumbnailSize>;
-  image?: Maybe<ImageFileUpdateOneInput>;
-}
-
-export interface DimensionsUpdateOneInput {
-  create?: Maybe<DimensionsCreateInput>;
-  update?: Maybe<DimensionsUpdateDataInput>;
-  upsert?: Maybe<DimensionsUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<DimensionsWhereUniqueInput>;
-}
-
-export interface ThumbnailCreateInput {
-  id?: Maybe<ID_Input>;
-  size?: Maybe<ThumbnailSize>;
-  image?: Maybe<ImageFileCreateOneInput>;
-}
-
-export interface BureauUpdateWithoutOfficesDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
-
-export interface DimensionsUpsertNestedInput {
-  update: DimensionsUpdateDataInput;
-  create: DimensionsCreateInput;
-}
-
-export interface TagUpdateInput {
-  translations?: Maybe<LanguageTranslationUpdateManyInput>;
-}
-
-export interface ImageUseUpdateOneInput {
-  create?: Maybe<ImageUseCreateInput>;
-  update?: Maybe<ImageUseUpdateDataInput>;
-  upsert?: Maybe<ImageUseUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ImageUseWhereUniqueInput>;
-}
-
-export type VideoFileWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ImageUseUpdateDataInput {
-  name?: Maybe<String>;
-}
-
-export interface SupportFileUpdateManyMutationInput {
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  editable?: Maybe<Boolean>;
-}
-
-export interface ImageUseUpsertNestedInput {
-  update: ImageUseUpdateDataInput;
-  create: ImageUseCreateInput;
-}
-
-export interface SocialPlatformUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface GraphicStyleUpdateOneInput {
-  create?: Maybe<GraphicStyleCreateInput>;
-  update?: Maybe<GraphicStyleUpdateDataInput>;
-  upsert?: Maybe<GraphicStyleUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<GraphicStyleWhereUniqueInput>;
-}
-
-export interface SocialPlatformUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface GraphicStyleUpdateDataInput {
-  name?: Maybe<String>;
-}
-
-export interface VideoFileWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  language?: Maybe<LanguageWhereInput>;
-  filetype?: Maybe<String>;
-  filetype_not?: Maybe<String>;
-  filetype_in?: Maybe<String[] | String>;
-  filetype_not_in?: Maybe<String[] | String>;
-  filetype_lt?: Maybe<String>;
-  filetype_lte?: Maybe<String>;
-  filetype_gt?: Maybe<String>;
-  filetype_gte?: Maybe<String>;
-  filetype_contains?: Maybe<String>;
-  filetype_not_contains?: Maybe<String>;
-  filetype_starts_with?: Maybe<String>;
-  filetype_not_starts_with?: Maybe<String>;
-  filetype_ends_with?: Maybe<String>;
-  filetype_not_ends_with?: Maybe<String>;
-  filename?: Maybe<String>;
-  filename_not?: Maybe<String>;
-  filename_in?: Maybe<String[] | String>;
-  filename_not_in?: Maybe<String[] | String>;
-  filename_lt?: Maybe<String>;
-  filename_lte?: Maybe<String>;
-  filename_gt?: Maybe<String>;
-  filename_gte?: Maybe<String>;
-  filename_contains?: Maybe<String>;
-  filename_not_contains?: Maybe<String>;
-  filename_starts_with?: Maybe<String>;
-  filename_not_starts_with?: Maybe<String>;
-  filename_ends_with?: Maybe<String>;
-  filename_not_ends_with?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  use?: Maybe<VideoUseWhereInput>;
-  quality?: Maybe<VideoQuality>;
-  quality_not?: Maybe<VideoQuality>;
-  quality_in?: Maybe<VideoQuality[] | VideoQuality>;
-  quality_not_in?: Maybe<VideoQuality[] | VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  videoBurnedInStatus_not?: Maybe<VideoBurnedInStatus>;
-  videoBurnedInStatus_in?: Maybe<VideoBurnedInStatus[] | VideoBurnedInStatus>;
-  videoBurnedInStatus_not_in?: Maybe<
-    VideoBurnedInStatus[] | VideoBurnedInStatus
-  >;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  signedUrl_not?: Maybe<String>;
-  signedUrl_in?: Maybe<String[] | String>;
-  signedUrl_not_in?: Maybe<String[] | String>;
-  signedUrl_lt?: Maybe<String>;
-  signedUrl_lte?: Maybe<String>;
-  signedUrl_gt?: Maybe<String>;
-  signedUrl_gte?: Maybe<String>;
-  signedUrl_contains?: Maybe<String>;
-  signedUrl_not_contains?: Maybe<String>;
-  signedUrl_starts_with?: Maybe<String>;
-  signedUrl_not_starts_with?: Maybe<String>;
-  signedUrl_ends_with?: Maybe<String>;
-  signedUrl_not_ends_with?: Maybe<String>;
-  md5?: Maybe<String>;
-  md5_not?: Maybe<String>;
-  md5_in?: Maybe<String[] | String>;
-  md5_not_in?: Maybe<String[] | String>;
-  md5_lt?: Maybe<String>;
-  md5_lte?: Maybe<String>;
-  md5_gt?: Maybe<String>;
-  md5_gte?: Maybe<String>;
-  md5_contains?: Maybe<String>;
-  md5_not_contains?: Maybe<String>;
-  md5_starts_with?: Maybe<String>;
-  md5_not_starts_with?: Maybe<String>;
-  md5_ends_with?: Maybe<String>;
-  md5_not_ends_with?: Maybe<String>;
-  duration?: Maybe<Float>;
-  duration_not?: Maybe<Float>;
-  duration_in?: Maybe<Float[] | Float>;
-  duration_not_in?: Maybe<Float[] | Float>;
-  duration_lt?: Maybe<Float>;
-  duration_lte?: Maybe<Float>;
-  duration_gt?: Maybe<Float>;
-  duration_gte?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  bitrate_not?: Maybe<Float>;
-  bitrate_in?: Maybe<Float[] | Float>;
-  bitrate_not_in?: Maybe<Float[] | Float>;
-  bitrate_lt?: Maybe<Float>;
-  bitrate_lte?: Maybe<Float>;
-  bitrate_gt?: Maybe<Float>;
-  bitrate_gte?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-  filesize_not?: Maybe<Float>;
-  filesize_in?: Maybe<Float[] | Float>;
-  filesize_not_in?: Maybe<Float[] | Float>;
-  filesize_lt?: Maybe<Float>;
-  filesize_lte?: Maybe<Float>;
-  filesize_gt?: Maybe<Float>;
-  filesize_gte?: Maybe<Float>;
-  dimensions?: Maybe<DimensionsWhereInput>;
-  stream_every?: Maybe<VideoStreamWhereInput>;
-  stream_some?: Maybe<VideoStreamWhereInput>;
-  stream_none?: Maybe<VideoStreamWhereInput>;
-  AND?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
-  OR?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
-  NOT?: Maybe<VideoFileWhereInput[] | VideoFileWhereInput>;
-}
-
-export interface GraphicStyleUpsertNestedInput {
-  update: GraphicStyleUpdateDataInput;
-  create: GraphicStyleCreateInput;
-}
-
-export interface CountryUpsertWithWhereUniqueWithoutRegionInput {
-  where: CountryWhereUniqueInput;
-  update: CountryUpdateWithoutRegionDataInput;
-  create: CountryCreateWithoutRegionInput;
-}
-
-export interface SocialPlatformUpdateManyInput {
-  create?: Maybe<SocialPlatformCreateInput[] | SocialPlatformCreateInput>;
-  update?: Maybe<
-    | SocialPlatformUpdateWithWhereUniqueNestedInput[]
-    | SocialPlatformUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | SocialPlatformUpsertWithWhereUniqueNestedInput[]
-    | SocialPlatformUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<
-    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
-  >;
-  connect?: Maybe<
-    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
-  >;
-  set?: Maybe<
-    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    SocialPlatformWhereUniqueInput[] | SocialPlatformWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | SocialPlatformUpdateManyWithWhereNestedInput[]
-    | SocialPlatformUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface CountryUpdateWithWhereUniqueWithoutRegionInput {
-  where: CountryWhereUniqueInput;
-  data: CountryUpdateWithoutRegionDataInput;
-}
-
-export interface SocialPlatformUpdateWithWhereUniqueNestedInput {
-  where: SocialPlatformWhereUniqueInput;
-  data: SocialPlatformUpdateDataInput;
-}
-
-export type VideoProjectWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface SocialPlatformUpdateDataInput {
-  name?: Maybe<String>;
-}
-
-export interface VideoUnitWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  language?: Maybe<LanguageWhereInput>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  files_every?: Maybe<VideoFileWhereInput>;
-  files_some?: Maybe<VideoFileWhereInput>;
-  files_none?: Maybe<VideoFileWhereInput>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
-  categories_every?: Maybe<CategoryWhereInput>;
-  categories_some?: Maybe<CategoryWhereInput>;
-  categories_none?: Maybe<CategoryWhereInput>;
-  thumbnails_every?: Maybe<ThumbnailWhereInput>;
-  thumbnails_some?: Maybe<ThumbnailWhereInput>;
-  thumbnails_none?: Maybe<ThumbnailWhereInput>;
-  AND?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
-  OR?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
-  NOT?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
-}
-
-export interface SocialPlatformUpsertWithWhereUniqueNestedInput {
-  where: SocialPlatformWhereUniqueInput;
-  update: SocialPlatformUpdateDataInput;
-  create: SocialPlatformCreateInput;
-}
-
-export interface CountryCreateWithoutRegionInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-}
-
-export interface SocialPlatformScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<
-    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
-  >;
-  OR?: Maybe<SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput>;
-  NOT?: Maybe<
-    SocialPlatformScalarWhereInput[] | SocialPlatformScalarWhereInput
-  >;
-}
-
-export interface OfficeWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  abbr?: Maybe<String>;
-  abbr_not?: Maybe<String>;
-  abbr_in?: Maybe<String[] | String>;
-  abbr_not_in?: Maybe<String[] | String>;
-  abbr_lt?: Maybe<String>;
-  abbr_lte?: Maybe<String>;
-  abbr_gt?: Maybe<String>;
-  abbr_gte?: Maybe<String>;
-  abbr_contains?: Maybe<String>;
-  abbr_not_contains?: Maybe<String>;
-  abbr_starts_with?: Maybe<String>;
-  abbr_not_starts_with?: Maybe<String>;
-  abbr_ends_with?: Maybe<String>;
-  abbr_not_ends_with?: Maybe<String>;
-  bureau?: Maybe<BureauWhereInput>;
-  AND?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
-  OR?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
-  NOT?: Maybe<OfficeWhereInput[] | OfficeWhereInput>;
-}
-
-export interface SocialPlatformUpdateManyWithWhereNestedInput {
-  where: SocialPlatformScalarWhereInput;
-  data: SocialPlatformUpdateManyDataInput;
-}
-
-export interface RegionCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-  countries?: Maybe<CountryCreateManyWithoutRegionInput>;
-}
-
-export interface SocialPlatformUpdateManyDataInput {
-  name?: Maybe<String>;
-}
-
-export type VideoStreamWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ImageFileUpsertWithWhereUniqueNestedInput {
-  where: ImageFileWhereUniqueInput;
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
-}
-
-export interface DocumentFileUpdateManyWithWhereNestedInput {
-  where: DocumentFileScalarWhereInput;
-  data: DocumentFileUpdateManyDataInput;
-}
-
-export interface ImageFileScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  signedUrl_not?: Maybe<String>;
-  signedUrl_in?: Maybe<String[] | String>;
-  signedUrl_not_in?: Maybe<String[] | String>;
-  signedUrl_lt?: Maybe<String>;
-  signedUrl_lte?: Maybe<String>;
-  signedUrl_gt?: Maybe<String>;
-  signedUrl_gte?: Maybe<String>;
-  signedUrl_contains?: Maybe<String>;
-  signedUrl_not_contains?: Maybe<String>;
-  signedUrl_starts_with?: Maybe<String>;
-  signedUrl_not_starts_with?: Maybe<String>;
-  signedUrl_ends_with?: Maybe<String>;
-  signedUrl_not_ends_with?: Maybe<String>;
-  alt?: Maybe<String>;
-  alt_not?: Maybe<String>;
-  alt_in?: Maybe<String[] | String>;
-  alt_not_in?: Maybe<String[] | String>;
-  alt_lt?: Maybe<String>;
-  alt_lte?: Maybe<String>;
-  alt_gt?: Maybe<String>;
-  alt_gte?: Maybe<String>;
-  alt_contains?: Maybe<String>;
-  alt_not_contains?: Maybe<String>;
-  alt_starts_with?: Maybe<String>;
-  alt_not_starts_with?: Maybe<String>;
-  alt_ends_with?: Maybe<String>;
-  alt_not_ends_with?: Maybe<String>;
-  longdesc?: Maybe<String>;
-  longdesc_not?: Maybe<String>;
-  longdesc_in?: Maybe<String[] | String>;
-  longdesc_not_in?: Maybe<String[] | String>;
-  longdesc_lt?: Maybe<String>;
-  longdesc_lte?: Maybe<String>;
-  longdesc_gt?: Maybe<String>;
-  longdesc_gte?: Maybe<String>;
-  longdesc_contains?: Maybe<String>;
-  longdesc_not_contains?: Maybe<String>;
-  longdesc_starts_with?: Maybe<String>;
-  longdesc_not_starts_with?: Maybe<String>;
-  longdesc_ends_with?: Maybe<String>;
-  longdesc_not_ends_with?: Maybe<String>;
-  caption?: Maybe<String>;
-  caption_not?: Maybe<String>;
-  caption_in?: Maybe<String[] | String>;
-  caption_not_in?: Maybe<String[] | String>;
-  caption_lt?: Maybe<String>;
-  caption_lte?: Maybe<String>;
-  caption_gt?: Maybe<String>;
-  caption_gte?: Maybe<String>;
-  caption_contains?: Maybe<String>;
-  caption_not_contains?: Maybe<String>;
-  caption_starts_with?: Maybe<String>;
-  caption_not_starts_with?: Maybe<String>;
-  caption_ends_with?: Maybe<String>;
-  caption_not_ends_with?: Maybe<String>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  filename?: Maybe<String>;
-  filename_not?: Maybe<String>;
-  filename_in?: Maybe<String[] | String>;
-  filename_not_in?: Maybe<String[] | String>;
-  filename_lt?: Maybe<String>;
-  filename_lte?: Maybe<String>;
-  filename_gt?: Maybe<String>;
-  filename_gte?: Maybe<String>;
-  filename_contains?: Maybe<String>;
-  filename_not_contains?: Maybe<String>;
-  filename_starts_with?: Maybe<String>;
-  filename_not_starts_with?: Maybe<String>;
-  filename_ends_with?: Maybe<String>;
-  filename_not_ends_with?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filetype_not?: Maybe<String>;
-  filetype_in?: Maybe<String[] | String>;
-  filetype_not_in?: Maybe<String[] | String>;
-  filetype_lt?: Maybe<String>;
-  filetype_lte?: Maybe<String>;
-  filetype_gt?: Maybe<String>;
-  filetype_gte?: Maybe<String>;
-  filetype_contains?: Maybe<String>;
-  filetype_not_contains?: Maybe<String>;
-  filetype_starts_with?: Maybe<String>;
-  filetype_not_starts_with?: Maybe<String>;
-  filetype_ends_with?: Maybe<String>;
-  filetype_not_ends_with?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  filesize_not?: Maybe<Float>;
-  filesize_in?: Maybe<Float[] | Float>;
-  filesize_not_in?: Maybe<Float[] | Float>;
-  filesize_lt?: Maybe<Float>;
-  filesize_lte?: Maybe<Float>;
-  filesize_gt?: Maybe<Float>;
-  filesize_gte?: Maybe<Float>;
-  md5?: Maybe<String>;
-  md5_not?: Maybe<String>;
-  md5_in?: Maybe<String[] | String>;
-  md5_not_in?: Maybe<String[] | String>;
-  md5_lt?: Maybe<String>;
-  md5_lte?: Maybe<String>;
-  md5_gt?: Maybe<String>;
-  md5_gte?: Maybe<String>;
-  md5_contains?: Maybe<String>;
-  md5_not_contains?: Maybe<String>;
-  md5_starts_with?: Maybe<String>;
-  md5_not_starts_with?: Maybe<String>;
-  md5_ends_with?: Maybe<String>;
-  md5_not_ends_with?: Maybe<String>;
-  quality?: Maybe<ImageQuality>;
-  quality_not?: Maybe<ImageQuality>;
-  quality_in?: Maybe<ImageQuality[] | ImageQuality>;
-  quality_not_in?: Maybe<ImageQuality[] | ImageQuality>;
-  AND?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
-  OR?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
-  NOT?: Maybe<ImageFileScalarWhereInput[] | ImageFileScalarWhereInput>;
-}
-
-export type VideoUnitWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ImageFileUpdateManyWithWhereNestedInput {
-  where: ImageFileScalarWhereInput;
-  data: ImageFileUpdateManyDataInput;
-}
-
-export interface DocumentFileUpdateDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  language?: Maybe<LanguageUpdateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  status?: Maybe<PublishStatus>;
-  excerpt?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
-  image?: Maybe<ImageFileUpdateManyInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<DocumentUseUpdateOneInput>;
-  bureaus?: Maybe<BureauUpdateManyInput>;
-  countries?: Maybe<CountryUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface ImageFileUpdateManyDataInput {
-  visibility?: Maybe<Visibility>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  alt?: Maybe<String>;
-  longdesc?: Maybe<String>;
-  caption?: Maybe<String>;
-  title?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  md5?: Maybe<String>;
-  quality?: Maybe<ImageQuality>;
-}
-
-export type VideoUseWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface DocumentUseUpdateOneInput {
-  create?: Maybe<DocumentUseCreateInput>;
-  update?: Maybe<DocumentUseUpdateDataInput>;
-  upsert?: Maybe<DocumentUseUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<DocumentUseWhereUniqueInput>;
-}
-
-export interface PackageUpdateInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserUpdateOneInput>;
-  team?: Maybe<TeamUpdateOneInput>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  documents?: Maybe<DocumentFileUpdateManyInput>;
-}
-
-export interface DocumentUseUpdateDataInput {
-  name?: Maybe<String>;
-}
-
-export interface PackageCreateInput {
-  id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  type: PackageType;
-  title: String;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserCreateOneInput>;
-  team?: Maybe<TeamCreateOneInput>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-  documents?: Maybe<DocumentFileCreateManyInput>;
-}
-
-export type DocumentConversionFormatWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface BureauCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-  offices?: Maybe<OfficeCreateManyWithoutBureauInput>;
-}
-
-export interface BureauUpdateManyInput {
-  create?: Maybe<BureauCreateInput[] | BureauCreateInput>;
-  update?: Maybe<
-    | BureauUpdateWithWhereUniqueNestedInput[]
-    | BureauUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | BureauUpsertWithWhereUniqueNestedInput[]
-    | BureauUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
-  connect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
-  set?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
-  disconnect?: Maybe<BureauWhereUniqueInput[] | BureauWhereUniqueInput>;
-  deleteMany?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
-  updateMany?: Maybe<
-    | BureauUpdateManyWithWhereNestedInput[]
-    | BureauUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface OfficeCreateWithoutBureauInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-}
-
-export interface BureauUpdateWithWhereUniqueNestedInput {
-  where: BureauWhereUniqueInput;
-  data: BureauUpdateDataInput;
-}
-
-export interface VideoUseSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<VideoUseWhereInput>;
-  AND?: Maybe<
-    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
-  >;
-  OR?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
-  NOT?: Maybe<
-    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
-  >;
-}
-
-export interface BureauUpdateDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  offices?: Maybe<OfficeUpdateManyWithoutBureauInput>;
-}
-
-export interface VideoProjectSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<VideoProjectWhereInput>;
-  AND?: Maybe<
-    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
-  >;
-}
-
-export interface BureauUpsertWithWhereUniqueNestedInput {
-  where: BureauWhereUniqueInput;
-  update: BureauUpdateDataInput;
-  create: BureauCreateInput;
-}
-
-export interface ThumbnailSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ThumbnailWhereInput>;
-  AND?: Maybe<
-    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
-  >;
-}
-
-export interface BureauScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  abbr?: Maybe<String>;
-  abbr_not?: Maybe<String>;
-  abbr_in?: Maybe<String[] | String>;
-  abbr_not_in?: Maybe<String[] | String>;
-  abbr_lt?: Maybe<String>;
-  abbr_lte?: Maybe<String>;
-  abbr_gt?: Maybe<String>;
-  abbr_gte?: Maybe<String>;
-  abbr_contains?: Maybe<String>;
-  abbr_not_contains?: Maybe<String>;
-  abbr_starts_with?: Maybe<String>;
-  abbr_not_starts_with?: Maybe<String>;
-  abbr_ends_with?: Maybe<String>;
-  abbr_not_ends_with?: Maybe<String>;
-  AND?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
-  OR?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
-  NOT?: Maybe<BureauScalarWhereInput[] | BureauScalarWhereInput>;
-}
-
-export interface DimensionsWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  width?: Maybe<Int>;
-  width_not?: Maybe<Int>;
-  width_in?: Maybe<Int[] | Int>;
-  width_not_in?: Maybe<Int[] | Int>;
-  width_lt?: Maybe<Int>;
-  width_lte?: Maybe<Int>;
-  width_gt?: Maybe<Int>;
-  width_gte?: Maybe<Int>;
-  height?: Maybe<Int>;
-  height_not?: Maybe<Int>;
-  height_in?: Maybe<Int[] | Int>;
-  height_not_in?: Maybe<Int[] | Int>;
-  height_lt?: Maybe<Int>;
-  height_lte?: Maybe<Int>;
-  height_gt?: Maybe<Int>;
-  height_gte?: Maybe<Int>;
-  AND?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
-  OR?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
-  NOT?: Maybe<DimensionsWhereInput[] | DimensionsWhereInput>;
-}
-
 export interface BureauUpdateManyWithWhereNestedInput {
   where: BureauScalarWhereInput;
   data: BureauUpdateManyDataInput;
@@ -4653,15 +4903,19 @@ export interface BureauUpdateManyDataInput {
   abbr?: Maybe<String>;
 }
 
-export interface RegionSubscriptionWhereInput {
+export interface LanguageSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<RegionWhereInput>;
-  AND?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
-  OR?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
-  NOT?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+  node?: Maybe<LanguageWhereInput>;
+  AND?: Maybe<
+    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
+  >;
+  OR?: Maybe<LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput>;
+  NOT?: Maybe<
+    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
+  >;
 }
 
 export interface CountryUpdateManyInput {
@@ -4753,20 +5007,20 @@ export interface CountryUpdateDataInput {
   region?: Maybe<RegionUpdateOneWithoutCountriesInput>;
 }
 
-export interface DocumentUseSubscriptionWhereInput {
+export interface DimensionsSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DocumentUseWhereInput>;
+  node?: Maybe<DimensionsWhereInput>;
   AND?: Maybe<
-    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
   >;
   OR?: Maybe<
-    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
   >;
   NOT?: Maybe<
-    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
   >;
 }
 
@@ -4776,23 +5030,18 @@ export interface CountryUpsertWithWhereUniqueNestedInput {
   create: CountryCreateInput;
 }
 
-export interface DocumentConversionFormatSubscriptionWhereInput {
+export interface CategorySubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DocumentConversionFormatWhereInput>;
+  node?: Maybe<CategoryWhereInput>;
   AND?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
+    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
-  OR?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
-  >;
+  OR?: Maybe<CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput>;
   NOT?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
+    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
 }
 
@@ -4844,53 +5093,8 @@ export interface CountryScalarWhereInput {
   NOT?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
 }
 
-export interface CountryWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
+export interface VideoUseUpdateInput {
   name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  abbr?: Maybe<String>;
-  abbr_not?: Maybe<String>;
-  abbr_in?: Maybe<String[] | String>;
-  abbr_not_in?: Maybe<String[] | String>;
-  abbr_lt?: Maybe<String>;
-  abbr_lte?: Maybe<String>;
-  abbr_gt?: Maybe<String>;
-  abbr_gte?: Maybe<String>;
-  abbr_contains?: Maybe<String>;
-  abbr_not_contains?: Maybe<String>;
-  abbr_starts_with?: Maybe<String>;
-  abbr_not_starts_with?: Maybe<String>;
-  abbr_ends_with?: Maybe<String>;
-  abbr_not_ends_with?: Maybe<String>;
-  region?: Maybe<RegionWhereInput>;
-  AND?: Maybe<CountryWhereInput[] | CountryWhereInput>;
-  OR?: Maybe<CountryWhereInput[] | CountryWhereInput>;
-  NOT?: Maybe<CountryWhereInput[] | CountryWhereInput>;
 }
 
 export interface CountryUpdateManyWithWhereNestedInput {
@@ -4898,8 +5102,10 @@ export interface CountryUpdateManyWithWhereNestedInput {
   data: CountryUpdateManyDataInput;
 }
 
-export interface VideoUseUpdateInput {
-  name?: Maybe<String>;
+export interface VideoStreamUpdateManyMutationInput {
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
 }
 
 export interface CountryUpdateManyDataInput {
@@ -4907,9 +5113,10 @@ export interface CountryUpdateManyDataInput {
   abbr?: Maybe<String>;
 }
 
-export interface VideoUnitUpdateManyMutationInput {
-  title?: Maybe<String>;
-  descPublic?: Maybe<String>;
+export interface VideoStreamUpdateInput {
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
 }
 
 export interface CategoryUpdateManyInput {
@@ -4929,10 +5136,9 @@ export interface CategoryUpdateManyInput {
   deleteMany?: Maybe<CategoryScalarWhereInput[] | CategoryScalarWhereInput>;
 }
 
-export interface VideoStreamUpdateManyMutationInput {
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
+export interface VideoUnitUpdateManyDataInput {
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
 }
 
 export interface CategoryUpdateWithWhereUniqueNestedInput {
@@ -4940,9 +5146,10 @@ export interface CategoryUpdateWithWhereUniqueNestedInput {
   data: CategoryUpdateDataInput;
 }
 
-export interface VideoUnitUpdateManyDataInput {
-  title?: Maybe<String>;
-  descPublic?: Maybe<String>;
+export interface VideoUnitUpsertWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  update: VideoUnitUpdateDataInput;
+  create: VideoUnitCreateInput;
 }
 
 export interface CategoryUpdateDataInput {
@@ -5022,16 +5229,6 @@ export interface TagUpdateManyInput {
   deleteMany?: Maybe<TagScalarWhereInput[] | TagScalarWhereInput>;
 }
 
-export interface VideoFileUpdateManyWithWhereNestedInput {
-  where: VideoFileScalarWhereInput;
-  data: VideoFileUpdateManyDataInput;
-}
-
-export interface TagUpdateWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  data: TagUpdateDataInput;
-}
-
 export interface VideoFileUpdateDataInput {
   language?: Maybe<LanguageUpdateOneInput>;
   filetype?: Maybe<String>;
@@ -5050,8 +5247,9 @@ export interface VideoFileUpdateDataInput {
   stream?: Maybe<VideoStreamUpdateManyInput>;
 }
 
-export interface TagUpdateDataInput {
-  translations?: Maybe<LanguageTranslationUpdateManyInput>;
+export interface TagUpdateWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  data: TagUpdateDataInput;
 }
 
 export interface VideoUnitUpdateDataInput {
@@ -5064,10 +5262,8 @@ export interface VideoUnitUpdateDataInput {
   thumbnails?: Maybe<ThumbnailUpdateManyInput>;
 }
 
-export interface TagUpsertWithWhereUniqueNestedInput {
-  where: TagWhereUniqueInput;
-  update: TagUpdateDataInput;
-  create: TagCreateInput;
+export interface TagUpdateDataInput {
+  translations?: Maybe<LanguageTranslationUpdateManyInput>;
 }
 
 export interface VideoProjectUpdateInput {
@@ -5086,6 +5282,23 @@ export interface VideoProjectUpdateInput {
   thumbnails?: Maybe<ImageFileUpdateManyInput>;
   categories?: Maybe<CategoryUpdateManyInput>;
   tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface TagUpsertWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateDataInput;
+  create: TagCreateInput;
+}
+
+export interface VideoUnitCreateInput {
+  id?: Maybe<ID_Input>;
+  language?: Maybe<LanguageCreateOneInput>;
+  title: String;
+  descPublic?: Maybe<String>;
+  files?: Maybe<VideoFileCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  thumbnails?: Maybe<ThumbnailCreateManyInput>;
 }
 
 export interface TagScalarWhereInput {
@@ -5201,22 +5414,13 @@ export interface DocumentFileUpdateManyMutationInput {
   visibility?: Maybe<Visibility>;
 }
 
-export interface VideoUnitCreateManyInput {
-  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
-  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
-}
-
-export interface DocumentUseUpdateInput {
-  name?: Maybe<String>;
-}
-
 export interface VideoStreamUpdateManyDataInput {
   site?: Maybe<String>;
   url?: Maybe<String>;
   embedUrl?: Maybe<String>;
 }
 
-export interface DocumentUseUpdateManyMutationInput {
+export interface DocumentUseUpdateInput {
   name?: Maybe<String>;
 }
 
@@ -5226,24 +5430,8 @@ export interface VideoStreamUpsertWithWhereUniqueNestedInput {
   create: VideoStreamCreateInput;
 }
 
-export interface GraphicProjectCreateInput {
-  id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<ProjectType>;
-  title: String;
-  copyright?: Maybe<Copyright>;
-  alt?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserCreateOneInput>;
-  team?: Maybe<TeamCreateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  supportFiles?: Maybe<SupportFileCreateManyInput>;
-  images?: Maybe<ImageFileCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
+export interface DocumentUseUpdateManyMutationInput {
+  name?: Maybe<String>;
 }
 
 export interface VideoStreamUpdateManyInput {
@@ -5271,12 +5459,50 @@ export interface VideoStreamUpdateManyInput {
   >;
 }
 
+export interface GraphicProjectCreateInput {
+  id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
+  type?: Maybe<ProjectType>;
+  title: String;
+  copyright?: Maybe<Copyright>;
+  alt?: Maybe<String>;
+  descPublic?: Maybe<ContentFieldCreateOneInput>;
+  descInternal?: Maybe<ContentFieldCreateOneInput>;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserCreateOneInput>;
+  team?: Maybe<TeamCreateOneInput>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  supportFiles?: Maybe<SupportFileCreateManyInput>;
+  images?: Maybe<ImageFileCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface VideoUseUpdateOneInput {
+  create?: Maybe<VideoUseCreateInput>;
+  update?: Maybe<VideoUseUpdateDataInput>;
+  upsert?: Maybe<VideoUseUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<VideoUseWhereUniqueInput>;
+}
+
+export interface ContentFieldCreateOneInput {
+  create?: Maybe<ContentFieldCreateInput>;
+  connect?: Maybe<ContentFieldWhereUniqueInput>;
+}
+
+export type CategoryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export interface UserCreateOneInput {
   create?: Maybe<UserCreateInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export type CategoryWhereUniqueInput = AtLeastOne<{
+export type TagWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -5297,34 +5523,23 @@ export interface UserCreateInput {
   isConfirmed?: Maybe<Boolean>;
 }
 
-export type TagWhereUniqueInput = AtLeastOne<{
+export type TeamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface UserCreatepermissionsInput {
   set?: Maybe<Permission[] | Permission>;
 }
 
-export type TeamWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
+export interface ThumbnailUpdateInput {
+  size?: Maybe<ThumbnailSize>;
+  image?: Maybe<ImageFileUpdateOneInput>;
+}
 
 export interface TeamCreateOneWithoutMembersInput {
   create?: Maybe<TeamCreateWithoutMembersInput>;
   connect?: Maybe<TeamWhereUniqueInput>;
-}
-
-export interface ThumbnailUpdateManyMutationInput {
-  size?: Maybe<ThumbnailSize>;
-}
-
-export interface TeamCreateWithoutMembersInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  organization: String;
-  contentTypes?: Maybe<TeamCreatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
 }
 
 export interface ThumbnailWhereInput {
@@ -5352,33 +5567,20 @@ export interface ThumbnailWhereInput {
   NOT?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
 }
 
-export interface TeamCreatecontentTypesInput {
-  set?: Maybe<ContentType[] | ContentType>;
-}
-
-export interface TeamUpdateManyMutationInput {
-  name?: Maybe<String>;
-  organization?: Maybe<String>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+export interface TeamCreateWithoutMembersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  organization: String;
+  contentTypes?: Maybe<TeamCreatecontentTypesInput>;
   isConfirmed?: Maybe<Boolean>;
-}
-
-export interface TeamCreateOneInput {
-  create?: Maybe<TeamCreateInput>;
-  connect?: Maybe<TeamWhereUniqueInput>;
 }
 
 export interface SupportFileUseUpdateManyMutationInput {
   name?: Maybe<String>;
 }
 
-export interface TeamCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  organization: String;
-  members?: Maybe<UserCreateManyWithoutTeamInput>;
-  contentTypes?: Maybe<TeamCreatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
+export interface TeamCreatecontentTypesInput {
+  set?: Maybe<ContentType[] | ContentType>;
 }
 
 export interface SupportFileUpdateInput {
@@ -5394,14 +5596,39 @@ export interface SupportFileUpdateInput {
   use?: Maybe<SupportFileUseUpdateOneInput>;
 }
 
-export interface UserCreateManyWithoutTeamInput {
-  create?: Maybe<UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+export interface TeamCreateOneInput {
+  create?: Maybe<TeamCreateInput>;
+  connect?: Maybe<TeamWhereUniqueInput>;
 }
 
 export interface RegionUpdateManyMutationInput {
   name?: Maybe<String>;
   abbr?: Maybe<String>;
+}
+
+export interface TeamCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  organization: String;
+  members?: Maybe<UserCreateManyWithoutTeamInput>;
+  contentTypes?: Maybe<TeamCreatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface CountryUpdateWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput;
+  data: CountryUpdateWithoutRegionDataInput;
+}
+
+export interface UserCreateManyWithoutTeamInput {
+  create?: Maybe<UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface RegionUpdateInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  countries?: Maybe<CountryUpdateManyWithoutRegionInput>;
 }
 
 export interface UserCreateWithoutTeamInput {
@@ -5420,34 +5647,16 @@ export interface UserCreateWithoutTeamInput {
   isConfirmed?: Maybe<Boolean>;
 }
 
-export interface CountryUpdateWithoutRegionDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
+export interface RegionCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+  countries?: Maybe<CountryCreateManyWithoutRegionInput>;
 }
 
 export interface SupportFileCreateManyInput {
   create?: Maybe<SupportFileCreateInput[] | SupportFileCreateInput>;
   connect?: Maybe<SupportFileWhereUniqueInput[] | SupportFileWhereUniqueInput>;
-}
-
-export interface RegionUpdateInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  countries?: Maybe<CountryUpdateManyWithoutRegionInput>;
-}
-
-export interface SupportFileCreateInput {
-  id?: Maybe<ID_Input>;
-  language: LanguageCreateOneInput;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  editable?: Maybe<Boolean>;
-  use?: Maybe<SupportFileUseCreateOneInput>;
 }
 
 export interface VideoProjectWhereInput {
@@ -5579,24 +5788,18 @@ export interface VideoProjectWhereInput {
   NOT?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
 }
 
-export interface SupportFileUseCreateOneInput {
-  create?: Maybe<SupportFileUseCreateInput>;
-  connect?: Maybe<SupportFileUseWhereUniqueInput>;
-}
-
-export interface PackageUpdateManyMutationInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface SupportFileUseCreateInput {
+export interface SupportFileCreateInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  language: LanguageCreateOneInput;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  visibility?: Maybe<Visibility>;
+  editable?: Maybe<Boolean>;
+  use?: Maybe<SupportFileUseCreateOneInput>;
 }
 
 export interface DocumentFileScalarWhereInput {
@@ -5743,14 +5946,36 @@ export interface DocumentFileScalarWhereInput {
   NOT?: Maybe<DocumentFileScalarWhereInput[] | DocumentFileScalarWhereInput>;
 }
 
+export interface SupportFileUseCreateOneInput {
+  create?: Maybe<SupportFileUseCreateInput>;
+  connect?: Maybe<SupportFileUseWhereUniqueInput>;
+}
+
+export interface DocumentFileUpdateWithWhereUniqueNestedInput {
+  where: DocumentFileWhereUniqueInput;
+  data: DocumentFileUpdateDataInput;
+}
+
+export interface SupportFileUseCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface DocumentFileCreateManyInput {
+  create?: Maybe<DocumentFileCreateInput[] | DocumentFileCreateInput>;
+  connect?: Maybe<
+    DocumentFileWhereUniqueInput[] | DocumentFileWhereUniqueInput
+  >;
+}
+
 export interface GraphicProjectUpdateInput {
   publishedAt?: Maybe<DateTimeInput>;
   type?: Maybe<ProjectType>;
   title?: Maybe<String>;
   copyright?: Maybe<Copyright>;
   alt?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
+  descPublic?: Maybe<ContentFieldUpdateOneInput>;
+  descInternal?: Maybe<ContentFieldUpdateOneInput>;
   assetPath?: Maybe<String>;
   author?: Maybe<UserUpdateOneInput>;
   team?: Maybe<TeamUpdateOneInput>;
@@ -5762,9 +5987,73 @@ export interface GraphicProjectUpdateInput {
   tags?: Maybe<TagUpdateManyInput>;
 }
 
-export interface DocumentFileUpdateWithWhereUniqueNestedInput {
-  where: DocumentFileWhereUniqueInput;
-  data: DocumentFileUpdateDataInput;
+export interface BureauUpsertWithoutOfficesInput {
+  update: BureauUpdateWithoutOfficesDataInput;
+  create: BureauCreateWithoutOfficesInput;
+}
+
+export interface ContentFieldUpdateOneInput {
+  create?: Maybe<ContentFieldCreateInput>;
+  update?: Maybe<ContentFieldUpdateDataInput>;
+  upsert?: Maybe<ContentFieldUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ContentFieldWhereUniqueInput>;
+}
+
+export interface OfficeCreateManyWithoutBureauInput {
+  create?: Maybe<
+    OfficeCreateWithoutBureauInput[] | OfficeCreateWithoutBureauInput
+  >;
+  connect?: Maybe<OfficeWhereUniqueInput[] | OfficeWhereUniqueInput>;
+}
+
+export interface ContentFieldUpdateDataInput {
+  type?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  content?: Maybe<String>;
+}
+
+export interface VideoProjectSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoProjectWhereInput>;
+  AND?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+}
+
+export interface ContentFieldUpsertNestedInput {
+  update: ContentFieldUpdateDataInput;
+  create: ContentFieldCreateInput;
+}
+
+export interface SupportFileUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SupportFileUseWhereInput>;
+  AND?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+  >;
 }
 
 export interface UserUpdateOneInput {
@@ -5776,126 +6065,7 @@ export interface UserUpdateOneInput {
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface DocumentFileCreateManyInput {
-  create?: Maybe<DocumentFileCreateInput[] | DocumentFileCreateInput>;
-  connect?: Maybe<
-    DocumentFileWhereUniqueInput[] | DocumentFileWhereUniqueInput
-  >;
-}
-
-export interface UserUpdateDataInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  country?: Maybe<String>;
-  city?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface OfficeCreateManyWithoutBureauInput {
-  create?: Maybe<
-    OfficeCreateWithoutBureauInput[] | OfficeCreateWithoutBureauInput
-  >;
-  connect?: Maybe<OfficeWhereUniqueInput[] | OfficeWhereUniqueInput>;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Maybe<Permission[] | Permission>;
-}
-
-export interface VideoUnitSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<VideoUnitWhereInput>;
-  AND?: Maybe<
-    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
-  >;
-}
-
-export interface TeamUpdateOneWithoutMembersInput {
-  create?: Maybe<TeamCreateWithoutMembersInput>;
-  update?: Maybe<TeamUpdateWithoutMembersDataInput>;
-  upsert?: Maybe<TeamUpsertWithoutMembersInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<TeamWhereUniqueInput>;
-}
-
-export interface TagSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TagWhereInput>;
-  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-}
-
-export interface TeamUpdateWithoutMembersDataInput {
-  name?: Maybe<String>;
-  organization?: Maybe<String>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface SupportFileSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<SupportFileWhereInput>;
-  AND?: Maybe<
-    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
-  >;
-}
-
-export interface TeamUpdatecontentTypesInput {
-  set?: Maybe<ContentType[] | ContentType>;
-}
-
-export interface ImageUseSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ImageUseWhereInput>;
-  AND?: Maybe<
-    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
-  >;
-  OR?: Maybe<ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput>;
-  NOT?: Maybe<
-    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
-  >;
-}
-
-export interface TeamUpsertWithoutMembersInput {
-  update: TeamUpdateWithoutMembersDataInput;
-  create: TeamCreateWithoutMembersInput;
-}
-
-export interface RegionWhereInput {
+export interface CountryWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -5938,40 +6108,87 @@ export interface RegionWhereInput {
   abbr_not_starts_with?: Maybe<String>;
   abbr_ends_with?: Maybe<String>;
   abbr_not_ends_with?: Maybe<String>;
-  countries_every?: Maybe<CountryWhereInput>;
-  countries_some?: Maybe<CountryWhereInput>;
-  countries_none?: Maybe<CountryWhereInput>;
-  AND?: Maybe<RegionWhereInput[] | RegionWhereInput>;
-  OR?: Maybe<RegionWhereInput[] | RegionWhereInput>;
-  NOT?: Maybe<RegionWhereInput[] | RegionWhereInput>;
+  region?: Maybe<RegionWhereInput>;
+  AND?: Maybe<CountryWhereInput[] | CountryWhereInput>;
+  OR?: Maybe<CountryWhereInput[] | CountryWhereInput>;
+  NOT?: Maybe<CountryWhereInput[] | CountryWhereInput>;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+export interface UserUpdateDataInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  country?: Maybe<String>;
+  city?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
+  isConfirmed?: Maybe<Boolean>;
 }
 
-export interface BureauSubscriptionWhereInput {
+export interface ImageFileSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<BureauWhereInput>;
-  AND?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
-  OR?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
-  NOT?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  node?: Maybe<ImageFileWhereInput>;
+  AND?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
 }
 
-export interface TeamUpdateOneInput {
-  create?: Maybe<TeamCreateInput>;
-  update?: Maybe<TeamUpdateDataInput>;
-  upsert?: Maybe<TeamUpsertNestedInput>;
+export interface UserUpdatepermissionsInput {
+  set?: Maybe<Permission[] | Permission>;
+}
+
+export interface DocumentFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentFileWhereInput>;
+  AND?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+}
+
+export interface TeamUpdateOneWithoutMembersInput {
+  create?: Maybe<TeamCreateWithoutMembersInput>;
+  update?: Maybe<TeamUpdateWithoutMembersDataInput>;
+  upsert?: Maybe<TeamUpsertWithoutMembersInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<TeamWhereUniqueInput>;
 }
 
-export interface SupportFileUseWhereInput {
+export type GraphicProjectWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface TeamUpdateWithoutMembersDataInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface TeamWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -6000,20 +6217,35 @@ export interface SupportFileUseWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
-  OR?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
-  NOT?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
-}
-
-export interface TeamUpdateDataInput {
-  name?: Maybe<String>;
   organization?: Maybe<String>;
-  members?: Maybe<UserUpdateManyWithoutTeamInput>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  organization_not?: Maybe<String>;
+  organization_in?: Maybe<String[] | String>;
+  organization_not_in?: Maybe<String[] | String>;
+  organization_lt?: Maybe<String>;
+  organization_lte?: Maybe<String>;
+  organization_gt?: Maybe<String>;
+  organization_gte?: Maybe<String>;
+  organization_contains?: Maybe<String>;
+  organization_not_contains?: Maybe<String>;
+  organization_starts_with?: Maybe<String>;
+  organization_not_starts_with?: Maybe<String>;
+  organization_ends_with?: Maybe<String>;
+  organization_not_ends_with?: Maybe<String>;
+  members_every?: Maybe<UserWhereInput>;
+  members_some?: Maybe<UserWhereInput>;
+  members_none?: Maybe<UserWhereInput>;
   isConfirmed?: Maybe<Boolean>;
+  isConfirmed_not?: Maybe<Boolean>;
+  AND?: Maybe<TeamWhereInput[] | TeamWhereInput>;
+  OR?: Maybe<TeamWhereInput[] | TeamWhereInput>;
+  NOT?: Maybe<TeamWhereInput[] | TeamWhereInput>;
 }
 
-export interface VideoUnitScalarWhereInput {
+export interface TeamUpdatecontentTypesInput {
+  set?: Maybe<ContentType[] | ContentType>;
+}
+
+export interface GraphicProjectWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -6044,6 +6276,18 @@ export interface VideoUnitScalarWhereInput {
   updatedAt_lte?: Maybe<DateTimeInput>;
   updatedAt_gt?: Maybe<DateTimeInput>;
   updatedAt_gte?: Maybe<DateTimeInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  publishedAt_not?: Maybe<DateTimeInput>;
+  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  publishedAt_lt?: Maybe<DateTimeInput>;
+  publishedAt_lte?: Maybe<DateTimeInput>;
+  publishedAt_gt?: Maybe<DateTimeInput>;
+  publishedAt_gte?: Maybe<DateTimeInput>;
+  type?: Maybe<ProjectType>;
+  type_not?: Maybe<ProjectType>;
+  type_in?: Maybe<ProjectType[] | ProjectType>;
+  type_not_in?: Maybe<ProjectType[] | ProjectType>;
   title?: Maybe<String>;
   title_not?: Maybe<String>;
   title_in?: Maybe<String[] | String>;
@@ -6058,43 +6302,70 @@ export interface VideoUnitScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  AND?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
-  OR?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
-  NOT?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+  copyright?: Maybe<Copyright>;
+  copyright_not?: Maybe<Copyright>;
+  copyright_in?: Maybe<Copyright[] | Copyright>;
+  copyright_not_in?: Maybe<Copyright[] | Copyright>;
+  alt?: Maybe<String>;
+  alt_not?: Maybe<String>;
+  alt_in?: Maybe<String[] | String>;
+  alt_not_in?: Maybe<String[] | String>;
+  alt_lt?: Maybe<String>;
+  alt_lte?: Maybe<String>;
+  alt_gt?: Maybe<String>;
+  alt_gte?: Maybe<String>;
+  alt_contains?: Maybe<String>;
+  alt_not_contains?: Maybe<String>;
+  alt_starts_with?: Maybe<String>;
+  alt_not_starts_with?: Maybe<String>;
+  alt_ends_with?: Maybe<String>;
+  alt_not_ends_with?: Maybe<String>;
+  descPublic?: Maybe<ContentFieldWhereInput>;
+  descInternal?: Maybe<ContentFieldWhereInput>;
+  assetPath?: Maybe<String>;
+  assetPath_not?: Maybe<String>;
+  assetPath_in?: Maybe<String[] | String>;
+  assetPath_not_in?: Maybe<String[] | String>;
+  assetPath_lt?: Maybe<String>;
+  assetPath_lte?: Maybe<String>;
+  assetPath_gt?: Maybe<String>;
+  assetPath_gte?: Maybe<String>;
+  assetPath_contains?: Maybe<String>;
+  assetPath_not_contains?: Maybe<String>;
+  assetPath_starts_with?: Maybe<String>;
+  assetPath_not_starts_with?: Maybe<String>;
+  assetPath_ends_with?: Maybe<String>;
+  assetPath_not_ends_with?: Maybe<String>;
+  author?: Maybe<UserWhereInput>;
+  team?: Maybe<TeamWhereInput>;
+  status?: Maybe<PublishStatus>;
+  status_not?: Maybe<PublishStatus>;
+  status_in?: Maybe<PublishStatus[] | PublishStatus>;
+  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  visibility_not?: Maybe<Visibility>;
+  visibility_in?: Maybe<Visibility[] | Visibility>;
+  visibility_not_in?: Maybe<Visibility[] | Visibility>;
+  supportFiles_every?: Maybe<SupportFileWhereInput>;
+  supportFiles_some?: Maybe<SupportFileWhereInput>;
+  supportFiles_none?: Maybe<SupportFileWhereInput>;
+  images_every?: Maybe<ImageFileWhereInput>;
+  images_some?: Maybe<ImageFileWhereInput>;
+  images_none?: Maybe<ImageFileWhereInput>;
+  categories_every?: Maybe<CategoryWhereInput>;
+  categories_some?: Maybe<CategoryWhereInput>;
+  categories_none?: Maybe<CategoryWhereInput>;
+  tags_every?: Maybe<TagWhereInput>;
+  tags_some?: Maybe<TagWhereInput>;
+  tags_none?: Maybe<TagWhereInput>;
+  AND?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
+  OR?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
+  NOT?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
 }
 
-export interface UserUpdateManyWithoutTeamInput {
-  create?: Maybe<UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput>;
-  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  update?: Maybe<
-    | UserUpdateWithWhereUniqueWithoutTeamInput[]
-    | UserUpdateWithWhereUniqueWithoutTeamInput
-  >;
-  upsert?: Maybe<
-    | UserUpsertWithWhereUniqueWithoutTeamInput[]
-    | UserUpsertWithWhereUniqueWithoutTeamInput
-  >;
-  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  updateMany?: Maybe<
-    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
-  >;
+export interface TeamUpsertWithoutMembersInput {
+  update: TeamUpdateWithoutMembersDataInput;
+  create: TeamCreateWithoutMembersInput;
 }
 
 export interface ThumbnailUpsertWithWhereUniqueNestedInput {
@@ -6103,9 +6374,9 @@ export interface ThumbnailUpsertWithWhereUniqueNestedInput {
   create: ThumbnailCreateInput;
 }
 
-export interface UserUpdateWithWhereUniqueWithoutTeamInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateWithoutTeamDataInput;
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
 }
 
 export interface VideoFileScalarWhereInput {
@@ -6252,6 +6523,64 @@ export interface VideoFileScalarWhereInput {
   NOT?: Maybe<VideoFileScalarWhereInput[] | VideoFileScalarWhereInput>;
 }
 
+export interface TeamUpdateOneInput {
+  create?: Maybe<TeamCreateInput>;
+  update?: Maybe<TeamUpdateDataInput>;
+  upsert?: Maybe<TeamUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<TeamWhereUniqueInput>;
+}
+
+export type LanguageTranslationWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface TeamUpdateDataInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  members?: Maybe<UserUpdateManyWithoutTeamInput>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export type PackageWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UserUpdateManyWithoutTeamInput {
+  create?: Maybe<UserCreateWithoutTeamInput[] | UserCreateWithoutTeamInput>;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutTeamInput[]
+    | UserUpdateWithWhereUniqueWithoutTeamInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutTeamInput[]
+    | UserUpsertWithWhereUniqueWithoutTeamInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export type RegionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UserUpdateWithWhereUniqueWithoutTeamInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutTeamDataInput;
+}
+
+export interface VideoUseUpdateDataInput {
+  name?: Maybe<String>;
+}
+
 export interface UserUpdateWithoutTeamDataInput {
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
@@ -6267,9 +6596,10 @@ export interface UserUpdateWithoutTeamDataInput {
   isConfirmed?: Maybe<Boolean>;
 }
 
-export type OfficeWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface VideoUseCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
 
 export interface UserUpsertWithWhereUniqueWithoutTeamInput {
   where: UserWhereUniqueInput;
@@ -6277,39 +6607,9 @@ export interface UserUpsertWithWhereUniqueWithoutTeamInput {
   create: UserCreateWithoutTeamInput;
 }
 
-export interface LanguageTranslationWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  language?: Maybe<LanguageWhereInput>;
-  AND?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
-  OR?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
-  NOT?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
+export interface ImageFileUpsertNestedInput {
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
 }
 
 export interface UserScalarWhereInput {
@@ -6468,66 +6768,12 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export interface VideoStreamScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  site?: Maybe<String>;
-  site_not?: Maybe<String>;
-  site_in?: Maybe<String[] | String>;
-  site_not_in?: Maybe<String[] | String>;
-  site_lt?: Maybe<String>;
-  site_lte?: Maybe<String>;
-  site_gt?: Maybe<String>;
-  site_gte?: Maybe<String>;
-  site_contains?: Maybe<String>;
-  site_not_contains?: Maybe<String>;
-  site_starts_with?: Maybe<String>;
-  site_not_starts_with?: Maybe<String>;
-  site_ends_with?: Maybe<String>;
-  site_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-  embedUrl_not?: Maybe<String>;
-  embedUrl_in?: Maybe<String[] | String>;
-  embedUrl_not_in?: Maybe<String[] | String>;
-  embedUrl_lt?: Maybe<String>;
-  embedUrl_lte?: Maybe<String>;
-  embedUrl_gt?: Maybe<String>;
-  embedUrl_gte?: Maybe<String>;
-  embedUrl_contains?: Maybe<String>;
-  embedUrl_not_contains?: Maybe<String>;
-  embedUrl_starts_with?: Maybe<String>;
-  embedUrl_not_starts_with?: Maybe<String>;
-  embedUrl_ends_with?: Maybe<String>;
-  embedUrl_not_ends_with?: Maybe<String>;
-  AND?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
-  OR?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
-  NOT?: Maybe<VideoStreamScalarWhereInput[] | VideoStreamScalarWhereInput>;
+export interface TeamUpdateInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  members?: Maybe<UserUpdateManyWithoutTeamInput>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
 }
 
 export interface UserUpdateManyWithWhereNestedInput {
@@ -6535,7 +6781,7 @@ export interface UserUpdateManyWithWhereNestedInput {
   data: UserUpdateManyDataInput;
 }
 
-export interface VideoUseUpdateDataInput {
+export interface SocialPlatformUpdateManyMutationInput {
   name?: Maybe<String>;
 }
 
@@ -6554,9 +6800,38 @@ export interface UserUpdateManyDataInput {
   isConfirmed?: Maybe<Boolean>;
 }
 
-export interface VideoUseCreateInput {
+export interface VideoUseWhereInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
+  OR?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
+  NOT?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
 }
 
 export interface TeamUpsertNestedInput {
@@ -6564,9 +6839,55 @@ export interface TeamUpsertNestedInput {
   create: TeamCreateInput;
 }
 
-export interface ImageFileUpsertNestedInput {
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
+export interface BureauWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  abbr?: Maybe<String>;
+  abbr_not?: Maybe<String>;
+  abbr_in?: Maybe<String[] | String>;
+  abbr_not_in?: Maybe<String[] | String>;
+  abbr_lt?: Maybe<String>;
+  abbr_lte?: Maybe<String>;
+  abbr_gt?: Maybe<String>;
+  abbr_gte?: Maybe<String>;
+  abbr_contains?: Maybe<String>;
+  abbr_not_contains?: Maybe<String>;
+  abbr_starts_with?: Maybe<String>;
+  abbr_not_starts_with?: Maybe<String>;
+  abbr_ends_with?: Maybe<String>;
+  abbr_not_ends_with?: Maybe<String>;
+  offices_every?: Maybe<OfficeWhereInput>;
+  offices_some?: Maybe<OfficeWhereInput>;
+  offices_none?: Maybe<OfficeWhereInput>;
+  AND?: Maybe<BureauWhereInput[] | BureauWhereInput>;
+  OR?: Maybe<BureauWhereInput[] | BureauWhereInput>;
+  NOT?: Maybe<BureauWhereInput[] | BureauWhereInput>;
 }
 
 export interface SupportFileUpdateManyInput {
@@ -6594,12 +6915,10 @@ export interface SupportFileUpdateManyInput {
   >;
 }
 
-export interface TeamUpdateInput {
-  name?: Maybe<String>;
-  organization?: Maybe<String>;
-  members?: Maybe<UserUpdateManyWithoutTeamInput>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
+export interface DocumentFileUpsertWithWhereUniqueNestedInput {
+  where: DocumentFileWhereUniqueInput;
+  update: DocumentFileUpdateDataInput;
+  create: DocumentFileCreateInput;
 }
 
 export interface SupportFileUpdateWithWhereUniqueNestedInput {
@@ -6607,66 +6926,20 @@ export interface SupportFileUpdateWithWhereUniqueNestedInput {
   data: SupportFileUpdateDataInput;
 }
 
-export interface VideoStreamWhereInput {
+export interface PackageCreateInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  site?: Maybe<String>;
-  site_not?: Maybe<String>;
-  site_in?: Maybe<String[] | String>;
-  site_not_in?: Maybe<String[] | String>;
-  site_lt?: Maybe<String>;
-  site_lte?: Maybe<String>;
-  site_gt?: Maybe<String>;
-  site_gte?: Maybe<String>;
-  site_contains?: Maybe<String>;
-  site_not_contains?: Maybe<String>;
-  site_starts_with?: Maybe<String>;
-  site_not_starts_with?: Maybe<String>;
-  site_ends_with?: Maybe<String>;
-  site_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-  embedUrl_not?: Maybe<String>;
-  embedUrl_in?: Maybe<String[] | String>;
-  embedUrl_not_in?: Maybe<String[] | String>;
-  embedUrl_lt?: Maybe<String>;
-  embedUrl_lte?: Maybe<String>;
-  embedUrl_gt?: Maybe<String>;
-  embedUrl_gte?: Maybe<String>;
-  embedUrl_contains?: Maybe<String>;
-  embedUrl_not_contains?: Maybe<String>;
-  embedUrl_starts_with?: Maybe<String>;
-  embedUrl_not_starts_with?: Maybe<String>;
-  embedUrl_ends_with?: Maybe<String>;
-  embedUrl_not_ends_with?: Maybe<String>;
-  AND?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
-  OR?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
-  NOT?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  publishedAt?: Maybe<DateTimeInput>;
+  type: PackageType;
+  title: String;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserCreateOneInput>;
+  team?: Maybe<TeamCreateOneInput>;
+  desc?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+  documents?: Maybe<DocumentFileCreateManyInput>;
 }
 
 export interface SupportFileUpdateDataInput {
@@ -6682,26 +6955,18 @@ export interface SupportFileUpdateDataInput {
   use?: Maybe<SupportFileUseUpdateOneInput>;
 }
 
-export interface CountryUpdateManyWithoutRegionInput {
-  create?: Maybe<
-    CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput
+export interface VideoUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoUseWhereInput>;
+  AND?: Maybe<
+    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
   >;
-  delete?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
-  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
-  set?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
-  disconnect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
-  update?: Maybe<
-    | CountryUpdateWithWhereUniqueWithoutRegionInput[]
-    | CountryUpdateWithWhereUniqueWithoutRegionInput
-  >;
-  upsert?: Maybe<
-    | CountryUpsertWithWhereUniqueWithoutRegionInput[]
-    | CountryUpsertWithWhereUniqueWithoutRegionInput
-  >;
-  deleteMany?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
-  updateMany?: Maybe<
-    | CountryUpdateManyWithWhereNestedInput[]
-    | CountryUpdateManyWithWhereNestedInput
+  OR?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
+  NOT?: Maybe<
+    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
   >;
 }
 
@@ -6712,11 +6977,15 @@ export interface LanguageUpdateOneRequiredInput {
   connect?: Maybe<LanguageWhereUniqueInput>;
 }
 
-export interface CountryCreateManyWithoutRegionInput {
-  create?: Maybe<
-    CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput
-  >;
-  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+export interface RegionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<RegionWhereInput>;
+  AND?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+  OR?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+  NOT?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
 }
 
 export interface SupportFileUseUpdateOneInput {
@@ -6728,34 +6997,43 @@ export interface SupportFileUseUpdateOneInput {
   connect?: Maybe<SupportFileUseWhereUniqueInput>;
 }
 
-export interface DocumentFileUpsertWithWhereUniqueNestedInput {
-  where: DocumentFileWhereUniqueInput;
-  update: DocumentFileUpdateDataInput;
-  create: DocumentFileCreateInput;
+export interface GraphicProjectSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GraphicProjectWhereInput>;
+  AND?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
 }
 
 export interface SupportFileUseUpdateDataInput {
   name?: Maybe<String>;
 }
 
-export type DocumentFileWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface VideoUnitUpdateManyMutationInput {
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
+}
 
 export interface SupportFileUseUpsertNestedInput {
   update: SupportFileUseUpdateDataInput;
   create: SupportFileUseCreateInput;
 }
 
-export interface OfficeSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<OfficeWhereInput>;
-  AND?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
-  OR?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
-  NOT?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+export interface ThumbnailUpdateManyWithWhereNestedInput {
+  where: ThumbnailScalarWhereInput;
+  data: ThumbnailUpdateManyDataInput;
 }
 
 export interface SupportFileUpsertWithWhereUniqueNestedInput {
@@ -6764,9 +7042,10 @@ export interface SupportFileUpsertWithWhereUniqueNestedInput {
   create: SupportFileCreateInput;
 }
 
-export type GraphicProjectWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface VideoFileUpdateWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  data: VideoFileUpdateDataInput;
+}
 
 export interface SupportFileScalarWhereInput {
   id?: Maybe<ID_Input>;
@@ -6888,257 +7167,7 @@ export interface SupportFileScalarWhereInput {
   NOT?: Maybe<SupportFileScalarWhereInput[] | SupportFileScalarWhereInput>;
 }
 
-export interface GraphicProjectWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
-  type?: Maybe<ProjectType>;
-  type_not?: Maybe<ProjectType>;
-  type_in?: Maybe<ProjectType[] | ProjectType>;
-  type_not_in?: Maybe<ProjectType[] | ProjectType>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  copyright?: Maybe<Copyright>;
-  copyright_not?: Maybe<Copyright>;
-  copyright_in?: Maybe<Copyright[] | Copyright>;
-  copyright_not_in?: Maybe<Copyright[] | Copyright>;
-  alt?: Maybe<String>;
-  alt_not?: Maybe<String>;
-  alt_in?: Maybe<String[] | String>;
-  alt_not_in?: Maybe<String[] | String>;
-  alt_lt?: Maybe<String>;
-  alt_lte?: Maybe<String>;
-  alt_gt?: Maybe<String>;
-  alt_gte?: Maybe<String>;
-  alt_contains?: Maybe<String>;
-  alt_not_contains?: Maybe<String>;
-  alt_starts_with?: Maybe<String>;
-  alt_not_starts_with?: Maybe<String>;
-  alt_ends_with?: Maybe<String>;
-  alt_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  descInternal_not?: Maybe<String>;
-  descInternal_in?: Maybe<String[] | String>;
-  descInternal_not_in?: Maybe<String[] | String>;
-  descInternal_lt?: Maybe<String>;
-  descInternal_lte?: Maybe<String>;
-  descInternal_gt?: Maybe<String>;
-  descInternal_gte?: Maybe<String>;
-  descInternal_contains?: Maybe<String>;
-  descInternal_not_contains?: Maybe<String>;
-  descInternal_starts_with?: Maybe<String>;
-  descInternal_not_starts_with?: Maybe<String>;
-  descInternal_ends_with?: Maybe<String>;
-  descInternal_not_ends_with?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  assetPath_not?: Maybe<String>;
-  assetPath_in?: Maybe<String[] | String>;
-  assetPath_not_in?: Maybe<String[] | String>;
-  assetPath_lt?: Maybe<String>;
-  assetPath_lte?: Maybe<String>;
-  assetPath_gt?: Maybe<String>;
-  assetPath_gte?: Maybe<String>;
-  assetPath_contains?: Maybe<String>;
-  assetPath_not_contains?: Maybe<String>;
-  assetPath_starts_with?: Maybe<String>;
-  assetPath_not_starts_with?: Maybe<String>;
-  assetPath_ends_with?: Maybe<String>;
-  assetPath_not_ends_with?: Maybe<String>;
-  author?: Maybe<UserWhereInput>;
-  team?: Maybe<TeamWhereInput>;
-  status?: Maybe<PublishStatus>;
-  status_not?: Maybe<PublishStatus>;
-  status_in?: Maybe<PublishStatus[] | PublishStatus>;
-  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  supportFiles_every?: Maybe<SupportFileWhereInput>;
-  supportFiles_some?: Maybe<SupportFileWhereInput>;
-  supportFiles_none?: Maybe<SupportFileWhereInput>;
-  images_every?: Maybe<ImageFileWhereInput>;
-  images_some?: Maybe<ImageFileWhereInput>;
-  images_none?: Maybe<ImageFileWhereInput>;
-  categories_every?: Maybe<CategoryWhereInput>;
-  categories_some?: Maybe<CategoryWhereInput>;
-  categories_none?: Maybe<CategoryWhereInput>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
-  AND?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
-  OR?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
-  NOT?: Maybe<GraphicProjectWhereInput[] | GraphicProjectWhereInput>;
-}
-
-export interface SupportFileUpdateManyWithWhereNestedInput {
-  where: SupportFileScalarWhereInput;
-  data: SupportFileUpdateManyDataInput;
-}
-
-export interface ThumbnailUpdateManyInput {
-  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
-  update?: Maybe<
-    | ThumbnailUpdateWithWhereUniqueNestedInput[]
-    | ThumbnailUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ThumbnailUpsertWithWhereUniqueNestedInput[]
-    | ThumbnailUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
-  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
-  set?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
-  disconnect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
-  deleteMany?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
-  updateMany?: Maybe<
-    | ThumbnailUpdateManyWithWhereNestedInput[]
-    | ThumbnailUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface SupportFileUpdateManyDataInput {
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  editable?: Maybe<Boolean>;
-}
-
-export type PackageWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface GraphicProjectUpdateManyMutationInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<ProjectType>;
-  title?: Maybe<String>;
-  copyright?: Maybe<Copyright>;
-  alt?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface VideoStreamUpdateWithWhereUniqueNestedInput {
-  where: VideoStreamWhereUniqueInput;
-  data: VideoStreamUpdateDataInput;
-}
-
-export interface GraphicStyleUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  country?: Maybe<String>;
-  city?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface GraphicStyleUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface SupportFileUseUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface ImageFileUpdateInput {
-  visibility?: Maybe<Visibility>;
-  language?: Maybe<LanguageUpdateOneInput>;
-  dimensions?: Maybe<DimensionsUpdateOneInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  alt?: Maybe<String>;
-  longdesc?: Maybe<String>;
-  caption?: Maybe<String>;
-  title?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  use?: Maybe<ImageUseUpdateOneInput>;
-  md5?: Maybe<String>;
-  quality?: Maybe<ImageQuality>;
-  style?: Maybe<GraphicStyleUpdateOneInput>;
-  social?: Maybe<SocialPlatformUpdateManyInput>;
-}
-
-export interface BureauWhereInput {
+export interface LanguageTranslationWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -7167,26 +7196,197 @@ export interface BureauWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  abbr?: Maybe<String>;
-  abbr_not?: Maybe<String>;
-  abbr_in?: Maybe<String[] | String>;
-  abbr_not_in?: Maybe<String[] | String>;
-  abbr_lt?: Maybe<String>;
-  abbr_lte?: Maybe<String>;
-  abbr_gt?: Maybe<String>;
-  abbr_gte?: Maybe<String>;
-  abbr_contains?: Maybe<String>;
-  abbr_not_contains?: Maybe<String>;
-  abbr_starts_with?: Maybe<String>;
-  abbr_not_starts_with?: Maybe<String>;
-  abbr_ends_with?: Maybe<String>;
-  abbr_not_ends_with?: Maybe<String>;
-  offices_every?: Maybe<OfficeWhereInput>;
-  offices_some?: Maybe<OfficeWhereInput>;
-  offices_none?: Maybe<OfficeWhereInput>;
-  AND?: Maybe<BureauWhereInput[] | BureauWhereInput>;
-  OR?: Maybe<BureauWhereInput[] | BureauWhereInput>;
-  NOT?: Maybe<BureauWhereInput[] | BureauWhereInput>;
+  language?: Maybe<LanguageWhereInput>;
+  AND?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
+  OR?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
+  NOT?: Maybe<LanguageTranslationWhereInput[] | LanguageTranslationWhereInput>;
+}
+
+export interface SupportFileUpdateManyWithWhereNestedInput {
+  where: SupportFileScalarWhereInput;
+  data: SupportFileUpdateManyDataInput;
+}
+
+export interface VideoStreamCreateInput {
+  id?: Maybe<ID_Input>;
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+}
+
+export interface SupportFileUpdateManyDataInput {
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  visibility?: Maybe<Visibility>;
+  editable?: Maybe<Boolean>;
+}
+
+export interface ImageFileCreateOneInput {
+  create?: Maybe<ImageFileCreateInput>;
+  connect?: Maybe<ImageFileWhereUniqueInput>;
+}
+
+export interface GraphicProjectUpdateManyMutationInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  type?: Maybe<ProjectType>;
+  title?: Maybe<String>;
+  copyright?: Maybe<Copyright>;
+  alt?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+}
+
+export interface VideoStreamWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  site?: Maybe<String>;
+  site_not?: Maybe<String>;
+  site_in?: Maybe<String[] | String>;
+  site_not_in?: Maybe<String[] | String>;
+  site_lt?: Maybe<String>;
+  site_lte?: Maybe<String>;
+  site_gt?: Maybe<String>;
+  site_gte?: Maybe<String>;
+  site_contains?: Maybe<String>;
+  site_not_contains?: Maybe<String>;
+  site_starts_with?: Maybe<String>;
+  site_not_starts_with?: Maybe<String>;
+  site_ends_with?: Maybe<String>;
+  site_not_ends_with?: Maybe<String>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+  embedUrl_not?: Maybe<String>;
+  embedUrl_in?: Maybe<String[] | String>;
+  embedUrl_not_in?: Maybe<String[] | String>;
+  embedUrl_lt?: Maybe<String>;
+  embedUrl_lte?: Maybe<String>;
+  embedUrl_gt?: Maybe<String>;
+  embedUrl_gte?: Maybe<String>;
+  embedUrl_contains?: Maybe<String>;
+  embedUrl_not_contains?: Maybe<String>;
+  embedUrl_starts_with?: Maybe<String>;
+  embedUrl_not_starts_with?: Maybe<String>;
+  embedUrl_ends_with?: Maybe<String>;
+  embedUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  OR?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  NOT?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+}
+
+export interface GraphicStyleUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface DocumentFileUpdateManyDataInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  status?: Maybe<PublishStatus>;
+  excerpt?: Maybe<String>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+}
+
+export interface GraphicStyleUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface OfficeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<OfficeWhereInput>;
+  AND?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+  OR?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+  NOT?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+}
+
+export interface ImageFileUpdateInput {
+  visibility?: Maybe<Visibility>;
+  language?: Maybe<LanguageUpdateOneInput>;
+  dimensions?: Maybe<DimensionsUpdateOneInput>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  alt?: Maybe<String>;
+  longdesc?: Maybe<String>;
+  caption?: Maybe<String>;
+  title?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  use?: Maybe<ImageUseUpdateOneInput>;
+  md5?: Maybe<String>;
+  quality?: Maybe<ImageQuality>;
+  style?: Maybe<GraphicStyleUpdateOneInput>;
+  social?: Maybe<SocialPlatformUpdateManyInput>;
+}
+
+export interface SupportFileUseWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
+  OR?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
+  NOT?: Maybe<SupportFileUseWhereInput[] | SupportFileUseWhereInput>;
 }
 
 export interface ImageFileUpdateManyMutationInput {
@@ -7202,6 +7402,151 @@ export interface ImageFileUpdateManyMutationInput {
   filesize?: Maybe<Float>;
   md5?: Maybe<String>;
   quality?: Maybe<ImageQuality>;
+}
+
+export type OfficeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ImageUseUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface UserUpdateManyMutationInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  country?: Maybe<String>;
+  city?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface ImageUseUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface CountryCreateManyWithoutRegionInput {
+  create?: Maybe<
+    CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput
+  >;
+  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+}
+
+export interface LanguageUpdateInput {
+  languageCode?: Maybe<String>;
+  locale?: Maybe<String>;
+  textDirection?: Maybe<TextDirection>;
+  displayName?: Maybe<String>;
+  nativeName?: Maybe<String>;
+}
+
+export interface DocumentConversionFormatWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  rawText?: Maybe<String>;
+  rawText_not?: Maybe<String>;
+  rawText_in?: Maybe<String[] | String>;
+  rawText_not_in?: Maybe<String[] | String>;
+  rawText_lt?: Maybe<String>;
+  rawText_lte?: Maybe<String>;
+  rawText_gt?: Maybe<String>;
+  rawText_gte?: Maybe<String>;
+  rawText_contains?: Maybe<String>;
+  rawText_not_contains?: Maybe<String>;
+  rawText_starts_with?: Maybe<String>;
+  rawText_not_starts_with?: Maybe<String>;
+  rawText_ends_with?: Maybe<String>;
+  rawText_not_ends_with?: Maybe<String>;
+  html?: Maybe<String>;
+  html_not?: Maybe<String>;
+  html_in?: Maybe<String[] | String>;
+  html_not_in?: Maybe<String[] | String>;
+  html_lt?: Maybe<String>;
+  html_lte?: Maybe<String>;
+  html_gt?: Maybe<String>;
+  html_gte?: Maybe<String>;
+  html_contains?: Maybe<String>;
+  html_not_contains?: Maybe<String>;
+  html_starts_with?: Maybe<String>;
+  html_not_starts_with?: Maybe<String>;
+  html_ends_with?: Maybe<String>;
+  html_not_ends_with?: Maybe<String>;
+  markdown?: Maybe<String>;
+  markdown_not?: Maybe<String>;
+  markdown_in?: Maybe<String[] | String>;
+  markdown_not_in?: Maybe<String[] | String>;
+  markdown_lt?: Maybe<String>;
+  markdown_lte?: Maybe<String>;
+  markdown_gt?: Maybe<String>;
+  markdown_gte?: Maybe<String>;
+  markdown_contains?: Maybe<String>;
+  markdown_not_contains?: Maybe<String>;
+  markdown_starts_with?: Maybe<String>;
+  markdown_not_starts_with?: Maybe<String>;
+  markdown_ends_with?: Maybe<String>;
+  markdown_not_ends_with?: Maybe<String>;
+  AND?: Maybe<
+    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
+  >;
+  OR?: Maybe<
+    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
+  >;
+  NOT?: Maybe<
+    DocumentConversionFormatWhereInput[] | DocumentConversionFormatWhereInput
+  >;
+}
+
+export interface OfficeCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  abbr: String;
+  bureau?: Maybe<BureauCreateOneWithoutOfficesInput>;
+}
+
+export interface LanguageTranslationUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface LanguageTranslationUpdateInput {
+  name?: Maybe<String>;
+  language?: Maybe<LanguageUpdateOneInput>;
+}
+
+export interface LanguageUpdateManyMutationInput {
+  languageCode?: Maybe<String>;
+  locale?: Maybe<String>;
+  textDirection?: Maybe<TextDirection>;
+  displayName?: Maybe<String>;
+  nativeName?: Maybe<String>;
+}
+
+export interface CountrySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CountryWhereInput>;
+  AND?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
+  OR?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
+  NOT?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
 }
 
 export interface DocumentFileUpdateManyInput {
@@ -7231,239 +7576,34 @@ export interface DocumentFileUpdateManyInput {
   >;
 }
 
-export interface ImageUseUpdateInput {
+export interface SupportFileUseUpdateInput {
   name?: Maybe<String>;
 }
 
-export interface SupportFileUseSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<SupportFileUseWhereInput>;
-  AND?: Maybe<
-    | SupportFileUseSubscriptionWhereInput[]
-    | SupportFileUseSubscriptionWhereInput
+export interface VideoStreamUpdateWithWhereUniqueNestedInput {
+  where: VideoStreamWhereUniqueInput;
+  data: VideoStreamUpdateDataInput;
+}
+
+export interface ThumbnailUpdateManyInput {
+  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
+  update?: Maybe<
+    | ThumbnailUpdateWithWhereUniqueNestedInput[]
+    | ThumbnailUpdateWithWhereUniqueNestedInput
   >;
-  OR?: Maybe<
-    | SupportFileUseSubscriptionWhereInput[]
-    | SupportFileUseSubscriptionWhereInput
+  upsert?: Maybe<
+    | ThumbnailUpsertWithWhereUniqueNestedInput[]
+    | ThumbnailUpsertWithWhereUniqueNestedInput
   >;
-  NOT?: Maybe<
-    | SupportFileUseSubscriptionWhereInput[]
-    | SupportFileUseSubscriptionWhereInput
+  delete?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+  set?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+  disconnect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+  deleteMany?: Maybe<ThumbnailScalarWhereInput[] | ThumbnailScalarWhereInput>;
+  updateMany?: Maybe<
+    | ThumbnailUpdateManyWithWhereNestedInput[]
+    | ThumbnailUpdateManyWithWhereNestedInput
   >;
-}
-
-export interface ImageUseUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface TeamWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  organization?: Maybe<String>;
-  organization_not?: Maybe<String>;
-  organization_in?: Maybe<String[] | String>;
-  organization_not_in?: Maybe<String[] | String>;
-  organization_lt?: Maybe<String>;
-  organization_lte?: Maybe<String>;
-  organization_gt?: Maybe<String>;
-  organization_gte?: Maybe<String>;
-  organization_contains?: Maybe<String>;
-  organization_not_contains?: Maybe<String>;
-  organization_starts_with?: Maybe<String>;
-  organization_not_starts_with?: Maybe<String>;
-  organization_ends_with?: Maybe<String>;
-  organization_not_ends_with?: Maybe<String>;
-  members_every?: Maybe<UserWhereInput>;
-  members_some?: Maybe<UserWhereInput>;
-  members_none?: Maybe<UserWhereInput>;
-  isConfirmed?: Maybe<Boolean>;
-  isConfirmed_not?: Maybe<Boolean>;
-  AND?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-  OR?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-  NOT?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-}
-
-export interface LanguageUpdateInput {
-  languageCode?: Maybe<String>;
-  locale?: Maybe<String>;
-  textDirection?: Maybe<TextDirection>;
-  displayName?: Maybe<String>;
-  nativeName?: Maybe<String>;
-}
-
-export type LanguageTranslationWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface LanguageUpdateManyMutationInput {
-  languageCode?: Maybe<String>;
-  locale?: Maybe<String>;
-  textDirection?: Maybe<TextDirection>;
-  displayName?: Maybe<String>;
-  nativeName?: Maybe<String>;
-}
-
-export interface VideoFileUpdateInput {
-  language?: Maybe<LanguageUpdateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<VideoUseUpdateOneInput>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-  dimensions?: Maybe<DimensionsUpdateOneInput>;
-  stream?: Maybe<VideoStreamUpdateManyInput>;
-}
-
-export interface LanguageTranslationUpdateInput {
-  name?: Maybe<String>;
-  language?: Maybe<LanguageUpdateOneInput>;
-}
-
-export interface VideoUseWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
-  OR?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
-  NOT?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
-}
-
-export interface LanguageTranslationUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface BureauUpdateInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  offices?: Maybe<OfficeUpdateManyWithoutBureauInput>;
-}
-
-export interface OfficeUpdateInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  bureau?: Maybe<BureauUpdateOneWithoutOfficesInput>;
-}
-
-export interface BureauCreateWithoutOfficesInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-}
-
-export interface BureauCreateOneWithoutOfficesInput {
-  create?: Maybe<BureauCreateWithoutOfficesInput>;
-  connect?: Maybe<BureauWhereUniqueInput>;
-}
-
-export interface OfficeCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-  bureau?: Maybe<BureauCreateOneWithoutOfficesInput>;
-}
-
-export interface GraphicStyleSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<GraphicStyleWhereInput>;
-  AND?: Maybe<
-    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
-  >;
-}
-
-export interface DocumentFileUpdateManyDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  status?: Maybe<PublishStatus>;
-  excerpt?: Maybe<String>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface ImageFileCreateOneInput {
-  create?: Maybe<ImageFileCreateInput>;
-  connect?: Maybe<ImageFileWhereUniqueInput>;
-}
-
-export type RegionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ThumbnailUpdateManyDataInput {
-  size?: Maybe<ThumbnailSize>;
 }
 
 export interface NodeNode {
@@ -7489,99 +7629,112 @@ export interface VideoUsePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCategory {
-  count: Int;
-}
-
-export interface AggregateCategoryPromise
-  extends Promise<AggregateCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCategorySubscription
-  extends Promise<AsyncIterator<AggregateCategory>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateDimensions {
-  count: Int;
-}
-
-export interface AggregateDimensionsPromise
-  extends Promise<AggregateDimensions>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDimensionsSubscription
-  extends Promise<AsyncIterator<AggregateDimensions>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Team {
+export interface User {
   id: ID_Output;
-  name: String;
-  organization: String;
-  contentTypes: ContentType[];
+  firstName: String;
+  lastName: String;
+  email: String;
+  password?: String;
+  tempToken?: String;
+  tempTokenExpiry?: Float;
+  jobTitle?: String;
+  country?: String;
+  city?: String;
+  howHeard?: String;
+  permissions: Permission[];
   isConfirmed: Boolean;
 }
 
-export interface TeamPromise extends Promise<Team>, Fragmentable {
+export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  organization: () => Promise<String>;
-  members: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  contentTypes: () => Promise<ContentType[]>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  tempToken: () => Promise<String>;
+  tempTokenExpiry: () => Promise<Float>;
+  jobTitle: () => Promise<String>;
+  country: () => Promise<String>;
+  city: () => Promise<String>;
+  howHeard: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  team: <T = TeamPromise>() => T;
   isConfirmed: () => Promise<Boolean>;
 }
 
-export interface TeamSubscription
-  extends Promise<AsyncIterator<Team>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  organization: () => Promise<AsyncIterator<String>>;
-  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  contentTypes: () => Promise<AsyncIterator<ContentType[]>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  tempToken: () => Promise<AsyncIterator<String>>;
+  tempTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  jobTitle: () => Promise<AsyncIterator<String>>;
+  country: () => Promise<AsyncIterator<String>>;
+  city: () => Promise<AsyncIterator<String>>;
+  howHeard: () => Promise<AsyncIterator<String>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  team: <T = TeamSubscription>() => T;
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface TeamNullablePromise
-  extends Promise<Team | null>,
+export interface UserNullablePromise
+  extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  organization: () => Promise<String>;
-  members: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  contentTypes: () => Promise<ContentType[]>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  tempToken: () => Promise<String>;
+  tempTokenExpiry: () => Promise<Float>;
+  jobTitle: () => Promise<String>;
+  country: () => Promise<String>;
+  city: () => Promise<String>;
+  howHeard: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  team: <T = TeamPromise>() => T;
   isConfirmed: () => Promise<Boolean>;
+}
+
+export interface AggregateCountry {
+  count: Int;
+}
+
+export interface AggregateCountryPromise
+  extends Promise<AggregateCountry>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCountrySubscription
+  extends Promise<AsyncIterator<AggregateCountry>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ContentFieldConnection {
+  pageInfo: PageInfo;
+  edges: ContentFieldEdge[];
+}
+
+export interface ContentFieldConnectionPromise
+  extends Promise<ContentFieldConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ContentFieldEdge>>() => T;
+  aggregate: <T = AggregateContentFieldPromise>() => T;
+}
+
+export interface ContentFieldConnectionSubscription
+  extends Promise<AsyncIterator<ContentFieldConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ContentFieldEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateContentFieldSubscription>() => T;
 }
 
 export interface BatchPayload {
@@ -7600,35 +7753,186 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface Country {
+export interface GraphicProject {
   id: ID_Output;
-  name: String;
-  abbr: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  type: ProjectType;
+  title: String;
+  copyright?: Copyright;
+  alt?: String;
+  assetPath?: String;
+  status?: PublishStatus;
+  visibility?: Visibility;
 }
 
-export interface CountryPromise extends Promise<Country>, Fragmentable {
+export interface GraphicProjectPromise
+  extends Promise<GraphicProject>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  region: <T = RegionPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<ProjectType>;
+  title: () => Promise<String>;
+  copyright: () => Promise<Copyright>;
+  alt: () => Promise<String>;
+  descPublic: <T = ContentFieldPromise>() => T;
+  descInternal: <T = ContentFieldPromise>() => T;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  images: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface CountrySubscription
-  extends Promise<AsyncIterator<Country>>,
+export interface GraphicProjectSubscription
+  extends Promise<AsyncIterator<GraphicProject>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-  region: <T = RegionSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<ProjectType>>;
+  title: () => Promise<AsyncIterator<String>>;
+  copyright: () => Promise<AsyncIterator<Copyright>>;
+  alt: () => Promise<AsyncIterator<String>>;
+  descPublic: <T = ContentFieldSubscription>() => T;
+  descInternal: <T = ContentFieldSubscription>() => T;
+  assetPath: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+  status: () => Promise<AsyncIterator<PublishStatus>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  images: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface CountryNullablePromise
-  extends Promise<Country | null>,
+export interface GraphicProjectNullablePromise
+  extends Promise<GraphicProject | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  region: <T = RegionPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<ProjectType>;
+  title: () => Promise<String>;
+  copyright: () => Promise<Copyright>;
+  alt: () => Promise<String>;
+  descPublic: <T = ContentFieldPromise>() => T;
+  descInternal: <T = ContentFieldPromise>() => T;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  images: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface VideoUseEdge {
@@ -7719,75 +8023,20 @@ export interface AggregateVideoUseSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface User {
-  id: ID_Output;
-  firstName: String;
-  lastName: String;
-  email: String;
-  password?: String;
-  tempToken?: String;
-  tempTokenExpiry?: Float;
-  jobTitle?: String;
-  country?: String;
-  city?: String;
-  howHeard?: String;
-  permissions: Permission[];
-  isConfirmed: Boolean;
+export interface AggregateDocumentUse {
+  count: Int;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  tempToken: () => Promise<String>;
-  tempTokenExpiry: () => Promise<Float>;
-  jobTitle: () => Promise<String>;
-  country: () => Promise<String>;
-  city: () => Promise<String>;
-  howHeard: () => Promise<String>;
-  permissions: () => Promise<Permission[]>;
-  team: <T = TeamPromise>() => T;
-  isConfirmed: () => Promise<Boolean>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface AggregateDocumentUsePromise
+  extends Promise<AggregateDocumentUse>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  tempToken: () => Promise<AsyncIterator<String>>;
-  tempTokenExpiry: () => Promise<AsyncIterator<Float>>;
-  jobTitle: () => Promise<AsyncIterator<String>>;
-  country: () => Promise<AsyncIterator<String>>;
-  city: () => Promise<AsyncIterator<String>>;
-  howHeard: () => Promise<AsyncIterator<String>>;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
-  team: <T = TeamSubscription>() => T;
-  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
+  count: () => Promise<Int>;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface AggregateDocumentUseSubscription
+  extends Promise<AsyncIterator<AggregateDocumentUse>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  tempToken: () => Promise<String>;
-  tempTokenExpiry: () => Promise<Float>;
-  jobTitle: () => Promise<String>;
-  country: () => Promise<String>;
-  city: () => Promise<String>;
-  howHeard: () => Promise<String>;
-  permissions: () => Promise<Permission[]>;
-  team: <T = TeamPromise>() => T;
-  isConfirmed: () => Promise<Boolean>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface VideoUseConnection {
@@ -8209,59 +8458,23 @@ export interface VideoProjectNullablePromise
   }) => T;
 }
 
-export interface Region {
-  id: ID_Output;
-  name: String;
-  abbr: String;
+export interface DocumentUseEdge {
+  node: DocumentUse;
+  cursor: String;
 }
 
-export interface RegionPromise extends Promise<Region>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  countries: <T = FragmentableArray<Country>>(args?: {
-    where?: CountryWhereInput;
-    orderBy?: CountryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface RegionSubscription
-  extends Promise<AsyncIterator<Region>>,
+export interface DocumentUseEdgePromise
+  extends Promise<DocumentUseEdge>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-  countries: <T = Promise<AsyncIterator<CountrySubscription>>>(args?: {
-    where?: CountryWhereInput;
-    orderBy?: CountryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  node: <T = DocumentUsePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface RegionNullablePromise
-  extends Promise<Region | null>,
+export interface DocumentUseEdgeSubscription
+  extends Promise<AsyncIterator<DocumentUseEdge>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  countries: <T = FragmentableArray<Country>>(args?: {
-    where?: CountryWhereInput;
-    orderBy?: CountryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  node: <T = DocumentUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface VideoFileEdge {
@@ -8380,188 +8593,25 @@ export interface OfficeNullablePromise
   bureau: <T = BureauPromise>() => T;
 }
 
-export interface GraphicProject {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  publishedAt?: DateTimeOutput;
-  type: ProjectType;
-  title: String;
-  copyright?: Copyright;
-  alt?: String;
-  descPublic?: String;
-  descInternal?: String;
-  assetPath?: String;
-  status?: PublishStatus;
-  visibility?: Visibility;
+export interface DocumentUseConnection {
+  pageInfo: PageInfo;
+  edges: DocumentUseEdge[];
 }
 
-export interface GraphicProjectPromise
-  extends Promise<GraphicProject>,
+export interface DocumentUseConnectionPromise
+  extends Promise<DocumentUseConnection>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  publishedAt: () => Promise<DateTimeOutput>;
-  type: () => Promise<ProjectType>;
-  title: () => Promise<String>;
-  copyright: () => Promise<Copyright>;
-  alt: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  descInternal: () => Promise<String>;
-  assetPath: () => Promise<String>;
-  author: <T = UserPromise>() => T;
-  team: <T = TeamPromise>() => T;
-  status: () => Promise<PublishStatus>;
-  visibility: () => Promise<Visibility>;
-  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
-    where?: SupportFileWhereInput;
-    orderBy?: SupportFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  images: <T = FragmentableArray<ImageFile>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DocumentUseEdge>>() => T;
+  aggregate: <T = AggregateDocumentUsePromise>() => T;
 }
 
-export interface GraphicProjectSubscription
-  extends Promise<AsyncIterator<GraphicProject>>,
+export interface DocumentUseConnectionSubscription
+  extends Promise<AsyncIterator<DocumentUseConnection>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  type: () => Promise<AsyncIterator<ProjectType>>;
-  title: () => Promise<AsyncIterator<String>>;
-  copyright: () => Promise<AsyncIterator<Copyright>>;
-  alt: () => Promise<AsyncIterator<String>>;
-  descPublic: () => Promise<AsyncIterator<String>>;
-  descInternal: () => Promise<AsyncIterator<String>>;
-  assetPath: () => Promise<AsyncIterator<String>>;
-  author: <T = UserSubscription>() => T;
-  team: <T = TeamSubscription>() => T;
-  status: () => Promise<AsyncIterator<PublishStatus>>;
-  visibility: () => Promise<AsyncIterator<Visibility>>;
-  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
-    where?: SupportFileWhereInput;
-    orderBy?: SupportFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  images: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface GraphicProjectNullablePromise
-  extends Promise<GraphicProject | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  publishedAt: () => Promise<DateTimeOutput>;
-  type: () => Promise<ProjectType>;
-  title: () => Promise<String>;
-  copyright: () => Promise<Copyright>;
-  alt: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  descInternal: () => Promise<String>;
-  assetPath: () => Promise<String>;
-  author: <T = UserPromise>() => T;
-  team: <T = TeamPromise>() => T;
-  status: () => Promise<PublishStatus>;
-  visibility: () => Promise<Visibility>;
-  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
-    where?: SupportFileWhereInput;
-    orderBy?: SupportFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  images: <T = FragmentableArray<ImageFile>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DocumentUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDocumentUseSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -8587,29 +8637,29 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CountrySubscriptionPayload {
+export interface ContentFieldSubscriptionPayload {
   mutation: MutationType;
-  node: Country;
+  node: ContentField;
   updatedFields: String[];
-  previousValues: CountryPreviousValues;
+  previousValues: ContentFieldPreviousValues;
 }
 
-export interface CountrySubscriptionPayloadPromise
-  extends Promise<CountrySubscriptionPayload>,
+export interface ContentFieldSubscriptionPayloadPromise
+  extends Promise<ContentFieldSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = CountryPromise>() => T;
+  node: <T = ContentFieldPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = CountryPreviousValuesPromise>() => T;
+  previousValues: <T = ContentFieldPreviousValuesPromise>() => T;
 }
 
-export interface CountrySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CountrySubscriptionPayload>>,
+export interface ContentFieldSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ContentFieldSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CountrySubscription>() => T;
+  node: <T = ContentFieldSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CountryPreviousValuesSubscription>() => T;
+  previousValues: <T = ContentFieldPreviousValuesSubscription>() => T;
 }
 
 export interface VideoFile {
@@ -8720,6 +8770,129 @@ export interface VideoFileNullablePromise
   }) => T;
 }
 
+export interface ContentFieldPreviousValues {
+  id: ID_Output;
+  type?: String;
+  visibility?: Visibility;
+  content?: String;
+}
+
+export interface ContentFieldPreviousValuesPromise
+  extends Promise<ContentFieldPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  content: () => Promise<String>;
+}
+
+export interface ContentFieldPreviousValuesSubscription
+  extends Promise<AsyncIterator<ContentFieldPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<String>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  content: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ContentFieldEdge {
+  node: ContentField;
+  cursor: String;
+}
+
+export interface ContentFieldEdgePromise
+  extends Promise<ContentFieldEdge>,
+    Fragmentable {
+  node: <T = ContentFieldPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ContentFieldEdgeSubscription
+  extends Promise<AsyncIterator<ContentFieldEdge>>,
+    Fragmentable {
+  node: <T = ContentFieldSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateThumbnail {
+  count: Int;
+}
+
+export interface AggregateThumbnailPromise
+  extends Promise<AggregateThumbnail>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateThumbnailSubscription
+  extends Promise<AsyncIterator<AggregateThumbnail>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CountrySubscriptionPayload {
+  mutation: MutationType;
+  node: Country;
+  updatedFields: String[];
+  previousValues: CountryPreviousValues;
+}
+
+export interface CountrySubscriptionPayloadPromise
+  extends Promise<CountrySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CountryPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CountryPreviousValuesPromise>() => T;
+}
+
+export interface CountrySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CountrySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CountrySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CountryPreviousValuesSubscription>() => T;
+}
+
+export interface ThumbnailConnection {
+  pageInfo: PageInfo;
+  edges: ThumbnailEdge[];
+}
+
+export interface ThumbnailConnectionPromise
+  extends Promise<ThumbnailConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ThumbnailEdge>>() => T;
+  aggregate: <T = AggregateThumbnailPromise>() => T;
+}
+
+export interface ThumbnailConnectionSubscription
+  extends Promise<AsyncIterator<ThumbnailConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ThumbnailEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateThumbnailSubscription>() => T;
+}
+
 export interface CountryPreviousValues {
   id: ID_Output;
   name: String;
@@ -8742,51 +8915,51 @@ export interface CountryPreviousValuesSubscription
   abbr: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserEdge {
-  node: User;
+export interface BureauEdge {
+  node: Bureau;
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
+export interface BureauEdgePromise extends Promise<BureauEdge>, Fragmentable {
+  node: <T = BureauPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface BureauEdgeSubscription
+  extends Promise<AsyncIterator<BureauEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = BureauSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateDocumentUse {
+export interface AggregateDocumentFile {
   count: Int;
 }
 
-export interface AggregateDocumentUsePromise
-  extends Promise<AggregateDocumentUse>,
+export interface AggregateDocumentFilePromise
+  extends Promise<AggregateDocumentFile>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateDocumentUseSubscription
-  extends Promise<AsyncIterator<AggregateDocumentUse>>,
+export interface AggregateDocumentFileSubscription
+  extends Promise<AsyncIterator<AggregateDocumentFile>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface AggregateThumbnail {
+export interface AggregateTeam {
   count: Int;
 }
 
-export interface AggregateThumbnailPromise
-  extends Promise<AggregateThumbnail>,
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateThumbnailSubscription
-  extends Promise<AsyncIterator<AggregateThumbnail>>,
+export interface AggregateTeamSubscription
+  extends Promise<AsyncIterator<AggregateTeam>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -8816,25 +8989,25 @@ export interface DimensionsSubscriptionPayloadSubscription
   previousValues: <T = DimensionsPreviousValuesSubscription>() => T;
 }
 
-export interface ThumbnailConnection {
+export interface TeamConnection {
   pageInfo: PageInfo;
-  edges: ThumbnailEdge[];
+  edges: TeamEdge[];
 }
 
-export interface ThumbnailConnectionPromise
-  extends Promise<ThumbnailConnection>,
+export interface TeamConnectionPromise
+  extends Promise<TeamConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ThumbnailEdge>>() => T;
-  aggregate: <T = AggregateThumbnailPromise>() => T;
+  edges: <T = FragmentableArray<TeamEdge>>() => T;
+  aggregate: <T = AggregateTeamPromise>() => T;
 }
 
-export interface ThumbnailConnectionSubscription
-  extends Promise<AsyncIterator<ThumbnailConnection>>,
+export interface TeamConnectionSubscription
+  extends Promise<AsyncIterator<TeamConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ThumbnailEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateThumbnailSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTeamSubscription>() => T;
 }
 
 export interface DimensionsPreviousValues {
@@ -8859,56 +9032,60 @@ export interface DimensionsPreviousValuesSubscription
   height: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BureauEdge {
-  node: Bureau;
-  cursor: String;
-}
-
-export interface BureauEdgePromise extends Promise<BureauEdge>, Fragmentable {
-  node: <T = BureauPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface BureauEdgeSubscription
-  extends Promise<AsyncIterator<BureauEdge>>,
-    Fragmentable {
-  node: <T = BureauSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface DocumentUseEdge {
-  node: DocumentUse;
-  cursor: String;
-}
-
-export interface DocumentUseEdgePromise
-  extends Promise<DocumentUseEdge>,
-    Fragmentable {
-  node: <T = DocumentUsePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DocumentUseEdgeSubscription
-  extends Promise<AsyncIterator<DocumentUseEdge>>,
-    Fragmentable {
-  node: <T = DocumentUseSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateTeam {
+export interface AggregateTag {
   count: Int;
 }
 
-export interface AggregateTeamPromise
-  extends Promise<AggregateTeam>,
+export interface AggregateTagPromise
+  extends Promise<AggregateTag>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateTeamSubscription
-  extends Promise<AsyncIterator<AggregateTeam>>,
+export interface AggregateTagSubscription
+  extends Promise<AsyncIterator<AggregateTag>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DocumentFileEdge {
+  node: DocumentFile;
+  cursor: String;
+}
+
+export interface DocumentFileEdgePromise
+  extends Promise<DocumentFileEdge>,
+    Fragmentable {
+  node: <T = DocumentFilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DocumentFileEdgeSubscription
+  extends Promise<AsyncIterator<DocumentFileEdge>>,
+    Fragmentable {
+  node: <T = DocumentFileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagConnection {
+  pageInfo: PageInfo;
+  edges: TagEdge[];
+}
+
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTagPromise>() => T;
+}
+
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
 }
 
 export interface DocumentConversionFormatSubscriptionPayload {
@@ -8938,25 +9115,23 @@ export interface DocumentConversionFormatSubscriptionPayloadSubscription
   >() => T;
 }
 
-export interface TeamConnection {
-  pageInfo: PageInfo;
-  edges: TeamEdge[];
+export interface SupportFileUseEdge {
+  node: SupportFileUse;
+  cursor: String;
 }
 
-export interface TeamConnectionPromise
-  extends Promise<TeamConnection>,
+export interface SupportFileUseEdgePromise
+  extends Promise<SupportFileUseEdge>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TeamEdge>>() => T;
-  aggregate: <T = AggregateTeamPromise>() => T;
+  node: <T = SupportFileUsePromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface TeamConnectionSubscription
-  extends Promise<AsyncIterator<TeamConnection>>,
+export interface SupportFileUseEdgeSubscription
+  extends Promise<AsyncIterator<SupportFileUseEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTeamSubscription>() => T;
+  node: <T = SupportFileUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface DocumentConversionFormatPreviousValues {
@@ -8984,62 +9159,62 @@ export interface DocumentConversionFormatPreviousValuesSubscription
   markdown: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateTag {
+export interface AggregateSupportFile {
   count: Int;
 }
 
-export interface AggregateTagPromise
-  extends Promise<AggregateTag>,
+export interface AggregateSupportFilePromise
+  extends Promise<AggregateSupportFile>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateTagSubscription
-  extends Promise<AsyncIterator<AggregateTag>>,
+export interface AggregateSupportFileSubscription
+  extends Promise<AsyncIterator<AggregateSupportFile>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface DocumentUseConnection {
+export interface DocumentFileConnection {
   pageInfo: PageInfo;
-  edges: DocumentUseEdge[];
+  edges: DocumentFileEdge[];
 }
 
-export interface DocumentUseConnectionPromise
-  extends Promise<DocumentUseConnection>,
+export interface DocumentFileConnectionPromise
+  extends Promise<DocumentFileConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DocumentUseEdge>>() => T;
-  aggregate: <T = AggregateDocumentUsePromise>() => T;
+  edges: <T = FragmentableArray<DocumentFileEdge>>() => T;
+  aggregate: <T = AggregateDocumentFilePromise>() => T;
 }
 
-export interface DocumentUseConnectionSubscription
-  extends Promise<AsyncIterator<DocumentUseConnection>>,
+export interface DocumentFileConnectionSubscription
+  extends Promise<AsyncIterator<DocumentFileConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DocumentUseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDocumentUseSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DocumentFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDocumentFileSubscription>() => T;
 }
 
-export interface TagConnection {
+export interface SupportFileConnection {
   pageInfo: PageInfo;
-  edges: TagEdge[];
+  edges: SupportFileEdge[];
 }
 
-export interface TagConnectionPromise
-  extends Promise<TagConnection>,
+export interface SupportFileConnectionPromise
+  extends Promise<SupportFileConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TagEdge>>() => T;
-  aggregate: <T = AggregateTagPromise>() => T;
+  edges: <T = FragmentableArray<SupportFileEdge>>() => T;
+  aggregate: <T = AggregateSupportFilePromise>() => T;
 }
 
-export interface TagConnectionSubscription
-  extends Promise<AsyncIterator<TagConnection>>,
+export interface SupportFileConnectionSubscription
+  extends Promise<AsyncIterator<SupportFileConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTagSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SupportFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSupportFileSubscription>() => T;
 }
 
 export interface DocumentFileSubscriptionPayload {
@@ -9067,22 +9242,22 @@ export interface DocumentFileSubscriptionPayloadSubscription
   previousValues: <T = DocumentFilePreviousValuesSubscription>() => T;
 }
 
-export interface SupportFileUseEdge {
-  node: SupportFileUse;
+export interface SocialPlatformEdge {
+  node: SocialPlatform;
   cursor: String;
 }
 
-export interface SupportFileUseEdgePromise
-  extends Promise<SupportFileUseEdge>,
+export interface SocialPlatformEdgePromise
+  extends Promise<SocialPlatformEdge>,
     Fragmentable {
-  node: <T = SupportFileUsePromise>() => T;
+  node: <T = SocialPlatformPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface SupportFileUseEdgeSubscription
-  extends Promise<AsyncIterator<SupportFileUseEdge>>,
+export interface SocialPlatformEdgeSubscription
+  extends Promise<AsyncIterator<SocialPlatformEdge>>,
     Fragmentable {
-  node: <T = SupportFileUseSubscription>() => T;
+  node: <T = SocialPlatformSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -9138,57 +9313,57 @@ export interface DocumentFilePreviousValuesSubscription
   visibility: () => Promise<AsyncIterator<Visibility>>;
 }
 
-export interface AggregateSupportFile {
+export interface AggregateRegion {
   count: Int;
 }
 
-export interface AggregateSupportFilePromise
-  extends Promise<AggregateSupportFile>,
+export interface AggregateRegionPromise
+  extends Promise<AggregateRegion>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateSupportFileSubscription
-  extends Promise<AsyncIterator<AggregateSupportFile>>,
+export interface AggregateRegionSubscription
+  extends Promise<AsyncIterator<AggregateRegion>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface AggregateDocumentFile {
+export interface AggregateContentField {
   count: Int;
 }
 
-export interface AggregateDocumentFilePromise
-  extends Promise<AggregateDocumentFile>,
+export interface AggregateContentFieldPromise
+  extends Promise<AggregateContentField>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateDocumentFileSubscription
-  extends Promise<AsyncIterator<AggregateDocumentFile>>,
+export interface AggregateContentFieldSubscription
+  extends Promise<AsyncIterator<AggregateContentField>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface SupportFileConnection {
+export interface RegionConnection {
   pageInfo: PageInfo;
-  edges: SupportFileEdge[];
+  edges: RegionEdge[];
 }
 
-export interface SupportFileConnectionPromise
-  extends Promise<SupportFileConnection>,
+export interface RegionConnectionPromise
+  extends Promise<RegionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SupportFileEdge>>() => T;
-  aggregate: <T = AggregateSupportFilePromise>() => T;
+  edges: <T = FragmentableArray<RegionEdge>>() => T;
+  aggregate: <T = AggregateRegionPromise>() => T;
 }
 
-export interface SupportFileConnectionSubscription
-  extends Promise<AsyncIterator<SupportFileConnection>>,
+export interface RegionConnectionSubscription
+  extends Promise<AsyncIterator<RegionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SupportFileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSupportFileSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RegionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRegionSubscription>() => T;
 }
 
 export interface DocumentUseSubscriptionPayload {
@@ -9216,23 +9391,20 @@ export interface DocumentUseSubscriptionPayloadSubscription
   previousValues: <T = DocumentUsePreviousValuesSubscription>() => T;
 }
 
-export interface SocialPlatformEdge {
-  node: SocialPlatform;
-  cursor: String;
+export interface AggregatePackage {
+  count: Int;
 }
 
-export interface SocialPlatformEdgePromise
-  extends Promise<SocialPlatformEdge>,
+export interface AggregatePackagePromise
+  extends Promise<AggregatePackage>,
     Fragmentable {
-  node: <T = SocialPlatformPromise>() => T;
-  cursor: () => Promise<String>;
+  count: () => Promise<Int>;
 }
 
-export interface SocialPlatformEdgeSubscription
-  extends Promise<AsyncIterator<SocialPlatformEdge>>,
+export interface AggregatePackageSubscription
+  extends Promise<AsyncIterator<AggregatePackage>>,
     Fragmentable {
-  node: <T = SocialPlatformSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface DocumentUsePreviousValues {
@@ -9254,60 +9426,88 @@ export interface DocumentUsePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateRegion {
+export interface PackageConnection {
+  pageInfo: PageInfo;
+  edges: PackageEdge[];
+}
+
+export interface PackageConnectionPromise
+  extends Promise<PackageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PackageEdge>>() => T;
+  aggregate: <T = AggregatePackagePromise>() => T;
+}
+
+export interface PackageConnectionSubscription
+  extends Promise<AsyncIterator<PackageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PackageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePackageSubscription>() => T;
+}
+
+export interface Tag {
+  id: ID_Output;
+}
+
+export interface TagPromise extends Promise<Tag>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  translations: <
+    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
+  >(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface TagNullablePromise extends Promise<Tag | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface AggregateOffice {
   count: Int;
 }
 
-export interface AggregateRegionPromise
-  extends Promise<AggregateRegion>,
+export interface AggregateOfficePromise
+  extends Promise<AggregateOffice>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateRegionSubscription
-  extends Promise<AsyncIterator<AggregateRegion>>,
+export interface AggregateOfficeSubscription
+  extends Promise<AsyncIterator<AggregateOffice>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DocumentFileEdge {
-  node: DocumentFile;
-  cursor: String;
-}
-
-export interface DocumentFileEdgePromise
-  extends Promise<DocumentFileEdge>,
-    Fragmentable {
-  node: <T = DocumentFilePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DocumentFileEdgeSubscription
-  extends Promise<AsyncIterator<DocumentFileEdge>>,
-    Fragmentable {
-  node: <T = DocumentFileSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface RegionConnection {
-  pageInfo: PageInfo;
-  edges: RegionEdge[];
-}
-
-export interface RegionConnectionPromise
-  extends Promise<RegionConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RegionEdge>>() => T;
-  aggregate: <T = AggregateRegionPromise>() => T;
-}
-
-export interface RegionConnectionSubscription
-  extends Promise<AsyncIterator<RegionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RegionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRegionSubscription>() => T;
 }
 
 export interface GraphicProjectSubscriptionPayload {
@@ -9335,20 +9535,25 @@ export interface GraphicProjectSubscriptionPayloadSubscription
   previousValues: <T = GraphicProjectPreviousValuesSubscription>() => T;
 }
 
-export interface AggregatePackage {
-  count: Int;
+export interface OfficeConnection {
+  pageInfo: PageInfo;
+  edges: OfficeEdge[];
 }
 
-export interface AggregatePackagePromise
-  extends Promise<AggregatePackage>,
+export interface OfficeConnectionPromise
+  extends Promise<OfficeConnection>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<OfficeEdge>>() => T;
+  aggregate: <T = AggregateOfficePromise>() => T;
 }
 
-export interface AggregatePackageSubscription
-  extends Promise<AsyncIterator<AggregatePackage>>,
+export interface OfficeConnectionSubscription
+  extends Promise<AsyncIterator<OfficeConnection>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OfficeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOfficeSubscription>() => T;
 }
 
 export interface GraphicProjectPreviousValues {
@@ -9360,8 +9565,6 @@ export interface GraphicProjectPreviousValues {
   title: String;
   copyright?: Copyright;
   alt?: String;
-  descPublic?: String;
-  descInternal?: String;
   assetPath?: String;
   status?: PublishStatus;
   visibility?: Visibility;
@@ -9378,8 +9581,6 @@ export interface GraphicProjectPreviousValuesPromise
   title: () => Promise<String>;
   copyright: () => Promise<Copyright>;
   alt: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  descInternal: () => Promise<String>;
   assetPath: () => Promise<String>;
   status: () => Promise<PublishStatus>;
   visibility: () => Promise<Visibility>;
@@ -9396,67 +9597,66 @@ export interface GraphicProjectPreviousValuesSubscription
   title: () => Promise<AsyncIterator<String>>;
   copyright: () => Promise<AsyncIterator<Copyright>>;
   alt: () => Promise<AsyncIterator<String>>;
-  descPublic: () => Promise<AsyncIterator<String>>;
-  descInternal: () => Promise<AsyncIterator<String>>;
   assetPath: () => Promise<AsyncIterator<String>>;
   status: () => Promise<AsyncIterator<PublishStatus>>;
   visibility: () => Promise<AsyncIterator<Visibility>>;
 }
 
-export interface PackageConnection {
-  pageInfo: PageInfo;
-  edges: PackageEdge[];
+export interface LanguageTranslationEdge {
+  node: LanguageTranslation;
+  cursor: String;
 }
 
-export interface PackageConnectionPromise
-  extends Promise<PackageConnection>,
+export interface LanguageTranslationEdgePromise
+  extends Promise<LanguageTranslationEdge>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PackageEdge>>() => T;
-  aggregate: <T = AggregatePackagePromise>() => T;
+  node: <T = LanguageTranslationPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface PackageConnectionSubscription
-  extends Promise<AsyncIterator<PackageConnection>>,
+export interface LanguageTranslationEdgeSubscription
+  extends Promise<AsyncIterator<LanguageTranslationEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PackageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePackageSubscription>() => T;
+  node: <T = LanguageTranslationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface DocumentFileConnection {
-  pageInfo: PageInfo;
-  edges: DocumentFileEdge[];
+export interface DocumentUse {
+  id: ID_Output;
+  name: String;
 }
 
-export interface DocumentFileConnectionPromise
-  extends Promise<DocumentFileConnection>,
+export interface DocumentUsePromise extends Promise<DocumentUse>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface DocumentUseSubscription
+  extends Promise<AsyncIterator<DocumentUse>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DocumentFileEdge>>() => T;
-  aggregate: <T = AggregateDocumentFilePromise>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface DocumentFileConnectionSubscription
-  extends Promise<AsyncIterator<DocumentFileConnection>>,
+export interface DocumentUseNullablePromise
+  extends Promise<DocumentUse | null>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DocumentFileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDocumentFileSubscription>() => T;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
-export interface AggregateOffice {
+export interface AggregateLanguage {
   count: Int;
 }
 
-export interface AggregateOfficePromise
-  extends Promise<AggregateOffice>,
+export interface AggregateLanguagePromise
+  extends Promise<AggregateLanguage>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateOfficeSubscription
-  extends Promise<AsyncIterator<AggregateOffice>>,
+export interface AggregateLanguageSubscription
+  extends Promise<AsyncIterator<AggregateLanguage>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -9486,25 +9686,25 @@ export interface GraphicStyleSubscriptionPayloadSubscription
   previousValues: <T = GraphicStylePreviousValuesSubscription>() => T;
 }
 
-export interface OfficeConnection {
+export interface LanguageConnection {
   pageInfo: PageInfo;
-  edges: OfficeEdge[];
+  edges: LanguageEdge[];
 }
 
-export interface OfficeConnectionPromise
-  extends Promise<OfficeConnection>,
+export interface LanguageConnectionPromise
+  extends Promise<LanguageConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<OfficeEdge>>() => T;
-  aggregate: <T = AggregateOfficePromise>() => T;
+  edges: <T = FragmentableArray<LanguageEdge>>() => T;
+  aggregate: <T = AggregateLanguagePromise>() => T;
 }
 
-export interface OfficeConnectionSubscription
-  extends Promise<AsyncIterator<OfficeConnection>>,
+export interface LanguageConnectionSubscription
+  extends Promise<AsyncIterator<LanguageConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<OfficeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateOfficeSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLanguageSubscription>() => T;
 }
 
 export interface GraphicStylePreviousValues {
@@ -9526,60 +9726,67 @@ export interface GraphicStylePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface LanguageTranslationEdge {
-  node: LanguageTranslation;
-  cursor: String;
-}
-
-export interface LanguageTranslationEdgePromise
-  extends Promise<LanguageTranslationEdge>,
-    Fragmentable {
-  node: <T = LanguageTranslationPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface LanguageTranslationEdgeSubscription
-  extends Promise<AsyncIterator<LanguageTranslationEdge>>,
-    Fragmentable {
-  node: <T = LanguageTranslationSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CountryConnection {
-  pageInfo: PageInfo;
-  edges: CountryEdge[];
-}
-
-export interface CountryConnectionPromise
-  extends Promise<CountryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CountryEdge>>() => T;
-  aggregate: <T = AggregateCountryPromise>() => T;
-}
-
-export interface CountryConnectionSubscription
-  extends Promise<AsyncIterator<CountryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CountryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCountrySubscription>() => T;
-}
-
-export interface AggregateLanguage {
+export interface AggregateImageUse {
   count: Int;
 }
 
-export interface AggregateLanguagePromise
-  extends Promise<AggregateLanguage>,
+export interface AggregateImageUsePromise
+  extends Promise<AggregateImageUse>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateLanguageSubscription
-  extends Promise<AsyncIterator<AggregateLanguage>>,
+export interface AggregateImageUseSubscription
+  extends Promise<AsyncIterator<AggregateImageUse>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SocialPlatform {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SocialPlatformPromise
+  extends Promise<SocialPlatform>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SocialPlatformSubscription
+  extends Promise<AsyncIterator<SocialPlatform>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SocialPlatformNullablePromise
+  extends Promise<SocialPlatform | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface ImageUseConnection {
+  pageInfo: PageInfo;
+  edges: ImageUseEdge[];
+}
+
+export interface ImageUseConnectionPromise
+  extends Promise<ImageUseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ImageUseEdge>>() => T;
+  aggregate: <T = AggregateImageUsePromise>() => T;
+}
+
+export interface ImageUseConnectionSubscription
+  extends Promise<AsyncIterator<ImageUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ImageUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateImageUseSubscription>() => T;
 }
 
 export interface ImageFileSubscriptionPayload {
@@ -9607,25 +9814,20 @@ export interface ImageFileSubscriptionPayloadSubscription
   previousValues: <T = ImageFilePreviousValuesSubscription>() => T;
 }
 
-export interface LanguageConnection {
-  pageInfo: PageInfo;
-  edges: LanguageEdge[];
+export interface AggregateImageFile {
+  count: Int;
 }
 
-export interface LanguageConnectionPromise
-  extends Promise<LanguageConnection>,
+export interface AggregateImageFilePromise
+  extends Promise<AggregateImageFile>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LanguageEdge>>() => T;
-  aggregate: <T = AggregateLanguagePromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface LanguageConnectionSubscription
-  extends Promise<AsyncIterator<LanguageConnection>>,
+export interface AggregateImageFileSubscription
+  extends Promise<AsyncIterator<AggregateImageFile>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateLanguageSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface ImageFilePreviousValues {
@@ -9686,88 +9888,75 @@ export interface ImageFilePreviousValuesSubscription
   quality: () => Promise<AsyncIterator<ImageQuality>>;
 }
 
-export interface AggregateImageUse {
-  count: Int;
-}
-
-export interface AggregateImageUsePromise
-  extends Promise<AggregateImageUse>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateImageUseSubscription
-  extends Promise<AsyncIterator<AggregateImageUse>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Tag {
-  id: ID_Output;
-}
-
-export interface TagPromise extends Promise<Tag>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface TagSubscription
-  extends Promise<AsyncIterator<Tag>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  translations: <
-    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
-  >(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface TagNullablePromise extends Promise<Tag | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ImageUseConnection {
+export interface ImageFileConnection {
   pageInfo: PageInfo;
-  edges: ImageUseEdge[];
+  edges: ImageFileEdge[];
 }
 
-export interface ImageUseConnectionPromise
-  extends Promise<ImageUseConnection>,
+export interface ImageFileConnectionPromise
+  extends Promise<ImageFileConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ImageUseEdge>>() => T;
-  aggregate: <T = AggregateImageUsePromise>() => T;
+  edges: <T = FragmentableArray<ImageFileEdge>>() => T;
+  aggregate: <T = AggregateImageFilePromise>() => T;
 }
 
-export interface ImageUseConnectionSubscription
-  extends Promise<AsyncIterator<ImageUseConnection>>,
+export interface ImageFileConnectionSubscription
+  extends Promise<AsyncIterator<ImageFileConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ImageUseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateImageUseSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ImageFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateImageFileSubscription>() => T;
+}
+
+export interface Country {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface CountryPromise extends Promise<Country>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  region: <T = RegionPromise>() => T;
+}
+
+export interface CountrySubscription
+  extends Promise<AsyncIterator<Country>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  region: <T = RegionSubscription>() => T;
+}
+
+export interface CountryNullablePromise
+  extends Promise<Country | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  region: <T = RegionPromise>() => T;
+}
+
+export interface GraphicStyleEdge {
+  node: GraphicStyle;
+  cursor: String;
+}
+
+export interface GraphicStyleEdgePromise
+  extends Promise<GraphicStyleEdge>,
+    Fragmentable {
+  node: <T = GraphicStylePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GraphicStyleEdgeSubscription
+  extends Promise<AsyncIterator<GraphicStyleEdge>>,
+    Fragmentable {
+  node: <T = GraphicStyleSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ImageUseSubscriptionPayload {
@@ -9795,18 +9984,18 @@ export interface ImageUseSubscriptionPayloadSubscription
   previousValues: <T = ImageUsePreviousValuesSubscription>() => T;
 }
 
-export interface AggregateImageFile {
+export interface AggregateGraphicProject {
   count: Int;
 }
 
-export interface AggregateImageFilePromise
-  extends Promise<AggregateImageFile>,
+export interface AggregateGraphicProjectPromise
+  extends Promise<AggregateGraphicProject>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateImageFileSubscription
-  extends Promise<AsyncIterator<AggregateImageFile>>,
+export interface AggregateGraphicProjectSubscription
+  extends Promise<AsyncIterator<AggregateGraphicProject>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -9830,61 +10019,77 @@ export interface ImageUsePreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ImageFileConnection {
+export interface GraphicProjectConnection {
   pageInfo: PageInfo;
-  edges: ImageFileEdge[];
+  edges: GraphicProjectEdge[];
 }
 
-export interface ImageFileConnectionPromise
-  extends Promise<ImageFileConnection>,
+export interface GraphicProjectConnectionPromise
+  extends Promise<GraphicProjectConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ImageFileEdge>>() => T;
-  aggregate: <T = AggregateImageFilePromise>() => T;
+  edges: <T = FragmentableArray<GraphicProjectEdge>>() => T;
+  aggregate: <T = AggregateGraphicProjectPromise>() => T;
 }
 
-export interface ImageFileConnectionSubscription
-  extends Promise<AsyncIterator<ImageFileConnection>>,
+export interface GraphicProjectConnectionSubscription
+  extends Promise<AsyncIterator<GraphicProjectConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ImageFileEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateImageFileSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GraphicProjectEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGraphicProjectSubscription>() => T;
 }
 
-export interface CountryEdge {
-  node: Country;
-  cursor: String;
+export interface GraphicStyle {
+  id: ID_Output;
+  name: String;
 }
 
-export interface CountryEdgePromise extends Promise<CountryEdge>, Fragmentable {
-  node: <T = CountryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CountryEdgeSubscription
-  extends Promise<AsyncIterator<CountryEdge>>,
+export interface GraphicStylePromise
+  extends Promise<GraphicStyle>,
     Fragmentable {
-  node: <T = CountrySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
-export interface GraphicStyleEdge {
-  node: GraphicStyle;
-  cursor: String;
-}
-
-export interface GraphicStyleEdgePromise
-  extends Promise<GraphicStyleEdge>,
+export interface GraphicStyleSubscription
+  extends Promise<AsyncIterator<GraphicStyle>>,
     Fragmentable {
-  node: <T = GraphicStylePromise>() => T;
-  cursor: () => Promise<String>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface GraphicStyleEdgeSubscription
-  extends Promise<AsyncIterator<GraphicStyleEdge>>,
+export interface GraphicStyleNullablePromise
+  extends Promise<GraphicStyle | null>,
     Fragmentable {
-  node: <T = GraphicStyleSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SupportFileUse {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SupportFileUsePromise
+  extends Promise<SupportFileUse>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SupportFileUseSubscription
+  extends Promise<AsyncIterator<SupportFileUse>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SupportFileUseNullablePromise
+  extends Promise<SupportFileUse | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
 export interface LanguageSubscriptionPayload {
@@ -9912,20 +10117,23 @@ export interface LanguageSubscriptionPayloadSubscription
   previousValues: <T = LanguagePreviousValuesSubscription>() => T;
 }
 
-export interface AggregateGraphicProject {
-  count: Int;
+export interface CategoryEdge {
+  node: Category;
+  cursor: String;
 }
 
-export interface AggregateGraphicProjectPromise
-  extends Promise<AggregateGraphicProject>,
+export interface CategoryEdgePromise
+  extends Promise<CategoryEdge>,
     Fragmentable {
-  count: () => Promise<Int>;
+  node: <T = CategoryPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface AggregateGraphicProjectSubscription
-  extends Promise<AsyncIterator<AggregateGraphicProject>>,
+export interface CategoryEdgeSubscription
+  extends Promise<AsyncIterator<CategoryEdge>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = CategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface LanguagePreviousValues {
@@ -9959,75 +10167,110 @@ export interface LanguagePreviousValuesSubscription
   nativeName: () => Promise<AsyncIterator<String>>;
 }
 
-export interface GraphicProjectConnection {
-  pageInfo: PageInfo;
-  edges: GraphicProjectEdge[];
+export interface Team {
+  id: ID_Output;
+  name: String;
+  organization: String;
+  contentTypes: ContentType[];
+  isConfirmed: Boolean;
 }
 
-export interface GraphicProjectConnectionPromise
-  extends Promise<GraphicProjectConnection>,
+export interface TeamPromise extends Promise<Team>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  organization: () => Promise<String>;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  contentTypes: () => Promise<ContentType[]>;
+  isConfirmed: () => Promise<Boolean>;
+}
+
+export interface TeamSubscription
+  extends Promise<AsyncIterator<Team>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GraphicProjectEdge>>() => T;
-  aggregate: <T = AggregateGraphicProjectPromise>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  organization: () => Promise<AsyncIterator<String>>;
+  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  contentTypes: () => Promise<AsyncIterator<ContentType[]>>;
+  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface GraphicProjectConnectionSubscription
-  extends Promise<AsyncIterator<GraphicProjectConnection>>,
+export interface TeamNullablePromise
+  extends Promise<Team | null>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GraphicProjectEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGraphicProjectSubscription>() => T;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  organization: () => Promise<String>;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  contentTypes: () => Promise<ContentType[]>;
+  isConfirmed: () => Promise<Boolean>;
 }
 
-export interface DocumentUse {
+export interface ImageUse {
   id: ID_Output;
   name: String;
 }
 
-export interface DocumentUsePromise extends Promise<DocumentUse>, Fragmentable {
+export interface ImageUsePromise extends Promise<ImageUse>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface DocumentUseSubscription
-  extends Promise<AsyncIterator<DocumentUse>>,
+export interface ImageUseSubscription
+  extends Promise<AsyncIterator<ImageUse>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface DocumentUseNullablePromise
-  extends Promise<DocumentUse | null>,
+export interface ImageUseNullablePromise
+  extends Promise<ImageUse | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface SupportFileUse {
-  id: ID_Output;
-  name: String;
+export interface VideoUnitEdge {
+  node: VideoUnit;
+  cursor: String;
 }
 
-export interface SupportFileUsePromise
-  extends Promise<SupportFileUse>,
+export interface VideoUnitEdgePromise
+  extends Promise<VideoUnitEdge>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  node: <T = VideoUnitPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface SupportFileUseSubscription
-  extends Promise<AsyncIterator<SupportFileUse>>,
+export interface VideoUnitEdgeSubscription
+  extends Promise<AsyncIterator<VideoUnitEdge>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SupportFileUseNullablePromise
-  extends Promise<SupportFileUse | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  node: <T = VideoUnitSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface LanguageTranslationSubscriptionPayload {
@@ -10055,23 +10298,25 @@ export interface LanguageTranslationSubscriptionPayloadSubscription
   previousValues: <T = LanguageTranslationPreviousValuesSubscription>() => T;
 }
 
-export interface CategoryEdge {
-  node: Category;
-  cursor: String;
+export interface VideoStreamConnection {
+  pageInfo: PageInfo;
+  edges: VideoStreamEdge[];
 }
 
-export interface CategoryEdgePromise
-  extends Promise<CategoryEdge>,
+export interface VideoStreamConnectionPromise
+  extends Promise<VideoStreamConnection>,
     Fragmentable {
-  node: <T = CategoryPromise>() => T;
-  cursor: () => Promise<String>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VideoStreamEdge>>() => T;
+  aggregate: <T = AggregateVideoStreamPromise>() => T;
 }
 
-export interface CategoryEdgeSubscription
-  extends Promise<AsyncIterator<CategoryEdge>>,
+export interface VideoStreamConnectionSubscription
+  extends Promise<AsyncIterator<VideoStreamConnection>>,
     Fragmentable {
-  node: <T = CategorySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoStreamEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoStreamSubscription>() => T;
 }
 
 export interface LanguageTranslationPreviousValues {
@@ -10093,569 +10338,151 @@ export interface LanguageTranslationPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateVideoStream {
-  count: Int;
-}
-
-export interface AggregateVideoStreamPromise
-  extends Promise<AggregateVideoStream>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoStreamSubscription
-  extends Promise<AsyncIterator<AggregateVideoStream>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface SocialPlatform {
-  id: ID_Output;
-  name: String;
-}
-
-export interface SocialPlatformPromise
-  extends Promise<SocialPlatform>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface SocialPlatformSubscription
-  extends Promise<AsyncIterator<SocialPlatform>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SocialPlatformNullablePromise
-  extends Promise<SocialPlatform | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface VideoProjectEdge {
-  node: VideoProject;
-  cursor: String;
-}
-
-export interface VideoProjectEdgePromise
-  extends Promise<VideoProjectEdge>,
-    Fragmentable {
-  node: <T = VideoProjectPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface VideoProjectEdgeSubscription
-  extends Promise<AsyncIterator<VideoProjectEdge>>,
-    Fragmentable {
-  node: <T = VideoProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface OfficeSubscriptionPayload {
-  mutation: MutationType;
-  node: Office;
-  updatedFields: String[];
-  previousValues: OfficePreviousValues;
-}
-
-export interface OfficeSubscriptionPayloadPromise
-  extends Promise<OfficeSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = OfficePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = OfficePreviousValuesPromise>() => T;
-}
-
-export interface OfficeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<OfficeSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = OfficeSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = OfficePreviousValuesSubscription>() => T;
-}
-
-export interface AggregateVideoFile {
-  count: Int;
-}
-
-export interface AggregateVideoFilePromise
-  extends Promise<AggregateVideoFile>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateVideoFileSubscription
-  extends Promise<AsyncIterator<AggregateVideoFile>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface OfficePreviousValues {
-  id: ID_Output;
-  name: String;
-  abbr: String;
-}
-
-export interface OfficePreviousValuesPromise
-  extends Promise<OfficePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-}
-
-export interface OfficePreviousValuesSubscription
-  extends Promise<AsyncIterator<OfficePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoStream {
-  id: ID_Output;
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
-}
-
-export interface VideoStreamSubscription
-  extends Promise<AsyncIterator<VideoStream>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  site: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  embedUrl: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoStreamNullablePromise
-  extends Promise<VideoStream | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
-}
-
-export interface AggregateCountry {
-  count: Int;
-}
-
-export interface AggregateCountryPromise
-  extends Promise<AggregateCountry>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCountrySubscription
-  extends Promise<AsyncIterator<AggregateCountry>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface VideoUse {
-  id: ID_Output;
-  name: String;
-}
-
-export interface VideoUsePromise extends Promise<VideoUse>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface VideoUseSubscription
-  extends Promise<AsyncIterator<VideoUse>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoUseNullablePromise
-  extends Promise<VideoUse | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface PackageSubscriptionPayload {
-  mutation: MutationType;
-  node: Package;
-  updatedFields: String[];
-  previousValues: PackagePreviousValues;
-}
-
-export interface PackageSubscriptionPayloadPromise
-  extends Promise<PackageSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PackagePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PackagePreviousValuesPromise>() => T;
-}
-
-export interface PackageSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PackageSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PackageSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PackagePreviousValuesSubscription>() => T;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface PackagePreviousValues {
+export interface VideoUnit {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  publishedAt?: DateTimeOutput;
-  type: PackageType;
   title: String;
-  assetPath?: String;
-  desc?: String;
-  status?: PublishStatus;
-  visibility?: Visibility;
+  descPublic?: String;
 }
 
-export interface PackagePreviousValuesPromise
-  extends Promise<PackagePreviousValues>,
-    Fragmentable {
+export interface VideoUnitPromise extends Promise<VideoUnit>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  publishedAt: () => Promise<DateTimeOutput>;
-  type: () => Promise<PackageType>;
+  language: <T = LanguagePromise>() => T;
   title: () => Promise<String>;
-  assetPath: () => Promise<String>;
-  desc: () => Promise<String>;
-  status: () => Promise<PublishStatus>;
-  visibility: () => Promise<Visibility>;
+  descPublic: () => Promise<String>;
+  files: <T = FragmentableArray<VideoFile>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface PackagePreviousValuesSubscription
-  extends Promise<AsyncIterator<PackagePreviousValues>>,
+export interface VideoUnitSubscription
+  extends Promise<AsyncIterator<VideoUnit>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  type: () => Promise<AsyncIterator<PackageType>>;
+  language: <T = LanguageSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
-  assetPath: () => Promise<AsyncIterator<String>>;
-  desc: () => Promise<AsyncIterator<String>>;
-  status: () => Promise<AsyncIterator<PublishStatus>>;
-  visibility: () => Promise<AsyncIterator<Visibility>>;
+  descPublic: () => Promise<AsyncIterator<String>>;
+  files: <T = Promise<AsyncIterator<VideoFileSubscription>>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = Promise<AsyncIterator<ThumbnailSubscription>>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface DocumentConversionFormat {
-  id: ID_Output;
-  rawText?: String;
-  html?: String;
-  markdown?: String;
-}
-
-export interface DocumentConversionFormatPromise
-  extends Promise<DocumentConversionFormat>,
+export interface VideoUnitNullablePromise
+  extends Promise<VideoUnit | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  rawText: () => Promise<String>;
-  html: () => Promise<String>;
-  markdown: () => Promise<String>;
-}
-
-export interface DocumentConversionFormatSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormat>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  rawText: () => Promise<AsyncIterator<String>>;
-  html: () => Promise<AsyncIterator<String>>;
-  markdown: () => Promise<AsyncIterator<String>>;
-}
-
-export interface DocumentConversionFormatNullablePromise
-  extends Promise<DocumentConversionFormat | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  rawText: () => Promise<String>;
-  html: () => Promise<String>;
-  markdown: () => Promise<String>;
-}
-
-export interface GraphicStyle {
-  id: ID_Output;
-  name: String;
-}
-
-export interface GraphicStylePromise
-  extends Promise<GraphicStyle>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface GraphicStyleSubscription
-  extends Promise<AsyncIterator<GraphicStyle>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GraphicStyleNullablePromise
-  extends Promise<GraphicStyle | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface TeamEdge {
-  node: Team;
-  cursor: String;
-}
-
-export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
-  node: <T = TeamPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TeamEdgeSubscription
-  extends Promise<AsyncIterator<TeamEdge>>,
-    Fragmentable {
-  node: <T = TeamSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface RegionSubscriptionPayload {
-  mutation: MutationType;
-  node: Region;
-  updatedFields: String[];
-  previousValues: RegionPreviousValues;
-}
-
-export interface RegionSubscriptionPayloadPromise
-  extends Promise<RegionSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = RegionPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = RegionPreviousValuesPromise>() => T;
-}
-
-export interface RegionSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<RegionSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = RegionSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = RegionPreviousValuesSubscription>() => T;
-}
-
-export interface TagEdge {
-  node: Tag;
-  cursor: String;
-}
-
-export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
-  node: <T = TagPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TagEdgeSubscription
-  extends Promise<AsyncIterator<TagEdge>>,
-    Fragmentable {
-  node: <T = TagSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface RegionPreviousValues {
-  id: ID_Output;
-  name: String;
-  abbr: String;
-}
-
-export interface RegionPreviousValuesPromise
-  extends Promise<RegionPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-}
-
-export interface RegionPreviousValuesSubscription
-  extends Promise<AsyncIterator<RegionPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SupportFileUseConnection {
-  pageInfo: PageInfo;
-  edges: SupportFileUseEdge[];
-}
-
-export interface SupportFileUseConnectionPromise
-  extends Promise<SupportFileUseConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SupportFileUseEdge>>() => T;
-  aggregate: <T = AggregateSupportFileUsePromise>() => T;
-}
-
-export interface SupportFileUseConnectionSubscription
-  extends Promise<AsyncIterator<SupportFileUseConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<SupportFileUseEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateSupportFileUseSubscription>() => T;
-}
-
-export interface ImageUse {
-  id: ID_Output;
-  name: String;
-}
-
-export interface ImageUsePromise extends Promise<ImageUse>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface ImageUseSubscription
-  extends Promise<AsyncIterator<ImageUse>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ImageUseNullablePromise
-  extends Promise<ImageUse | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface AggregateSocialPlatform {
-  count: Int;
-}
-
-export interface AggregateSocialPlatformPromise
-  extends Promise<AggregateSocialPlatform>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateSocialPlatformSubscription
-  extends Promise<AsyncIterator<AggregateSocialPlatform>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface SocialPlatformSubscriptionPayload {
-  mutation: MutationType;
-  node: SocialPlatform;
-  updatedFields: String[];
-  previousValues: SocialPlatformPreviousValues;
-}
-
-export interface SocialPlatformSubscriptionPayloadPromise
-  extends Promise<SocialPlatformSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = SocialPlatformPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = SocialPlatformPreviousValuesPromise>() => T;
-}
-
-export interface SocialPlatformSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<SocialPlatformSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = SocialPlatformSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = SocialPlatformPreviousValuesSubscription>() => T;
-}
-
-export interface RegionEdge {
-  node: Region;
-  cursor: String;
-}
-
-export interface RegionEdgePromise extends Promise<RegionEdge>, Fragmentable {
-  node: <T = RegionPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RegionEdgeSubscription
-  extends Promise<AsyncIterator<RegionEdge>>,
-    Fragmentable {
-  node: <T = RegionSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SocialPlatformPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface SocialPlatformPreviousValuesPromise
-  extends Promise<SocialPlatformPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface SocialPlatformPreviousValuesSubscription
-  extends Promise<AsyncIterator<SocialPlatformPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PackageEdge {
-  node: Package;
-  cursor: String;
-}
-
-export interface PackageEdgePromise extends Promise<PackageEdge>, Fragmentable {
-  node: <T = PackagePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PackageEdgeSubscription
-  extends Promise<AsyncIterator<PackageEdge>>,
-    Fragmentable {
-  node: <T = PackageSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  title: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  files: <T = FragmentableArray<VideoFile>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ImageFile {
@@ -10773,442 +10600,6 @@ export interface ImageFileNullablePromise
   }) => T;
 }
 
-export interface OfficeEdge {
-  node: Office;
-  cursor: String;
-}
-
-export interface OfficeEdgePromise extends Promise<OfficeEdge>, Fragmentable {
-  node: <T = OfficePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface OfficeEdgeSubscription
-  extends Promise<AsyncIterator<OfficeEdge>>,
-    Fragmentable {
-  node: <T = OfficeSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface SupportFileSubscriptionPayload {
-  mutation: MutationType;
-  node: SupportFile;
-  updatedFields: String[];
-  previousValues: SupportFilePreviousValues;
-}
-
-export interface SupportFileSubscriptionPayloadPromise
-  extends Promise<SupportFileSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = SupportFilePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = SupportFilePreviousValuesPromise>() => T;
-}
-
-export interface SupportFileSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<SupportFileSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = SupportFileSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = SupportFilePreviousValuesSubscription>() => T;
-}
-
-export interface LanguageTranslationConnection {
-  pageInfo: PageInfo;
-  edges: LanguageTranslationEdge[];
-}
-
-export interface LanguageTranslationConnectionPromise
-  extends Promise<LanguageTranslationConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<LanguageTranslationEdge>>() => T;
-  aggregate: <T = AggregateLanguageTranslationPromise>() => T;
-}
-
-export interface LanguageTranslationConnectionSubscription
-  extends Promise<AsyncIterator<LanguageTranslationConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<LanguageTranslationEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateLanguageTranslationSubscription>() => T;
-}
-
-export interface SupportFilePreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  url?: String;
-  signedUrl?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-  visibility?: Visibility;
-  editable?: Boolean;
-}
-
-export interface SupportFilePreviousValuesPromise
-  extends Promise<SupportFilePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  url: () => Promise<String>;
-  signedUrl: () => Promise<String>;
-  md5: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  filesize: () => Promise<Float>;
-  visibility: () => Promise<Visibility>;
-  editable: () => Promise<Boolean>;
-}
-
-export interface SupportFilePreviousValuesSubscription
-  extends Promise<AsyncIterator<SupportFilePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  url: () => Promise<AsyncIterator<String>>;
-  signedUrl: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  filesize: () => Promise<AsyncIterator<Float>>;
-  visibility: () => Promise<AsyncIterator<Visibility>>;
-  editable: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface LanguageTranslation {
-  id: ID_Output;
-  name: String;
-}
-
-export interface LanguageTranslationPromise
-  extends Promise<LanguageTranslation>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  language: <T = LanguagePromise>() => T;
-}
-
-export interface LanguageTranslationSubscription
-  extends Promise<AsyncIterator<LanguageTranslation>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  language: <T = LanguageSubscription>() => T;
-}
-
-export interface LanguageTranslationNullablePromise
-  extends Promise<LanguageTranslation | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  language: <T = LanguagePromise>() => T;
-}
-
-export interface Dimensions {
-  id: ID_Output;
-  width?: Int;
-  height?: Int;
-}
-
-export interface DimensionsPromise extends Promise<Dimensions>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  width: () => Promise<Int>;
-  height: () => Promise<Int>;
-}
-
-export interface DimensionsSubscription
-  extends Promise<AsyncIterator<Dimensions>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  width: () => Promise<AsyncIterator<Int>>;
-  height: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DimensionsNullablePromise
-  extends Promise<Dimensions | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  width: () => Promise<Int>;
-  height: () => Promise<Int>;
-}
-
-export interface Language {
-  id: ID_Output;
-  languageCode: String;
-  locale: String;
-  textDirection: TextDirection;
-  displayName: String;
-  nativeName: String;
-}
-
-export interface LanguagePromise extends Promise<Language>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  languageCode: () => Promise<String>;
-  locale: () => Promise<String>;
-  textDirection: () => Promise<TextDirection>;
-  displayName: () => Promise<String>;
-  nativeName: () => Promise<String>;
-}
-
-export interface LanguageSubscription
-  extends Promise<AsyncIterator<Language>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  languageCode: () => Promise<AsyncIterator<String>>;
-  locale: () => Promise<AsyncIterator<String>>;
-  textDirection: () => Promise<AsyncIterator<TextDirection>>;
-  displayName: () => Promise<AsyncIterator<String>>;
-  nativeName: () => Promise<AsyncIterator<String>>;
-}
-
-export interface LanguageNullablePromise
-  extends Promise<Language | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  languageCode: () => Promise<String>;
-  locale: () => Promise<String>;
-  textDirection: () => Promise<TextDirection>;
-  displayName: () => Promise<String>;
-  nativeName: () => Promise<String>;
-}
-
-export interface SupportFileUseSubscriptionPayload {
-  mutation: MutationType;
-  node: SupportFileUse;
-  updatedFields: String[];
-  previousValues: SupportFileUsePreviousValues;
-}
-
-export interface SupportFileUseSubscriptionPayloadPromise
-  extends Promise<SupportFileUseSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = SupportFileUsePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = SupportFileUsePreviousValuesPromise>() => T;
-}
-
-export interface SupportFileUseSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<SupportFileUseSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = SupportFileUseSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = SupportFileUsePreviousValuesSubscription>() => T;
-}
-
-export interface AggregateGraphicStyle {
-  count: Int;
-}
-
-export interface AggregateGraphicStylePromise
-  extends Promise<AggregateGraphicStyle>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateGraphicStyleSubscription
-  extends Promise<AsyncIterator<AggregateGraphicStyle>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface SupportFileUsePreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface SupportFileUsePreviousValuesPromise
-  extends Promise<SupportFileUsePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface SupportFileUsePreviousValuesSubscription
-  extends Promise<AsyncIterator<SupportFileUsePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface GraphicProjectEdge {
-  node: GraphicProject;
-  cursor: String;
-}
-
-export interface GraphicProjectEdgePromise
-  extends Promise<GraphicProjectEdge>,
-    Fragmentable {
-  node: <T = GraphicProjectPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface GraphicProjectEdgeSubscription
-  extends Promise<AsyncIterator<GraphicProjectEdge>>,
-    Fragmentable {
-  node: <T = GraphicProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface DimensionsConnection {
-  pageInfo: PageInfo;
-  edges: DimensionsEdge[];
-}
-
-export interface DimensionsConnectionPromise
-  extends Promise<DimensionsConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
-  aggregate: <T = AggregateDimensionsPromise>() => T;
-}
-
-export interface DimensionsConnectionSubscription
-  extends Promise<AsyncIterator<DimensionsConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDimensionsSubscription>() => T;
-}
-
-export interface SupportFile {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  url?: String;
-  signedUrl?: String;
-  md5?: String;
-  filename?: String;
-  filetype?: String;
-  filesize?: Float;
-  visibility?: Visibility;
-  editable?: Boolean;
-}
-
-export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  language: <T = LanguagePromise>() => T;
-  url: () => Promise<String>;
-  signedUrl: () => Promise<String>;
-  md5: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  filesize: () => Promise<Float>;
-  visibility: () => Promise<Visibility>;
-  editable: () => Promise<Boolean>;
-  use: <T = SupportFileUsePromise>() => T;
-}
-
-export interface SupportFileSubscription
-  extends Promise<AsyncIterator<SupportFile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  language: <T = LanguageSubscription>() => T;
-  url: () => Promise<AsyncIterator<String>>;
-  signedUrl: () => Promise<AsyncIterator<String>>;
-  md5: () => Promise<AsyncIterator<String>>;
-  filename: () => Promise<AsyncIterator<String>>;
-  filetype: () => Promise<AsyncIterator<String>>;
-  filesize: () => Promise<AsyncIterator<Float>>;
-  visibility: () => Promise<AsyncIterator<Visibility>>;
-  editable: () => Promise<AsyncIterator<Boolean>>;
-  use: <T = SupportFileUseSubscription>() => T;
-}
-
-export interface SupportFileNullablePromise
-  extends Promise<SupportFile | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  language: <T = LanguagePromise>() => T;
-  url: () => Promise<String>;
-  signedUrl: () => Promise<String>;
-  md5: () => Promise<String>;
-  filename: () => Promise<String>;
-  filetype: () => Promise<String>;
-  filesize: () => Promise<Float>;
-  visibility: () => Promise<Visibility>;
-  editable: () => Promise<Boolean>;
-  use: <T = SupportFileUsePromise>() => T;
-}
-
-export interface TagSubscriptionPayload {
-  mutation: MutationType;
-  node: Tag;
-  updatedFields: String[];
-  previousValues: TagPreviousValues;
-}
-
-export interface TagSubscriptionPayloadPromise
-  extends Promise<TagSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = TagPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = TagPreviousValuesPromise>() => T;
-}
-
-export interface TagSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TagSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TagPreviousValuesSubscription>() => T;
-}
-
-export interface VideoStreamConnection {
-  pageInfo: PageInfo;
-  edges: VideoStreamEdge[];
-}
-
-export interface VideoStreamConnectionPromise
-  extends Promise<VideoStreamConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<VideoStreamEdge>>() => T;
-  aggregate: <T = AggregateVideoStreamPromise>() => T;
-}
-
-export interface VideoStreamConnectionSubscription
-  extends Promise<AsyncIterator<VideoStreamConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<VideoStreamEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateVideoStreamSubscription>() => T;
-}
-
-export interface TagPreviousValues {
-  id: ID_Output;
-}
-
-export interface TagPreviousValuesPromise
-  extends Promise<TagPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-}
-
-export interface TagPreviousValuesSubscription
-  extends Promise<AsyncIterator<TagPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-}
-
 export interface VideoFileConnection {
   pageInfo: PageInfo;
   edges: VideoFileEdge[];
@@ -11230,29 +10621,72 @@ export interface VideoFileConnectionSubscription
   aggregate: <T = AggregateVideoFileSubscription>() => T;
 }
 
-export interface VideoUnitSubscriptionPayload {
+export interface OfficeSubscriptionPayload {
   mutation: MutationType;
-  node: VideoUnit;
+  node: Office;
   updatedFields: String[];
-  previousValues: VideoUnitPreviousValues;
+  previousValues: OfficePreviousValues;
 }
 
-export interface VideoUnitSubscriptionPayloadPromise
-  extends Promise<VideoUnitSubscriptionPayload>,
+export interface OfficeSubscriptionPayloadPromise
+  extends Promise<OfficeSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = VideoUnitPromise>() => T;
+  node: <T = OfficePromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = VideoUnitPreviousValuesPromise>() => T;
+  previousValues: <T = OfficePreviousValuesPromise>() => T;
 }
 
-export interface VideoUnitSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<VideoUnitSubscriptionPayload>>,
+export interface OfficeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<OfficeSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = VideoUnitSubscription>() => T;
+  node: <T = OfficeSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = VideoUnitPreviousValuesSubscription>() => T;
+  previousValues: <T = OfficePreviousValuesSubscription>() => T;
+}
+
+export interface BureauConnection {
+  pageInfo: PageInfo;
+  edges: BureauEdge[];
+}
+
+export interface BureauConnectionPromise
+  extends Promise<BureauConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BureauEdge>>() => T;
+  aggregate: <T = AggregateBureauPromise>() => T;
+}
+
+export interface BureauConnectionSubscription
+  extends Promise<AsyncIterator<BureauConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BureauEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBureauSubscription>() => T;
+}
+
+export interface OfficePreviousValues {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface OfficePreviousValuesPromise
+  extends Promise<OfficePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+}
+
+export interface OfficePreviousValuesSubscription
+  extends Promise<AsyncIterator<OfficePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateUser {
@@ -11271,29 +10705,103 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface TeamSubscriptionPayload {
-  mutation: MutationType;
-  node: Team;
-  updatedFields: String[];
-  previousValues: TeamPreviousValues;
+export interface Region {
+  id: ID_Output;
+  name: String;
+  abbr: String;
 }
 
-export interface TeamSubscriptionPayloadPromise
-  extends Promise<TeamSubscriptionPayload>,
+export interface RegionPromise extends Promise<Region>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  countries: <T = FragmentableArray<Country>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface RegionSubscription
+  extends Promise<AsyncIterator<Region>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  countries: <T = Promise<AsyncIterator<CountrySubscription>>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface RegionNullablePromise
+  extends Promise<Region | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  countries: <T = FragmentableArray<Country>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ThumbnailEdge {
+  node: Thumbnail;
+  cursor: String;
+}
+
+export interface ThumbnailEdgePromise
+  extends Promise<ThumbnailEdge>,
+    Fragmentable {
+  node: <T = ThumbnailPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ThumbnailEdgeSubscription
+  extends Promise<AsyncIterator<ThumbnailEdge>>,
+    Fragmentable {
+  node: <T = ThumbnailSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PackageSubscriptionPayload {
+  mutation: MutationType;
+  node: Package;
+  updatedFields: String[];
+  previousValues: PackagePreviousValues;
+}
+
+export interface PackageSubscriptionPayloadPromise
+  extends Promise<PackageSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = TeamPromise>() => T;
+  node: <T = PackagePromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = TeamPreviousValuesPromise>() => T;
+  previousValues: <T = PackagePreviousValuesPromise>() => T;
 }
 
-export interface TeamSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<TeamSubscriptionPayload>>,
+export interface PackageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PackageSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = TeamSubscription>() => T;
+  node: <T = PackageSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = TeamPreviousValuesSubscription>() => T;
+  previousValues: <T = PackagePreviousValuesSubscription>() => T;
 }
 
 export interface Thumbnail {
@@ -11323,32 +10831,88 @@ export interface ThumbnailNullablePromise
   image: <T = ImageFilePromise>() => T;
 }
 
-export interface TeamPreviousValues {
+export interface PackagePreviousValues {
   id: ID_Output;
-  name: String;
-  organization: String;
-  contentTypes: ContentType[];
-  isConfirmed: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  type: PackageType;
+  title: String;
+  assetPath?: String;
+  desc?: String;
+  status?: PublishStatus;
+  visibility?: Visibility;
 }
 
-export interface TeamPreviousValuesPromise
-  extends Promise<TeamPreviousValues>,
+export interface PackagePreviousValuesPromise
+  extends Promise<PackagePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  organization: () => Promise<String>;
-  contentTypes: () => Promise<ContentType[]>;
-  isConfirmed: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<PackageType>;
+  title: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  desc: () => Promise<String>;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
 }
 
-export interface TeamPreviousValuesSubscription
-  extends Promise<AsyncIterator<TeamPreviousValues>>,
+export interface PackagePreviousValuesSubscription
+  extends Promise<AsyncIterator<PackagePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  organization: () => Promise<AsyncIterator<String>>;
-  contentTypes: () => Promise<AsyncIterator<ContentType[]>>;
-  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<PackageType>>;
+  title: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
+  desc: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<PublishStatus>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+}
+
+export interface AggregateBureau {
+  count: Int;
+}
+
+export interface AggregateBureauPromise
+  extends Promise<AggregateBureau>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateBureauSubscription
+  extends Promise<AsyncIterator<AggregateBureau>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoUnitSubscriptionPayload {
+  mutation: MutationType;
+  node: VideoUnit;
+  updatedFields: String[];
+  previousValues: VideoUnitPreviousValues;
+}
+
+export interface VideoUnitSubscriptionPayloadPromise
+  extends Promise<VideoUnitSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = VideoUnitPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VideoUnitPreviousValuesPromise>() => T;
+}
+
+export interface VideoUnitSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VideoUnitSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = VideoUnitSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VideoUnitPreviousValuesSubscription>() => T;
 }
 
 export interface AggregateSupportFileUse {
@@ -11367,23 +10931,70 @@ export interface AggregateSupportFileUseSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface DimensionsEdge {
-  node: Dimensions;
+export interface RegionSubscriptionPayload {
+  mutation: MutationType;
+  node: Region;
+  updatedFields: String[];
+  previousValues: RegionPreviousValues;
+}
+
+export interface RegionSubscriptionPayloadPromise
+  extends Promise<RegionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RegionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RegionPreviousValuesPromise>() => T;
+}
+
+export interface RegionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RegionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RegionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RegionPreviousValuesSubscription>() => T;
+}
+
+export interface SupportFileEdge {
+  node: SupportFile;
   cursor: String;
 }
 
-export interface DimensionsEdgePromise
-  extends Promise<DimensionsEdge>,
+export interface SupportFileEdgePromise
+  extends Promise<SupportFileEdge>,
     Fragmentable {
-  node: <T = DimensionsPromise>() => T;
+  node: <T = SupportFilePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface DimensionsEdgeSubscription
-  extends Promise<AsyncIterator<DimensionsEdge>>,
+export interface SupportFileEdgeSubscription
+  extends Promise<AsyncIterator<SupportFileEdge>>,
     Fragmentable {
-  node: <T = DimensionsSubscription>() => T;
+  node: <T = SupportFileSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RegionPreviousValues {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface RegionPreviousValuesPromise
+  extends Promise<RegionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+}
+
+export interface RegionPreviousValuesSubscription
+  extends Promise<AsyncIterator<RegionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
 }
 
 export interface SocialPlatformConnection {
@@ -11407,29 +11018,95 @@ export interface SocialPlatformConnectionSubscription
   aggregate: <T = AggregateSocialPlatformSubscription>() => T;
 }
 
-export interface ThumbnailSubscriptionPayload {
-  mutation: MutationType;
-  node: Thumbnail;
-  updatedFields: String[];
-  previousValues: ThumbnailPreviousValues;
+export interface CountryEdge {
+  node: Country;
+  cursor: String;
 }
 
-export interface ThumbnailSubscriptionPayloadPromise
-  extends Promise<ThumbnailSubscriptionPayload>,
+export interface CountryEdgePromise extends Promise<CountryEdge>, Fragmentable {
+  node: <T = CountryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CountryEdgeSubscription
+  extends Promise<AsyncIterator<CountryEdge>>,
+    Fragmentable {
+  node: <T = CountrySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Category {
+  id: ID_Output;
+}
+
+export interface CategoryPromise extends Promise<Category>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface CategorySubscription
+  extends Promise<AsyncIterator<Category>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  translations: <
+    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
+  >(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface CategoryNullablePromise
+  extends Promise<Category | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface SocialPlatformSubscriptionPayload {
+  mutation: MutationType;
+  node: SocialPlatform;
+  updatedFields: String[];
+  previousValues: SocialPlatformPreviousValues;
+}
+
+export interface SocialPlatformSubscriptionPayloadPromise
+  extends Promise<SocialPlatformSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = ThumbnailPromise>() => T;
+  node: <T = SocialPlatformPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = ThumbnailPreviousValuesPromise>() => T;
+  previousValues: <T = SocialPlatformPreviousValuesPromise>() => T;
 }
 
-export interface ThumbnailSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ThumbnailSubscriptionPayload>>,
+export interface SocialPlatformSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SocialPlatformSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ThumbnailSubscription>() => T;
+  node: <T = SocialPlatformSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ThumbnailPreviousValuesSubscription>() => T;
+  previousValues: <T = SocialPlatformPreviousValuesSubscription>() => T;
 }
 
 export interface Package {
@@ -11575,42 +11252,39 @@ export interface PackageNullablePromise
   }) => T;
 }
 
-export interface ThumbnailPreviousValues {
+export interface SocialPlatformPreviousValues {
   id: ID_Output;
-  size?: ThumbnailSize;
+  name: String;
 }
 
-export interface ThumbnailPreviousValuesPromise
-  extends Promise<ThumbnailPreviousValues>,
+export interface SocialPlatformPreviousValuesPromise
+  extends Promise<SocialPlatformPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  size: () => Promise<ThumbnailSize>;
+  name: () => Promise<String>;
 }
 
-export interface ThumbnailPreviousValuesSubscription
-  extends Promise<AsyncIterator<ThumbnailPreviousValues>>,
+export interface SocialPlatformPreviousValuesSubscription
+  extends Promise<AsyncIterator<SocialPlatformPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface LanguageEdge {
-  node: Language;
-  cursor: String;
+export interface AggregateLanguageTranslation {
+  count: Int;
 }
 
-export interface LanguageEdgePromise
-  extends Promise<LanguageEdge>,
+export interface AggregateLanguageTranslationPromise
+  extends Promise<AggregateLanguageTranslation>,
     Fragmentable {
-  node: <T = LanguagePromise>() => T;
-  cursor: () => Promise<String>;
+  count: () => Promise<Int>;
 }
 
-export interface LanguageEdgeSubscription
-  extends Promise<AsyncIterator<LanguageEdge>>,
+export interface AggregateLanguageTranslationSubscription
+  extends Promise<AsyncIterator<AggregateLanguageTranslation>>,
     Fragmentable {
-  node: <T = LanguageSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface DocumentFile {
@@ -11827,6 +11501,115 @@ export interface DocumentFileNullablePromise
   }) => T;
 }
 
+export interface LanguageEdge {
+  node: Language;
+  cursor: String;
+}
+
+export interface LanguageEdgePromise
+  extends Promise<LanguageEdge>,
+    Fragmentable {
+  node: <T = LanguagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LanguageEdgeSubscription
+  extends Promise<AsyncIterator<LanguageEdge>>,
+    Fragmentable {
+  node: <T = LanguageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SupportFileSubscriptionPayload {
+  mutation: MutationType;
+  node: SupportFile;
+  updatedFields: String[];
+  previousValues: SupportFilePreviousValues;
+}
+
+export interface SupportFileSubscriptionPayloadPromise
+  extends Promise<SupportFileSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SupportFilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SupportFilePreviousValuesPromise>() => T;
+}
+
+export interface SupportFileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SupportFileSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SupportFileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SupportFilePreviousValuesSubscription>() => T;
+}
+
+export interface ImageUseEdge {
+  node: ImageUse;
+  cursor: String;
+}
+
+export interface ImageUseEdgePromise
+  extends Promise<ImageUseEdge>,
+    Fragmentable {
+  node: <T = ImageUsePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ImageUseEdgeSubscription
+  extends Promise<AsyncIterator<ImageUseEdge>>,
+    Fragmentable {
+  node: <T = ImageUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface SupportFilePreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  url?: String;
+  signedUrl?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  visibility?: Visibility;
+  editable?: Boolean;
+}
+
+export interface SupportFilePreviousValuesPromise
+  extends Promise<SupportFilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  md5: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  filesize: () => Promise<Float>;
+  visibility: () => Promise<Visibility>;
+  editable: () => Promise<Boolean>;
+}
+
+export interface SupportFilePreviousValuesSubscription
+  extends Promise<AsyncIterator<SupportFilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  editable: () => Promise<AsyncIterator<Boolean>>;
+}
+
 export interface ImageFileEdge {
   node: ImageFile;
   cursor: String;
@@ -11843,6 +11626,575 @@ export interface ImageFileEdgeSubscription
   extends Promise<AsyncIterator<ImageFileEdge>>,
     Fragmentable {
   node: <T = ImageFileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateDocumentConversionFormat {
+  count: Int;
+}
+
+export interface AggregateDocumentConversionFormatPromise
+  extends Promise<AggregateDocumentConversionFormat>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateDocumentConversionFormatSubscription
+  extends Promise<AsyncIterator<AggregateDocumentConversionFormat>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface GraphicStyleConnection {
+  pageInfo: PageInfo;
+  edges: GraphicStyleEdge[];
+}
+
+export interface GraphicStyleConnectionPromise
+  extends Promise<GraphicStyleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<GraphicStyleEdge>>() => T;
+  aggregate: <T = AggregateGraphicStylePromise>() => T;
+}
+
+export interface GraphicStyleConnectionSubscription
+  extends Promise<AsyncIterator<GraphicStyleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<GraphicStyleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateGraphicStyleSubscription>() => T;
+}
+
+export interface SupportFileUseSubscriptionPayload {
+  mutation: MutationType;
+  node: SupportFileUse;
+  updatedFields: String[];
+  previousValues: SupportFileUsePreviousValues;
+}
+
+export interface SupportFileUseSubscriptionPayloadPromise
+  extends Promise<SupportFileUseSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SupportFileUsePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SupportFileUsePreviousValuesPromise>() => T;
+}
+
+export interface SupportFileUseSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SupportFileUseSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SupportFileUseSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SupportFileUsePreviousValuesSubscription>() => T;
+}
+
+export interface CategoryConnection {
+  pageInfo: PageInfo;
+  edges: CategoryEdge[];
+}
+
+export interface CategoryConnectionPromise
+  extends Promise<CategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CategoryEdge>>() => T;
+  aggregate: <T = AggregateCategoryPromise>() => T;
+}
+
+export interface CategoryConnectionSubscription
+  extends Promise<AsyncIterator<CategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCategorySubscription>() => T;
+}
+
+export interface SupportFileUsePreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SupportFileUsePreviousValuesPromise
+  extends Promise<SupportFileUsePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SupportFileUsePreviousValuesSubscription
+  extends Promise<AsyncIterator<SupportFileUsePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCategory {
+  count: Int;
+}
+
+export interface AggregateCategoryPromise
+  extends Promise<AggregateCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCategorySubscription
+  extends Promise<AsyncIterator<AggregateCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DocumentConversionFormatEdge {
+  node: DocumentConversionFormat;
+  cursor: String;
+}
+
+export interface DocumentConversionFormatEdgePromise
+  extends Promise<DocumentConversionFormatEdge>,
+    Fragmentable {
+  node: <T = DocumentConversionFormatPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DocumentConversionFormatEdgeSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormatEdge>>,
+    Fragmentable {
+  node: <T = DocumentConversionFormatSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateVideoStream {
+  count: Int;
+}
+
+export interface AggregateVideoStreamPromise
+  extends Promise<AggregateVideoStream>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoStreamSubscription
+  extends Promise<AsyncIterator<AggregateVideoStream>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TagSubscriptionPayload {
+  mutation: MutationType;
+  node: Tag;
+  updatedFields: String[];
+  previousValues: TagPreviousValues;
+}
+
+export interface TagSubscriptionPayloadPromise
+  extends Promise<TagSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TagPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TagPreviousValuesPromise>() => T;
+}
+
+export interface TagSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TagSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TagPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateVideoFile {
+  count: Int;
+}
+
+export interface AggregateVideoFilePromise
+  extends Promise<AggregateVideoFile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoFileSubscription
+  extends Promise<AsyncIterator<AggregateVideoFile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface TagPreviousValues {
+  id: ID_Output;
+}
+
+export interface TagPreviousValuesPromise
+  extends Promise<TagPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface TagPreviousValuesSubscription
+  extends Promise<AsyncIterator<TagPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface VideoUse {
+  id: ID_Output;
+  name: String;
+}
+
+export interface VideoUsePromise extends Promise<VideoUse>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface VideoUseSubscription
+  extends Promise<AsyncIterator<VideoUse>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoUseNullablePromise
+  extends Promise<VideoUse | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface DocumentConversionFormatConnection {
+  pageInfo: PageInfo;
+  edges: DocumentConversionFormatEdge[];
+}
+
+export interface DocumentConversionFormatConnectionPromise
+  extends Promise<DocumentConversionFormatConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DocumentConversionFormatEdge>>() => T;
+  aggregate: <T = AggregateDocumentConversionFormatPromise>() => T;
+}
+
+export interface DocumentConversionFormatConnectionSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormatConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<DocumentConversionFormatEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateDocumentConversionFormatSubscription>() => T;
+}
+
+export interface Dimensions {
+  id: ID_Output;
+  width?: Int;
+  height?: Int;
+}
+
+export interface DimensionsPromise extends Promise<Dimensions>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  width: () => Promise<Int>;
+  height: () => Promise<Int>;
+}
+
+export interface DimensionsSubscription
+  extends Promise<AsyncIterator<Dimensions>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  width: () => Promise<AsyncIterator<Int>>;
+  height: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DimensionsNullablePromise
+  extends Promise<Dimensions | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  width: () => Promise<Int>;
+  height: () => Promise<Int>;
+}
+
+export interface TeamSubscriptionPayload {
+  mutation: MutationType;
+  node: Team;
+  updatedFields: String[];
+  previousValues: TeamPreviousValues;
+}
+
+export interface TeamSubscriptionPayloadPromise
+  extends Promise<TeamSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TeamPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TeamPreviousValuesPromise>() => T;
+}
+
+export interface TeamSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TeamSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TeamSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TeamPreviousValuesSubscription>() => T;
+}
+
+export interface TagEdge {
+  node: Tag;
+  cursor: String;
+}
+
+export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
+  node: <T = TagPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
+  node: <T = TagSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TeamPreviousValues {
+  id: ID_Output;
+  name: String;
+  organization: String;
+  contentTypes: ContentType[];
+  isConfirmed: Boolean;
+}
+
+export interface TeamPreviousValuesPromise
+  extends Promise<TeamPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  organization: () => Promise<String>;
+  contentTypes: () => Promise<ContentType[]>;
+  isConfirmed: () => Promise<Boolean>;
+}
+
+export interface TeamPreviousValuesSubscription
+  extends Promise<AsyncIterator<TeamPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  organization: () => Promise<AsyncIterator<String>>;
+  contentTypes: () => Promise<AsyncIterator<ContentType[]>>;
+  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface AggregateSocialPlatform {
+  count: Int;
+}
+
+export interface AggregateSocialPlatformPromise
+  extends Promise<AggregateSocialPlatform>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSocialPlatformSubscription
+  extends Promise<AsyncIterator<AggregateSocialPlatform>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CountryConnection {
+  pageInfo: PageInfo;
+  edges: CountryEdge[];
+}
+
+export interface CountryConnectionPromise
+  extends Promise<CountryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CountryEdge>>() => T;
+  aggregate: <T = AggregateCountryPromise>() => T;
+}
+
+export interface CountryConnectionSubscription
+  extends Promise<AsyncIterator<CountryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CountryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCountrySubscription>() => T;
+}
+
+export interface PackageEdge {
+  node: Package;
+  cursor: String;
+}
+
+export interface PackageEdgePromise extends Promise<PackageEdge>, Fragmentable {
+  node: <T = PackagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PackageEdgeSubscription
+  extends Promise<AsyncIterator<PackageEdge>>,
+    Fragmentable {
+  node: <T = PackageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ThumbnailSubscriptionPayload {
+  mutation: MutationType;
+  node: Thumbnail;
+  updatedFields: String[];
+  previousValues: ThumbnailPreviousValues;
+}
+
+export interface ThumbnailSubscriptionPayloadPromise
+  extends Promise<ThumbnailSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ThumbnailPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ThumbnailPreviousValuesPromise>() => T;
+}
+
+export interface ThumbnailSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ThumbnailSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ThumbnailSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ThumbnailPreviousValuesSubscription>() => T;
+}
+
+export interface LanguageTranslationConnection {
+  pageInfo: PageInfo;
+  edges: LanguageTranslationEdge[];
+}
+
+export interface LanguageTranslationConnectionPromise
+  extends Promise<LanguageTranslationConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LanguageTranslationEdge>>() => T;
+  aggregate: <T = AggregateLanguageTranslationPromise>() => T;
+}
+
+export interface LanguageTranslationConnectionSubscription
+  extends Promise<AsyncIterator<LanguageTranslationConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<LanguageTranslationEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateLanguageTranslationSubscription>() => T;
+}
+
+export interface ThumbnailPreviousValues {
+  id: ID_Output;
+  size?: ThumbnailSize;
+}
+
+export interface ThumbnailPreviousValuesPromise
+  extends Promise<ThumbnailPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+}
+
+export interface ThumbnailPreviousValuesSubscription
+  extends Promise<AsyncIterator<ThumbnailPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+}
+
+export interface Language {
+  id: ID_Output;
+  languageCode: String;
+  locale: String;
+  textDirection: TextDirection;
+  displayName: String;
+  nativeName: String;
+}
+
+export interface LanguagePromise extends Promise<Language>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  languageCode: () => Promise<String>;
+  locale: () => Promise<String>;
+  textDirection: () => Promise<TextDirection>;
+  displayName: () => Promise<String>;
+  nativeName: () => Promise<String>;
+}
+
+export interface LanguageSubscription
+  extends Promise<AsyncIterator<Language>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  languageCode: () => Promise<AsyncIterator<String>>;
+  locale: () => Promise<AsyncIterator<String>>;
+  textDirection: () => Promise<AsyncIterator<TextDirection>>;
+  displayName: () => Promise<AsyncIterator<String>>;
+  nativeName: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LanguageNullablePromise
+  extends Promise<Language | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  languageCode: () => Promise<String>;
+  locale: () => Promise<String>;
+  textDirection: () => Promise<TextDirection>;
+  displayName: () => Promise<String>;
+  nativeName: () => Promise<String>;
+}
+
+export interface DocumentConversionFormat {
+  id: ID_Output;
+  rawText?: String;
+  html?: String;
+  markdown?: String;
+}
+
+export interface DocumentConversionFormatPromise
+  extends Promise<DocumentConversionFormat>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  rawText: () => Promise<String>;
+  html: () => Promise<String>;
+  markdown: () => Promise<String>;
+}
+
+export interface DocumentConversionFormatSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormat>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  rawText: () => Promise<AsyncIterator<String>>;
+  html: () => Promise<AsyncIterator<String>>;
+  markdown: () => Promise<AsyncIterator<String>>;
+}
+
+export interface DocumentConversionFormatNullablePromise
+  extends Promise<DocumentConversionFormat | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  rawText: () => Promise<String>;
+  html: () => Promise<String>;
+  markdown: () => Promise<String>;
+}
+
+export interface GraphicProjectEdge {
+  node: GraphicProject;
+  cursor: String;
+}
+
+export interface GraphicProjectEdgePromise
+  extends Promise<GraphicProjectEdge>,
+    Fragmentable {
+  node: <T = GraphicProjectPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface GraphicProjectEdgeSubscription
+  extends Promise<AsyncIterator<GraphicProjectEdge>>,
+    Fragmentable {
+  node: <T = GraphicProjectSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -11871,25 +12223,38 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface CategoryConnection {
-  pageInfo: PageInfo;
-  edges: CategoryEdge[];
+export interface ContentField {
+  id: ID_Output;
+  type?: String;
+  visibility?: Visibility;
+  content?: String;
 }
 
-export interface CategoryConnectionPromise
-  extends Promise<CategoryConnection>,
+export interface ContentFieldPromise
+  extends Promise<ContentField>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CategoryEdge>>() => T;
-  aggregate: <T = AggregateCategoryPromise>() => T;
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  content: () => Promise<String>;
 }
 
-export interface CategoryConnectionSubscription
-  extends Promise<AsyncIterator<CategoryConnection>>,
+export interface ContentFieldSubscription
+  extends Promise<AsyncIterator<ContentField>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCategorySubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<String>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  content: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ContentFieldNullablePromise
+  extends Promise<ContentField | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  content: () => Promise<String>;
 }
 
 export interface UserPreviousValues {
@@ -11944,185 +12309,68 @@ export interface UserPreviousValuesSubscription
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface VideoUnit {
+export interface VideoStream {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  title: String;
-  descPublic?: String;
+  site?: String;
+  url?: String;
+  embedUrl?: String;
 }
 
-export interface VideoUnitPromise extends Promise<VideoUnit>, Fragmentable {
+export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  language: <T = LanguagePromise>() => T;
-  title: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  files: <T = FragmentableArray<VideoFile>>(args?: {
-    where?: VideoFileWhereInput;
-    orderBy?: VideoFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
-    where?: ThumbnailWhereInput;
-    orderBy?: ThumbnailOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
 }
 
-export interface VideoUnitSubscription
-  extends Promise<AsyncIterator<VideoUnit>>,
+export interface VideoStreamSubscription
+  extends Promise<AsyncIterator<VideoStream>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  language: <T = LanguageSubscription>() => T;
-  title: () => Promise<AsyncIterator<String>>;
-  descPublic: () => Promise<AsyncIterator<String>>;
-  files: <T = Promise<AsyncIterator<VideoFileSubscription>>>(args?: {
-    where?: VideoFileWhereInput;
-    orderBy?: VideoFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  thumbnails: <T = Promise<AsyncIterator<ThumbnailSubscription>>>(args?: {
-    where?: ThumbnailWhereInput;
-    orderBy?: ThumbnailOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  site: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  embedUrl: () => Promise<AsyncIterator<String>>;
 }
 
-export interface VideoUnitNullablePromise
-  extends Promise<VideoUnit | null>,
+export interface VideoStreamNullablePromise
+  extends Promise<VideoStream | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  language: <T = LanguagePromise>() => T;
-  title: () => Promise<String>;
-  descPublic: () => Promise<String>;
-  files: <T = FragmentableArray<VideoFile>>(args?: {
-    where?: VideoFileWhereInput;
-    orderBy?: VideoFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
-    where?: ThumbnailWhereInput;
-    orderBy?: ThumbnailOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
 }
 
-export interface AggregateDocumentConversionFormat {
+export interface AggregateDimensions {
   count: Int;
 }
 
-export interface AggregateDocumentConversionFormatPromise
-  extends Promise<AggregateDocumentConversionFormat>,
+export interface AggregateDimensionsPromise
+  extends Promise<AggregateDimensions>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateDocumentConversionFormatSubscription
-  extends Promise<AsyncIterator<AggregateDocumentConversionFormat>>,
+export interface AggregateDimensionsSubscription
+  extends Promise<AsyncIterator<AggregateDimensions>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ThumbnailEdge {
-  node: Thumbnail;
+export interface TeamEdge {
+  node: Team;
   cursor: String;
 }
 
-export interface ThumbnailEdgePromise
-  extends Promise<ThumbnailEdge>,
-    Fragmentable {
-  node: <T = ThumbnailPromise>() => T;
+export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
+  node: <T = TeamPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ThumbnailEdgeSubscription
-  extends Promise<AsyncIterator<ThumbnailEdge>>,
+export interface TeamEdgeSubscription
+  extends Promise<AsyncIterator<TeamEdge>>,
     Fragmentable {
-  node: <T = ThumbnailSubscription>() => T;
+  node: <T = TeamSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -12151,22 +12399,20 @@ export interface VideoFileSubscriptionPayloadSubscription
   previousValues: <T = VideoFilePreviousValuesSubscription>() => T;
 }
 
-export interface SupportFileEdge {
-  node: SupportFile;
+export interface RegionEdge {
+  node: Region;
   cursor: String;
 }
 
-export interface SupportFileEdgePromise
-  extends Promise<SupportFileEdge>,
-    Fragmentable {
-  node: <T = SupportFilePromise>() => T;
+export interface RegionEdgePromise extends Promise<RegionEdge>, Fragmentable {
+  node: <T = RegionPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface SupportFileEdgeSubscription
-  extends Promise<AsyncIterator<SupportFileEdge>>,
+export interface RegionEdgeSubscription
+  extends Promise<AsyncIterator<RegionEdge>>,
     Fragmentable {
-  node: <T = SupportFileSubscription>() => T;
+  node: <T = RegionSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -12225,81 +12471,139 @@ export interface VideoFilePreviousValuesSubscription
   filesize: () => Promise<AsyncIterator<Float>>;
 }
 
-export interface AggregateLanguageTranslation {
-  count: Int;
+export interface LanguageTranslation {
+  id: ID_Output;
+  name: String;
 }
 
-export interface AggregateLanguageTranslationPromise
-  extends Promise<AggregateLanguageTranslation>,
+export interface LanguageTranslationPromise
+  extends Promise<LanguageTranslation>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
 }
 
-export interface AggregateLanguageTranslationSubscription
-  extends Promise<AsyncIterator<AggregateLanguageTranslation>>,
+export interface LanguageTranslationSubscription
+  extends Promise<AsyncIterator<LanguageTranslation>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  language: <T = LanguageSubscription>() => T;
 }
 
-export interface DocumentConversionFormatEdge {
-  node: DocumentConversionFormat;
+export interface LanguageTranslationNullablePromise
+  extends Promise<LanguageTranslation | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
+}
+
+export interface DimensionsEdge {
+  node: Dimensions;
   cursor: String;
 }
 
-export interface DocumentConversionFormatEdgePromise
-  extends Promise<DocumentConversionFormatEdge>,
+export interface DimensionsEdgePromise
+  extends Promise<DimensionsEdge>,
     Fragmentable {
-  node: <T = DocumentConversionFormatPromise>() => T;
+  node: <T = DimensionsPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface DocumentConversionFormatEdgeSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormatEdge>>,
+export interface DimensionsEdgeSubscription
+  extends Promise<AsyncIterator<DimensionsEdge>>,
     Fragmentable {
-  node: <T = DocumentConversionFormatSubscription>() => T;
+  node: <T = DimensionsSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface GraphicStyleConnection {
-  pageInfo: PageInfo;
-  edges: GraphicStyleEdge[];
+export interface SupportFile {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  url?: String;
+  signedUrl?: String;
+  md5?: String;
+  filename?: String;
+  filetype?: String;
+  filesize?: Float;
+  visibility?: Visibility;
+  editable?: Boolean;
 }
 
-export interface GraphicStyleConnectionPromise
-  extends Promise<GraphicStyleConnection>,
+export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  md5: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  filesize: () => Promise<Float>;
+  visibility: () => Promise<Visibility>;
+  editable: () => Promise<Boolean>;
+  use: <T = SupportFileUsePromise>() => T;
+}
+
+export interface SupportFileSubscription
+  extends Promise<AsyncIterator<SupportFile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  editable: () => Promise<AsyncIterator<Boolean>>;
+  use: <T = SupportFileUseSubscription>() => T;
+}
+
+export interface SupportFileNullablePromise
+  extends Promise<SupportFile | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  md5: () => Promise<String>;
+  filename: () => Promise<String>;
+  filetype: () => Promise<String>;
+  filesize: () => Promise<Float>;
+  visibility: () => Promise<Visibility>;
+  editable: () => Promise<Boolean>;
+  use: <T = SupportFileUsePromise>() => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<GraphicStyleEdge>>() => T;
-  aggregate: <T = AggregateGraphicStylePromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
 }
 
-export interface GraphicStyleConnectionSubscription
-  extends Promise<AsyncIterator<GraphicStyleConnection>>,
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<GraphicStyleEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateGraphicStyleSubscription>() => T;
-}
-
-export interface BureauConnection {
-  pageInfo: PageInfo;
-  edges: BureauEdge[];
-}
-
-export interface BureauConnectionPromise
-  extends Promise<BureauConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BureauEdge>>() => T;
-  aggregate: <T = AggregateBureauPromise>() => T;
-}
-
-export interface BureauConnectionSubscription
-  extends Promise<AsyncIterator<BureauConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BureauEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBureauSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface VideoStreamSubscriptionPayload {
@@ -12327,27 +12631,25 @@ export interface VideoStreamSubscriptionPayloadSubscription
   previousValues: <T = VideoStreamPreviousValuesSubscription>() => T;
 }
 
-export interface DocumentConversionFormatConnection {
+export interface DimensionsConnection {
   pageInfo: PageInfo;
-  edges: DocumentConversionFormatEdge[];
+  edges: DimensionsEdge[];
 }
 
-export interface DocumentConversionFormatConnectionPromise
-  extends Promise<DocumentConversionFormatConnection>,
+export interface DimensionsConnectionPromise
+  extends Promise<DimensionsConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DocumentConversionFormatEdge>>() => T;
-  aggregate: <T = AggregateDocumentConversionFormatPromise>() => T;
+  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
+  aggregate: <T = AggregateDimensionsPromise>() => T;
 }
 
-export interface DocumentConversionFormatConnectionSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormatConnection>>,
+export interface DimensionsConnectionSubscription
+  extends Promise<AsyncIterator<DimensionsConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<DocumentConversionFormatEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateDocumentConversionFormatSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDimensionsSubscription>() => T;
 }
 
 export interface VideoProjectPreviousValues {
@@ -12421,107 +12723,77 @@ export interface VideoProjectSubscriptionPayloadSubscription
   previousValues: <T = VideoProjectPreviousValuesSubscription>() => T;
 }
 
-export interface AggregateBureau {
+export interface SupportFileUseConnection {
+  pageInfo: PageInfo;
+  edges: SupportFileUseEdge[];
+}
+
+export interface SupportFileUseConnectionPromise
+  extends Promise<SupportFileUseConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SupportFileUseEdge>>() => T;
+  aggregate: <T = AggregateSupportFileUsePromise>() => T;
+}
+
+export interface SupportFileUseConnectionSubscription
+  extends Promise<AsyncIterator<SupportFileUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SupportFileUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSupportFileUseSubscription>() => T;
+}
+
+export interface VideoProjectEdge {
+  node: VideoProject;
+  cursor: String;
+}
+
+export interface VideoProjectEdgePromise
+  extends Promise<VideoProjectEdge>,
+    Fragmentable {
+  node: <T = VideoProjectPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface VideoProjectEdgeSubscription
+  extends Promise<AsyncIterator<VideoProjectEdge>>,
+    Fragmentable {
+  node: <T = VideoProjectSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateGraphicStyle {
   count: Int;
 }
 
-export interface AggregateBureauPromise
-  extends Promise<AggregateBureau>,
+export interface AggregateGraphicStylePromise
+  extends Promise<AggregateGraphicStyle>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateBureauSubscription
-  extends Promise<AsyncIterator<AggregateBureau>>,
+export interface AggregateGraphicStyleSubscription
+  extends Promise<AsyncIterator<AggregateGraphicStyle>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface VideoUnitEdge {
-  node: VideoUnit;
+export interface OfficeEdge {
+  node: Office;
   cursor: String;
 }
 
-export interface VideoUnitEdgePromise
-  extends Promise<VideoUnitEdge>,
-    Fragmentable {
-  node: <T = VideoUnitPromise>() => T;
+export interface OfficeEdgePromise extends Promise<OfficeEdge>, Fragmentable {
+  node: <T = OfficePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface VideoUnitEdgeSubscription
-  extends Promise<AsyncIterator<VideoUnitEdge>>,
+export interface OfficeEdgeSubscription
+  extends Promise<AsyncIterator<OfficeEdge>>,
     Fragmentable {
-  node: <T = VideoUnitSubscription>() => T;
+  node: <T = OfficeSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ImageUseEdge {
-  node: ImageUse;
-  cursor: String;
-}
-
-export interface ImageUseEdgePromise
-  extends Promise<ImageUseEdge>,
-    Fragmentable {
-  node: <T = ImageUsePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ImageUseEdgeSubscription
-  extends Promise<AsyncIterator<ImageUseEdge>>,
-    Fragmentable {
-  node: <T = ImageUseSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Category {
-  id: ID_Output;
-}
-
-export interface CategoryPromise extends Promise<Category>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface CategorySubscription
-  extends Promise<AsyncIterator<Category>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  translations: <
-    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
-  >(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface CategoryNullablePromise
-  extends Promise<Category | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
 /*
@@ -12613,6 +12885,10 @@ export const models: Model[] = [
   },
   {
     name: "Copyright",
+    embedded: false
+  },
+  {
+    name: "ContentField",
     embedded: false
   },
   {

@@ -1,27 +1,29 @@
 import * as query from '../mocks/mockQueries/graphic';
 import {
-  graphicProject, graphicStyles, socialPlatforms, languages
+  graphicProject, graphicStyles, socialPlatforms, languages,
 } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
-jest.mock(
-  '../../services/aws/s3',
-  () => ( {
-    getSignedUrlPromiseGet: () => ( {
-      key: 'the-mock-key',
-      url: 'https://signedurl.com'
-    } )
-  } )
-);
+jest.mock( '../../services/aws/s3', () => ( {
+  getSignedUrlPromiseGet: () => ( {
+    key: 'the-mock-key',
+    url: 'https://signedurl.com',
+  } ),
+  getAssetPath: () => 'graphic/2020/03/commons.america.gov_ck8enbkxs0bdy076501iy0akv',
+  deleteAllS3Assets: () => Promise.resolve( {} ),
+} ) );
 
 const getGraphicProject = () => ( {
   ...graphicProject,
   author: jest.fn( () => graphicProject.author ),
   team: jest.fn( () => graphicProject.team ),
+  descPublic: jest.fn( () => graphicProject.descPublic ),
+  descInternal: jest.fn( () => graphicProject.descInternal ),
   supportFiles: jest.fn( () => graphicProject.supportFiles ),
   images: jest.fn( () => graphicProject.images ),
   categories: jest.fn( () => graphicProject.categories ),
-  tags: jest.fn( () => graphicProject.tags )
+  tags: jest.fn( () => graphicProject.tags ),
+  $fragment: jest.fn( () => ( { ...graphicProject } ) ),
 } );
 
 const getImageFile = () => ( {
@@ -29,24 +31,26 @@ const getImageFile = () => ( {
   language: jest.fn( () => graphicProject.images[0].language ),
   use: jest.fn( () => graphicProject.images[0].use ),
   social: jest.fn( () => graphicProject.images[0].social ),
-  style: jest.fn( () => graphicProject.images[0].style )
+  style: jest.fn( () => graphicProject.images[0].style ),
 } );
 
 const getPrismaGraphicProjectFns = () => ( {
   graphicProject: jest.fn( () => getGraphicProject() ),
   author: jest.fn( () => graphicProject.author ),
   team: jest.fn( () => graphicProject.team ),
+  descPublic: jest.fn( () => graphicProject.descPublic ),
+  descInternal: jest.fn( () => graphicProject.descInternal ),
   supportFile: jest.fn( () => ( {
     language: jest.fn( () => graphicProject.supportFiles[0].language ),
-    use: jest.fn( () => graphicProject.supportFiles[0].use )
+    use: jest.fn( () => graphicProject.supportFiles[0].use ),
   } ) ),
   imageFile: jest.fn( () => getImageFile() ),
   category: jest.fn( () => ( {
-    translations: jest.fn( () => graphicProject.categories[0].translations )
+    translations: jest.fn( () => graphicProject.categories[0].translations ),
   } ) ),
   tag: jest.fn( () => ( {
-    translations: jest.fn( () => graphicProject.tags[0].translations )
-  } ) )
+    translations: jest.fn( () => graphicProject.tags[0].translations ),
+  } ) ),
 } );
 
 describe( 'Query:', () => {
@@ -57,38 +61,50 @@ describe( 'Query:', () => {
         graphicProject: jest.fn( () => ( {
           author: jest.fn(),
           team: jest.fn(),
+          descPublic: jest.fn(),
+          descInternal: jest.fn(),
           supportFiles: jest.fn(),
           images: jest.fn(),
           categories: jest.fn(),
-          tags: jest.fn()
+          tags: jest.fn(),
         } ) ),
         author: jest.fn(),
         team: jest.fn(),
+        descPublic: jest.fn( () => ( {
+          visibility: jest.fn(),
+          content: jest.fn(),
+        } ) ),
+        descInternal: jest.fn( () => ( {
+          visibility: jest.fn(),
+          content: jest.fn(),
+        } ) ),
         supportFile: jest.fn( () => ( {
           language: jest.fn(),
-          use: jest.fn()
+          use: jest.fn(),
         } ) ),
         imageFile: jest.fn( () => ( {
           language: jest.fn(),
           use: jest.fn(),
           social: jest.fn(),
-          style: jest.fn()
+          style: jest.fn(),
         } ) ),
         category: jest.fn( () => ( {
-          translations: jest.fn()
+          translations: jest.fn(),
         } ) ),
         tag: jest.fn( () => ( {
-          translations: jest.fn()
+          translations: jest.fn(),
         } ) ),
         languageTranslation: jest.fn( () => ( {
-          language: jest.fn()
+          language: jest.fn(),
         } ) ),
-        graphicProjects: jest.fn()
-      }
+        graphicProjects: jest.fn(),
+      },
     };
     const server = createTestServer( ctx );
+
     const spy = jest.spyOn( server, 'query' );
     const request = { query: query.GRAPHIC_PROJECTS_QUERY };
+
     const result = await server.query( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
@@ -131,15 +147,15 @@ describe( 'Query:', () => {
             }
 
             return languages.french;
-          } )
-        } ) )
-      }
+          } ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.GRAPHIC_PROJECT_QUERY,
-      variables: { id: graphicProject.id }
+      variables: { id: graphicProject.id },
     };
     const result = await server.query( request );
 
@@ -151,8 +167,8 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        graphicStyles: jest.fn( () => graphicStyles )
-      }
+        graphicStyles: jest.fn( () => graphicStyles ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -167,14 +183,14 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        graphicStyle: jest.fn( () => graphicStyles[0] )
-      }
+        graphicStyle: jest.fn( () => graphicStyles[0] ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.GRAPHIC_STYLE_QUERY,
-      variables: { id: graphicStyles[0].id }
+      variables: { id: graphicStyles[0].id },
     };
     const result = await server.query( request );
 
@@ -186,8 +202,8 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        socialPlatforms: jest.fn( () => socialPlatforms )
-      }
+        socialPlatforms: jest.fn( () => socialPlatforms ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -202,14 +218,14 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        socialPlatform: jest.fn( () => socialPlatforms[0] )
-      }
+        socialPlatform: jest.fn( () => socialPlatforms[0] ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.SOCIAL_PLATFORM_QUERY,
-      variables: { id: socialPlatforms[0].id }
+      variables: { id: socialPlatforms[0].id },
     };
     const result = await server.query( request );
 
@@ -221,6 +237,7 @@ describe( 'Query:', () => {
 describe( 'Mutation:', () => {
   it( 'createGraphicProject creates a graphic project', async () => {
     const { id, title } = graphicProject;
+
     const ctx = {
       user: {},
       prisma: {
@@ -234,16 +251,21 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
-        createGraphicProject: jest.fn( () => graphicProject )
-      }
+        createGraphicProject: jest.fn( () => graphicProject ),
+        updateGraphicProject: jest.fn( () => ( {
+          $fragment: jest.fn( () => graphicProject ),
+        } ) ),
+      },
     };
+
+
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_GRAPHIC_PROJECT_MUTATION,
-      variables: { data: { id, title } }
+      variables: { data: { id, title } },
     };
     const result = await server.mutate( request );
 
@@ -268,10 +290,10 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
-        updateGraphicProject: jest.fn( () => updatedGraphicProject )
-      }
+        updateGraphicProject: jest.fn( () => updatedGraphicProject ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -279,8 +301,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_GRAPHIC_PROJECT_MUTATION,
       variables: {
         data: { title },
-        where: { id }
-      }
+        where: { id },
+      },
     };
     const result = await server.mutate( request );
 
@@ -294,9 +316,9 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         updateManyGraphicProjects: jest.fn( () => ( {
-          count: graphicProjectsToUpdate.length
-        } ) )
-      }
+          count: graphicProjectsToUpdate.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -304,8 +326,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_MANY_GRAPHIC_PROJECTS_MUTATION,
       variables: {
         data: { title: 'an updated graphic project title' },
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
@@ -329,20 +351,21 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
-        deleteGraphicProject: jest.fn( () => graphicProject )
-      }
+        deleteGraphicProject: jest.fn( () => graphicProject ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_GRAPHIC_PROJECT_MUTATION,
-      variables: { id }
+      variables: { id },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
+    expect( result.errors ).not.toBeDefined();
     expect( result.data.deleteGraphicProject ).toEqual( graphicProject );
   } );
 
@@ -352,17 +375,17 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManyGraphicProjects: jest.fn( () => ( {
-          count: graphicProjectsToDelete.length
-        } ) )
-      }
+          count: graphicProjectsToDelete.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_GRAPHIC_PROJECTS_MUTATION,
       variables: {
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
@@ -376,14 +399,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        createGraphicStyle: jest.fn( () => graphicStyleToCreate )
-      }
+        createGraphicStyle: jest.fn( () => graphicStyleToCreate ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_GRAPHIC_STYLE_MUTATION,
-      variables: { data: { ...graphicStyleToCreate } }
+      variables: { data: { ...graphicStyleToCreate } },
     };
     const result = await server.mutate( request );
 
@@ -397,8 +420,8 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        updateGraphicStyle: jest.fn( () => updatedGraphicStyle )
-      }
+        updateGraphicStyle: jest.fn( () => updatedGraphicStyle ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -406,8 +429,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_GRAPHIC_STYLE_MUTATION,
       variables: {
         data: { name },
-        where: { id: graphicStyles[0].id }
-      }
+        where: { id: graphicStyles[0].id },
+      },
     };
     const result = await server.mutate( request );
 
@@ -421,9 +444,9 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         updateManyGraphicStyles: jest.fn( () => ( {
-          count: graphicStylesToUpdate.length
-        } ) )
-      }
+          count: graphicStylesToUpdate.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -431,8 +454,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_MANY_GRAPHIC_STYLES_MUTATION,
       variables: {
         data: { name: 'an updated graphic style name' },
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
@@ -446,14 +469,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        deleteGraphicStyle: jest.fn( () => graphicStyleToDelete )
-      }
+        deleteGraphicStyle: jest.fn( () => graphicStyleToDelete ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_GRAPHIC_STYLE_MUTATION,
-      variables: { id: graphicStyleToDelete.id }
+      variables: { id: graphicStyleToDelete.id },
     };
     const result = await server.mutate( request );
 
@@ -467,17 +490,17 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManyGraphicStyles: jest.fn( () => ( {
-          count: graphicStylesToDelete.length
-        } ) )
-      }
+          count: graphicStylesToDelete.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_GRAPHIC_STYLES_MUTATION,
       variables: {
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
@@ -491,14 +514,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        createSocialPlatform: jest.fn( () => socialPlatformToCreate )
-      }
+        createSocialPlatform: jest.fn( () => socialPlatformToCreate ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_SOCIAL_PLATFORM_MUTATION,
-      variables: { data: { ...socialPlatformToCreate } }
+      variables: { data: { ...socialPlatformToCreate } },
     };
     const result = await server.mutate( request );
 
@@ -512,8 +535,8 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        updateSocialPlatform: jest.fn( () => updatedSocialPlatform )
-      }
+        updateSocialPlatform: jest.fn( () => updatedSocialPlatform ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -521,8 +544,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_SOCIAL_PLATFORM_MUTATION,
       variables: {
         data: { name },
-        where: { id: updatedSocialPlatform.id }
-      }
+        where: { id: updatedSocialPlatform.id },
+      },
     };
     const result = await server.mutate( request );
 
@@ -536,9 +559,9 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         updateManySocialPlatforms: jest.fn( () => ( {
-          count: socialPlatformsToUpdate.length
-        } ) )
-      }
+          count: socialPlatformsToUpdate.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -546,8 +569,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_MANY_SOCIAL_PLATFORMS_MUTATION,
       variables: {
         data: { name: 'an updated social platform name' },
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
@@ -561,14 +584,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        deleteSocialPlatform: jest.fn( () => socialPlatformsToDelete )
-      }
+        deleteSocialPlatform: jest.fn( () => socialPlatformsToDelete ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_SOCIAL_PLATFORM_MUTATION,
-      variables: { id: socialPlatformsToDelete.id }
+      variables: { id: socialPlatformsToDelete.id },
     };
     const result = await server.mutate( request );
 
@@ -583,17 +606,17 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManySocialPlatforms: jest.fn( () => ( {
-          count: socialPlatformsToDelete.length
-        } ) )
-      }
+          count: socialPlatformsToDelete.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_SOCIAL_PLATFORMS_MUTATION,
       variables: {
-        where: {}
-      }
+        where: {},
+      },
     };
     const result = await server.mutate( request );
 
