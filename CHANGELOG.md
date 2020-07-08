@@ -14,6 +14,7 @@ _This sections lists changes committed since most recent release_
 
 **Changed:**
 - Pass pagination arguments to package resolver
+- Adjust conditional check for public and internal description content in the `transformGraphic` function to accept all string values
 
 # [4.1.1](2020-05-22)
 **Added:**
