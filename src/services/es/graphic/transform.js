@@ -134,11 +134,11 @@ const transformGraphic = graphicProject => {
     tags: transformTaxonomy( tags, 'en-us' ),
   };
 
-  if ( descPublic && descPublic.content ) {
+  if ( descPublic && typeof descPublic.content === 'string' ) {
     esData.descPublic = transformDesc( descPublic );
   }
 
-  if ( descInternal && descInternal.content ) {
+  if ( descInternal && typeof descInternal.content === 'string' ) {
     esData.descInternal = transformDesc( descInternal );
   }
 
