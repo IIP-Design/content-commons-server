@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased](https://github.com/IIP-Design/content-commons-server/compare/v5.0.0...HEAD)
 _This sections lists changes committed since most recent release_
 
+**Added:**
+- Clean video to uses.csv
+
 # [5.0.0](https://github.com/IIP-Design/content-commons-server/compare/v4.1.1...v5.0.0) (2020-07-10)
  
 **Added:**
