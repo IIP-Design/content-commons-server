@@ -10,6 +10,10 @@ _This sections lists changes committed since most recent release_
 
 **Added:**
 - Clean video to uses.csv
+- Regional Media Hubs to teams.csv
+
+**Changed:**
+- GPA Design & Editorial team name in teams.csv
 
 # [5.0.0](https://github.com/IIP-Design/content-commons-server/compare/v4.1.1...v5.0.0) (2020-07-10)
  
