@@ -3001,5 +3001,85 @@
       "id-id": "pemulangan",
       "ur": "وطن واپسی"
     }
+  },
+  {
+   "_id": "slRCA3QBeYojRhiuQzae",
+    "primary": false,
+    "parents": ["Ohb5K3EB-L8EaltkVSWt"],
+    "synonymMapping": [],
+    "language": {
+      "en": "potus",
+      "en-us": "potus",
+      "es-es": "POTUS",
+      "fr-fr": "POTUS",
+      "pt-br": "POTUS",
+      "ar": "POTUS",
+      "fa-ir": "POTUS",
+      "zh-cn": "POTUS",
+      "ru-ru": "POTUS",
+      "id-id": "POTUS",
+      "ur": "POTUS"
+    }
+  },
+  {
+    "_id": "sFQ1A3QBeYojRhiuJDaG",
+    "primary": false,
+    "parents": ["Thb5K3EB-L8EaltkVyUm", "Ohb5K3EB-L8EaltkVSWt"],
+    "synonymMapping": [],
+    "language": {
+      "en": "michael r. pompeo",
+      "en-us": "michael r. pompeo",
+      "es-es": "Michael R. Pompeo",
+      "fr-fr": "Michael R. Pompeo",
+      "pt-br": "Michael R. Pompeo",
+      "ar": "Michael R. Pompeo",
+      "fa-ir": "Michael R. Pompeo",
+      "zh-cn": "Michael R. Pompeo",
+      "ru-ru": "Michael R. Pompeo",
+      "id-id": "Michael R. Pompeo",
+      "ur": "Michael R. Pompeo"
+    }
+  },
+  {
+    "_id": "sVRCA3QBeYojRhiuQjb6",
+    "primary": false,
+    "parents": [
+      "Ohb5K3EB-L8EaltkVSWt"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "donald j. trump",
+      "en-us": "donald j. trump",
+      "es-es": "Donald J. Trump",
+      "fr-fr": "Donald J. Trump",
+      "pt-br": "Donald J. Trump",
+      "ar": "Donald J. Trump",
+      "fa-ir": "Donald J. Trump",
+      "zh-cn": "Donald J. Trump",
+      "ru-ru": "Donald J. Trump",
+      "id-id": "Donald J. Trump",
+      "ur": "Donald J. Trump"
+    }
+  },
+  {
+    "_id" : "s1RQA3QBeYojRhiu4DYL",
+    "primary": false,
+    "parents": [
+      "Ohb5K3EB-L8EaltkVSWt"
+    ],
+    "synonymMapping": [],
+    "language": {
+      "en": "secretary of state",
+      "en-us": "secretary of state",
+      "es-es": "Secretary of State",
+      "fr-fr": "Secretary of State",
+      "pt-br": "Secretary of State",
+      "ar": "Secretary of State",
+      "fa-ir": "Secretary of State",
+      "zh-cn": "Secretary of State",
+      "ru-ru": "Secretary of State",
+      "id-id": "Secretary of State",
+      "ur": "Secretary of State"
+    }
   }
 ]

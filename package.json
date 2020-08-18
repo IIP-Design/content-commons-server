@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Commons administrative backend",
   "main": "index.js",
   "scripts": {
