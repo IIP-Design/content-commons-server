@@ -117,6 +117,7 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
+    use: file.use.name,
     downloadUrl: maybeGetUrlToProdS3( file.url ),
     streamUrl: [],
     stream: null,

@@ -10,6 +10,7 @@ _This sections lists changes committed since most recent release_
 
 **Added:**
 - Clean video to uses.csv
+- The use field to the `transformVideoFile` function
 - Regional Media Hubs to teams.csv
 
 **Changed:**
