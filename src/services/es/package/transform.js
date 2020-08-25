@@ -78,9 +78,9 @@ const transformDocument = ( document, team ) => {
 
   if ( bureaus && bureaus.length ) {
     doc.bureaus = bureaus.map( bureau => {
-      const { id, name, abbr } = bureau;
+      const { id, name, abbr, offices } = bureau;
 
-      return { id, name, abbr };
+      return { id, name, abbr, offices };
     } );
   }
 
