@@ -23,14 +23,14 @@ const transformLanguage = language => ( {
   locale: language.locale,
   text_direction: language.textDirection.toLowerCase(),
   display_name: language.displayName,
-  native_name: language.nativeName
+  native_name: language.nativeName,
 } );
 
 const transformThumbnail = image => ( {
   url: maybeGetUrlToProdS3( image.url ),
   width: image.dimensions.width,
   height: image.dimensions.height,
-  orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait'
+  orientation: image.dimensions.width >= image.dimensions.height ? 'landscape' : 'portrait',
 } );
 
 /**
@@ -51,8 +51,8 @@ const transformThumbnails = ( thumbnails, hasSize = true ) => {
       small: null,
       medium: null,
       large: null,
-      full: null
-    }
+      full: null,
+    },
   };
 
   if ( !thumbnails || !thumbnails.length ) return esThumb;
@@ -117,6 +117,7 @@ const transformTaxonomy = ( taxonomyTerms, unitLanguage ) => {
 const transformVideoFile = file => {
   const source = {
     burnedInCaptions: file.videoBurnedInStatus !== 'CLEAN',
+    use: file.use.name,
     downloadUrl: maybeGetUrlToProdS3( file.url ),
     streamUrl: [],
     stream: null,
@@ -128,8 +129,8 @@ const transformVideoFile = file => {
       width: file.dimensions && file.dimensions.width ? file.dimensions.width : null,
       height: file.dimensions && file.dimensions.height ? file.dimensions.height : null,
       filesize: file.filesize,
-      bitrate: file.bitrate
-    }
+      bitrate: file.bitrate,
+    },
   };
 
   file.stream.forEach( stream => {
@@ -137,7 +138,7 @@ const transformVideoFile = file => {
       source.stream = {
         url: stream.embedUrl || getEmbedUrl( stream.url ),
         site: 'youtube',
-        uid: getYouTubeId( source.stream.url )
+        uid: getYouTubeId( source.stream.url ),
       };
       source.streamUrl.push( source.stream );
     } else if ( stream.site === 'vimeo' ) {
@@ -145,7 +146,7 @@ const transformVideoFile = file => {
         url: stream.embedUrl || getEmbedUrl( stream.url ),
         link: stream.url,
         site: 'vimeo',
-        uid: getVimeoId( stream.url )
+        uid: getVimeoId( stream.url ),
       };
 
       source.streamUrl.push( streamObj );
@@ -155,7 +156,7 @@ const transformVideoFile = file => {
     } else {
       source.streamUrl.push( {
         site: stream.site,
-        url: stream.url
+        url: stream.url,
       } );
     }
   } );
@@ -182,11 +183,11 @@ const transformVideoUnit = ( publisherUnit, projectCategories, projectTags ) => 
     thumbnail: null,
     transcript: {
       srcUrl: null,
-      text: null
+      text: null,
     },
     srt: {
-      srcUrl: null
-    }
+      srcUrl: null,
+    },
   };
 
   if ( publisherUnit.categories && publisherUnit.categories.length > 0 ) {
@@ -229,8 +230,9 @@ const transformVideo = videoProject => {
     type: 'video',
     published: now,
     modified: now,
+    visibility: videoProject.visibility,
     supportFiles: [],
-    unit: []
+    unit: [],
   };
 
   if ( videoProject.team ) {
@@ -275,7 +277,7 @@ const transformVideo = videoProject => {
       language: transformLanguage( file.language ),
       // TO DO: Support additional file types in future
       supportFileType: setSupportFileType( file ),
-      visibility: file.visibility
+      visibility: file.visibility,
     } ) );
     console.log( videoProject.supportFiles );
     console.log( esData.supportFiles );
