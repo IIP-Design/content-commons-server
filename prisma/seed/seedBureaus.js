@@ -9,6 +9,7 @@ const bureauFrag = `
     id
     name
     abbr
+    isBureau
     offices {
       id
       name
@@ -103,6 +104,7 @@ const seedBureaus = async ( csvFile = files.bureaus ) => {
     const dataArg = {
       name: bureau.name,
       abbr: bureau.abbr,
+      isBureau: bureau.isBureau,
       offices: {
         ...bureau.offices
       }

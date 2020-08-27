@@ -127,6 +127,7 @@ type Bureau {
   id: ID!
   name: String!
   abbr: String!
+  isBureau: Boolean!
   offices(where: OfficeWhereInput, orderBy: OfficeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Office!]
 }
 
@@ -140,6 +141,7 @@ input BureauCreateInput {
   id: ID
   name: String!
   abbr: String!
+  isBureau: Boolean!
   offices: OfficeCreateManyWithoutBureauInput
 }
 
@@ -157,6 +159,7 @@ input BureauCreateWithoutOfficesInput {
   id: ID
   name: String!
   abbr: String!
+  isBureau: Boolean!
 }
 
 type BureauEdge {
@@ -171,12 +174,15 @@ enum BureauOrderByInput {
   name_DESC
   abbr_ASC
   abbr_DESC
+  isBureau_ASC
+  isBureau_DESC
 }
 
 type BureauPreviousValues {
   id: ID!
   name: String!
   abbr: String!
+  isBureau: Boolean!
 }
 
 input BureauScalarWhereInput {
@@ -222,6 +228,8 @@ input BureauScalarWhereInput {
   abbr_not_starts_with: String
   abbr_ends_with: String
   abbr_not_ends_with: String
+  isBureau: Boolean
+  isBureau_not: Boolean
   AND: [BureauScalarWhereInput!]
   OR: [BureauScalarWhereInput!]
   NOT: [BureauScalarWhereInput!]
@@ -248,18 +256,21 @@ input BureauSubscriptionWhereInput {
 input BureauUpdateDataInput {
   name: String
   abbr: String
+  isBureau: Boolean
   offices: OfficeUpdateManyWithoutBureauInput
 }
 
 input BureauUpdateInput {
   name: String
   abbr: String
+  isBureau: Boolean
   offices: OfficeUpdateManyWithoutBureauInput
 }
 
 input BureauUpdateManyDataInput {
   name: String
   abbr: String
+  isBureau: Boolean
 }
 
 input BureauUpdateManyInput {
@@ -277,6 +288,7 @@ input BureauUpdateManyInput {
 input BureauUpdateManyMutationInput {
   name: String
   abbr: String
+  isBureau: Boolean
 }
 
 input BureauUpdateManyWithWhereNestedInput {
@@ -296,6 +308,7 @@ input BureauUpdateOneWithoutOfficesInput {
 input BureauUpdateWithoutOfficesDataInput {
   name: String
   abbr: String
+  isBureau: Boolean
 }
 
 input BureauUpdateWithWhereUniqueNestedInput {
@@ -357,6 +370,8 @@ input BureauWhereInput {
   abbr_not_starts_with: String
   abbr_ends_with: String
   abbr_not_ends_with: String
+  isBureau: Boolean
+  isBureau_not: Boolean
   offices_every: OfficeWhereInput
   offices_some: OfficeWhereInput
   offices_none: OfficeWhereInput

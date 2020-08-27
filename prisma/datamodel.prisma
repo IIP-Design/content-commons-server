@@ -115,6 +115,7 @@ type Bureau {
   id: ID! @id
   name: String!
   abbr: String!
+  isBureau: Boolean!
   offices: [Office] @scalarList(strategy: RELATION)
 }
 
