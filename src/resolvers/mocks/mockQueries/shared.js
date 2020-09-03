@@ -33,6 +33,7 @@ export const BUREAU_FRAGMENT = gql`
     id
     name
     abbr
+    isBureau
     offices {
       id
       name

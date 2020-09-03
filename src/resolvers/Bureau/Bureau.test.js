@@ -50,7 +50,8 @@ describe( 'Mutation:', () => {
       id: 'new-bureau-1234',
       name: 'Bureau of ZZZZZ',
       abbr: 'ZZ',
-      offices: []
+      offices: [],
+      isBureau: true
     };
     const ctx = {
       prisma: {

@@ -198,18 +198,21 @@ export const bureaus = [
     name: 'Bureau of African Affairs',
     abbr: 'AF',
     offices: [],
+    isBureau: true
   },
   {
     id: 'ck5cvpjcv01k90720vvw2imhn',
     name: 'Bureau of Budget and Planning',
     abbr: 'BP',
     offices: [],
+    isBureau: true
   },
   {
     id: 'ck5cvpjcv01ka0720kruynq52',
     name: 'Bureau of Consular Affairs',
     abbr: 'CA',
     offices: [],
+    isBureau: true
   },
 ];
 
