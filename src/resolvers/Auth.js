@@ -10,6 +10,7 @@ import { sendSesEmail, setSesParams } from '../services/aws/ses';
 import { confirmationEmail, passwordResetEmail } from '../services/mailTemplates';
 import { verifyGoogleToken } from '../services/googleAuth';
 import { verifyCloudflareToken } from '../services/cloudflareAuth';
+import { verifyCognitoToken } from '../services/aws/cognito';
 import { USER } from '../fragments/user';
 
 const ENFORCE_WHITELIST = process.env.WHITELISTED_EMAILS_ONLY !== undefined
@@ -72,6 +73,62 @@ const AuthResolvers = {
   },
 
   Mutation: {
+    /**
+     * @param {object} args { token } cloudflare tokenId
+     */
+    async cognitoSignin( parent, { token }, ctx ) {
+      // 1. Was a Cognito token sent?
+      if ( !token ) {
+        // or is empty
+        throw new AuthenticationError( 'A valid Cognito token is not available' );
+      }
+
+      // 2. Verify that the Cognito token sent is valid
+      const cognitoUser = await verifyCognitoToken( token ).catch( err => {
+        throw new AuthenticationError( err );
+      } );
+
+      // 3. Check to see if user is in the db
+      let user = await ctx.prisma.user( { email: cognitoUser.email } );
+
+      // 4. If user is not in the db, create one with subscriber permissions
+      if ( !user ) {
+        try {
+          const { email } = cognitoUser;
+
+          const subscriber = {
+            email,
+            firstName: '',
+            lastName: '',
+            isConfirmed: true,
+            permissions: {
+              set: ['SUBSCRIBER'],
+            },
+          };
+
+          user = await ctx.prisma.createUser( subscriber ).$fragment( USER );
+        } catch ( err ) {
+          throw new ApolloError( 'There was an error processing your login.' );
+        }
+      }
+
+      // 5.Create user's JWT token
+      // TO DO:  use Cognito idToken instead of creating a new one
+      const jwtToken = generateToken( user.id );
+
+      // 6.Set the jwt as a cookie on the response
+      setCookie( ctx, jwtToken );
+
+      // 7. Set the ES token for client to ES communication
+      // We should be getting tokens from api server
+      // Since api is not yet ready to generate tokens so doing it here
+      generateESCookie( ctx );
+
+      // 8.Return user
+      return user;
+    },
+
+
     /**
      * @param {object} args { token } cloudflare tokenId
      */
@@ -359,9 +416,7 @@ const AuthResolvers = {
      * @param {object} args { UserCreateInput }
      */
     async requestAccountAction( parent, args, ctx ) {
-      const {
-        email, subject, body, link, reply, page,
-      } = args;
+      const { email, subject, body, link, reply, page } = args;
 
       try {
         // 1. check if there is a user with that email and if they are confirmed.
@@ -399,9 +454,10 @@ const AuthResolvers = {
         if ( updatedUser ) {
           const { team } = user;
           const confirmLink = `${process.env.FRONTEND_URL}/${page}?tempToken=${tempToken}`;
-          const htmlEmail = page === 'confirm'
-            ? confirmationEmail( confirmLink, team.name )
-            : passwordResetEmail( body, confirmLink, link );
+          const htmlEmail
+            = page === 'confirm'
+              ? confirmationEmail( confirmLink, team.name )
+              : passwordResetEmail( body, confirmLink, link );
           const params = setSesParams( user.email, htmlEmail, subject );
 
           await sendSesEmail( params );

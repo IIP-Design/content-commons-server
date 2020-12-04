@@ -13,6 +13,7 @@ type Mutation {
   signIn(email: String!, password: String!): User!
   googleSignin(token: String!): User
   cloudflareSignin(token: String!): User
+  cognitoSignin(token: String!): User
   updatePassword(tempToken: String!, password: String!, confirmPassword: String!): User!
   requestAccountAction(
     email: String!
