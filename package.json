@@ -16,7 +16,7 @@
     "test": "NODE_ENV=test jest"
   },
   "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@cdm-logger/server": "^5.0.5",
     "amqplib": "^0.5.3",
