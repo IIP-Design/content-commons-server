@@ -1,7 +1,6 @@
 {
-  "extends": [
-    "@gpa-lab/eslint-config"
-  ],
+  "extends": ["@gpa-lab/eslint-config"],
+  "ignorePatterns": ["build/", "node_modules/", "src/schema/generated/"],
   "parser": "babel-eslint",
   "rules": {
     "no-console": "off"
