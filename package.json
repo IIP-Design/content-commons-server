@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "@gpa-lab/content-commons-server",
   "version": "5.4.1",
-  "description": "Commons administrative backend",
+  "description": "The Content Commons administrative backend.",
   "main": "index.js",
   "scripts": {
     "build": "npm run clear && babel src --out-dir build --source-maps && npm run copy",
@@ -15,7 +15,7 @@
     "start": "node build/index.js",
     "test": "NODE_ENV=test jest"
   },
-  "author": "",
+  "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
   "license": "ISC",
   "dependencies": {
     "@cdm-logger/server": "^5.0.5",
