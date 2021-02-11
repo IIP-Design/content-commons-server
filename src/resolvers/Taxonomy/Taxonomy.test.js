@@ -14,7 +14,7 @@ describe( 'Query:', () => {
             }
 
             return categories[1].translations;
-          } )
+          } ),
         } ) ),
         categories: jest.fn( () => categories ),
         languageTranslation: jest.fn( () => ( {
@@ -26,9 +26,9 @@ describe( 'Query:', () => {
             }
 
             return languages.french;
-          } )
-        } ) )
-      }
+          } ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -46,7 +46,7 @@ describe( 'Query:', () => {
       prisma: {
         category: jest.fn( () => ( {
           ...category,
-          translations: jest.fn( () => categories[0].translations )
+          translations: jest.fn( () => categories[0].translations ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -57,15 +57,15 @@ describe( 'Query:', () => {
             }
 
             return languages.french;
-          } )
-        } ) )
-      }
+          } ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.CATEGORY_QUERY,
-      variables: { id: category.id }
+      variables: { id: category.id },
     };
     const result = await server.query( request );
 
@@ -84,7 +84,7 @@ describe( 'Query:', () => {
             }
 
             return tags[1].translations;
-          } )
+          } ),
         } ) ),
         tags: jest.fn( () => tags ),
         languageTranslation: jest.fn( () => ( {
@@ -96,9 +96,9 @@ describe( 'Query:', () => {
             }
 
             return languages.french;
-          } )
-        } ) )
-      }
+          } ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -116,7 +116,7 @@ describe( 'Query:', () => {
       prisma: {
         tag: jest.fn( () => ( {
           ...tag,
-          translations: jest.fn( () => tags[0].translations )
+          translations: jest.fn( () => tags[0].translations ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -127,15 +127,15 @@ describe( 'Query:', () => {
             }
 
             return languages.french;
-          } )
-        } ) )
-      }
+          } ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.TAG_QUERY,
-      variables: { id: tag.id }
+      variables: { id: tag.id },
     };
     const result = await server.query( request );
 
@@ -147,7 +147,7 @@ describe( 'Query:', () => {
 describe( 'Mutation:', () => {
   const translations = [
     { ...categories[0].translations[0], name: 'new' },
-    { ...categories[0].translations[1], name: 'nouvelle' }
+    { ...categories[0].translations[1], name: 'nouvelle' },
   ];
 
   it( 'createCategory creates a category', async () => {
@@ -156,16 +156,16 @@ describe( 'Mutation:', () => {
       translations: {
         connect: [
           { id: languages.english.id },
-          { id: languages.french.id }
-        ]
-      }
+          { id: languages.french.id },
+        ],
+      },
     };
     const ctx = {
       user: {},
       prisma: {
         category: jest.fn( () => ( {
           ...category,
-          translations: jest.fn( () => translations )
+          translations: jest.fn( () => translations ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -176,22 +176,22 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
         createCategory: jest.fn( () => ( { ...category } ) ),
-      }
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_CATEGORY_MUTATION,
-      variables: { data: { ...category } }
+      variables: { data: { ...category } },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.createCategory ).toEqual( {
-      ...category, translations
+      ...category, translations,
     } );
   } );
 
@@ -200,16 +200,16 @@ describe( 'Mutation:', () => {
       ...categories[0],
       translations: {
         disconnect: {
-          id: translations[1].id
-        }
-      }
+          id: translations[1].id,
+        },
+      },
     };
     const ctx = {
       user: {},
       prisma: {
         category: jest.fn( () => ( {
           ...category,
-          translations: jest.fn( () => translations.slice( 0, 1 ) )
+          translations: jest.fn( () => translations.slice( 0, 1 ) ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -220,13 +220,13 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
         updateCategory: jest.fn( () => ( {
           ...category,
-          translations: translations.slice( 0, 1 )
-        } ) )
-      }
+          translations: translations.slice( 0, 1 ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -234,17 +234,17 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_CATEGORY_MUTATION,
       variables: {
         data: {
-          translations: { ...category.translations }
+          translations: { ...category.translations },
         },
-        where: { id: category.id }
-      }
+        where: { id: category.id },
+      },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.updateCategory ).toEqual( {
       ...category,
-      translations: translations.slice( 0, 1 )
+      translations: translations.slice( 0, 1 ),
     } );
   } );
 
@@ -254,16 +254,16 @@ describe( 'Mutation:', () => {
       translations: {
         connect: [
           { id: languages.english.id },
-          { id: languages.french.id }
-        ]
-      }
+          { id: languages.french.id },
+        ],
+      },
     };
     const ctx = {
       user: {},
       prisma: {
         tag: jest.fn( () => ( {
           ...tag,
-          translations: jest.fn( () => translations )
+          translations: jest.fn( () => translations ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -274,22 +274,22 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
         createTag: jest.fn( () => ( { ...tag } ) ),
-      }
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_TAG_MUTATION,
-      variables: { data: { ...tag } }
+      variables: { data: { ...tag } },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.createTag ).toEqual( {
-      ...tag, translations
+      ...tag, translations,
     } );
   } );
 
@@ -298,16 +298,16 @@ describe( 'Mutation:', () => {
       ...tags[1],
       translations: {
         disconnect: {
-          id: translations[1].id
-        }
-      }
+          id: translations[1].id,
+        },
+      },
     };
     const ctx = {
       user: {},
       prisma: {
         tag: jest.fn( () => ( {
           ...tag,
-          translations: jest.fn( () => translations.slice( 0, 1 ) )
+          translations: jest.fn( () => translations.slice( 0, 1 ) ),
         } ) ),
         languageTranslation: jest.fn( () => ( {
           language: jest.fn( () => {
@@ -318,13 +318,13 @@ describe( 'Mutation:', () => {
             }
 
             return languages.french;
-          } )
+          } ),
         } ) ),
         updateTag: jest.fn( () => ( {
           ...tag,
-          translations: translations.slice( 0, 1 )
-        } ) )
-      }
+          translations: translations.slice( 0, 1 ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -332,17 +332,17 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_TAG_MUTATION,
       variables: {
         data: {
-          translations: { ...tag.translations }
+          translations: { ...tag.translations },
         },
-        where: { id: tag.id }
-      }
+        where: { id: tag.id },
+      },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.updateTag ).toEqual( {
       ...tag,
-      translations: translations.slice( 0, 1 )
+      translations: translations.slice( 0, 1 ),
     } );
   } );
 } );

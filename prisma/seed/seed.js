@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import fs from 'fs';
+
 import seedLanguages from './seedLanguages';
 import seedTaxonomies from './seedTaxonomies';
 import seedTeams from './seedTeams';
@@ -8,18 +9,7 @@ import seedUses from './seedUses';
 import seedRegions from './seedRegions';
 import seedGraphicStyles from './seedGraphicStyles';
 import seedSocialPlatforms from './seedSocialPlatorms';
-
-export const files = {
-  teams: './prisma/data/teams.csv',
-  bureaus: './prisma/data/bureaus.csv',
-  languages: './prisma/data/languages.csv',
-  categories: './prisma/data/categories.csv',
-  graphicStyles: './prisma/data/graphicStyles.csv',
-  tags: './prisma/data/tags.csv',
-  uses: './prisma/data/uses.csv',
-  regions: './prisma/data/regions.csv',
-  socialPlatforms: './prisma/data/socialPlatforms.csv',
-};
+import files from './utils';
 
 /**
  * Seed Graph with languages, taxonomies, and teams.

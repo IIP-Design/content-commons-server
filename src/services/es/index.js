@@ -4,6 +4,7 @@
  */
 export function maybeGetUrlToProdS3( url ) {
   if ( url.startsWith( 'http:' ) || url.startsWith( 'https:' ) ) return url;
+
   return `https://${process.env.AWS_S3_PRODUCTION_BUCKET}.s3.amazonaws.com/${url}`;
 }
 

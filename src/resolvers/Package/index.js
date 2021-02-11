@@ -1,9 +1,10 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
+
 import { requiresLogin } from '../../lib/authentication';
 import { deleteAllS3Assets, getAssetPath } from '../../services/aws/s3';
 import transformPackage from '../../services/es/package/transform';
 import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/package';
-import { publishToChannel } from '../../services/rabbitmq';
+import { publishToChannel } from '../../services/rabbitmq/util';
 import { PACKAGE_FULL } from '../../fragments/package';
 import { deleteAssets } from './controller';
 
@@ -17,7 +18,7 @@ const PackageResolvers = {
 
     package( parent, args, ctx ) {
       return ctx.prisma.package( { id: args.id } );
-    }
+    },
   } ),
 
   Mutation: requiresLogin( {
@@ -38,7 +39,7 @@ const PackageResolvers = {
 
         return ctx.prisma.updatePackage( {
           data: { assetPath },
-          where: { id }
+          where: { id },
         } );
       } catch ( err ) {
         throw new ApolloError( err );
@@ -50,7 +51,7 @@ const PackageResolvers = {
 
       const {
         data,
-        where: { id }
+        where: { id },
       } = updates;
 
 
@@ -84,8 +85,8 @@ const PackageResolvers = {
                   id: document.id,
                   url: document.url,
                   assetPath: data.assetPath,
-                  thumbnailFilename: document.title
-                }
+                  thumbnailFilename: document.title,
+                },
               } );
             }
           } );
@@ -149,7 +150,7 @@ const PackageResolvers = {
 
       if ( !doesPackageExist ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
@@ -176,7 +177,7 @@ const PackageResolvers = {
 
     deleteManyPackages( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyPackages( { ...where } );
-    }
+    },
   } ),
 
   Package: {
@@ -198,8 +199,8 @@ const PackageResolvers = {
 
     documents( parent, args, ctx ) {
       return ctx.prisma.package( { id: parent.id } ).documents( { ...args } );
-    }
-  }
+    },
+  },
 
 };
 

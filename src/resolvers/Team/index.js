@@ -8,13 +8,13 @@ const TeamResolvers = {
 
     team( parent, args, ctx ) {
       return ctx.prisma.team( { id: args.id } );
-    }
+    },
   },
 
   Mutation: requiresLogin( {
     async createTeam( parent, args, ctx ) {
       const team = await ctx.prisma.createTeam( {
-        ...args
+        ...args,
       } );
 
       return team;
@@ -26,15 +26,16 @@ const TeamResolvers = {
 
       return ctx.prisma.updateTeam( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
     deleteTeam( parent, { where }, ctx ) {
       const { name } = where;
+
       return ctx.prisma.deleteTeam( { name } );
-    }
-  } )
+    },
+  } ),
 };
 
 export default TeamResolvers;

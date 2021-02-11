@@ -17,11 +17,12 @@ describe( 'projectParser fn:', () => {
       `https://www.youtube.com/watch?v=${id}&feature=youtu.be`,
       `https://www.youtube.com/watch?v=${id}#t=0m30s`,
       `https://www.youtube.com/watch?v=${id}&feature=channel`,
-      `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+      `<iframe width="560" height="315" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
     ];
 
     values.forEach( val => {
       const ret = getYouTubeId( val );
+
       expect( ret ).toEqual( id );
     } );
   } );
@@ -53,11 +54,12 @@ describe( 'projectParser fn:', () => {
       `https://vimeo.com/${id}?param=test`,
       `http://vimeo.com/${id}?param=test`,
       `https://www.vimeo.com/${id}?param=test`,
-      `http://www.vimeo.com/${id}?param=test`
+      `http://www.vimeo.com/${id}?param=test`,
     ];
 
     values.forEach( val => {
       const ret = getVimeoId( val );
+
       expect( ret ).toEqual( id );
     } );
   } );
@@ -79,6 +81,7 @@ describe( 'projectParser fn:', () => {
 
     values.forEach( val => {
       const ret = hasValidValue( val );
+
       if ( ret ) {
         expect( ret ).toEqual( true );
       } else {
@@ -91,17 +94,19 @@ describe( 'projectParser fn:', () => {
     const { getVimeoIds } = parser;
     const stream = [
       {
-        url: 'https://vimeo.com/11'
+        url: 'https://vimeo.com/11',
       },
       {
-        url: 'https://vimeo.com/22'
+        url: 'https://vimeo.com/22',
       },
       {
-        url: 'https://vimeo.com/33'
-      }
+        url: 'https://vimeo.com/33',
+      },
     ];
 
-    expect( getVimeoIds( stream ) ).toEqual( ['11', '22', '33'] );
+    expect( getVimeoIds( stream ) ).toEqual( [
+      '11', '22', '33',
+    ] );
   } );
 
   it( 'getS3ProjectDirectory returns the correct S3 directory', () => {
@@ -110,23 +115,23 @@ describe( 'projectParser fn:', () => {
       {
         files: [
           {
-            url: 'https://s3url.com/2020/04/filename1.mp4'
+            url: 'https://s3url.com/2020/04/filename1.mp4',
           },
           {
-            url: 'https://s3url.com/2020/04/filename2.mp4'
-          }
-        ]
+            url: 'https://s3url.com/2020/04/filename2.mp4',
+          },
+        ],
       },
       {
         files: [
           {
-            url: 'https://s3url.com/2020/04/filename3.mp4'
+            url: 'https://s3url.com/2020/04/filename3.mp4',
           },
           {
-            url: 'https://s3url.com/2020/04/filename4.mp4'
-          }
-        ]
-      }
+            url: 'https://s3url.com/2020/04/filename4.mp4',
+          },
+        ],
+      },
     ];
     const dir = getS3ProjectDirectory( units );
 
@@ -141,29 +146,29 @@ describe( 'projectParser fn:', () => {
           {
             stream: [
               {
-                url: 'https://vimeo.com/11'
+                url: 'https://vimeo.com/11',
               },
               {
-                url: 'https://vimeo.com/22'
-              }
-            ]
-          }
-        ]
+                url: 'https://vimeo.com/22',
+              },
+            ],
+          },
+        ],
       },
       {
         files: [
           {
             stream: [
               {
-                url: 'https://vimeo.com/33'
+                url: 'https://vimeo.com/33',
               },
               {
-                url: 'https://vimeo.com/44'
-              }
-            ]
-          }
-        ]
-      }
+                url: 'https://vimeo.com/44',
+              },
+            ],
+          },
+        ],
+      },
     ];
     const files = getVimeoFiles( units );
 

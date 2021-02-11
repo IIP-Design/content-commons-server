@@ -26,7 +26,7 @@ const resolvers = merge(
   DocumentResolvers,
   VideoResolvers,
   PackageResolvers,
-  GraphicResolvers
+  GraphicResolvers,
 );
 
 export default resolvers;

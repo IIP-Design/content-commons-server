@@ -14,7 +14,7 @@ const RegionResolvers = {
 
     country( parent, args, ctx ) {
       return ctx.prisma.country( { ...args } );
-    }
+    },
   },
 
   Mutation: {
@@ -23,20 +23,20 @@ const RegionResolvers = {
       const region = await ctx.prisma.createRegion( { ...data } );
 
       return region;
-    }
+    },
   },
 
   Region: {
     countries( parent, args, ctx ) {
       return ctx.prisma.region( { id: parent.id } ).countries( { ...args } );
-    }
+    },
   },
 
   Country: {
     region( parent, args, ctx ) {
       return ctx.prisma.country( { id: parent.id } ).region( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default RegionResolvers;

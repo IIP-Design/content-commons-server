@@ -4,7 +4,7 @@ const AWS = require( 'aws-sdk' );
 AWS.config.update( {
   accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
+  region: process.env.AWS_REGION,
 } );
 
 // Creates new instance of AWS SES
@@ -14,26 +14,26 @@ const ses = new AWS.SES();
 export const setSesParams = ( recipient, body, subject ) => (
   {
     Destination: {
-      ToAddresses: [recipient]
+      ToAddresses: [recipient],
     },
     Message: {
       Body: {
         Html: {
           Charset: 'UTF-8',
-          Data: body.html
+          Data: body.html,
         },
         Text: {
           Charset: 'UTF-8',
-          Data: body.text
-        }
+          Data: body.text,
+        },
       },
       Subject: {
         Charset: 'UTF-8',
-        Data: subject
-      }
+        Data: subject,
+      },
     },
     ReplyToAddresses: [`${process.env.MAIL_RETURN_ADDRESS}`],
-    Source: `${process.env.MAIL_RETURN_ADDRESS}`
+    Source: `${process.env.MAIL_RETURN_ADDRESS}`,
   }
 );
 

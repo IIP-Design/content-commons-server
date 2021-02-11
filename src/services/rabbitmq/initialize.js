@@ -13,7 +13,7 @@ let publisherConnection = null;
 let _consumerChannel = null;
 let _publishChannel = null;
 
-const connect = async() => amqp.connect( messageQueueConnectionString );
+const connect = async () => amqp.connect( messageQueueConnectionString );
 
 const handleConnectionEvents = connection => {
   // handle connection closed
@@ -42,7 +42,7 @@ export const getConnection = async type => {
 };
 
 // Use separaye publich and consumer channels for each thread (should we only be using 1 channel?)
-export const getPublishChannel = async() => {
+export const getPublishChannel = async () => {
   if ( _publishChannel ) {
     return _publishChannel;
   }
@@ -59,7 +59,7 @@ export const getPublishChannel = async() => {
 };
 
 // Use separaye publish and consumer channels for each thread (should we only be using 1 channel?)
-export const getConsumerChannel = async() => {
+export const getConsumerChannel = async () => {
   if ( _consumerChannel ) {
     return _consumerChannel;
   }
@@ -80,7 +80,7 @@ const setUpExchanges = async channel => {
   await Promise.all( [
     channel.assertExchange( 'publish', 'topic', { durable: true } ),
     channel.assertExchange( 'publish.dlx', 'fanout', { durable: true } ),
-    channel.assertExchange( 'util', 'topic', { durable: true } )
+    channel.assertExchange( 'util', 'topic', { durable: true } ),
   ] );
 };
 
@@ -92,7 +92,7 @@ const setUpQueues = async channel => {
     channel.assertQueue( 'publish.result', { durable: true, deadLetterExchange: 'publish.dlx' } ),
     channel.assertQueue( 'util.process', { durable: true, deadLetterExchange: 'publish.dlx' } ),
     channel.assertQueue( 'util.result', { durable: true, deadLetterExchange: 'publish.dlx' } ),
-    channel.assertQueue( 'publish.dlq', { durable: true } )
+    channel.assertQueue( 'publish.dlq', { durable: true } ),
   ] );
 };
 
@@ -105,11 +105,11 @@ const bindExhangesToQueues = async channel => {
     channel.bindQueue( 'publish.result', 'publish', 'result.*.*' ),
     channel.bindQueue( 'util.process', 'util', 'convert.document' ),
     channel.bindQueue( 'util.result', 'util', 'convert.result' ),
-    channel.bindQueue( 'publish.dlq', 'publish.dlx' )
+    channel.bindQueue( 'publish.dlq', 'publish.dlx' ),
   ] );
 };
 
-const initalize = async() => {
+const initalize = async () => {
   console.log( 'Setting up RabbitMQ Exchanges/Queues' );
 
   // connect to RabbitMQ Instance

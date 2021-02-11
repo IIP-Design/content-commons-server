@@ -14,14 +14,14 @@ const TaxonomyResolvers = {
 
     tag( parent, args, ctx ) {
       return ctx.prisma.tag( { ...args } );
-    }
+    },
   },
 
   Mutation: {
     async createCategory( parent, args, ctx ) {
       const { data } = args;
       const category = await ctx.prisma.createCategory( {
-        ...data
+        ...data,
       } );
 
       return category;
@@ -34,7 +34,7 @@ const TaxonomyResolvers = {
     async createTag( parent, args, ctx ) {
       const { data } = args;
       const tag = await ctx.prisma.createTag( {
-        ...data
+        ...data,
       } );
 
       return tag;
@@ -42,20 +42,20 @@ const TaxonomyResolvers = {
 
     updateTag( parent, args, ctx ) {
       return ctx.prisma.updateTag( { ...args } );
-    }
+    },
   },
 
   Category: {
     translations( parent, args, ctx ) {
       return ctx.prisma.category( { id: parent.id } ).translations( { ...args } );
-    }
+    },
   },
 
   Tag: {
     translations( parent, args, ctx ) {
       return ctx.prisma.tag( { id: parent.id } ).translations( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default TaxonomyResolvers;

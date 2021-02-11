@@ -25,7 +25,7 @@ const DocumentResolvers = {
 
     documentConversionFormat( parent, args, ctx ) {
       return ctx.prisma.documentConversionFormat( { id: args.id } );
-    }
+    },
   } ),
 
   Mutation: requiresLogin( {
@@ -42,7 +42,7 @@ const DocumentResolvers = {
 
       return ctx.prisma.updateDocumentFile( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -56,7 +56,7 @@ const DocumentResolvers = {
 
     async createDocumentUse( parent, args, ctx ) {
       const documentUse = await ctx.prisma.createDocumentUse( {
-        ...args
+        ...args,
       } );
 
       return documentUse;
@@ -66,12 +66,12 @@ const DocumentResolvers = {
       const updates = { ...args };
       const {
         data,
-        where: { id }
+        where: { id },
       } = updates;
 
       return ctx.prisma.updateDocumentUse( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -93,7 +93,7 @@ const DocumentResolvers = {
     async createDocumentConversionFormat( parent, args, ctx ) {
       const { data } = args;
       const documentConversionFormat = await ctx.prisma.createDocumentConversionFormat( {
-        ...data
+        ...data,
       } );
 
       return documentConversionFormat;
@@ -105,7 +105,7 @@ const DocumentResolvers = {
 
       return ctx.prisma.updateDocumentConversionFormat( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -122,14 +122,14 @@ const DocumentResolvers = {
 
     deleteManyDocumentConversionFormats( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyDocumentConversionFormats( { ...where } );
-    }
+    },
   } ),
 
   DocumentFile: {
     async signedUrl( parent ) {
       const signed = await getSignedUrlPromiseGet( {
         key: parent.url,
-        expires: 3600 // hour
+        expires: 3600, // hour
       } );
 
       return signed.url;
@@ -169,8 +169,8 @@ const DocumentResolvers = {
 
     excerpt( parent, args, ctx ) {
       return ctx.prisma.documentFile( { id: parent.id } ).excerpt( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default DocumentResolvers;

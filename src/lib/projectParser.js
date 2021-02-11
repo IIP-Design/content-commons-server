@@ -1,5 +1,3 @@
-
-
 const getS3Dir = value => value.substring( 0, value.lastIndexOf( '/' ) );
 
 
@@ -31,6 +29,7 @@ export const getVimeoId = url => {
   if ( match ) {
     return match[1];
   }
+
   return '';
 };
 
@@ -38,6 +37,7 @@ export const hasValidValue = value => value && value.trim() !== '';
 
 export const getVimeoIds = stream => {
   const vimeo = [];
+
   if ( stream && stream.length ) {
     stream.forEach( s => {
       if ( hasValidValue( s.url ) ) {
@@ -45,6 +45,7 @@ export const getVimeoIds = stream => {
       }
     } );
   }
+
   return vimeo;
 };
 
@@ -74,6 +75,7 @@ export const getVimeoFiles = units => {
     if ( unit.files && unit.files.length ) {
       unit.files.forEach( file => {
         const { stream } = file;
+
         vimeo = getVimeoIds( stream );
       } );
     }

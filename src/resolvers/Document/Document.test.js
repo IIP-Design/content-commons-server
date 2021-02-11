@@ -1,6 +1,6 @@
 import * as query from '../mocks/mockQueries/document';
 import {
-  documentUses, documentConversionFormats, documentFile
+  documentUses, documentConversionFormats, documentFile,
 } from '../mocks/mockData';
 import createTestServer from '../../testServer/createTestServer';
 
@@ -9,9 +9,9 @@ jest.mock(
   () => ( {
     getSignedUrlPromiseGet: () => ( {
       key: 'the-mock-key',
-      url: 'https://signedurl.com'
-    } )
-  } )
+      url: 'https://signedurl.com',
+    } ),
+  } ),
 );
 
 const getDocumentFile = () => ( {
@@ -24,7 +24,7 @@ const getDocumentFile = () => ( {
   visibility: documentFile.visibility,
   status: documentFile.status,
   bureaus: jest.fn( () => documentFile.bureaus ),
-  countries: jest.fn( () => documentFile.countries )
+  countries: jest.fn( () => documentFile.countries ),
 } );
 
 const getImageFile = () => ( {
@@ -32,18 +32,18 @@ const getImageFile = () => ( {
   language: jest.fn( () => documentFile.image[0].language ),
   use: jest.fn( () => documentFile.image[0].use ),
   social: jest.fn( () => documentFile.image[0].social ),
-  style: jest.fn( () => documentFile.image[0].style )
+  style: jest.fn( () => documentFile.image[0].style ),
 } );
 
 const getPrismaDocumentFileFns = () => ( {
   bureau: jest.fn( () => ( {
-    offices: jest.fn( () => documentFile.bureaus[0].offices )
+    offices: jest.fn( () => documentFile.bureaus[0].offices ),
   } ) ),
   country: jest.fn( () => ( {
-    region: jest.fn( () => documentFile.countries[0].region )
+    region: jest.fn( () => documentFile.countries[0].region ),
   } ) ),
   documentFile: jest.fn( () => getDocumentFile() ),
-  imageFile: jest.fn( () => getImageFile() )
+  imageFile: jest.fn( () => getImageFile() ),
 } );
 
 describe( 'Query:', () => {
@@ -52,10 +52,10 @@ describe( 'Query:', () => {
       user: {},
       prisma: {
         bureau: jest.fn( () => ( {
-          offices: jest.fn()
+          offices: jest.fn(),
         } ) ),
         country: jest.fn( () => ( {
-          region: jest.fn()
+          region: jest.fn(),
         } ) ),
         documentFile: jest.fn( () => ( {
           language: jest.fn(),
@@ -64,16 +64,16 @@ describe( 'Query:', () => {
           use: jest.fn(),
           image: jest.fn(),
           bureaus: jest.fn(),
-          countries: jest.fn()
+          countries: jest.fn(),
         } ) ),
         imageFile: jest.fn( () => ( {
           language: jest.fn(),
           use: jest.fn(),
           social: jest.fn(),
-          style: jest.fn()
+          style: jest.fn(),
         } ) ),
-        documentFiles: jest.fn()
-      }
+        documentFiles: jest.fn(),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -109,13 +109,13 @@ describe( 'Query:', () => {
   it( 'documentFile returns a specific document file', async () => {
     const ctx = {
       user: {},
-      prisma: { ...getPrismaDocumentFileFns() }
+      prisma: { ...getPrismaDocumentFileFns() },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.DOCUMENT_FILE_QUERY,
-      variables: { id: documentFile.id }
+      variables: { id: documentFile.id },
     };
     const result = await server.query( request );
 
@@ -127,8 +127,8 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        documentUses: jest.fn( () => documentUses )
-      }
+        documentUses: jest.fn( () => documentUses ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -144,14 +144,14 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        documentUse: jest.fn( () => documentUse )
-      }
+        documentUse: jest.fn( () => documentUse ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.DOCUMENT_USE_QUERY,
-      variables: { id: documentUse.id }
+      variables: { id: documentUse.id },
     };
     const result = await server.query( request );
 
@@ -163,8 +163,8 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        documentConversionFormats: jest.fn( () => documentConversionFormats )
-      }
+        documentConversionFormats: jest.fn( () => documentConversionFormats ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -181,14 +181,14 @@ describe( 'Query:', () => {
     const ctx = {
       user: {},
       prisma: {
-        documentConversionFormat: jest.fn( () => documentConversionFormat )
-      }
+        documentConversionFormat: jest.fn( () => documentConversionFormat ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.DOCUMENT_CONVERSION_FORMAT_QUERY,
-      variables: { id: documentConversionFormat.id }
+      variables: { id: documentConversionFormat.id },
     };
     const result = await server.query( request );
 
@@ -205,14 +205,14 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         ...getPrismaDocumentFileFns(),
-        createDocumentFile: jest.fn( () => documentFile )
-      }
+        createDocumentFile: jest.fn( () => documentFile ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_DOCUMENT_FILE_MUTATION,
-      variables: { data: { id } }
+      variables: { data: { id } },
     };
     const result = await server.mutate( request );
 
@@ -227,8 +227,8 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         ...getPrismaDocumentFileFns(),
-        updateDocumentFile: jest.fn( () => ( { ...documentFile, title } ) )
-      }
+        updateDocumentFile: jest.fn( () => ( { ...documentFile, title } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -236,14 +236,14 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_DOCUMENT_FILE_MUTATION,
       variables: {
         data: { title },
-        where: { id }
-      }
+        where: { id },
+      },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.updateDocumentFile ).toEqual( {
-      ...documentFile, title
+      ...documentFile, title,
     } );
   } );
 
@@ -253,14 +253,14 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         ...getPrismaDocumentFileFns(),
-        deleteDocumentFile: jest.fn( () => documentFile )
-      }
+        deleteDocumentFile: jest.fn( () => documentFile ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_DOCUMENT_FILE_MUTATION,
-      variables: { id }
+      variables: { id },
     };
     const result = await server.mutate( request );
 
@@ -274,15 +274,15 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManyDocumentFiles: jest.fn( () => ( {
-          count: documentsToDelete.length
-        } ) )
-      }
+          count: documentsToDelete.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_DOCUMENT_FILES_MUTATION,
-      variables: { where: { id_not: '' } }
+      variables: { where: { id_not: '' } },
     };
     const result = await server.mutate( request );
 
@@ -299,15 +299,15 @@ describe( 'Mutation:', () => {
       prisma: {
         createDocumentUse: jest.fn( () => ( {
           ...newDocumentUse,
-          id: newDocumentUseId
-        } ) )
-      }
+          id: newDocumentUseId,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_DOCUMENT_USE_MUTATION,
-      variables: { name: newDocumentUse.name }
+      variables: { name: newDocumentUse.name },
     };
     const result = await server.mutate( request );
 
@@ -320,13 +320,13 @@ describe( 'Mutation:', () => {
     const updatedDocumentUseName = 'an updated document use name';
     const updatedDocumentUse = {
       ...documentUses[0],
-      name: updatedDocumentUseName
+      name: updatedDocumentUseName,
     };
     const ctx = {
       user: {},
       prisma: {
-        updateDocumentUse: jest.fn( () => updatedDocumentUse )
-      }
+        updateDocumentUse: jest.fn( () => updatedDocumentUse ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -334,8 +334,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_DOCUMENT_USE_MUTATION,
       variables: {
         data: { name: updatedDocumentUseName },
-        where: { id: documentUses[0].id }
-      }
+        where: { id: documentUses[0].id },
+      },
     };
     const result = await server.mutate( request );
 
@@ -349,9 +349,9 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         updateManyDocumentUses: jest.fn( () => ( {
-          count: documentUses.length
-        } ) )
-      }
+          count: documentUses.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -359,8 +359,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_MANY_DOCUMENT_USES_MUTATION,
       variables: {
         data: { name: updatedDocumentUseName },
-        where: { id_not: '' }
-      }
+        where: { id_not: '' },
+      },
     };
     const result = await server.mutate( request );
 
@@ -374,14 +374,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        deleteDocumentUse: jest.fn( () => deletedDocumentUse )
-      }
+        deleteDocumentUse: jest.fn( () => deletedDocumentUse ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_DOCUMENT_USE_MUTATION,
-      variables: { id: documentUses[0].id }
+      variables: { id: documentUses[0].id },
     };
     const result = await server.mutate( request );
 
@@ -394,15 +394,15 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManyDocumentUses: jest.fn( () => ( {
-          count: documentUses.length
-        } ) )
-      }
+          count: documentUses.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_DOCUMENT_USES_MUTATION,
-      variables: { where: { id_not: '' } }
+      variables: { where: { id_not: '' } },
     };
     const result = await server.mutate( request );
 
@@ -416,31 +416,31 @@ describe( 'Mutation:', () => {
     const newDocumentConversionFormat = {
       rawText: 'new document conversion format content',
       html: '<p>new document conversion content</p>',
-      markdown: 'new document conversion content'
+      markdown: 'new document conversion content',
     };
     const ctx = {
       user: {},
       prisma: {
         createDocumentConversionFormat: jest.fn( () => ( {
           ...newDocumentConversionFormat,
-          id: newDocumentConversionFormatId
-        } ) )
-      }
+          id: newDocumentConversionFormatId,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
       variables: {
-        data: { ...newDocumentConversionFormat }
-      }
+        data: { ...newDocumentConversionFormat },
+      },
     };
     const result = await server.mutate( request );
 
     expect( spy ).toHaveBeenCalledWith( request );
     expect( result.data.createDocumentConversionFormat ).toEqual( {
       ...newDocumentConversionFormat,
-      id: newDocumentConversionFormatId
+      id: newDocumentConversionFormatId,
     } );
   } );
 
@@ -448,13 +448,13 @@ describe( 'Mutation:', () => {
     const updatedRawText = 'updated raw text';
     const updatedDocumentConversionFormat = {
       ...documentConversionFormats[0],
-      rawText: updatedRawText
+      rawText: updatedRawText,
     };
     const ctx = {
       user: {},
       prisma: {
-        updateDocumentConversionFormat: jest.fn( () => updatedDocumentConversionFormat )
-      }
+        updateDocumentConversionFormat: jest.fn( () => updatedDocumentConversionFormat ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -462,8 +462,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
       variables: {
         data: { rawText: updatedRawText },
-        where: { id: documentConversionFormats[0].id }
-      }
+        where: { id: documentConversionFormats[0].id },
+      },
     };
     const result = await server.mutate( request );
 
@@ -478,9 +478,9 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         updateManyDocumentConversionFormats: jest.fn( () => ( {
-          count: documentConversionFormats.length
-        } ) )
-      }
+          count: documentConversionFormats.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -488,8 +488,8 @@ describe( 'Mutation:', () => {
       query: query.UPDATE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
       variables: {
         data: { rawText: updatedRawText },
-        where: { id_not: '' }
-      }
+        where: { id_not: '' },
+      },
     };
     const result = await server.mutate( request );
 
@@ -503,14 +503,14 @@ describe( 'Mutation:', () => {
     const ctx = {
       user: {},
       prisma: {
-        deleteDocumentConversionFormat: jest.fn( () => deletedDocumentConversionFormat )
-      }
+        deleteDocumentConversionFormat: jest.fn( () => deletedDocumentConversionFormat ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_DOCUMENT_CONVERSION_FORMAT_MUTATION,
-      variables: { id: documentConversionFormats[0].id }
+      variables: { id: documentConversionFormats[0].id },
     };
     const result = await server.mutate( request );
 
@@ -524,15 +524,15 @@ describe( 'Mutation:', () => {
       user: {},
       prisma: {
         deleteManyDocumentConversionFormats: jest.fn( () => ( {
-          count: documentConversionFormats.length
-        } ) )
-      }
+          count: documentConversionFormats.length,
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.DELETE_MANY_DOCUMENT_CONVERSION_FORMATS_MUTATION,
-      variables: { where: { id_not: '' } }
+      variables: { where: { id_not: '' } },
     };
     const result = await server.mutate( request );
 

@@ -10,7 +10,7 @@ const typeDefs = importSchema( path.resolve( 'src/schema/index.graphql' ) );
 const mocks = {
   DateTime: () => '2020-03-15T13:01:01.906Z',
   Float: () => 25555,
-  String: () => 'mock string value'
+  String: () => 'mock string value',
 };
 
 const createTestServer = ctx => {
@@ -19,7 +19,7 @@ const createTestServer = ctx => {
     resolvers,
     mockEntireSchema: false, // keeps existing resolvers in schema
     mocks, // allows for custom mocks
-    context: () => ctx
+    context: () => ctx,
   } );
 
   return createTestClient( server );
