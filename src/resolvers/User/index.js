@@ -8,7 +8,7 @@ const UserResolvers = {
 
     users( parent, args, ctx ) {
       return ctx.prisma.users();
-    }
+    },
   },
 
   Mutation: requiresLogin( {
@@ -21,14 +21,14 @@ const UserResolvers = {
 
     deleteUser( parent, { id }, ctx ) {
       return ctx.prisma.deleteUser( { id } );
-    }
+    },
   } ),
 
   User: {
     team( parent, args, ctx ) {
       return ctx.prisma.user( { id: parent.id } ).team( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default UserResolvers;

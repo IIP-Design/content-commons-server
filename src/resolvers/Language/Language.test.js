@@ -6,7 +6,7 @@ describe( 'Query:', () => {
   it( 'languages returns the correct languages', async () => {
     const languages = [lang.english, lang.french];
     const ctx = {
-      prisma: { languages: jest.fn( () => languages ) }
+      prisma: { languages: jest.fn( () => languages ) },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -21,14 +21,14 @@ describe( 'Query:', () => {
     const language = lang.english;
     const ctx = {
       prisma: {
-        language: jest.fn( () => language )
-      }
+        language: jest.fn( () => language ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.LANGUAGE_QUERY,
-      variables: { id: language.id }
+      variables: { id: language.id },
     };
     const result = await server.query( request );
 
@@ -49,10 +49,10 @@ describe( 'Query:', () => {
             }
 
             return lang.french;
-          } )
+          } ),
         } ) ),
-        languageTranslations: jest.fn( () => languageTranslations )
-      }
+        languageTranslations: jest.fn( () => languageTranslations ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -69,15 +69,15 @@ describe( 'Query:', () => {
       prisma: {
         languageTranslation: jest.fn( () => ( {
           ...languageTranslation,
-          language: jest.fn( () => lang.english )
-        } ) )
-      }
+          language: jest.fn( () => lang.english ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.LANGUAGE_TRANSLATION_QUERY,
-      variables: { id: languageTranslation.id }
+      variables: { id: languageTranslation.id },
     };
     const result = await server.query( request );
 
@@ -91,14 +91,14 @@ describe( 'Mutation:', () => {
     const language = lang.testLanguage;
     const ctx = {
       prisma: {
-        createLanguage: jest.fn( () => language )
-      }
+        createLanguage: jest.fn( () => language ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_LANGUAGE_MUTATION,
-      variables: { data: { ...language } }
+      variables: { data: { ...language } },
     };
     const result = await server.mutate( request );
 
@@ -110,12 +110,12 @@ describe( 'Mutation:', () => {
     const language = lang.testLanguage;
     const variables = {
       data: { displayName: language.displayName },
-      where: { id: language.id }
+      where: { id: language.id },
     };
     const ctx = {
       prisma: {
-        updateLanguage: jest.fn( () => language )
-      }
+        updateLanguage: jest.fn( () => language ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );

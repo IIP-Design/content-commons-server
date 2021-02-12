@@ -1,9 +1,9 @@
 import {
-  UserInputError, ApolloError
+  UserInputError, ApolloError,
 } from 'apollo-server-express';
 import { requiresLogin } from '../lib/authentication';
 import {
-  getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId
+  getS3ProjectDirectory, getVimeoFiles, hasValidValue, getVimeoId,
 } from '../lib/projectParser';
 import { deleteAllFromVimeo, deleteFromVimeo } from '../services/vimeo';
 import { deleteAllS3Assets, deleteS3Asset, getSignedUrlPromiseGet } from '../services/aws/s3';
@@ -109,14 +109,14 @@ const VideoResolvers = {
 
     videoStream( parent, args, ctx ) {
       return ctx.prisma.videoStream( { id: args.id } );
-    }
+    },
   } ),
 
   Mutation: requiresLogin( {
     async createVideoProject( parent, args, ctx ) {
       const { data } = args;
       const videoProject = await ctx.prisma.createVideoProject( {
-        ...data
+        ...data,
       } );
 
       return videoProject;
@@ -128,7 +128,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateVideoProject( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -160,7 +160,7 @@ const VideoResolvers = {
       // 4. Update the project status
       await ctx.prisma.updateVideoProject( {
         data: { status: 'PUBLISHING' },
-        where: args
+        where: args,
       } ).catch( err => {
         throw new ApolloError( err );
       } );
@@ -198,7 +198,7 @@ const VideoResolvers = {
 
       if ( !doesProjectExist ) {
         throw new UserInputError( 'A project with that id does not exist in the database', {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
@@ -238,7 +238,7 @@ const VideoResolvers = {
     async createVideoUnit( parent, args, ctx ) {
       const { data } = args;
       const videoUnit = await ctx.prisma.createVideoUnit( {
-        ...data
+        ...data,
       } );
 
       return videoUnit;
@@ -250,7 +250,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateVideoUnit( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -272,7 +272,7 @@ const VideoResolvers = {
     async createVideoFile( parent, args, ctx ) {
       const { data } = args;
       const videoFile = await ctx.prisma.createVideoFile( {
-        ...data
+        ...data,
       } );
 
       return videoFile;
@@ -284,7 +284,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateVideoFile( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -302,7 +302,7 @@ const VideoResolvers = {
 
       if ( !doesVideoFileExist ) {
         throw new UserInputError( 'A video file with that id does not exist in the database', {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
@@ -342,7 +342,7 @@ const VideoResolvers = {
     async createThumbnail( parent, args, ctx ) {
       const { data } = args;
       const thumbnailFile = await ctx.prisma.createThumbnail( {
-        ...data
+        ...data,
       } );
 
       return thumbnailFile;
@@ -354,7 +354,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateThumbnail( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -377,7 +377,7 @@ const VideoResolvers = {
     async createImageFile( parent, args, ctx ) {
       const { data } = args;
       const imageFile = await ctx.prisma.createImageFile( {
-        ...data
+        ...data,
       } );
 
       return imageFile;
@@ -389,7 +389,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateImageFile( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -406,7 +406,7 @@ const VideoResolvers = {
 
       if ( !doesImageFileExist ) {
         throw new UserInputError( `An image file with id: ${id} does not exist in the database`, {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
@@ -430,7 +430,7 @@ const VideoResolvers = {
     async createSupportFile( parent, args, ctx ) {
       const { data } = args;
       const supportFile = await ctx.prisma.createSupportFile( {
-        ...data
+        ...data,
       } );
 
       return supportFile;
@@ -442,7 +442,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateSupportFile( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -459,7 +459,7 @@ const VideoResolvers = {
 
       if ( !doesSupportFileExist ) {
         throw new UserInputError( `A support file with id ${id} does not exist in the database`, {
-          invalidArgs: 'id'
+          invalidArgs: 'id',
         } );
       }
 
@@ -536,7 +536,7 @@ const VideoResolvers = {
 
     async createVideoUse( parent, args, ctx ) {
       const videoUse = await ctx.prisma.createVideoUse( {
-        ...args
+        ...args,
       } );
 
       return videoUse;
@@ -548,7 +548,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateVideoUse( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -569,7 +569,7 @@ const VideoResolvers = {
 
     async createImageUse( parent, args, ctx ) {
       const imageUse = await ctx.prisma.createImageUse( {
-        ...args
+        ...args,
       } );
 
       return imageUse;
@@ -581,7 +581,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateImageUse( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -602,7 +602,7 @@ const VideoResolvers = {
 
     async createDimensions( parent, args, ctx ) {
       const dimensions = await ctx.prisma.createDimensions( {
-        ...args
+        ...args,
       } );
 
       return dimensions;
@@ -614,7 +614,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateDimensions( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -636,7 +636,7 @@ const VideoResolvers = {
     async createVideoStream( parent, args, ctx ) {
       const { data } = args;
       const videoStream = await ctx.prisma.createVideoStream( {
-        ...data
+        ...data,
       } );
 
       return videoStream;
@@ -648,7 +648,7 @@ const VideoResolvers = {
 
       return ctx.prisma.updateVideoStream( {
         data,
-        where: { id }
+        where: { id },
       } );
     },
 
@@ -665,7 +665,7 @@ const VideoResolvers = {
 
     deleteManyVideoStreams( parent, { where }, ctx ) {
       return ctx.prisma.deleteManyVideoStreams( { ...where } );
-    }
+    },
   } ),
 
   VideoProject: {
@@ -709,7 +709,7 @@ const VideoResolvers = {
       return ctx.prisma
         .videoProject( { id: parent.id } )
         .thumbnails( { ...args } );
-    }
+    },
   },
 
   VideoUnit: {
@@ -741,7 +741,7 @@ const VideoResolvers = {
       return ctx.prisma
         .videoUnit( { id: parent.id } )
         .thumbnails( { ...args } );
-    }
+    },
   },
 
   VideoFile: {
@@ -767,14 +767,14 @@ const VideoResolvers = {
       return ctx.prisma
         .videoFile( { id: parent.id } )
         .stream( { ...args } );
-    }
+    },
   },
 
   SupportFile: {
     async signedUrl( parent ) {
       const signed = await getSignedUrlPromiseGet( {
         key: parent.url,
-        expires: 3600 // hour
+        expires: 3600, // hour
       } );
 
       return signed.url;
@@ -789,14 +789,14 @@ const VideoResolvers = {
       return ctx.prisma
         .supportFile( { id: parent.id } )
         .use( { ...args } );
-    }
+    },
   },
 
   ImageFile: {
     async signedUrl( parent ) {
       const signed = await getSignedUrlPromiseGet( {
         key: parent.url,
-        expires: 3600 // hour
+        expires: 3600, // hour
       } );
 
       return signed.url;
@@ -830,7 +830,7 @@ const VideoResolvers = {
       return ctx.prisma
         .imageFile( { id: parent.id } )
         .style( { ...args } );
-    }
+    },
   },
 
   Thumbnail: {
@@ -838,8 +838,8 @@ const VideoResolvers = {
       return ctx.prisma
         .thumbnail( { id: parent.id } )
         .image( { ...args } );
-    }
-  }
+    },
+  },
 
   // Category: {
   //   language( parent, args, ctx ) {

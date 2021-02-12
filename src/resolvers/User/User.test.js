@@ -6,24 +6,24 @@ const teams = [
   {
     ...mockTeams[11],
     contentTypes: ['PACKAGE'],
-    isConfirmed: true
+    isConfirmed: true,
   },
   {
     ...mockTeams[0],
     contentTypes: ['VIDEO'],
-    isConfirmed: true
-  }
+    isConfirmed: true,
+  },
 ];
 
 const users = [
   {
     ...mockUsers[0],
-    team: teams[0]
+    team: teams[0],
   },
   {
     ...mockUsers[1],
-    team: teams[1]
-  }
+    team: teams[1],
+  },
 ];
 
 describe( 'Query:', () => {
@@ -32,10 +32,10 @@ describe( 'Query:', () => {
       prisma: {
         user: jest.fn( () => ( {
           ...users[0],
-          team: jest.fn( () => teams[0] )
-        } ) )
+          team: jest.fn( () => teams[0] ),
+        } ) ),
       },
-      user: users[0]
+      user: users[0],
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -56,10 +56,10 @@ describe( 'Query:', () => {
             }
 
             return teams[1];
-          } )
+          } ),
         } ) ),
-        users: jest.fn( () => users )
-      }
+        users: jest.fn( () => users ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -78,11 +78,11 @@ describe( 'Mutation:', () => {
   it( 'updateUser updates a user if the current user is logged in', async () => {
     const updatedUser = {
       ...user,
-      firstName: 'Joe\'s new firstName'
+      firstName: 'Joe\'s new firstName',
     };
     const variables = {
       data: { firstName: updatedUser.firstName },
-      where: { id: user.id }
+      where: { id: user.id },
     };
     const ctx = {
       user,
@@ -90,9 +90,9 @@ describe( 'Mutation:', () => {
         updateUser: jest.fn( () => updatedUser ),
         user: jest.fn( () => ( {
           ...updatedUser,
-          team: jest.fn( () => team )
-        } ) )
-      }
+          team: jest.fn( () => team ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -106,11 +106,11 @@ describe( 'Mutation:', () => {
   it( 'updateUser returns an Unauthorized error message if the current user is not logged in', async () => {
     const updatedUser = {
       ...user,
-      firstName: 'Joe\'s new firstName'
+      firstName: 'Joe\'s new firstName',
     };
     const variables = {
       data: { firstName: updatedUser.firstName },
-      where: { id: user.id }
+      where: { id: user.id },
     };
     const ctx = {
       // user, // missing ctx.user
@@ -118,9 +118,9 @@ describe( 'Mutation:', () => {
         updateUser: jest.fn( () => ( { ...updatedUser } ) ),
         user: jest.fn( () => ( {
           ...updatedUser,
-          team: jest.fn( () => team )
-        } ) )
-      }
+          team: jest.fn( () => team ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -140,9 +140,9 @@ describe( 'Mutation:', () => {
         deleteUser: jest.fn( () => ( { ...user } ) ),
         user: jest.fn( () => ( {
           ...user,
-          team: jest.fn( () => team )
-        } ) )
-      }
+          team: jest.fn( () => team ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -161,9 +161,9 @@ describe( 'Mutation:', () => {
         deleteUser: jest.fn( () => ( { ...user } ) ),
         user: jest.fn( () => ( {
           ...user,
-          team: jest.fn( () => team )
-        } ) )
-      }
+          team: jest.fn( () => team ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );

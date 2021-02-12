@@ -5,7 +5,7 @@ const english = {
   locale: 'en-us',
   text_direction: 'ltr',
   display_name: 'English',
-  native_name: 'English'
+  native_name: 'English',
 };
 
 
@@ -36,13 +36,13 @@ const transformLanguage = language => ( {
   locale: language.locale,
   text_direction: language.textDirection.toLowerCase(),
   display_name: language.displayName,
-  native_name: language.nativeName
+  native_name: language.nativeName,
 } );
 
 const transformDocument = ( document, team ) => {
   const now = new Date().toISOString();
   const {
-    filename, filetype, title, language, visibility, content, excerpt, url, use, tags, bureaus, countries
+    filename, filetype, title, language, visibility, content, excerpt, url, use, tags, bureaus, countries,
   } = document;
 
   const doc = {
@@ -60,7 +60,7 @@ const transformDocument = ( document, team ) => {
     excerpt,
     url: getUrlToProdS3( url ),
     use: use.name,
-    tags: transformTaxonomy( tags, 'en-us' )
+    tags: transformTaxonomy( tags, 'en-us' ),
   };
 
   if ( content ) {
@@ -106,7 +106,7 @@ const transformDocument = ( document, team ) => {
 const transformPackage = pkg => {
   const now = new Date().toISOString();
   const {
-    id, createdAt, title, visibility, team, desc
+    id, createdAt, title, visibility, team, desc,
   } = pkg;
 
   const esData = {
@@ -121,7 +121,7 @@ const transformPackage = pkg => {
     language: english,
     desc,
     owner: team && team.name ? team.name : '',
-    documents: []
+    documents: [],
   };
 
   if ( pkg.documents && pkg.documents.length ) {

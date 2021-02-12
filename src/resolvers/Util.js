@@ -35,7 +35,7 @@ const UtilResolvers = {
         if ( info ) {
           const {
             /* eslint-disable-next-line camelcase */
-            duration, bit_rate, width, height
+            duration, bit_rate, width, height,
           } = info;
 
           return ( {
@@ -43,14 +43,14 @@ const UtilResolvers = {
             /* eslint-disable-next-line camelcase */
             bitrate: exists( bit_rate ) ? bit_rate : null,
             width: exists( width ) ? width : null,
-            height: exists( height ) ? height : null
+            height: exists( height ) ? height : null,
           } );
         }
       }
 
       return null;
-    }
-  }
+    },
+  },
 };
 
 export default UtilResolvers;

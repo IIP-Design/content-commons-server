@@ -1,8 +1,8 @@
-import { publishToChannel, parseMessage } from '.';
+import { publishToChannel, parseMessage } from './util';
 import { prisma } from '../../schema/generated/prisma-client';
 
 
-const updateDatabase = async( id, data ) => prisma.updateGraphicProject( { data, where: { id } } )
+const updateDatabase = async ( id, data ) => prisma.updateGraphicProject( { data, where: { id } } )
   .catch( err => console.error( err ) );
 
 
@@ -16,7 +16,7 @@ const updateDatabase = async( id, data ) => prisma.updateGraphicProject( { data,
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async( id, data, status, projectDirectory ) => {
+export const publishCreate = async ( id, data, status, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish GRAPHIC create request' );
 
   await publishToChannel( {
@@ -26,8 +26,8 @@ export const publishCreate = async( id, data, status, projectDirectory ) => {
       projectId: id,
       projectStatus: status,
       projectJson: JSON.stringify( data ),
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
@@ -39,7 +39,7 @@ export const publishCreate = async( id, data, status, projectDirectory ) => {
  * @param {object} projectDirectory path to S3 dir
  *
  */
-export const publishDelete = async( id, projectDirectory ) => {
+export const publishDelete = async ( id, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish GRAPHIC delete request' );
 
   await publishToChannel( {
@@ -47,13 +47,13 @@ export const publishDelete = async( id, projectDirectory ) => {
     routingKey: 'delete.graphic',
     data: {
       projectId: id,
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
 
-export const publishUpdate = async( id, data, status, projectDirectory ) => {
+export const publishUpdate = async ( id, data, status, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish GRAPHIC upate request' );
 
   await publishToChannel( {
@@ -63,13 +63,13 @@ export const publishUpdate = async( id, data, status, projectDirectory ) => {
       projectId: id,
       projectStatus: status,
       projectJson: JSON.stringify( data ),
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
 
-const consumeSuccess = async( channel, msg ) => {
+const consumeSuccess = async ( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
@@ -87,7 +87,7 @@ const consumeSuccess = async( channel, msg ) => {
   channel.ack( msg );
 };
 
-const consumeError = async( channel, msg ) => {
+const consumeError = async ( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectId, projectStatus } } = parseMessage( msg );
 
@@ -106,7 +106,7 @@ const consumeError = async( channel, msg ) => {
 
 const consumer = {
   consumeSuccess,
-  consumeError
+  consumeError,
 };
 
 export default consumer;

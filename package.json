@@ -1,21 +1,22 @@
 {
-  "name": "server",
+  "name": "@gpa-lab/content-commons-server",
   "version": "5.4.1",
-  "description": "Commons administrative backend",
+  "description": "The Content Commons administrative backend.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -e js,graphql -x babel-node --inspect src/index.js",
-    "test": "NODE_ENV=test jest",
-    "clear": "rimraf build",
     "build": "npm run clear && babel src --out-dir build --source-maps && npm run copy",
+    "clear": "rimraf build",
     "copy": "copyfiles -u 1  \"src/lib/**/*.csv\" build",
-    "start": "node build/index.js",
     "deploy": "npm run build && npm run start",
+    "dev": "nodemon -e js,graphql -x babel-node --inspect src/index.js",
+    "lint": "eslint --ext .js --quiet ./",
     "prisma-deploy": "prisma deploy",
-    "prisma-seed": "prisma seed"
+    "prisma-seed": "prisma seed",
+    "start": "node build/index.js",
+    "test": "NODE_ENV=test jest"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
+  "license": "MIT",
   "dependencies": {
     "@cdm-logger/server": "^5.0.5",
     "amqplib": "^0.5.3",
@@ -51,17 +52,28 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
-    "@gpa-lab/eslint-config": "^1.2.0",
+    "@gpa-lab/eslint-config": "^1.4.1",
     "apollo-server-testing": "^2.12.0",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.1.0",
     "copyfiles": "^2.1.1",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.9.0",
+    "eslint": "^7.19.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.3",
+    "eslint-plugin-node": "^11.1.0",
     "graphql-tag": "^2.10.3",
+    "husky": "^5.0.9",
     "jest": "^25.2.7",
+    "lint-staged": "^10.5.4",
     "nodemon": "^1.18.9",
     "rimraf": "^2.6.3"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "coveragePathIgnorePatterns": [

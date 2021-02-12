@@ -5,7 +5,7 @@ import createTestServer from '../../testServer/createTestServer';
 describe( 'Query:', () => {
   it( 'teams returns the correct teams', async () => {
     const ctx = {
-      prisma: { teams: jest.fn( () => teams ) }
+      prisma: { teams: jest.fn( () => teams ) },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -20,8 +20,8 @@ describe( 'Query:', () => {
     const team = teams[11];
     const ctx = {
       prisma: {
-        team: jest.fn( () => ( { ...team } ) )
-      }
+        team: jest.fn( () => ( { ...team } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -37,17 +37,17 @@ describe( 'Mutation:', () => {
   it( 'createTeam creates a team', async () => {
     const team = {
       name: 'new team',
-      organization: 'Department of State'
+      organization: 'Department of State',
     };
     const ctx = {
       user: { permissions: ['ADMIN'] },
-      prisma: { createTeam: jest.fn( () => team ) }
+      prisma: { createTeam: jest.fn( () => team ) },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_TEAM_MUTATION,
-      variables: { ...team }
+      variables: { ...team },
     };
     const result = await server.mutate( request );
     const { createTeam } = result.data;
@@ -61,17 +61,17 @@ describe( 'Mutation:', () => {
     const team = {
       id: 'ck2lzfx640hig0720fw7j98yt',
       name: 'new team name',
-      organization: 'Department of State'
+      organization: 'Department of State',
     };
     const variables = {
       data: { name: team.name },
-      where: { id: team.id }
+      where: { id: team.id },
     };
     const ctx = {
       user: { permissions: ['ADMIN'] },
       prisma: {
-        updateTeam: jest.fn( () => ( { ...team } ) )
-      }
+        updateTeam: jest.fn( () => ( { ...team } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
@@ -85,19 +85,19 @@ describe( 'Mutation:', () => {
 
   it( 'deleteTeam deletes a team', async () => {
     const variables = {
-      where: { id: 'ck2lzfx640hig0720fw7j98yt' }
+      where: { id: 'ck2lzfx640hig0720fw7j98yt' },
     };
     const { where: { id } } = variables;
     const team = {
       id,
       name: 'GPA Video',
-      organization: 'Department of State'
+      organization: 'Department of State',
     };
     const ctx = {
       user: { permissions: ['ADMIN'] },
       prisma: {
-        deleteTeam: jest.fn( () => ( { ...team } ) )
-      }
+        deleteTeam: jest.fn( () => ( { ...team } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );

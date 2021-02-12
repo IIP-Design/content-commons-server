@@ -16,10 +16,10 @@ const SharedResolvers = {
           }
 
           return id === variables.id || variables.ids.includes( id );
-        }
-      )
-    }
-  }
+        },
+      ),
+    },
+  },
 };
 
 export default SharedResolvers;

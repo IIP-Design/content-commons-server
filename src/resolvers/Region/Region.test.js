@@ -18,7 +18,7 @@ describe( 'Query:', () => {
   it( 'regions returns the correct regions', async () => {
     const regionsWithCountries = regions.map( r => ( {
       ...r,
-      countries: getCountries( r.abbr )
+      countries: getCountries( r.abbr ),
     } ) );
     const ctx = {
       prisma: {
@@ -29,10 +29,10 @@ describe( 'Query:', () => {
             }
 
             return getCountries( 'EAP' );
-          } )
+          } ),
         } ) ),
-        regions: jest.fn( () => regionsWithCountries )
-      }
+        regions: jest.fn( () => regionsWithCountries ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -46,21 +46,21 @@ describe( 'Query:', () => {
   it( 'region returns a specific region', async () => {
     const region = {
       ...regions[0], // AF
-      countries: countries.filter( c => c.abbr === 'AF' )
+      countries: countries.filter( c => c.abbr === 'AF' ),
     };
     const ctx = {
       prisma: {
         region: jest.fn( () => ( {
           ...region,
-          countries: jest.fn( () => region.countries )
-        } ) )
-      }
+          countries: jest.fn( () => region.countries ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.REGION_QUERY,
-      variables: { id: region.id }
+      variables: { id: region.id },
     };
     const result = await server.query( request );
 
@@ -74,12 +74,12 @@ describe( 'Query:', () => {
     const countriesWithRegion = [
       {
         ...getCountry( 'Angola' ),
-        region: afRegion
+        region: afRegion,
       },
       {
         ...getCountry( 'Australia' ),
-        region: eapRegion
-      }
+        region: eapRegion,
+      },
     ];
     const ctx = {
       prisma: {
@@ -90,10 +90,10 @@ describe( 'Query:', () => {
             }
 
             return eapRegion;
-          } )
+          } ),
         } ) ),
-        countries: jest.fn( () => countriesWithRegion )
-      }
+        countries: jest.fn( () => countriesWithRegion ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
@@ -108,21 +108,21 @@ describe( 'Query:', () => {
     const region = getRegion( 'AF' );
     const country = {
       ...getCountry( 'Angola' ),
-      region
+      region,
     };
     const ctx = {
       prisma: {
         country: jest.fn( () => ( {
           ...country,
-          region: jest.fn( () => region )
-        } ) )
-      }
+          region: jest.fn( () => region ),
+        } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'query' );
     const request = {
       query: query.COUNTRY_QUERY,
-      variables: { id: country.id }
+      variables: { id: country.id },
     };
     const result = await server.query( request );
 
@@ -137,34 +137,34 @@ describe( 'Mutation:', () => {
       {
         id: 'test-country-1234',
         name: 'Test Country 1',
-        abbr: 'ZZ'
+        abbr: 'ZZ',
       },
       {
         id: 'test-country-5678',
         name: 'Test Country 2',
-        abbr: 'ZZ'
-      }
+        abbr: 'ZZ',
+      },
     ];
     const region = {
       id: 'new-region-1234',
       name: 'Bureau of ZZZZZ',
       abbr: 'ZZ',
-      countries: { create: countries }
+      countries: { create: countries },
     };
     const ctx = {
       prisma: {
         region: jest.fn( () => ( {
           ...region,
-          countries: jest.fn( () => countries )
+          countries: jest.fn( () => countries ),
         } ) ),
-        createRegion: jest.fn( () => ( { ...region } ) )
-      }
+        createRegion: jest.fn( () => ( { ...region } ) ),
+      },
     };
     const server = createTestServer( ctx );
     const spy = jest.spyOn( server, 'mutate' );
     const request = {
       query: query.CREATE_REGION_MUTATION,
-      variables: { data: { ...region } }
+      variables: { data: { ...region } },
     };
     const result = await server.mutate( request );
     const { createRegion } = result.data;

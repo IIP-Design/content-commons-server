@@ -1,7 +1,6 @@
 import { prisma } from '../../src/schema/generated/prisma-client';
-import { files } from './seed.js';
 import {
-  forEachSync, getCsvRows, printError, prismaErrors
+  files, forEachSync, getCsvRows, printError, prismaErrors,
 } from './utils';
 
 const translationFragment = `
@@ -43,8 +42,10 @@ const tagFragment = `
 
 const getLanguages = async () => {
   const languages = await prisma.languages();
+
   return languages.reduce( ( prev, curr ) => {
     prev[curr.locale] = curr;
+
     return prev;
   }, {} );
 };
@@ -55,6 +56,7 @@ const processTerm = async ( type, translations ) => {
   let prismaCreateTerm;
   let prismaUpdateTerm;
   let prismaTerms;
+
   switch ( type ) {
     case 'category':
       fragment = categoryFragment;
@@ -74,16 +76,18 @@ const processTerm = async ( type, translations ) => {
 
   let term = null;
   const en = translations.find( trans => trans.language.locale === 'en-us' );
+
   if ( en ) {
     // Try to find a term with a matching english translation to update it
     try {
       const [foundTerm] = await prismaTerms( {
         where: {
           translations_some: {
-            id: en.id
-          }
-        }
+            id: en.id,
+          },
+        },
       } ).$fragment( fragment );
+
       term = foundTerm;
     } catch ( e ) {
       // noop
@@ -95,28 +99,33 @@ const processTerm = async ( type, translations ) => {
     const diff = term.translations.filter( trans => !transIds.includes( trans.id ) );
     const dataArg = {
       translations: {
-        connect: transIds.map( id => ( { id } ) )
-      }
+        connect: transIds.map( id => ( { id } ) ),
+      },
     };
+
     if ( diff.length > 0 ) dataArg.translations.disconnect = diff.map( trans => ( { id: trans.id } ) );
+
     return prismaUpdateTerm( {
       data: dataArg,
       where: {
-        id: term.id
-      }
+        id: term.id,
+      },
     } ).$fragment( fragment )
       .catch( e => {
         prismaErrors( e );
+
         return null;
       } );
   }
+
   return prismaCreateTerm( {
     translations: {
-      connect: translations.map( trans => ( { id: trans.id } ) )
-    }
+      connect: translations.map( trans => ( { id: trans.id } ) ),
+    },
   } ).$fragment( fragment )
     .catch( e => {
       prismaErrors( e );
+
       return null;
     } );
 };
@@ -133,25 +142,29 @@ const seedTaxonomies = async () => {
    */
   const processTranslations = async rows => {
     const terms = [];
+
     await forEachSync( rows, async data => {
       const translations = [];
+
       await forEachSync( data, async ( name, key ) => {
         if ( key === 'id' ) return;
         if ( !name || name === '' ) {
           printError( 'Empty translation for: ', key );
+
           return;
         }
         // Check that the language of this translation exists
         if ( !( key in languages ) ) {
           printError( `Language (${key}) not found for translation: ${name}` );
+
           return;
         }
 
         let [trans] = await prisma.languageTranslations( {
           where: {
             name,
-            language: { locale: key }
-          }
+            language: { locale: key },
+          },
         } )
           .$fragment( translationFragment )
           .catch( () => null );
@@ -161,8 +174,8 @@ const seedTaxonomies = async () => {
             trans = await prisma.createLanguageTranslation( {
               name,
               language: {
-                connect: { id: languages[key].id }
-              }
+                connect: { id: languages[key].id },
+              },
             } ).$fragment( translationFragment );
           } catch ( e ) {
             printError( `Error on ${name}` );
@@ -173,6 +186,7 @@ const seedTaxonomies = async () => {
       } );
       if ( translations.length ) terms.push( translations );
     } );
+
     return terms;
   };
 
@@ -186,6 +200,7 @@ const seedTaxonomies = async () => {
    */
   const processTerms = ( type, terms ) => {
     if ( terms === null ) return [];
+
     return Promise.all( terms.map( translations => processTerm( type, translations ) ) )
       .then( results => results.filter( result => result ) );
   };
@@ -196,11 +211,11 @@ const seedTaxonomies = async () => {
 
   return Promise.all( [
     processTerms( 'category', catTranslations ),
-    processTerms( 'tag', tagTranslations )
+    processTerms( 'tag', tagTranslations ),
   ] )
     .then( results => ( {
       categories: results[0],
-      tags: results[1]
+      tags: results[1],
     } ) );
 };
 

@@ -1,9 +1,15 @@
 {
-  "extends": [
-    "@gpa-lab/eslint-config"
-  ],
+  "extends": ["@gpa-lab/eslint-config"],
+  "ignorePatterns": ["build/", "node_modules/", "src/schema/generated/"],
   "parser": "babel-eslint",
   "rules": {
-    "no-console": "off"
+    "jest/no-conditional-expect": "off",
+    "no-console": "off",
+    "node/no-unpublished-import": [
+      "error",
+      {
+        "allowModules": ["graphql-tag"]
+      }
+    ]
   }
 }

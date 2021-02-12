@@ -1,8 +1,7 @@
-import { publishToChannel, parseMessage } from '.';
 import { prisma } from '../../schema/generated/prisma-client';
-import { getLongestElement } from './util';
+import { getLongestElement, publishToChannel, parseMessage } from './util';
 
-const updateDatabase = async( id, data ) => {
+const updateDatabase = async ( id, data ) => {
   await prisma.updatePackage( { data, where: { id } } ).catch( err => console.error( err ) );
 };
 
@@ -16,7 +15,7 @@ const updateDatabase = async( id, data ) => {
  *
  * NOTE: function name follows [exchange][routing key] convention
  */
-export const publishCreate = async( id, data, status, projectDirectory ) => {
+export const publishCreate = async ( id, data, status, projectDirectory ) => {
   // data.type: 'package'.  Also creates each document contained within package
   console.log( '[x] PUBLISHING a package publish create request' );
 
@@ -27,8 +26,8 @@ export const publishCreate = async( id, data, status, projectDirectory ) => {
       projectId: id,
       projectStatus: status,
       projectJson: JSON.stringify( data ),
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
@@ -40,7 +39,7 @@ export const publishCreate = async( id, data, status, projectDirectory ) => {
  * @param {object} projectDirectory path to S3 dir
  *
  */
-export const publishDelete = async( ids, projectDirectory ) => {
+export const publishDelete = async ( ids, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package delete request' );
 
   publishToChannel( {
@@ -48,13 +47,13 @@ export const publishDelete = async( ids, projectDirectory ) => {
     routingKey: 'delete.package',
     data: {
       projectIds: ids,
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
 
-export const publishUpdate = async( id, data, status, projectDirectory ) => {
+export const publishUpdate = async ( id, data, status, projectDirectory ) => {
   console.log( '[x] PUBLISHING a publish package upate request' );
 
   publishToChannel( {
@@ -64,13 +63,13 @@ export const publishUpdate = async( id, data, status, projectDirectory ) => {
       projectId: id,
       projectStatus: status,
       projectJson: JSON.stringify( data ),
-      projectDirectory
-    }
+      projectDirectory,
+    },
   } );
 };
 
 
-const consumePublishSuccess = async( channel, msg ) => {
+const consumePublishSuccess = async ( channel, msg ) => {
   // 1. Parse message
   const { routingKey, data: { projectId } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
@@ -80,7 +79,7 @@ const consumePublishSuccess = async( channel, msg ) => {
   // 2. Update db with success status to alert the client (client polls for status changes)
   try {
     updateDatabase(
-      projectId, { status }
+      projectId, { status },
     );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
@@ -90,12 +89,12 @@ const consumePublishSuccess = async( channel, msg ) => {
   channel.ack( msg );
 };
 
-const consumeConvertSuccess = async( channel, msg ) => {
+const consumeConvertSuccess = async ( channel, msg ) => {
   // 1. Parse message
   const {
     routingKey, data: {
-      id, content, title, thumbnailUrl, error
-    }
+      id, content, title, thumbnailUrl, error,
+    },
   } = parseMessage( msg );
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for document ${title}` );
@@ -113,17 +112,17 @@ const consumeConvertSuccess = async( channel, msg ) => {
         content: {
           create: {
             html: content && content.html ? content.html : 'UNAVAILABLE',
-            rawText: content && content.rawText ? content.rawText : 'UNAVAILABLE'
-          }
+            rawText: content && content.rawText ? content.rawText : 'UNAVAILABLE',
+          },
         },
         excerpt: content && content.html ? getLongestElement( content.html ) : 'UNAVAILABLE',
         image: {
           create: {
             url: thumbnailUrl || 'UNAVAILABLE',
-            alt: thumbnailUrl ? `Thumbnail for ${title}` : ''
-          }
-        }
-      }
+            alt: thumbnailUrl ? `Thumbnail for ${title}` : '',
+          },
+        },
+      },
     } );
   } catch ( err ) {
     console.log( `Error: Cannot update document with converted content becaues: ${err.message}` );
@@ -134,7 +133,7 @@ const consumeConvertSuccess = async( channel, msg ) => {
 };
 
 
-const consumeError = async( channel, msg ) => {
+const consumeError = async ( channel, msg ) => {
   // 1. parse message
   const { routingKey, data: { projectIds } } = parseMessage( msg );
 
@@ -157,7 +156,7 @@ const consumeError = async( channel, msg ) => {
 const consumer = {
   consumePublishSuccess,
   consumeConvertSuccess,
-  consumeError
+  consumeError,
 };
 
 export default consumer;

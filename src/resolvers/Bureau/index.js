@@ -6,7 +6,7 @@ const BureauResolvers = {
 
     bureau( parent, args, ctx ) {
       return ctx.prisma.bureau( { ...args } );
-    }
+    },
   },
 
   Mutation: {
@@ -15,14 +15,14 @@ const BureauResolvers = {
       const bureau = await ctx.prisma.createBureau( { ...data } );
 
       return bureau;
-    }
+    },
   },
 
   Bureau: {
     offices( parent, args, ctx ) {
       return ctx.prisma.bureau( { id: parent.id } ).offices( { ...args } );
-    }
-  }
+    },
+  },
 };
 
 export default BureauResolvers;

@@ -14,35 +14,35 @@ const LanguageResolvers = {
 
     languageTranslation( parent, args, ctx ) {
       return ctx.prisma.languageTranslation( { ...args } );
-    }
+    },
   },
 
   Mutation: {
     async createLanguage( parent, args, ctx ) {
       const { data } = args;
       const language = await ctx.prisma.createLanguage( {
-        ...data
+        ...data,
       } );
 
       return language;
     },
 
-    updateLanguage ( parent, args, ctx ) {
+    updateLanguage( parent, args, ctx ) {
       const updates = { ...args };
       const { data, where: { id } } = updates;
 
       return ctx.prisma.updateLanguage( {
         data,
-        where: { id }
+        where: { id },
       } );
-    }
+    },
   },
 
   LanguageTranslation: {
     language( parent, args, ctx ) {
       return ctx.prisma.languageTranslation( { id: parent.id } ).language();
-    }
-  }
+    },
+  },
 };
 
 export default LanguageResolvers;
