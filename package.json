@@ -12,7 +12,8 @@
     "start": "node build/index.js",
     "deploy": "npm run build && npm run start",
     "prisma-deploy": "prisma deploy",
-    "prisma-seed": "prisma seed"
+    "prisma-seed": "prisma seed",
+    "create-taxonomy-csv": "babel-node ./prisma/data/createCSVs.js"
   },
   "author": "",
   "license": "ISC",
