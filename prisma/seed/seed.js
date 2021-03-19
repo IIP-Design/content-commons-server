@@ -9,7 +9,7 @@ import seedUses from './seedUses';
 import seedRegions from './seedRegions';
 import seedGraphicStyles from './seedGraphicStyles';
 import seedSocialPlatforms from './seedSocialPlatorms';
-import files from './utils';
+import { files } from './utils';
 
 /**
  * Seed Graph with languages, taxonomies, and teams.
