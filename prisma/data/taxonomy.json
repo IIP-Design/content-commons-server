@@ -3081,5 +3081,138 @@
       "id-id": "Secretary of State",
       "ur": "Secretary of State"
     }
+  },
+  {
+    "_id" : "JkkNQngBwxWDpYxTzB3u",
+    "primary": false,
+    "parents": ["15YZGXgBLuL2GU1JctUv"],
+    "synonymMapping": [],
+    "language": {
+      "en": "spokesperson",
+      "en-us": "spokesperson",
+      "es-es": "Spokesperson",
+      "fr-fr": "Spokesperson",
+      "pt-br": "Spokesperson",
+      "ar": "Spokesperson",
+      "fa-ir": "Spokesperson",
+      "zh-cn": "Spokesperson",
+      "ru-ru": "Spokesperson",
+      "id-id": "Spokesperson",
+      "ur": "Spokesperson"
+    }
+  },
+  {
+    "_id" : "J0kNQngBwxWDpYxTzR0B",
+    "primary": false,
+    "parents": ["15YZGXgBLuL2GU1JctUv"],
+    "synonymMapping": [],
+    "language": {
+      "en": "antony blinken",
+      "en-us": "antony blinken",
+      "es-es": "Antony Blinken",
+      "fr-fr": "Antony Blinken",
+      "pt-br": "Antony Blinken",
+      "ar": "Antony Blinken",
+      "fa-ir": "Antony Blinken",
+      "zh-cn": "Antony Blinken",
+      "ru-ru": "Antony Blinken",
+      "id-id": "Antony Blinken",
+      "ur": "Antony Blinken"
+    }
+  },
+  {
+    "_id" : "KEkNQngBwxWDpYxTzR0O",
+    "primary": false,
+    "parents": ["15YZGXgBLuL2GU1JctUv"],
+    "synonymMapping": [],
+    "language": {
+      "en": "joseph r. biden",
+      "en-us": "joseph r. biden",
+      "es-es": "Joseph R. Biden",
+      "fr-fr": "Joseph R. Biden",
+      "pt-br": "Joseph R. Biden",
+      "ar": "Joseph R. Biden",
+      "fa-ir": "Joseph R. Biden",
+      "zh-cn": "Joseph R. Biden",
+      "ru-ru": "Joseph R. Biden",
+      "id-id": "Joseph R. Biden",
+      "ur": "Joseph R. Biden"
+    }
+  },
+  {
+    "_id" : "KUkNQngBwxWDpYxTzR0X",
+    "primary": false,
+    "parents": ["15YZGXgBLuL2GU1JctUv"],
+    "synonymMapping": [],
+    "language": {
+      "en": "ned price",
+      "en-us": "ned price",
+      "es-es": "Ned Price",
+      "fr-fr": "Ned Price",
+      "pt-br": "Ned Price",
+      "ar": "Ned Price",
+      "fa-ir": "Ned Price",
+      "zh-cn": "Ned Price",
+      "ru-ru": "Ned Price",
+      "id-id": "Ned Price",
+      "ur": "Ned Price"
+    }
+  },
+  {
+    "_id" : "I0kNQngBwxWDpYxTyR2p",
+    "primary": false,
+    "parents": ["h5YZGXgBLuL2GU1JbNXx"],
+    "synonymMapping": [],
+    "language": {
+      "en": "economy",
+      "en-us": "economy",
+      "es-es": "economía",
+      "fr-fr": "économie",
+      "pt-br": "economia",
+      "ar": "اقتصاد",
+      "fa-ir": "اقتصاد",
+      "zh-cn": "经济",
+      "ru-ru": "экономия",
+      "id-id": "ekonomi",
+      "ur": "معیشت"
+    }
+  },
+  {
+    "_id" : "JEkNQngBwxWDpYxTyx1_",
+    "primary": false,
+    "parents": ["u5YZGXgBLuL2GU1JcNVX"],
+    "synonymMapping": [],
+    "language": {
+      "en": "immigration",
+      "en-us": "immigration",
+      "es-es": "inmigración",
+      "fr-fr": "immigration",
+      "pt-br": "imigração",
+      "ar": "الهجرة",
+      "fa-ir": "مهاجرت",
+      "zh-cn": "移民",
+      "ru-ru": "иммиграция",
+      "id-id": "imigrasi",
+      "ur": "ہجرت"
+    }
+  },
+  {
+    "_id" : "JUkNQngBwxWDpYxTyx34",
+    "primary": false,
+    "parents": ["w5YZGXgBLuL2GU1JcNX5"],
+    "synonymMapping": [],
+    "language": {
+      "en": "vaccine",
+      "en-us": "vaccine",
+      "es-es": "vacuna",
+      "fr-fr": "vaccin",
+      "pt-br": "vacina",
+      "ar": "مصل",
+      "fa-ir": "واکسن",
+      "zh-cn": "疫苗",
+      "ru-ru": "вакцина",
+      "id-id": "vaksin",
+      "ur": "ویکسین"
+    }
   }
 ]

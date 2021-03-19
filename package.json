@@ -1,6 +1,6 @@
 {
   "name": "@gpa-lab/content-commons-server",
-  "version": "5.4.1",
+  "version": "5.4.2",
   "description": "The Content Commons administrative backend.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "prisma-deploy": "prisma deploy",
     "prisma-seed": "prisma seed",
     "start": "node build/index.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "create-taxonomy-csv": "babel-node ./prisma/data/createCSVs.js"
   },
   "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
   "license": "MIT",
