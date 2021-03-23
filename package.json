@@ -13,6 +13,7 @@
     "deploy": "npm run build && npm run start",
     "dev": "nodemon -e js,graphql -x babel-node --inspect src/index.js",
     "lint": "eslint --ext .js --quiet ./",
+    "postinstall": "husky install config/husky",
     "prisma-deploy": "prisma deploy",
     "prisma-seed": "prisma seed",
     "start": "node build/index.js",
@@ -70,11 +71,6 @@
   },
   "lint-staged": {
     "*.js": "eslint --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "jest": {
     "coveragePathIgnorePatterns": [
