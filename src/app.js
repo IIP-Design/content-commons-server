@@ -8,6 +8,6 @@ import express from 'express';
 const app = express();
 
 // Mount middleware to run before Apollo.
-app.use( cookieParser(), helmet(), compression() );
+app.use( cookieParser(), helmet( { contentSecurityPolicy: false } ), compression() );
 
 export default app;
