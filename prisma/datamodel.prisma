@@ -22,6 +22,8 @@ enum ProjectType {
 
 enum PackageType {
   DAILY_GUIDANCE
+  TOOLKIT
+  PLAYBOOK
 }
 
 enum VideoBurnedInStatus {
@@ -153,6 +155,12 @@ type Language {
   nativeName: String!
 }
 
+type PolicyPriority {
+  id: ID! @id
+  name: String! @unique
+  theme: String
+}
+
 # translations prop required as we need at least the English translation to create a category
 type Category {
   id: ID! @id
@@ -164,6 +172,7 @@ type Tag {
   id: ID! @id
   translations: [LanguageTranslation!]!
 }
+
 
 type LanguageTranslation {
   id: ID! @id
@@ -202,6 +211,46 @@ type Package {
   categories: [Category]
   tags: [Tag]
   documents: [DocumentFile] 
+}
+
+type Playbook {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime
+  type: PackageType!
+  title: String!
+  assetPath: String
+  author: User
+  team: Team
+  desc:  String
+  content: DocumentConversionFormat
+  status: PublishStatus @default(value: DRAFT)
+  visibility: Visibility @default(value: INTERNAL)
+  policy: PolicyPriority
+  categories: [Category]
+  tags: [Tag]
+  supportFiles: [SupportFile] 
+}
+
+type Toolkit {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  publishedAt: DateTime
+  type: PackageType!
+  title: String!
+  assetPath: String
+  author: User
+  team: Team
+  desc:  String
+  content: DocumentConversionFormat
+  status: PublishStatus @default(value: DRAFT)
+  visibility: Visibility @default(value: INTERNAL)
+  policy: PolicyPriority
+  categories: [Category]
+  tags: [Tag]
+  supportFiles: [SupportFile] 
 }
 
 type GraphicProject {
