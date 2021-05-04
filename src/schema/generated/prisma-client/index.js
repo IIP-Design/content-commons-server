@@ -93,6 +93,10 @@ var models = [
     embedded: false
   },
   {
+    name: "PolicyPriority",
+    embedded: false
+  },
+  {
     name: "Category",
     embedded: false
   },
@@ -114,6 +118,14 @@ var models = [
   },
   {
     name: "Package",
+    embedded: false
+  },
+  {
+    name: "Playbook",
+    embedded: false
+  },
+  {
+    name: "Toolkit",
     embedded: false
   },
   {
