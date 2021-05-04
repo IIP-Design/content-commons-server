@@ -158,6 +158,7 @@ type Language {
 type PolicyPriority {
   id: ID! @id
   name: String! @unique
+  theme: String
 }
 
 # translations prop required as we need at least the English translation to create a category
