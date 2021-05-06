@@ -1,0 +1,10 @@
+type Query {
+  policyPriorities(where: PolicyPriorityWhereInput, orderBy: PolicyPriorityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PolicyPriority]!
+  policyPriority(id: ID!): PolicyPriority
+}
+
+type Mutation {
+  createPolicyPriority(data: PolicyPriorityCreateInput!): PolicyPriority!
+  updatePolicyPriority(data: PolicyPriorityUpdateInput!, where: PolicyPriorityWhereUniqueInput!): PolicyPriority
+  deletePolicyPriority(where: PolicyPriorityWhereUniqueInput!): PolicyPriority
+}
