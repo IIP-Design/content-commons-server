@@ -1,0 +1,2 @@
+process.env.AWS_COGNITO_USER_POOLS_ID = 'abc123';
+process.env.AWS_COGNITO_USER_POOL_WEB_CLIENT_ID = 'xyz456';
