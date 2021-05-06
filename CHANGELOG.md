@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 _This sections lists changes committed since most recent release_
 **Added:**
 - New Relic monitoring
+- `PolicyPriority` resolvers, schema, and tests
+- Jest setup file for Cognito `env` variables
 
 # [5.4.2](https://github.com/IIP-Design/content-commons-server/compare/v5.4.1...v5.4.2) (2021-03-18)
 **Added:**
