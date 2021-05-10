@@ -80,7 +80,8 @@
     "testPathIgnorePatterns": [
       "<rootDir>/build/",
       "<rootDir>/node_modules/"
-    ]
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
   },
   "repository": {
     "type": "git",

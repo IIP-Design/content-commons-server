@@ -126,6 +126,39 @@ export const users = [
   },
 ];
 
+export const policyPriorities = [
+  {
+    id: 'ckobsp13100ai0720m6siypm6',
+    name: 'Alliances and Partnerships',
+    theme: 'abc',
+  },
+  {
+    id: 'ckobspmrk00an072049k2byiz',
+    name: 'China Relations',
+    theme: 'fgh',
+  },
+  {
+    id: 'ckobspzp700as0720zgqv3wbs',
+    name: 'Climate Crisis',
+    theme: 'asd',
+  },
+  {
+    id: 'ckobsqf4w00ax07202yr52c6s',
+    name: 'Covid-19 Recovery',
+    theme: 'wer',
+  },
+  {
+    id: 'ckobsqqu800b20720m0qvikzh',
+    name: 'Human Rights',
+    theme: 'rty',
+  },
+  {
+    id: 'ckobsrbys00b7072074yigv0t',
+    name: 'Refugees and Migration',
+    theme: 'opl',
+  },
+];
+
 export const categories = [
   {
     id: 'ck2lzgu1c0re307202dlrnue2',

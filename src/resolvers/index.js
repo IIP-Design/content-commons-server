@@ -6,6 +6,7 @@ import RegionResolvers from './Region';
 import BureauResolvers from './Bureau';
 import TaxonomyResolvers from './Taxonomy';
 import TeamResolvers from './Team';
+import PolicyPriorityResolvers from './PolicyPriority';
 import UserResolvers from './User';
 import UtilResolvers from './Util';
 import DocumentResolvers from './Document';
@@ -23,6 +24,7 @@ const resolvers = merge(
   BureauResolvers,
   UserResolvers,
   TeamResolvers,
+  PolicyPriorityResolvers,
   DocumentResolvers,
   VideoResolvers,
   PackageResolvers,
