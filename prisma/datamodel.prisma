@@ -346,6 +346,13 @@ type SupportFileUse {
   name: String! @unique
 }
 
+type Project {
+  id: ID! @id
+  videos: [VideoProject]
+  graphics: [GraphicProject]
+  packages: [Package]
+}
+
 type VideoFile {
   id: ID! @id
   createdAt: DateTime! @createdAt

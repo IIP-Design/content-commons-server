@@ -1,11 +1,19 @@
 type Query {
-  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
+  teams(
+    where: TeamWhereInput
+    orderBy: TeamOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Team]!
   team(id: ID!): Team
+  teamProjects(id: ID!, skip: Int, after: String, before: String, first: Int, last: Int): Project
 }
 
 type Mutation {
   createTeam(name: String!, organization: String!): Team!
-  updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team 
-  deleteTeam(where: TeamWhereUniqueInput!): Team 
+  updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
+  deleteTeam(where: TeamWhereUniqueInput!): Team
 }
-

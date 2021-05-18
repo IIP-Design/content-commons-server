@@ -70,6 +70,10 @@ type AggregatePolicyPriority {
   count: Int!
 }
 
+type AggregateProject {
+  count: Int!
+}
+
 type AggregateRegion {
   count: Int!
 }
@@ -1925,6 +1929,11 @@ input GraphicProjectCreateInput {
   tags: TagCreateManyInput
 }
 
+input GraphicProjectCreateManyInput {
+  create: [GraphicProjectCreateInput!]
+  connect: [GraphicProjectWhereUniqueInput!]
+}
+
 type GraphicProjectEdge {
   node: GraphicProject!
   cursor: String!
@@ -1969,6 +1978,108 @@ type GraphicProjectPreviousValues {
   visibility: Visibility
 }
 
+input GraphicProjectScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  type: ProjectType
+  type_not: ProjectType
+  type_in: [ProjectType!]
+  type_not_in: [ProjectType!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  copyright: Copyright
+  copyright_not: Copyright
+  copyright_in: [Copyright!]
+  copyright_not_in: [Copyright!]
+  alt: String
+  alt_not: String
+  alt_in: [String!]
+  alt_not_in: [String!]
+  alt_lt: String
+  alt_lte: String
+  alt_gt: String
+  alt_gte: String
+  alt_contains: String
+  alt_not_contains: String
+  alt_starts_with: String
+  alt_not_starts_with: String
+  alt_ends_with: String
+  alt_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  AND: [GraphicProjectScalarWhereInput!]
+  OR: [GraphicProjectScalarWhereInput!]
+  NOT: [GraphicProjectScalarWhereInput!]
+}
+
 type GraphicProjectSubscriptionPayload {
   mutation: MutationType!
   node: GraphicProject
@@ -1985,6 +2096,25 @@ input GraphicProjectSubscriptionWhereInput {
   AND: [GraphicProjectSubscriptionWhereInput!]
   OR: [GraphicProjectSubscriptionWhereInput!]
   NOT: [GraphicProjectSubscriptionWhereInput!]
+}
+
+input GraphicProjectUpdateDataInput {
+  publishedAt: DateTime
+  type: ProjectType
+  title: String
+  copyright: Copyright
+  alt: String
+  descPublic: ContentFieldUpdateOneInput
+  descInternal: ContentFieldUpdateOneInput
+  assetPath: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
+  status: PublishStatus
+  visibility: Visibility
+  supportFiles: SupportFileUpdateManyInput
+  images: ImageFileUpdateManyInput
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
 }
 
 input GraphicProjectUpdateInput {
@@ -2006,6 +2136,29 @@ input GraphicProjectUpdateInput {
   tags: TagUpdateManyInput
 }
 
+input GraphicProjectUpdateManyDataInput {
+  publishedAt: DateTime
+  type: ProjectType
+  title: String
+  copyright: Copyright
+  alt: String
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+input GraphicProjectUpdateManyInput {
+  create: [GraphicProjectCreateInput!]
+  update: [GraphicProjectUpdateWithWhereUniqueNestedInput!]
+  upsert: [GraphicProjectUpsertWithWhereUniqueNestedInput!]
+  delete: [GraphicProjectWhereUniqueInput!]
+  connect: [GraphicProjectWhereUniqueInput!]
+  set: [GraphicProjectWhereUniqueInput!]
+  disconnect: [GraphicProjectWhereUniqueInput!]
+  deleteMany: [GraphicProjectScalarWhereInput!]
+  updateMany: [GraphicProjectUpdateManyWithWhereNestedInput!]
+}
+
 input GraphicProjectUpdateManyMutationInput {
   publishedAt: DateTime
   type: ProjectType
@@ -2015,6 +2168,22 @@ input GraphicProjectUpdateManyMutationInput {
   assetPath: String
   status: PublishStatus
   visibility: Visibility
+}
+
+input GraphicProjectUpdateManyWithWhereNestedInput {
+  where: GraphicProjectScalarWhereInput!
+  data: GraphicProjectUpdateManyDataInput!
+}
+
+input GraphicProjectUpdateWithWhereUniqueNestedInput {
+  where: GraphicProjectWhereUniqueInput!
+  data: GraphicProjectUpdateDataInput!
+}
+
+input GraphicProjectUpsertWithWhereUniqueNestedInput {
+  where: GraphicProjectWhereUniqueInput!
+  update: GraphicProjectUpdateDataInput!
+  create: GraphicProjectCreateInput!
 }
 
 input GraphicProjectWhereInput {
@@ -3492,6 +3661,11 @@ type Mutation {
   upsertPolicyPriority(where: PolicyPriorityWhereUniqueInput!, create: PolicyPriorityCreateInput!, update: PolicyPriorityUpdateInput!): PolicyPriority!
   deletePolicyPriority(where: PolicyPriorityWhereUniqueInput!): PolicyPriority
   deleteManyPolicyPriorities(where: PolicyPriorityWhereInput): BatchPayload!
+  createProject(data: ProjectCreateInput!): Project!
+  updateProject(data: ProjectUpdateInput!, where: ProjectWhereUniqueInput!): Project
+  upsertProject(where: ProjectWhereUniqueInput!, create: ProjectCreateInput!, update: ProjectUpdateInput!): Project!
+  deleteProject(where: ProjectWhereUniqueInput!): Project
+  deleteManyProjects(where: ProjectWhereInput): BatchPayload!
   createRegion(data: RegionCreateInput!): Region!
   updateRegion(data: RegionUpdateInput!, where: RegionWhereUniqueInput!): Region
   updateManyRegions(data: RegionUpdateManyMutationInput!, where: RegionWhereInput): BatchPayload!
@@ -3846,6 +4020,11 @@ input PackageCreateInput {
   documents: DocumentFileCreateManyInput
 }
 
+input PackageCreateManyInput {
+  create: [PackageCreateInput!]
+  connect: [PackageWhereUniqueInput!]
+}
+
 type PackageEdge {
   node: Package!
   cursor: String!
@@ -3887,6 +4066,104 @@ type PackagePreviousValues {
   visibility: Visibility
 }
 
+input PackageScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  type: PackageType
+  type_not: PackageType
+  type_in: [PackageType!]
+  type_not_in: [PackageType!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
+  desc: String
+  desc_not: String
+  desc_in: [String!]
+  desc_not_in: [String!]
+  desc_lt: String
+  desc_lte: String
+  desc_gt: String
+  desc_gte: String
+  desc_contains: String
+  desc_not_contains: String
+  desc_starts_with: String
+  desc_not_starts_with: String
+  desc_ends_with: String
+  desc_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  AND: [PackageScalarWhereInput!]
+  OR: [PackageScalarWhereInput!]
+  NOT: [PackageScalarWhereInput!]
+}
+
 type PackageSubscriptionPayload {
   mutation: MutationType!
   node: Package
@@ -3911,6 +4188,21 @@ enum PackageType {
   PLAYBOOK
 }
 
+input PackageUpdateDataInput {
+  publishedAt: DateTime
+  type: PackageType
+  title: String
+  assetPath: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
+  documents: DocumentFileUpdateManyInput
+}
+
 input PackageUpdateInput {
   publishedAt: DateTime
   type: PackageType
@@ -3926,6 +4218,28 @@ input PackageUpdateInput {
   documents: DocumentFileUpdateManyInput
 }
 
+input PackageUpdateManyDataInput {
+  publishedAt: DateTime
+  type: PackageType
+  title: String
+  assetPath: String
+  desc: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+input PackageUpdateManyInput {
+  create: [PackageCreateInput!]
+  update: [PackageUpdateWithWhereUniqueNestedInput!]
+  upsert: [PackageUpsertWithWhereUniqueNestedInput!]
+  delete: [PackageWhereUniqueInput!]
+  connect: [PackageWhereUniqueInput!]
+  set: [PackageWhereUniqueInput!]
+  disconnect: [PackageWhereUniqueInput!]
+  deleteMany: [PackageScalarWhereInput!]
+  updateMany: [PackageUpdateManyWithWhereNestedInput!]
+}
+
 input PackageUpdateManyMutationInput {
   publishedAt: DateTime
   type: PackageType
@@ -3934,6 +4248,22 @@ input PackageUpdateManyMutationInput {
   desc: String
   status: PublishStatus
   visibility: Visibility
+}
+
+input PackageUpdateManyWithWhereNestedInput {
+  where: PackageScalarWhereInput!
+  data: PackageUpdateManyDataInput!
+}
+
+input PackageUpdateWithWhereUniqueNestedInput {
+  where: PackageWhereUniqueInput!
+  data: PackageUpdateDataInput!
+}
+
+input PackageUpsertWithWhereUniqueNestedInput {
+  where: PackageWhereUniqueInput!
+  update: PackageUpdateDataInput!
+  create: PackageCreateInput!
 }
 
 input PackageWhereInput {
@@ -4452,9 +4782,100 @@ input PolicyPriorityWhereUniqueInput {
   name: String
 }
 
+type Project {
+  id: ID!
+  videos(where: VideoProjectWhereInput, orderBy: VideoProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [VideoProject!]
+  graphics(where: GraphicProjectWhereInput, orderBy: GraphicProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GraphicProject!]
+  packages(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Package!]
+}
+
+type ProjectConnection {
+  pageInfo: PageInfo!
+  edges: [ProjectEdge]!
+  aggregate: AggregateProject!
+}
+
+input ProjectCreateInput {
+  id: ID
+  videos: VideoProjectCreateManyInput
+  graphics: GraphicProjectCreateManyInput
+  packages: PackageCreateManyInput
+}
+
+type ProjectEdge {
+  node: Project!
+  cursor: String!
+}
+
+enum ProjectOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type ProjectPreviousValues {
+  id: ID!
+}
+
+type ProjectSubscriptionPayload {
+  mutation: MutationType!
+  node: Project
+  updatedFields: [String!]
+  previousValues: ProjectPreviousValues
+}
+
+input ProjectSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ProjectWhereInput
+  AND: [ProjectSubscriptionWhereInput!]
+  OR: [ProjectSubscriptionWhereInput!]
+  NOT: [ProjectSubscriptionWhereInput!]
+}
+
 enum ProjectType {
   LANGUAGE
   SOCIAL_MEDIA
+}
+
+input ProjectUpdateInput {
+  videos: VideoProjectUpdateManyInput
+  graphics: GraphicProjectUpdateManyInput
+  packages: PackageUpdateManyInput
+}
+
+input ProjectWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  videos_every: VideoProjectWhereInput
+  videos_some: VideoProjectWhereInput
+  videos_none: VideoProjectWhereInput
+  graphics_every: GraphicProjectWhereInput
+  graphics_some: GraphicProjectWhereInput
+  graphics_none: GraphicProjectWhereInput
+  packages_every: PackageWhereInput
+  packages_some: PackageWhereInput
+  packages_none: PackageWhereInput
+  AND: [ProjectWhereInput!]
+  OR: [ProjectWhereInput!]
+  NOT: [ProjectWhereInput!]
+}
+
+input ProjectWhereUniqueInput {
+  id: ID
 }
 
 enum PublishStatus {
@@ -4523,6 +4944,9 @@ type Query {
   policyPriority(where: PolicyPriorityWhereUniqueInput!): PolicyPriority
   policyPriorities(where: PolicyPriorityWhereInput, orderBy: PolicyPriorityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PolicyPriority]!
   policyPrioritiesConnection(where: PolicyPriorityWhereInput, orderBy: PolicyPriorityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PolicyPriorityConnection!
+  project(where: ProjectWhereUniqueInput!): Project
+  projects(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Project]!
+  projectsConnection(where: ProjectWhereInput, orderBy: ProjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProjectConnection!
   region(where: RegionWhereUniqueInput!): Region
   regions(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Region]!
   regionsConnection(where: RegionWhereInput, orderBy: RegionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegionConnection!
@@ -4914,6 +5338,7 @@ type Subscription {
   package(where: PackageSubscriptionWhereInput): PackageSubscriptionPayload
   playbook(where: PlaybookSubscriptionWhereInput): PlaybookSubscriptionPayload
   policyPriority(where: PolicyPrioritySubscriptionWhereInput): PolicyPrioritySubscriptionPayload
+  project(where: ProjectSubscriptionWhereInput): ProjectSubscriptionPayload
   region(where: RegionSubscriptionWhereInput): RegionSubscriptionPayload
   socialPlatform(where: SocialPlatformSubscriptionWhereInput): SocialPlatformSubscriptionPayload
   supportFile(where: SupportFileSubscriptionWhereInput): SupportFileSubscriptionPayload
@@ -7365,6 +7790,11 @@ input VideoProjectCreateInput {
   tags: TagCreateManyInput
 }
 
+input VideoProjectCreateManyInput {
+  create: [VideoProjectCreateInput!]
+  connect: [VideoProjectWhereUniqueInput!]
+}
+
 type VideoProjectEdge {
   node: VideoProject!
   cursor: String!
@@ -7409,6 +7839,118 @@ type VideoProjectPreviousValues {
   visibility: Visibility
 }
 
+input VideoProjectScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  publishedAt: DateTime
+  publishedAt_not: DateTime
+  publishedAt_in: [DateTime!]
+  publishedAt_not_in: [DateTime!]
+  publishedAt_lt: DateTime
+  publishedAt_lte: DateTime
+  publishedAt_gt: DateTime
+  publishedAt_gte: DateTime
+  projectType: ProjectType
+  projectType_not: ProjectType
+  projectType_in: [ProjectType!]
+  projectType_not_in: [ProjectType!]
+  projectTitle: String
+  projectTitle_not: String
+  projectTitle_in: [String!]
+  projectTitle_not_in: [String!]
+  projectTitle_lt: String
+  projectTitle_lte: String
+  projectTitle_gt: String
+  projectTitle_gte: String
+  projectTitle_contains: String
+  projectTitle_not_contains: String
+  projectTitle_starts_with: String
+  projectTitle_not_starts_with: String
+  projectTitle_ends_with: String
+  projectTitle_not_ends_with: String
+  descPublic: String
+  descPublic_not: String
+  descPublic_in: [String!]
+  descPublic_not_in: [String!]
+  descPublic_lt: String
+  descPublic_lte: String
+  descPublic_gt: String
+  descPublic_gte: String
+  descPublic_contains: String
+  descPublic_not_contains: String
+  descPublic_starts_with: String
+  descPublic_not_starts_with: String
+  descPublic_ends_with: String
+  descPublic_not_ends_with: String
+  descInternal: String
+  descInternal_not: String
+  descInternal_in: [String!]
+  descInternal_not_in: [String!]
+  descInternal_lt: String
+  descInternal_lte: String
+  descInternal_gt: String
+  descInternal_gte: String
+  descInternal_contains: String
+  descInternal_not_contains: String
+  descInternal_starts_with: String
+  descInternal_not_starts_with: String
+  descInternal_ends_with: String
+  descInternal_not_ends_with: String
+  assetPath: String
+  assetPath_not: String
+  assetPath_in: [String!]
+  assetPath_not_in: [String!]
+  assetPath_lt: String
+  assetPath_lte: String
+  assetPath_gt: String
+  assetPath_gte: String
+  assetPath_contains: String
+  assetPath_not_contains: String
+  assetPath_starts_with: String
+  assetPath_not_starts_with: String
+  assetPath_ends_with: String
+  assetPath_not_ends_with: String
+  status: PublishStatus
+  status_not: PublishStatus
+  status_in: [PublishStatus!]
+  status_not_in: [PublishStatus!]
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  AND: [VideoProjectScalarWhereInput!]
+  OR: [VideoProjectScalarWhereInput!]
+  NOT: [VideoProjectScalarWhereInput!]
+}
+
 type VideoProjectSubscriptionPayload {
   mutation: MutationType!
   node: VideoProject
@@ -7425,6 +7967,24 @@ input VideoProjectSubscriptionWhereInput {
   AND: [VideoProjectSubscriptionWhereInput!]
   OR: [VideoProjectSubscriptionWhereInput!]
   NOT: [VideoProjectSubscriptionWhereInput!]
+}
+
+input VideoProjectUpdateDataInput {
+  publishedAt: DateTime
+  projectType: ProjectType
+  projectTitle: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  author: UserUpdateOneInput
+  team: TeamUpdateOneInput
+  status: PublishStatus
+  visibility: Visibility
+  units: VideoUnitUpdateManyInput
+  supportFiles: SupportFileUpdateManyInput
+  thumbnails: ImageFileUpdateManyInput
+  categories: CategoryUpdateManyInput
+  tags: TagUpdateManyInput
 }
 
 input VideoProjectUpdateInput {
@@ -7445,6 +8005,29 @@ input VideoProjectUpdateInput {
   tags: TagUpdateManyInput
 }
 
+input VideoProjectUpdateManyDataInput {
+  publishedAt: DateTime
+  projectType: ProjectType
+  projectTitle: String
+  descPublic: String
+  descInternal: String
+  assetPath: String
+  status: PublishStatus
+  visibility: Visibility
+}
+
+input VideoProjectUpdateManyInput {
+  create: [VideoProjectCreateInput!]
+  update: [VideoProjectUpdateWithWhereUniqueNestedInput!]
+  upsert: [VideoProjectUpsertWithWhereUniqueNestedInput!]
+  delete: [VideoProjectWhereUniqueInput!]
+  connect: [VideoProjectWhereUniqueInput!]
+  set: [VideoProjectWhereUniqueInput!]
+  disconnect: [VideoProjectWhereUniqueInput!]
+  deleteMany: [VideoProjectScalarWhereInput!]
+  updateMany: [VideoProjectUpdateManyWithWhereNestedInput!]
+}
+
 input VideoProjectUpdateManyMutationInput {
   publishedAt: DateTime
   projectType: ProjectType
@@ -7454,6 +8037,22 @@ input VideoProjectUpdateManyMutationInput {
   assetPath: String
   status: PublishStatus
   visibility: Visibility
+}
+
+input VideoProjectUpdateManyWithWhereNestedInput {
+  where: VideoProjectScalarWhereInput!
+  data: VideoProjectUpdateManyDataInput!
+}
+
+input VideoProjectUpdateWithWhereUniqueNestedInput {
+  where: VideoProjectWhereUniqueInput!
+  data: VideoProjectUpdateDataInput!
+}
+
+input VideoProjectUpsertWithWhereUniqueNestedInput {
+  where: VideoProjectWhereUniqueInput!
+  update: VideoProjectUpdateDataInput!
+  create: VideoProjectCreateInput!
 }
 
 input VideoProjectWhereInput {
