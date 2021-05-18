@@ -8,7 +8,6 @@ import { publishCreate, publishUpdate, publishDelete } from '../../services/rabb
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
-
 const GraphicResolvers = {
   Query: requiresLogin( {
     graphicProjects( parent, args, ctx ) {
