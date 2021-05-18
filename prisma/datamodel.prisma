@@ -175,7 +175,6 @@ type Tag {
   translations: [LanguageTranslation!]!
 }
 
-
 type LanguageTranslation {
   id: ID! @id
   name: String!
@@ -277,7 +276,6 @@ type GraphicProject {
   tags: [Tag]  
 }
 
-
 type VideoProject {
   id: ID! @id
   createdAt: DateTime! @createdAt
@@ -324,7 +322,6 @@ type Dimensions {
   width: Int
   height: Int
 }
-
 
 # Press Guidance, meeting note
 type DocumentUse {
