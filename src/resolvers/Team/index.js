@@ -1,4 +1,5 @@
 import { requiresLogin } from '../../lib/authentication';
+import { filterByContentType, getCombinedContent } from './utils';
 
 const TeamResolvers = {
   Query: {
@@ -8,6 +9,18 @@ const TeamResolvers = {
 
     team( parent, args, ctx ) {
       return ctx.prisma.team( { id: args.id } );
+    },
+
+    async teamProjects( parent, args, ctx ) {
+      const team = await ctx.prisma.team( { id: args.id } );
+
+      const combined = await getCombinedContent( team.contentTypes, ctx, args.id );
+
+      return {
+        graphics: filterByContentType( combined, 'graphic' ),
+        packages: filterByContentType( combined, 'package' ),
+        videos: filterByContentType( combined, 'video' ),
+      };
     },
   },
 
