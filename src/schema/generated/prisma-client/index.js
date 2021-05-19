@@ -165,10 +165,6 @@ var models = [
     embedded: false
   },
   {
-    name: "Project",
-    embedded: false
-  },
-  {
     name: "VideoFile",
     embedded: false
   },
