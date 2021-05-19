@@ -1,5 +1,6 @@
 type Project {
   id: ID!
+  count: Int
   videos: [VideoProject]
   graphics: [GraphicProject]
   packages: [Package]

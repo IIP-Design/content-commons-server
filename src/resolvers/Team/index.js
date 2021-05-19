@@ -17,6 +17,7 @@ const TeamResolvers = {
       const combined = await getCombinedContent( team.contentTypes, ctx, args.id );
 
       return {
+        count: combined.length,
         graphics: filterByContentType( combined, 'graphic' ),
         packages: filterByContentType( combined, 'package' ),
         videos: filterByContentType( combined, 'video' ),
