@@ -29,7 +29,6 @@ export interface Exists {
   package: (where?: PackageWhereInput) => Promise<boolean>;
   playbook: (where?: PlaybookWhereInput) => Promise<boolean>;
   policyPriority: (where?: PolicyPriorityWhereInput) => Promise<boolean>;
-  project: (where?: ProjectWhereInput) => Promise<boolean>;
   region: (where?: RegionWhereInput) => Promise<boolean>;
   socialPlatform: (where?: SocialPlatformWhereInput) => Promise<boolean>;
   supportFile: (where?: SupportFileWhereInput) => Promise<boolean>;
@@ -408,25 +407,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => PolicyPriorityConnectionPromise;
-  project: (where: ProjectWhereUniqueInput) => ProjectNullablePromise;
-  projects: (args?: {
-    where?: ProjectWhereInput;
-    orderBy?: ProjectOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<Project>;
-  projectsConnection: (args?: {
-    where?: ProjectWhereInput;
-    orderBy?: ProjectOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => ProjectConnectionPromise;
   region: (where: RegionWhereUniqueInput) => RegionNullablePromise;
   regions: (args?: {
     where?: RegionWhereInput;
@@ -1604,44 +1584,6 @@ export type PolicyPriorityOrderByInput =
 export type VideoQuality = 'WEB' | 'BROADCAST';
 
 export type VideoBurnedInStatus = 'SUBTITLED' | 'CAPTIONED' | 'CLEAN';
-
-export type ThumbnailSize = 'SMALL' | 'MEDIUM' | 'LARGE' | 'FULL';
-
-export type VideoProjectOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  | 'publishedAt_ASC'
-  | 'publishedAt_DESC'
-  | 'projectType_ASC'
-  | 'projectType_DESC'
-  | 'projectTitle_ASC'
-  | 'projectTitle_DESC'
-  | 'descPublic_ASC'
-  | 'descPublic_DESC'
-  | 'descInternal_ASC'
-  | 'descInternal_DESC'
-  | 'assetPath_ASC'
-  | 'assetPath_DESC'
-  | 'status_ASC'
-  | 'status_DESC'
-  | 'visibility_ASC'
-  | 'visibility_DESC';
-
-export type VideoUnitOrderByInput =
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-  | 'title_ASC'
-  | 'title_DESC'
-  | 'descPublic_ASC'
-  | 'descPublic_DESC';
 
 export type VideoFileOrderByInput =
   | 'id_ASC'
@@ -3556,11 +3498,67 @@ export type PolicyPriorityWhereUniqueInput = AtLeastOne<{
   name?: Maybe<String>;
 }>;
 
-export type ProjectWhereUniqueInput = AtLeastOne<{
+export type RegionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface VideoProjectWhereInput {
+export type SocialPlatformWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export type SupportFileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type SupportFileUseWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type TeamWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export type ThumbnailWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ThumbnailWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  size?: Maybe<ThumbnailSize>;
+  size_not?: Maybe<ThumbnailSize>;
+  size_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
+  size_not_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
+  image?: Maybe<ImageFileWhereInput>;
+  AND?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
+  OR?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
+  NOT?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
+}
+
+export type ToolkitWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ToolkitWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -3599,52 +3597,24 @@ export interface VideoProjectWhereInput {
   publishedAt_lte?: Maybe<DateTimeInput>;
   publishedAt_gt?: Maybe<DateTimeInput>;
   publishedAt_gte?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectType_not?: Maybe<ProjectType>;
-  projectType_in?: Maybe<ProjectType[] | ProjectType>;
-  projectType_not_in?: Maybe<ProjectType[] | ProjectType>;
-  projectTitle?: Maybe<String>;
-  projectTitle_not?: Maybe<String>;
-  projectTitle_in?: Maybe<String[] | String>;
-  projectTitle_not_in?: Maybe<String[] | String>;
-  projectTitle_lt?: Maybe<String>;
-  projectTitle_lte?: Maybe<String>;
-  projectTitle_gt?: Maybe<String>;
-  projectTitle_gte?: Maybe<String>;
-  projectTitle_contains?: Maybe<String>;
-  projectTitle_not_contains?: Maybe<String>;
-  projectTitle_starts_with?: Maybe<String>;
-  projectTitle_not_starts_with?: Maybe<String>;
-  projectTitle_ends_with?: Maybe<String>;
-  projectTitle_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  descInternal_not?: Maybe<String>;
-  descInternal_in?: Maybe<String[] | String>;
-  descInternal_not_in?: Maybe<String[] | String>;
-  descInternal_lt?: Maybe<String>;
-  descInternal_lte?: Maybe<String>;
-  descInternal_gt?: Maybe<String>;
-  descInternal_gte?: Maybe<String>;
-  descInternal_contains?: Maybe<String>;
-  descInternal_not_contains?: Maybe<String>;
-  descInternal_starts_with?: Maybe<String>;
-  descInternal_not_starts_with?: Maybe<String>;
-  descInternal_ends_with?: Maybe<String>;
-  descInternal_not_ends_with?: Maybe<String>;
+  type?: Maybe<PackageType>;
+  type_not?: Maybe<PackageType>;
+  type_in?: Maybe<PackageType[] | PackageType>;
+  type_not_in?: Maybe<PackageType[] | PackageType>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
   assetPath?: Maybe<String>;
   assetPath_not?: Maybe<String>;
   assetPath_in?: Maybe<String[] | String>;
@@ -3661,6 +3631,21 @@ export interface VideoProjectWhereInput {
   assetPath_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   team?: Maybe<TeamWhereInput>;
+  desc?: Maybe<String>;
+  desc_not?: Maybe<String>;
+  desc_in?: Maybe<String[] | String>;
+  desc_not_in?: Maybe<String[] | String>;
+  desc_lt?: Maybe<String>;
+  desc_lte?: Maybe<String>;
+  desc_gt?: Maybe<String>;
+  desc_gte?: Maybe<String>;
+  desc_contains?: Maybe<String>;
+  desc_not_contains?: Maybe<String>;
+  desc_starts_with?: Maybe<String>;
+  desc_not_starts_with?: Maybe<String>;
+  desc_ends_with?: Maybe<String>;
+  desc_not_ends_with?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatWhereInput>;
   status?: Maybe<PublishStatus>;
   status_not?: Maybe<PublishStatus>;
   status_in?: Maybe<PublishStatus[] | PublishStatus>;
@@ -3669,27 +3654,31 @@ export interface VideoProjectWhereInput {
   visibility_not?: Maybe<Visibility>;
   visibility_in?: Maybe<Visibility[] | Visibility>;
   visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  units_every?: Maybe<VideoUnitWhereInput>;
-  units_some?: Maybe<VideoUnitWhereInput>;
-  units_none?: Maybe<VideoUnitWhereInput>;
-  supportFiles_every?: Maybe<SupportFileWhereInput>;
-  supportFiles_some?: Maybe<SupportFileWhereInput>;
-  supportFiles_none?: Maybe<SupportFileWhereInput>;
-  thumbnails_every?: Maybe<ImageFileWhereInput>;
-  thumbnails_some?: Maybe<ImageFileWhereInput>;
-  thumbnails_none?: Maybe<ImageFileWhereInput>;
+  policy?: Maybe<PolicyPriorityWhereInput>;
   categories_every?: Maybe<CategoryWhereInput>;
   categories_some?: Maybe<CategoryWhereInput>;
   categories_none?: Maybe<CategoryWhereInput>;
   tags_every?: Maybe<TagWhereInput>;
   tags_some?: Maybe<TagWhereInput>;
   tags_none?: Maybe<TagWhereInput>;
-  AND?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
-  OR?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
-  NOT?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
+  supportFiles_every?: Maybe<SupportFileWhereInput>;
+  supportFiles_some?: Maybe<SupportFileWhereInput>;
+  supportFiles_none?: Maybe<SupportFileWhereInput>;
+  AND?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
+  OR?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
+  NOT?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
 }
 
-export interface VideoUnitWhereInput {
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
+
+export type VideoFileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface VideoStreamWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -3704,66 +3693,51 @@ export interface VideoUnitWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  language?: Maybe<LanguageWhereInput>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  files_every?: Maybe<VideoFileWhereInput>;
-  files_some?: Maybe<VideoFileWhereInput>;
-  files_none?: Maybe<VideoFileWhereInput>;
-  tags_every?: Maybe<TagWhereInput>;
-  tags_some?: Maybe<TagWhereInput>;
-  tags_none?: Maybe<TagWhereInput>;
-  categories_every?: Maybe<CategoryWhereInput>;
-  categories_some?: Maybe<CategoryWhereInput>;
-  categories_none?: Maybe<CategoryWhereInput>;
-  thumbnails_every?: Maybe<ThumbnailWhereInput>;
-  thumbnails_some?: Maybe<ThumbnailWhereInput>;
-  thumbnails_none?: Maybe<ThumbnailWhereInput>;
-  AND?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
-  OR?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
-  NOT?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+  site?: Maybe<String>;
+  site_not?: Maybe<String>;
+  site_in?: Maybe<String[] | String>;
+  site_not_in?: Maybe<String[] | String>;
+  site_lt?: Maybe<String>;
+  site_lte?: Maybe<String>;
+  site_gt?: Maybe<String>;
+  site_gte?: Maybe<String>;
+  site_contains?: Maybe<String>;
+  site_not_contains?: Maybe<String>;
+  site_starts_with?: Maybe<String>;
+  site_not_starts_with?: Maybe<String>;
+  site_ends_with?: Maybe<String>;
+  site_not_ends_with?: Maybe<String>;
+  url?: Maybe<String>;
+  url_not?: Maybe<String>;
+  url_in?: Maybe<String[] | String>;
+  url_not_in?: Maybe<String[] | String>;
+  url_lt?: Maybe<String>;
+  url_lte?: Maybe<String>;
+  url_gt?: Maybe<String>;
+  url_gte?: Maybe<String>;
+  url_contains?: Maybe<String>;
+  url_not_contains?: Maybe<String>;
+  url_starts_with?: Maybe<String>;
+  url_not_starts_with?: Maybe<String>;
+  url_ends_with?: Maybe<String>;
+  url_not_ends_with?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+  embedUrl_not?: Maybe<String>;
+  embedUrl_in?: Maybe<String[] | String>;
+  embedUrl_not_in?: Maybe<String[] | String>;
+  embedUrl_lt?: Maybe<String>;
+  embedUrl_lte?: Maybe<String>;
+  embedUrl_gt?: Maybe<String>;
+  embedUrl_gte?: Maybe<String>;
+  embedUrl_contains?: Maybe<String>;
+  embedUrl_not_contains?: Maybe<String>;
+  embedUrl_starts_with?: Maybe<String>;
+  embedUrl_not_starts_with?: Maybe<String>;
+  embedUrl_ends_with?: Maybe<String>;
+  embedUrl_not_ends_with?: Maybe<String>;
+  AND?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  OR?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  NOT?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
 }
 
 export interface VideoFileWhereInput {
@@ -3948,7 +3922,11 @@ export interface VideoUseWhereInput {
   NOT?: Maybe<VideoUseWhereInput[] | VideoUseWhereInput>;
 }
 
-export interface VideoStreamWhereInput {
+export type VideoProjectWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface VideoUnitWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -3963,143 +3941,69 @@ export interface VideoStreamWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  site?: Maybe<String>;
-  site_not?: Maybe<String>;
-  site_in?: Maybe<String[] | String>;
-  site_not_in?: Maybe<String[] | String>;
-  site_lt?: Maybe<String>;
-  site_lte?: Maybe<String>;
-  site_gt?: Maybe<String>;
-  site_gte?: Maybe<String>;
-  site_contains?: Maybe<String>;
-  site_not_contains?: Maybe<String>;
-  site_starts_with?: Maybe<String>;
-  site_not_starts_with?: Maybe<String>;
-  site_ends_with?: Maybe<String>;
-  site_not_ends_with?: Maybe<String>;
-  url?: Maybe<String>;
-  url_not?: Maybe<String>;
-  url_in?: Maybe<String[] | String>;
-  url_not_in?: Maybe<String[] | String>;
-  url_lt?: Maybe<String>;
-  url_lte?: Maybe<String>;
-  url_gt?: Maybe<String>;
-  url_gte?: Maybe<String>;
-  url_contains?: Maybe<String>;
-  url_not_contains?: Maybe<String>;
-  url_starts_with?: Maybe<String>;
-  url_not_starts_with?: Maybe<String>;
-  url_ends_with?: Maybe<String>;
-  url_not_ends_with?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-  embedUrl_not?: Maybe<String>;
-  embedUrl_in?: Maybe<String[] | String>;
-  embedUrl_not_in?: Maybe<String[] | String>;
-  embedUrl_lt?: Maybe<String>;
-  embedUrl_lte?: Maybe<String>;
-  embedUrl_gt?: Maybe<String>;
-  embedUrl_gte?: Maybe<String>;
-  embedUrl_contains?: Maybe<String>;
-  embedUrl_not_contains?: Maybe<String>;
-  embedUrl_starts_with?: Maybe<String>;
-  embedUrl_not_starts_with?: Maybe<String>;
-  embedUrl_ends_with?: Maybe<String>;
-  embedUrl_not_ends_with?: Maybe<String>;
-  AND?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
-  OR?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
-  NOT?: Maybe<VideoStreamWhereInput[] | VideoStreamWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  language?: Maybe<LanguageWhereInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descPublic_not?: Maybe<String>;
+  descPublic_in?: Maybe<String[] | String>;
+  descPublic_not_in?: Maybe<String[] | String>;
+  descPublic_lt?: Maybe<String>;
+  descPublic_lte?: Maybe<String>;
+  descPublic_gt?: Maybe<String>;
+  descPublic_gte?: Maybe<String>;
+  descPublic_contains?: Maybe<String>;
+  descPublic_not_contains?: Maybe<String>;
+  descPublic_starts_with?: Maybe<String>;
+  descPublic_not_starts_with?: Maybe<String>;
+  descPublic_ends_with?: Maybe<String>;
+  descPublic_not_ends_with?: Maybe<String>;
+  files_every?: Maybe<VideoFileWhereInput>;
+  files_some?: Maybe<VideoFileWhereInput>;
+  files_none?: Maybe<VideoFileWhereInput>;
+  tags_every?: Maybe<TagWhereInput>;
+  tags_some?: Maybe<TagWhereInput>;
+  tags_none?: Maybe<TagWhereInput>;
+  categories_every?: Maybe<CategoryWhereInput>;
+  categories_some?: Maybe<CategoryWhereInput>;
+  categories_none?: Maybe<CategoryWhereInput>;
+  thumbnails_every?: Maybe<ThumbnailWhereInput>;
+  thumbnails_some?: Maybe<ThumbnailWhereInput>;
+  thumbnails_none?: Maybe<ThumbnailWhereInput>;
+  AND?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+  OR?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
+  NOT?: Maybe<VideoUnitWhereInput[] | VideoUnitWhereInput>;
 }
 
-export interface ThumbnailWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  size?: Maybe<ThumbnailSize>;
-  size_not?: Maybe<ThumbnailSize>;
-  size_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
-  size_not_in?: Maybe<ThumbnailSize[] | ThumbnailSize>;
-  image?: Maybe<ImageFileWhereInput>;
-  AND?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
-  OR?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
-  NOT?: Maybe<ThumbnailWhereInput[] | ThumbnailWhereInput>;
-}
-
-export interface ProjectWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  videos_every?: Maybe<VideoProjectWhereInput>;
-  videos_some?: Maybe<VideoProjectWhereInput>;
-  videos_none?: Maybe<VideoProjectWhereInput>;
-  graphics_every?: Maybe<GraphicProjectWhereInput>;
-  graphics_some?: Maybe<GraphicProjectWhereInput>;
-  graphics_none?: Maybe<GraphicProjectWhereInput>;
-  packages_every?: Maybe<PackageWhereInput>;
-  packages_some?: Maybe<PackageWhereInput>;
-  packages_none?: Maybe<PackageWhereInput>;
-  AND?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
-  OR?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
-  NOT?: Maybe<ProjectWhereInput[] | ProjectWhereInput>;
-}
-
-export type RegionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type SocialPlatformWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export type SupportFileWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type SupportFileUseWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export type TagWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type TeamWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export type ThumbnailWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type ToolkitWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ToolkitWhereInput {
+export interface VideoProjectWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -4138,24 +4042,52 @@ export interface ToolkitWhereInput {
   publishedAt_lte?: Maybe<DateTimeInput>;
   publishedAt_gt?: Maybe<DateTimeInput>;
   publishedAt_gte?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  type_not?: Maybe<PackageType>;
-  type_in?: Maybe<PackageType[] | PackageType>;
-  type_not_in?: Maybe<PackageType[] | PackageType>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
+  projectType?: Maybe<ProjectType>;
+  projectType_not?: Maybe<ProjectType>;
+  projectType_in?: Maybe<ProjectType[] | ProjectType>;
+  projectType_not_in?: Maybe<ProjectType[] | ProjectType>;
+  projectTitle?: Maybe<String>;
+  projectTitle_not?: Maybe<String>;
+  projectTitle_in?: Maybe<String[] | String>;
+  projectTitle_not_in?: Maybe<String[] | String>;
+  projectTitle_lt?: Maybe<String>;
+  projectTitle_lte?: Maybe<String>;
+  projectTitle_gt?: Maybe<String>;
+  projectTitle_gte?: Maybe<String>;
+  projectTitle_contains?: Maybe<String>;
+  projectTitle_not_contains?: Maybe<String>;
+  projectTitle_starts_with?: Maybe<String>;
+  projectTitle_not_starts_with?: Maybe<String>;
+  projectTitle_ends_with?: Maybe<String>;
+  projectTitle_not_ends_with?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descPublic_not?: Maybe<String>;
+  descPublic_in?: Maybe<String[] | String>;
+  descPublic_not_in?: Maybe<String[] | String>;
+  descPublic_lt?: Maybe<String>;
+  descPublic_lte?: Maybe<String>;
+  descPublic_gt?: Maybe<String>;
+  descPublic_gte?: Maybe<String>;
+  descPublic_contains?: Maybe<String>;
+  descPublic_not_contains?: Maybe<String>;
+  descPublic_starts_with?: Maybe<String>;
+  descPublic_not_starts_with?: Maybe<String>;
+  descPublic_ends_with?: Maybe<String>;
+  descPublic_not_ends_with?: Maybe<String>;
+  descInternal?: Maybe<String>;
+  descInternal_not?: Maybe<String>;
+  descInternal_in?: Maybe<String[] | String>;
+  descInternal_not_in?: Maybe<String[] | String>;
+  descInternal_lt?: Maybe<String>;
+  descInternal_lte?: Maybe<String>;
+  descInternal_gt?: Maybe<String>;
+  descInternal_gte?: Maybe<String>;
+  descInternal_contains?: Maybe<String>;
+  descInternal_not_contains?: Maybe<String>;
+  descInternal_starts_with?: Maybe<String>;
+  descInternal_not_starts_with?: Maybe<String>;
+  descInternal_ends_with?: Maybe<String>;
+  descInternal_not_ends_with?: Maybe<String>;
   assetPath?: Maybe<String>;
   assetPath_not?: Maybe<String>;
   assetPath_in?: Maybe<String[] | String>;
@@ -4172,21 +4104,6 @@ export interface ToolkitWhereInput {
   assetPath_not_ends_with?: Maybe<String>;
   author?: Maybe<UserWhereInput>;
   team?: Maybe<TeamWhereInput>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatWhereInput>;
   status?: Maybe<PublishStatus>;
   status_not?: Maybe<PublishStatus>;
   status_in?: Maybe<PublishStatus[] | PublishStatus>;
@@ -4195,33 +4112,25 @@ export interface ToolkitWhereInput {
   visibility_not?: Maybe<Visibility>;
   visibility_in?: Maybe<Visibility[] | Visibility>;
   visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  policy?: Maybe<PolicyPriorityWhereInput>;
+  units_every?: Maybe<VideoUnitWhereInput>;
+  units_some?: Maybe<VideoUnitWhereInput>;
+  units_none?: Maybe<VideoUnitWhereInput>;
+  supportFiles_every?: Maybe<SupportFileWhereInput>;
+  supportFiles_some?: Maybe<SupportFileWhereInput>;
+  supportFiles_none?: Maybe<SupportFileWhereInput>;
+  thumbnails_every?: Maybe<ImageFileWhereInput>;
+  thumbnails_some?: Maybe<ImageFileWhereInput>;
+  thumbnails_none?: Maybe<ImageFileWhereInput>;
   categories_every?: Maybe<CategoryWhereInput>;
   categories_some?: Maybe<CategoryWhereInput>;
   categories_none?: Maybe<CategoryWhereInput>;
   tags_every?: Maybe<TagWhereInput>;
   tags_some?: Maybe<TagWhereInput>;
   tags_none?: Maybe<TagWhereInput>;
-  supportFiles_every?: Maybe<SupportFileWhereInput>;
-  supportFiles_some?: Maybe<SupportFileWhereInput>;
-  supportFiles_none?: Maybe<SupportFileWhereInput>;
-  AND?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
-  OR?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
-  NOT?: Maybe<ToolkitWhereInput[] | ToolkitWhereInput>;
+  AND?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
+  OR?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
+  NOT?: Maybe<VideoProjectWhereInput[] | VideoProjectWhereInput>;
 }
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-}>;
-
-export type VideoFileWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type VideoProjectWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
 
 export type VideoStreamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -6603,11 +6512,11 @@ export interface PolicyPriorityUpdateManyMutationInput {
   theme?: Maybe<String>;
 }
 
-export interface ProjectCreateInput {
+export interface RegionCreateInput {
   id?: Maybe<ID_Input>;
-  videos?: Maybe<VideoProjectCreateManyInput>;
-  graphics?: Maybe<GraphicProjectCreateManyInput>;
-  packages?: Maybe<PackageCreateManyInput>;
+  name: String;
+  abbr: String;
+  countries?: Maybe<CountryCreateManyWithoutRegionInput>;
 }
 
 export interface VideoProjectCreateManyInput {
@@ -6615,90 +6524,119 @@ export interface VideoProjectCreateManyInput {
   connect?: Maybe<VideoProjectWhereUniqueInput[] | VideoProjectWhereUniqueInput>;
 }
 
-export interface VideoProjectCreateInput {
+export interface CountryCreateWithoutRegionInput {
   id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle: String;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserCreateOneInput>;
-  team?: Maybe<TeamCreateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  units?: Maybe<VideoUnitCreateManyInput>;
-  supportFiles?: Maybe<SupportFileCreateManyInput>;
-  thumbnails?: Maybe<ImageFileCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
+  name: String;
+  abbr: String;
 }
 
-export interface VideoUnitCreateManyInput {
-  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
-  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+export interface RegionUpdateInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+  countries?: Maybe<CountryUpdateManyWithoutRegionInput>;
 }
 
-export interface VideoUnitCreateInput {
-  id?: Maybe<ID_Input>;
-  language?: Maybe<LanguageCreateOneInput>;
-  title: String;
-  descPublic?: Maybe<String>;
-  files?: Maybe<VideoFileCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  thumbnails?: Maybe<ThumbnailCreateManyInput>;
+export interface CountryUpdateManyWithoutRegionInput {
+  create?: Maybe<
+    CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput
+  >;
+  delete?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  set?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  disconnect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
+  update?: Maybe<
+    | CountryUpdateWithWhereUniqueWithoutRegionInput[]
+    | CountryUpdateWithWhereUniqueWithoutRegionInput
+  >;
+  upsert?: Maybe<
+    | CountryUpsertWithWhereUniqueWithoutRegionInput[]
+    | CountryUpsertWithWhereUniqueWithoutRegionInput
+  >;
+  deleteMany?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
+  updateMany?: Maybe<
+    | CountryUpdateManyWithWhereNestedInput[]
+    | CountryUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface VideoFileCreateManyInput {
-  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
-  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+export interface CountryUpdateWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput;
+  data: CountryUpdateWithoutRegionDataInput;
 }
 
-export interface VideoFileCreateInput {
-  id?: Maybe<ID_Input>;
-  language?: Maybe<LanguageCreateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<VideoUseCreateOneInput>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+export interface CountryUpdateWithoutRegionDataInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface CountryUpsertWithWhereUniqueWithoutRegionInput {
+  where: CountryWhereUniqueInput;
+  update: CountryUpdateWithoutRegionDataInput;
+  create: CountryCreateWithoutRegionInput;
+}
+
+export interface RegionUpdateManyMutationInput {
+  name?: Maybe<String>;
+  abbr?: Maybe<String>;
+}
+
+export interface SocialPlatformUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface SocialPlatformUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface SupportFileUpdateInput {
+  language?: Maybe<LanguageUpdateOneRequiredInput>;
   url?: Maybe<String>;
   signedUrl?: Maybe<String>;
   md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
   filesize?: Maybe<Float>;
-  dimensions?: Maybe<DimensionsCreateOneInput>;
-  stream?: Maybe<VideoStreamCreateManyInput>;
+  visibility?: Maybe<Visibility>;
+  editable?: Maybe<Boolean>;
+  use?: Maybe<SupportFileUseUpdateOneInput>;
 }
 
-export interface VideoUseCreateOneInput {
-  create?: Maybe<VideoUseCreateInput>;
-  connect?: Maybe<VideoUseWhereUniqueInput>;
-}
-
-export interface VideoUseCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface VideoStreamCreateManyInput {
-  create?: Maybe<VideoStreamCreateInput[] | VideoStreamCreateInput>;
-  connect?: Maybe<VideoStreamWhereUniqueInput[] | VideoStreamWhereUniqueInput>;
-}
-
-export interface VideoStreamCreateInput {
-  id?: Maybe<ID_Input>;
-  site?: Maybe<String>;
+export interface SupportFileUpdateManyMutationInput {
   url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  filename?: Maybe<String>;
+  filetype?: Maybe<String>;
+  filesize?: Maybe<Float>;
+  visibility?: Maybe<Visibility>;
+  editable?: Maybe<Boolean>;
 }
 
-export interface ThumbnailCreateManyInput {
-  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
-  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+export interface SupportFileUseUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface SupportFileUseUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface TagUpdateInput {
+  translations?: Maybe<LanguageTranslationUpdateManyInput>;
+}
+
+export interface TeamUpdateInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  members?: Maybe<UserUpdateManyWithoutTeamInput>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
+
+export interface TeamUpdateManyMutationInput {
+  name?: Maybe<String>;
+  organization?: Maybe<String>;
+  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
+  isConfirmed?: Maybe<Boolean>;
 }
 
 export interface ThumbnailCreateInput {
@@ -6717,15 +6655,18 @@ export interface GraphicProjectCreateManyInput {
   connect?: Maybe<GraphicProjectWhereUniqueInput[] | GraphicProjectWhereUniqueInput>;
 }
 
-export interface PackageCreateManyInput {
-  create?: Maybe<PackageCreateInput[] | PackageCreateInput>;
-  connect?: Maybe<PackageWhereUniqueInput[] | PackageWhereUniqueInput>;
+export interface ThumbnailUpdateInput {
+  size?: Maybe<ThumbnailSize>;
+  image?: Maybe<ImageFileUpdateOneInput>;
 }
 
-export interface ProjectUpdateInput {
-  videos?: Maybe<VideoProjectUpdateManyInput>;
-  graphics?: Maybe<GraphicProjectUpdateManyInput>;
-  packages?: Maybe<PackageUpdateManyInput>;
+export interface ImageFileUpdateOneInput {
+  connect?: Maybe<ImageFileWhereUniqueInput>;
+}
+
+export interface ImageFileUpsertNestedInput {
+  update: ImageFileUpdateDataInput;
+  create: ImageFileCreateInput;
 }
 
 export interface VideoProjectUpdateManyInput {
@@ -6746,34 +6687,45 @@ export interface VideoProjectUpdateManyInput {
   >;
 }
 
-export interface VideoProjectUpdateWithWhereUniqueNestedInput {
-  where: VideoProjectWhereUniqueInput;
-  data: VideoProjectUpdateDataInput;
+export interface ToolkitCreateInput {
+  id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
+  type: PackageType;
+  title: String;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserCreateOneInput>;
+  team?: Maybe<TeamCreateOneInput>;
+  desc?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatCreateOneInput>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  policy?: Maybe<PolicyPriorityCreateOneInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+  supportFiles?: Maybe<SupportFileCreateManyInput>;
 }
 
-export interface VideoProjectUpdateDataInput {
+export interface ToolkitUpdateInput {
   publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
+  type?: Maybe<PackageType>;
+  title?: Maybe<String>;
   assetPath?: Maybe<String>;
   author?: Maybe<UserUpdateOneInput>;
   team?: Maybe<TeamUpdateOneInput>;
+  desc?: Maybe<String>;
+  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
   status?: Maybe<PublishStatus>;
   visibility?: Maybe<Visibility>;
-  units?: Maybe<VideoUnitUpdateManyInput>;
-  supportFiles?: Maybe<SupportFileUpdateManyInput>;
-  thumbnails?: Maybe<ImageFileUpdateManyInput>;
+  policy?: Maybe<PolicyPriorityUpdateOneInput>;
   categories?: Maybe<CategoryUpdateManyInput>;
   tags?: Maybe<TagUpdateManyInput>;
+  supportFiles?: Maybe<SupportFileUpdateManyInput>;
 }
 
 export interface VideoUnitUpdateManyInput {
   create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
   update?: Maybe<
     VideoUnitUpdateWithWhereUniqueNestedInput[] | VideoUnitUpdateWithWhereUniqueNestedInput
-  >;
   upsert?: Maybe<
     VideoUnitUpsertWithWhereUniqueNestedInput[] | VideoUnitUpsertWithWhereUniqueNestedInput
   >;
@@ -6786,22 +6738,37 @@ export interface VideoUnitUpdateManyInput {
     VideoUnitUpdateManyWithWhereNestedInput[] | VideoUnitUpdateManyWithWhereNestedInput
   >;
 }
-
-export interface VideoUnitUpdateWithWhereUniqueNestedInput {
-  where: VideoUnitWhereUniqueInput;
-  data: VideoUnitUpdateDataInput;
-}
-
-export interface VideoUnitUpdateDataInput {
-  language?: Maybe<LanguageUpdateOneInput>;
+export interface ToolkitUpdateManyMutationInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  type?: Maybe<PackageType>;
   title?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  files?: Maybe<VideoFileUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  country?: Maybe<String>;
+  city?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
+  isConfirmed?: Maybe<Boolean>;
 }
 
+export interface UserUpdateManyMutationInput {
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  tempToken?: Maybe<String>;
+  tempTokenExpiry?: Maybe<Float>;
+  jobTitle?: Maybe<String>;
+  country?: Maybe<String>;
+  city?: Maybe<String>;
+  howHeard?: Maybe<String>;
+  permissions?: Maybe<UserUpdatepermissionsInput>;
+  isConfirmed?: Maybe<Boolean>;
+}
 export interface VideoFileUpdateManyInput {
   create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
   update?: Maybe<
@@ -6819,13 +6786,30 @@ export interface VideoFileUpdateManyInput {
     VideoFileUpdateManyWithWhereNestedInput[] | VideoFileUpdateManyWithWhereNestedInput
   >;
 }
-
-export interface VideoFileUpdateWithWhereUniqueNestedInput {
-  where: VideoFileWhereUniqueInput;
-  data: VideoFileUpdateDataInput;
+export interface VideoFileCreateInput {
+  id?: Maybe<ID_Input>;
+  language?: Maybe<LanguageCreateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<VideoUseCreateOneInput>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+  dimensions?: Maybe<DimensionsCreateOneInput>;
+export interface VideoStreamCreateInput {
+  id?: Maybe<ID_Input>;
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
 }
 
-export interface VideoFileUpdateDataInput {
+export interface VideoFileUpdateInput {
   language?: Maybe<LanguageUpdateOneInput>;
   filetype?: Maybe<String>;
   filename?: Maybe<String>;
@@ -6967,6 +6951,163 @@ export interface VideoStreamUpdateManyDataInput {
   site?: Maybe<String>;
   url?: Maybe<String>;
   embedUrl?: Maybe<String>;
+}
+
+export interface VideoFileUpdateManyMutationInput {
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+}
+
+export interface VideoProjectCreateInput {
+  id?: Maybe<ID_Input>;
+  publishedAt?: Maybe<DateTimeInput>;
+  projectType?: Maybe<ProjectType>;
+  projectTitle: String;
+  descPublic?: Maybe<String>;
+  descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserCreateOneInput>;
+  team?: Maybe<TeamCreateOneInput>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  units?: Maybe<VideoUnitCreateManyInput>;
+  supportFiles?: Maybe<SupportFileCreateManyInput>;
+  thumbnails?: Maybe<ImageFileCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+}
+
+export interface VideoUnitCreateManyInput {
+  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
+  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+}
+
+export interface VideoUnitCreateInput {
+  id?: Maybe<ID_Input>;
+  language?: Maybe<LanguageCreateOneInput>;
+  title: String;
+  descPublic?: Maybe<String>;
+  files?: Maybe<VideoFileCreateManyInput>;
+  tags?: Maybe<TagCreateManyInput>;
+  categories?: Maybe<CategoryCreateManyInput>;
+  thumbnails?: Maybe<ThumbnailCreateManyInput>;
+}
+
+export interface VideoFileCreateManyInput {
+  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
+  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+}
+
+export interface ThumbnailCreateManyInput {
+  create?: Maybe<ThumbnailCreateInput[] | ThumbnailCreateInput>;
+  connect?: Maybe<ThumbnailWhereUniqueInput[] | ThumbnailWhereUniqueInput>;
+}
+
+export interface VideoProjectUpdateInput {
+  publishedAt?: Maybe<DateTimeInput>;
+  projectType?: Maybe<ProjectType>;
+  projectTitle?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  descInternal?: Maybe<String>;
+  assetPath?: Maybe<String>;
+  author?: Maybe<UserUpdateOneInput>;
+  team?: Maybe<TeamUpdateOneInput>;
+  status?: Maybe<PublishStatus>;
+  visibility?: Maybe<Visibility>;
+  units?: Maybe<VideoUnitUpdateManyInput>;
+  supportFiles?: Maybe<SupportFileUpdateManyInput>;
+  thumbnails?: Maybe<ImageFileUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+}
+
+export interface VideoUnitUpdateManyInput {
+  create?: Maybe<VideoUnitCreateInput[] | VideoUnitCreateInput>;
+  update?: Maybe<
+    | VideoUnitUpdateWithWhereUniqueNestedInput[]
+    | VideoUnitUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | VideoUnitUpsertWithWhereUniqueNestedInput[]
+    | VideoUnitUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  connect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  set?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  disconnect?: Maybe<VideoUnitWhereUniqueInput[] | VideoUnitWhereUniqueInput>;
+  deleteMany?: Maybe<VideoUnitScalarWhereInput[] | VideoUnitScalarWhereInput>;
+  updateMany?: Maybe<
+    | VideoUnitUpdateManyWithWhereNestedInput[]
+    | VideoUnitUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VideoUnitUpdateWithWhereUniqueNestedInput {
+  where: VideoUnitWhereUniqueInput;
+  data: VideoUnitUpdateDataInput;
+}
+
+export interface VideoUnitUpdateDataInput {
+  language?: Maybe<LanguageUpdateOneInput>;
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  files?: Maybe<VideoFileUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
+}
+
+export interface VideoFileUpdateManyInput {
+  create?: Maybe<VideoFileCreateInput[] | VideoFileCreateInput>;
+  update?: Maybe<
+    | VideoFileUpdateWithWhereUniqueNestedInput[]
+    | VideoFileUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | VideoFileUpsertWithWhereUniqueNestedInput[]
+    | VideoFileUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  connect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  set?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  disconnect?: Maybe<VideoFileWhereUniqueInput[] | VideoFileWhereUniqueInput>;
+  deleteMany?: Maybe<VideoFileScalarWhereInput[] | VideoFileScalarWhereInput>;
+  updateMany?: Maybe<
+    | VideoFileUpdateManyWithWhereNestedInput[]
+    | VideoFileUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VideoFileUpdateWithWhereUniqueNestedInput {
+  where: VideoFileWhereUniqueInput;
+  data: VideoFileUpdateDataInput;
+}
+
+export interface VideoFileUpdateDataInput {
+  language?: Maybe<LanguageUpdateOneInput>;
+  filetype?: Maybe<String>;
+  filename?: Maybe<String>;
+  visibility?: Maybe<Visibility>;
+  use?: Maybe<VideoUseUpdateOneInput>;
+  quality?: Maybe<VideoQuality>;
+  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
+  url?: Maybe<String>;
+  signedUrl?: Maybe<String>;
+  md5?: Maybe<String>;
+  duration?: Maybe<Float>;
+  bitrate?: Maybe<Float>;
+  filesize?: Maybe<Float>;
+  dimensions?: Maybe<DimensionsUpdateOneInput>;
+  stream?: Maybe<VideoStreamUpdateManyInput>;
 }
 
 export interface VideoFileUpsertWithWhereUniqueNestedInput {
@@ -7164,20 +7305,6 @@ export interface ThumbnailUpdateDataInput {
   image?: Maybe<ImageFileUpdateOneInput>;
 }
 
-export interface ImageFileUpdateOneInput {
-  create?: Maybe<ImageFileCreateInput>;
-  update?: Maybe<ImageFileUpdateDataInput>;
-  upsert?: Maybe<ImageFileUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<ImageFileWhereUniqueInput>;
-}
-
-export interface ImageFileUpsertNestedInput {
-  update: ImageFileUpdateDataInput;
-  create: ImageFileCreateInput;
-}
-
 export interface ThumbnailUpsertWithWhereUniqueNestedInput {
   where: ThumbnailWhereUniqueInput;
   update: ThumbnailUpdateDataInput;
@@ -7297,130 +7424,7 @@ export interface VideoUnitUpdateManyDataInput {
   descPublic?: Maybe<String>;
 }
 
-export interface VideoProjectUpsertWithWhereUniqueNestedInput {
-  where: VideoProjectWhereUniqueInput;
-  update: VideoProjectUpdateDataInput;
-  create: VideoProjectCreateInput;
-}
-
-export interface VideoProjectScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectType_not?: Maybe<ProjectType>;
-  projectType_in?: Maybe<ProjectType[] | ProjectType>;
-  projectType_not_in?: Maybe<ProjectType[] | ProjectType>;
-  projectTitle?: Maybe<String>;
-  projectTitle_not?: Maybe<String>;
-  projectTitle_in?: Maybe<String[] | String>;
-  projectTitle_not_in?: Maybe<String[] | String>;
-  projectTitle_lt?: Maybe<String>;
-  projectTitle_lte?: Maybe<String>;
-  projectTitle_gt?: Maybe<String>;
-  projectTitle_gte?: Maybe<String>;
-  projectTitle_contains?: Maybe<String>;
-  projectTitle_not_contains?: Maybe<String>;
-  projectTitle_starts_with?: Maybe<String>;
-  projectTitle_not_starts_with?: Maybe<String>;
-  projectTitle_ends_with?: Maybe<String>;
-  projectTitle_not_ends_with?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descPublic_not?: Maybe<String>;
-  descPublic_in?: Maybe<String[] | String>;
-  descPublic_not_in?: Maybe<String[] | String>;
-  descPublic_lt?: Maybe<String>;
-  descPublic_lte?: Maybe<String>;
-  descPublic_gt?: Maybe<String>;
-  descPublic_gte?: Maybe<String>;
-  descPublic_contains?: Maybe<String>;
-  descPublic_not_contains?: Maybe<String>;
-  descPublic_starts_with?: Maybe<String>;
-  descPublic_not_starts_with?: Maybe<String>;
-  descPublic_ends_with?: Maybe<String>;
-  descPublic_not_ends_with?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  descInternal_not?: Maybe<String>;
-  descInternal_in?: Maybe<String[] | String>;
-  descInternal_not_in?: Maybe<String[] | String>;
-  descInternal_lt?: Maybe<String>;
-  descInternal_lte?: Maybe<String>;
-  descInternal_gt?: Maybe<String>;
-  descInternal_gte?: Maybe<String>;
-  descInternal_contains?: Maybe<String>;
-  descInternal_not_contains?: Maybe<String>;
-  descInternal_starts_with?: Maybe<String>;
-  descInternal_not_starts_with?: Maybe<String>;
-  descInternal_ends_with?: Maybe<String>;
-  descInternal_not_ends_with?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  assetPath_not?: Maybe<String>;
-  assetPath_in?: Maybe<String[] | String>;
-  assetPath_not_in?: Maybe<String[] | String>;
-  assetPath_lt?: Maybe<String>;
-  assetPath_lte?: Maybe<String>;
-  assetPath_gt?: Maybe<String>;
-  assetPath_gte?: Maybe<String>;
-  assetPath_contains?: Maybe<String>;
-  assetPath_not_contains?: Maybe<String>;
-  assetPath_starts_with?: Maybe<String>;
-  assetPath_not_starts_with?: Maybe<String>;
-  assetPath_ends_with?: Maybe<String>;
-  assetPath_not_ends_with?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  status_not?: Maybe<PublishStatus>;
-  status_in?: Maybe<PublishStatus[] | PublishStatus>;
-  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  AND?: Maybe<VideoProjectScalarWhereInput[] | VideoProjectScalarWhereInput>;
-  OR?: Maybe<VideoProjectScalarWhereInput[] | VideoProjectScalarWhereInput>;
-  NOT?: Maybe<VideoProjectScalarWhereInput[] | VideoProjectScalarWhereInput>;
-}
-
-export interface VideoProjectUpdateManyWithWhereNestedInput {
-  where: VideoProjectScalarWhereInput;
-  data: VideoProjectUpdateManyDataInput;
-}
-
-export interface VideoProjectUpdateManyDataInput {
+export interface VideoProjectUpdateManyMutationInput {
   publishedAt?: Maybe<DateTimeInput>;
   projectType?: Maybe<ProjectType>;
   projectTitle?: Maybe<String>;
@@ -7431,16 +7435,66 @@ export interface VideoProjectUpdateManyDataInput {
   visibility?: Maybe<Visibility>;
 }
 
-export interface GraphicProjectUpdateManyInput {
-  create?: Maybe<GraphicProjectCreateInput[] | GraphicProjectCreateInput>;
-  update?: Maybe<
-    | GraphicProjectUpdateWithWhereUniqueNestedInput[]
-    | GraphicProjectUpdateWithWhereUniqueNestedInput
+export interface VideoStreamUpdateInput {
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+}
+
+export interface VideoStreamUpdateManyMutationInput {
+  site?: Maybe<String>;
+  url?: Maybe<String>;
+  embedUrl?: Maybe<String>;
+}
+
+export interface VideoUnitUpdateInput {
+  language?: Maybe<LanguageUpdateOneInput>;
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
+  files?: Maybe<VideoFileUpdateManyInput>;
+  tags?: Maybe<TagUpdateManyInput>;
+  categories?: Maybe<CategoryUpdateManyInput>;
+  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
+}
+
+export interface VideoUnitUpdateManyMutationInput {
+  title?: Maybe<String>;
+  descPublic?: Maybe<String>;
+}
+
+export interface VideoUseUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface VideoUseUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface BureauSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<BureauWhereInput>;
+  AND?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  OR?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  NOT?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+}
+
+export interface CategorySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CategoryWhereInput>;
+  AND?: Maybe<
+    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
-  upsert?: Maybe<
-    | GraphicProjectUpsertWithWhereUniqueNestedInput[]
-    | GraphicProjectUpsertWithWhereUniqueNestedInput
+  OR?: Maybe<CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput>;
+  NOT?: Maybe<
+    CategorySubscriptionWhereInput[] | CategorySubscriptionWhereInput
   >;
+<<<<<<< HEAD
   delete?: Maybe<GraphicProjectWhereUniqueInput[] | GraphicProjectWhereUniqueInput>;
   connect?: Maybe<GraphicProjectWhereUniqueInput[] | GraphicProjectWhereUniqueInput>;
   set?: Maybe<GraphicProjectWhereUniqueInput[] | GraphicProjectWhereUniqueInput>;
@@ -7448,39 +7502,110 @@ export interface GraphicProjectUpdateManyInput {
   deleteMany?: Maybe<GraphicProjectScalarWhereInput[] | GraphicProjectScalarWhereInput>;
   updateMany?: Maybe<
     GraphicProjectUpdateManyWithWhereNestedInput[] | GraphicProjectUpdateManyWithWhereNestedInput
+=======
+}
+
+export interface ContentFieldSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ContentFieldWhereInput>;
+  AND?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput
   >;
 }
 
-export interface GraphicProjectUpdateWithWhereUniqueNestedInput {
-  where: GraphicProjectWhereUniqueInput;
-  data: GraphicProjectUpdateDataInput;
+export interface CountrySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CountryWhereInput>;
+  AND?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
+  OR?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
+  NOT?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
 }
 
-export interface GraphicProjectUpdateDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<ProjectType>;
-  title?: Maybe<String>;
-  copyright?: Maybe<Copyright>;
-  alt?: Maybe<String>;
-  descPublic?: Maybe<ContentFieldUpdateOneInput>;
-  descInternal?: Maybe<ContentFieldUpdateOneInput>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserUpdateOneInput>;
-  team?: Maybe<TeamUpdateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  supportFiles?: Maybe<SupportFileUpdateManyInput>;
-  images?: Maybe<ImageFileUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
+export interface DimensionsSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DimensionsWhereInput>;
+  AND?: Maybe<
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  >;
 }
 
-export interface GraphicProjectUpsertWithWhereUniqueNestedInput {
-  where: GraphicProjectWhereUniqueInput;
-  update: GraphicProjectUpdateDataInput;
-  create: GraphicProjectCreateInput;
+export interface DocumentConversionFormatSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentConversionFormatWhereInput>;
+  AND?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | DocumentConversionFormatSubscriptionWhereInput[]
+    | DocumentConversionFormatSubscriptionWhereInput
+  >;
 }
 
+export interface DocumentFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentFileWhereInput>;
+  AND?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    DocumentFileSubscriptionWhereInput[] | DocumentFileSubscriptionWhereInput
+  >;
+}
+
+export interface DocumentUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<DocumentUseWhereInput>;
+  AND?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    DocumentUseSubscriptionWhereInput[] | DocumentUseSubscriptionWhereInput
+  >;
+}
+
+<<<<<<< HEAD
 export interface GraphicProjectScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
@@ -7581,24 +7706,63 @@ export interface GraphicProjectScalarWhereInput {
   AND?: Maybe<GraphicProjectScalarWhereInput[] | GraphicProjectScalarWhereInput>;
   OR?: Maybe<GraphicProjectScalarWhereInput[] | GraphicProjectScalarWhereInput>;
   NOT?: Maybe<GraphicProjectScalarWhereInput[] | GraphicProjectScalarWhereInput>;
+=======
+export interface GraphicProjectSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GraphicProjectWhereInput>;
+  AND?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | GraphicProjectSubscriptionWhereInput[]
+    | GraphicProjectSubscriptionWhereInput
+  >;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface GraphicProjectUpdateManyWithWhereNestedInput {
-  where: GraphicProjectScalarWhereInput;
-  data: GraphicProjectUpdateManyDataInput;
+export interface GraphicStyleSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<GraphicStyleWhereInput>;
+  AND?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    GraphicStyleSubscriptionWhereInput[] | GraphicStyleSubscriptionWhereInput
+  >;
 }
 
-export interface GraphicProjectUpdateManyDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<ProjectType>;
-  title?: Maybe<String>;
-  copyright?: Maybe<Copyright>;
-  alt?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
+export interface ImageFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ImageFileWhereInput>;
+  AND?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ImageFileSubscriptionWhereInput[] | ImageFileSubscriptionWhereInput
+  >;
 }
 
+<<<<<<< HEAD
 export interface PackageUpdateManyInput {
   create?: Maybe<PackageCreateInput[] | PackageCreateInput>;
   update?: Maybe<
@@ -7614,155 +7778,127 @@ export interface PackageUpdateManyInput {
   deleteMany?: Maybe<PackageScalarWhereInput[] | PackageScalarWhereInput>;
   updateMany?: Maybe<
     PackageUpdateManyWithWhereNestedInput[] | PackageUpdateManyWithWhereNestedInput
+=======
+export interface ImageUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ImageUseWhereInput>;
+  AND?: Maybe<
+    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput>;
+  NOT?: Maybe<
+    ImageUseSubscriptionWhereInput[] | ImageUseSubscriptionWhereInput
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   >;
 }
 
-export interface PackageUpdateWithWhereUniqueNestedInput {
-  where: PackageWhereUniqueInput;
-  data: PackageUpdateDataInput;
+export interface LanguageSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LanguageWhereInput>;
+  AND?: Maybe<
+    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
+  >;
+  OR?: Maybe<LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput>;
+  NOT?: Maybe<
+    LanguageSubscriptionWhereInput[] | LanguageSubscriptionWhereInput
+  >;
 }
 
-export interface PackageUpdateDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserUpdateOneInput>;
-  team?: Maybe<TeamUpdateOneInput>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  documents?: Maybe<DocumentFileUpdateManyInput>;
+export interface LanguageTranslationSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<LanguageTranslationWhereInput>;
+  AND?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | LanguageTranslationSubscriptionWhereInput[]
+    | LanguageTranslationSubscriptionWhereInput
+  >;
 }
 
-export interface PackageUpsertWithWhereUniqueNestedInput {
-  where: PackageWhereUniqueInput;
-  update: PackageUpdateDataInput;
-  create: PackageCreateInput;
+export interface OfficeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<OfficeWhereInput>;
+  AND?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+  OR?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+  NOT?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
 }
 
-export interface PackageScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  publishedAt?: Maybe<DateTimeInput>;
-  publishedAt_not?: Maybe<DateTimeInput>;
-  publishedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  publishedAt_lt?: Maybe<DateTimeInput>;
-  publishedAt_lte?: Maybe<DateTimeInput>;
-  publishedAt_gt?: Maybe<DateTimeInput>;
-  publishedAt_gte?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  type_not?: Maybe<PackageType>;
-  type_in?: Maybe<PackageType[] | PackageType>;
-  type_not_in?: Maybe<PackageType[] | PackageType>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  assetPath_not?: Maybe<String>;
-  assetPath_in?: Maybe<String[] | String>;
-  assetPath_not_in?: Maybe<String[] | String>;
-  assetPath_lt?: Maybe<String>;
-  assetPath_lte?: Maybe<String>;
-  assetPath_gt?: Maybe<String>;
-  assetPath_gte?: Maybe<String>;
-  assetPath_contains?: Maybe<String>;
-  assetPath_not_contains?: Maybe<String>;
-  assetPath_starts_with?: Maybe<String>;
-  assetPath_not_starts_with?: Maybe<String>;
-  assetPath_ends_with?: Maybe<String>;
-  assetPath_not_ends_with?: Maybe<String>;
-  desc?: Maybe<String>;
-  desc_not?: Maybe<String>;
-  desc_in?: Maybe<String[] | String>;
-  desc_not_in?: Maybe<String[] | String>;
-  desc_lt?: Maybe<String>;
-  desc_lte?: Maybe<String>;
-  desc_gt?: Maybe<String>;
-  desc_gte?: Maybe<String>;
-  desc_contains?: Maybe<String>;
-  desc_not_contains?: Maybe<String>;
-  desc_starts_with?: Maybe<String>;
-  desc_not_starts_with?: Maybe<String>;
-  desc_ends_with?: Maybe<String>;
-  desc_not_ends_with?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  status_not?: Maybe<PublishStatus>;
-  status_in?: Maybe<PublishStatus[] | PublishStatus>;
-  status_not_in?: Maybe<PublishStatus[] | PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  visibility_not?: Maybe<Visibility>;
-  visibility_in?: Maybe<Visibility[] | Visibility>;
-  visibility_not_in?: Maybe<Visibility[] | Visibility>;
-  AND?: Maybe<PackageScalarWhereInput[] | PackageScalarWhereInput>;
-  OR?: Maybe<PackageScalarWhereInput[] | PackageScalarWhereInput>;
-  NOT?: Maybe<PackageScalarWhereInput[] | PackageScalarWhereInput>;
+export interface PackageSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PackageWhereInput>;
+  AND?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+  OR?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+  NOT?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
 }
 
-export interface PackageUpdateManyWithWhereNestedInput {
-  where: PackageScalarWhereInput;
-  data: PackageUpdateManyDataInput;
+export interface PlaybookSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PlaybookWhereInput>;
+  AND?: Maybe<
+    PlaybookSubscriptionWhereInput[] | PlaybookSubscriptionWhereInput
+  >;
+  OR?: Maybe<PlaybookSubscriptionWhereInput[] | PlaybookSubscriptionWhereInput>;
+  NOT?: Maybe<
+    PlaybookSubscriptionWhereInput[] | PlaybookSubscriptionWhereInput
+  >;
 }
 
-export interface PackageUpdateManyDataInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
+export interface PolicyPrioritySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PolicyPriorityWhereInput>;
+  AND?: Maybe<
+    | PolicyPrioritySubscriptionWhereInput[]
+    | PolicyPrioritySubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | PolicyPrioritySubscriptionWhereInput[]
+    | PolicyPrioritySubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | PolicyPrioritySubscriptionWhereInput[]
+    | PolicyPrioritySubscriptionWhereInput
+  >;
 }
 
-export interface RegionCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  abbr: String;
-  countries?: Maybe<CountryCreateManyWithoutRegionInput>;
+export interface RegionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<RegionWhereInput>;
+  AND?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+  OR?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+  NOT?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
 }
 
+<<<<<<< HEAD
 export interface CountryCreateManyWithoutRegionInput {
   create?: Maybe<CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput>;
   connect?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
@@ -7772,14 +7908,46 @@ export interface CountryCreateWithoutRegionInput {
   id?: Maybe<ID_Input>;
   name: String;
   abbr: String;
+=======
+export interface SocialPlatformSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SocialPlatformWhereInput>;
+  AND?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | SocialPlatformSubscriptionWhereInput[]
+    | SocialPlatformSubscriptionWhereInput
+  >;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface RegionUpdateInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-  countries?: Maybe<CountryUpdateManyWithoutRegionInput>;
+export interface SupportFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SupportFileWhereInput>;
+  AND?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    SupportFileSubscriptionWhereInput[] | SupportFileSubscriptionWhereInput
+  >;
 }
 
+<<<<<<< HEAD
 export interface CountryUpdateManyWithoutRegionInput {
   create?: Maybe<CountryCreateWithoutRegionInput[] | CountryCreateWithoutRegionInput>;
   delete?: Maybe<CountryWhereUniqueInput[] | CountryWhereUniqueInput>;
@@ -7789,289 +7957,340 @@ export interface CountryUpdateManyWithoutRegionInput {
   update?: Maybe<
     | CountryUpdateWithWhereUniqueWithoutRegionInput[]
     | CountryUpdateWithWhereUniqueWithoutRegionInput
-  >;
-  upsert?: Maybe<
-    | CountryUpsertWithWhereUniqueWithoutRegionInput[]
-    | CountryUpsertWithWhereUniqueWithoutRegionInput
-  >;
-  deleteMany?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
-  updateMany?: Maybe<
-    CountryUpdateManyWithWhereNestedInput[] | CountryUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface CountryUpdateWithWhereUniqueWithoutRegionInput {
-  where: CountryWhereUniqueInput;
-  data: CountryUpdateWithoutRegionDataInput;
-}
-
-export interface CountryUpdateWithoutRegionDataInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export interface CountryUpsertWithWhereUniqueWithoutRegionInput {
-  where: CountryWhereUniqueInput;
-  update: CountryUpdateWithoutRegionDataInput;
-  create: CountryCreateWithoutRegionInput;
-}
-
-export interface RegionUpdateManyMutationInput {
-  name?: Maybe<String>;
-  abbr?: Maybe<String>;
-}
-
-export interface SocialPlatformUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface SocialPlatformUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface SupportFileUpdateInput {
-  language?: Maybe<LanguageUpdateOneRequiredInput>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  editable?: Maybe<Boolean>;
-  use?: Maybe<SupportFileUseUpdateOneInput>;
-}
-
-export interface SupportFileUpdateManyMutationInput {
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  filename?: Maybe<String>;
-  filetype?: Maybe<String>;
-  filesize?: Maybe<Float>;
-  visibility?: Maybe<Visibility>;
-  editable?: Maybe<Boolean>;
-}
-
-export interface SupportFileUseUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface SupportFileUseUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface TagUpdateInput {
-  translations?: Maybe<LanguageTranslationUpdateManyInput>;
-}
-
-export interface TeamUpdateInput {
-  name?: Maybe<String>;
-  organization?: Maybe<String>;
-  members?: Maybe<UserUpdateManyWithoutTeamInput>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface TeamUpdateManyMutationInput {
-  name?: Maybe<String>;
-  organization?: Maybe<String>;
-  contentTypes?: Maybe<TeamUpdatecontentTypesInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface ThumbnailUpdateInput {
-  size?: Maybe<ThumbnailSize>;
-  image?: Maybe<ImageFileUpdateOneInput>;
-}
-
-export interface ThumbnailUpdateManyMutationInput {
-  size?: Maybe<ThumbnailSize>;
-}
-
-export interface ToolkitCreateInput {
-  id?: Maybe<ID_Input>;
-  publishedAt?: Maybe<DateTimeInput>;
-  type: PackageType;
-  title: String;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserCreateOneInput>;
-  team?: Maybe<TeamCreateOneInput>;
-  desc?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatCreateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  policy?: Maybe<PolicyPriorityCreateOneInput>;
-  categories?: Maybe<CategoryCreateManyInput>;
-  tags?: Maybe<TagCreateManyInput>;
-  supportFiles?: Maybe<SupportFileCreateManyInput>;
-}
-
-export interface ToolkitUpdateInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserUpdateOneInput>;
-  team?: Maybe<TeamUpdateOneInput>;
-  desc?: Maybe<String>;
-  content?: Maybe<DocumentConversionFormatUpdateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  policy?: Maybe<PolicyPriorityUpdateOneInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  supportFiles?: Maybe<SupportFileUpdateManyInput>;
-}
-
-export interface ToolkitUpdateManyMutationInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  type?: Maybe<PackageType>;
-  title?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  desc?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface UserUpdateInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  country?: Maybe<String>;
-  city?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  team?: Maybe<TeamUpdateOneWithoutMembersInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface UserUpdateManyMutationInput {
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  tempToken?: Maybe<String>;
-  tempTokenExpiry?: Maybe<Float>;
-  jobTitle?: Maybe<String>;
-  country?: Maybe<String>;
-  city?: Maybe<String>;
-  howHeard?: Maybe<String>;
-  permissions?: Maybe<UserUpdatepermissionsInput>;
-  isConfirmed?: Maybe<Boolean>;
-}
-
-export interface VideoFileUpdateInput {
-  language?: Maybe<LanguageUpdateOneInput>;
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  use?: Maybe<VideoUseUpdateOneInput>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-  dimensions?: Maybe<DimensionsUpdateOneInput>;
-  stream?: Maybe<VideoStreamUpdateManyInput>;
-}
-
-export interface VideoFileUpdateManyMutationInput {
-  filetype?: Maybe<String>;
-  filename?: Maybe<String>;
-  visibility?: Maybe<Visibility>;
-  quality?: Maybe<VideoQuality>;
-  videoBurnedInStatus?: Maybe<VideoBurnedInStatus>;
-  url?: Maybe<String>;
-  signedUrl?: Maybe<String>;
-  md5?: Maybe<String>;
-  duration?: Maybe<Float>;
-  bitrate?: Maybe<Float>;
-  filesize?: Maybe<Float>;
-}
-
-export interface VideoProjectUpdateInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  author?: Maybe<UserUpdateOneInput>;
-  team?: Maybe<TeamUpdateOneInput>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-  units?: Maybe<VideoUnitUpdateManyInput>;
-  supportFiles?: Maybe<SupportFileUpdateManyInput>;
-  thumbnails?: Maybe<ImageFileUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-}
-
-export interface VideoProjectUpdateManyMutationInput {
-  publishedAt?: Maybe<DateTimeInput>;
-  projectType?: Maybe<ProjectType>;
-  projectTitle?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  descInternal?: Maybe<String>;
-  assetPath?: Maybe<String>;
-  status?: Maybe<PublishStatus>;
-  visibility?: Maybe<Visibility>;
-}
-
-export interface VideoStreamUpdateInput {
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-}
-
-export interface VideoStreamUpdateManyMutationInput {
-  site?: Maybe<String>;
-  url?: Maybe<String>;
-  embedUrl?: Maybe<String>;
-}
-
-export interface VideoUnitUpdateInput {
-  language?: Maybe<LanguageUpdateOneInput>;
-  title?: Maybe<String>;
-  descPublic?: Maybe<String>;
-  files?: Maybe<VideoFileUpdateManyInput>;
-  tags?: Maybe<TagUpdateManyInput>;
-  categories?: Maybe<CategoryUpdateManyInput>;
-  thumbnails?: Maybe<ThumbnailUpdateManyInput>;
-}
-
-export interface VideoUnitUpdateManyMutationInput {
-  title?: Maybe<String>;
-  descPublic?: Maybe<String>;
-}
-
-export interface VideoUseUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface VideoUseUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface BureauSubscriptionWhereInput {
+=======
+export interface SupportFileUseSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<BureauWhereInput>;
-  AND?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
-  OR?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
-  NOT?: Maybe<BureauSubscriptionWhereInput[] | BureauSubscriptionWhereInput>;
+  node?: Maybe<SupportFileUseWhereInput>;
+  AND?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  >;
+  OR?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+  >;
+<<<<<<< HEAD
+  deleteMany?: Maybe<CountryScalarWhereInput[] | CountryScalarWhereInput>;
+  updateMany?: Maybe<
+    CountryUpdateManyWithWhereNestedInput[] | CountryUpdateManyWithWhereNestedInput
+=======
+  NOT?: Maybe<
+    | SupportFileUseSubscriptionWhereInput[]
+    | SupportFileUseSubscriptionWhereInput
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  >;
 }
 
+export interface TagSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TagWhereInput>;
+  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+}
+
+export interface TeamSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<TeamWhereInput>;
+  AND?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
+  OR?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
+  NOT?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
+}
+
+export interface ThumbnailSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ThumbnailWhereInput>;
+  AND?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput
+  >;
+}
+
+export interface ToolkitSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ToolkitWhereInput>;
+  AND?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
+  OR?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
+  NOT?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface VideoFileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoFileWhereInput>;
+  AND?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoFileSubscriptionWhereInput[] | VideoFileSubscriptionWhereInput
+  >;
+}
+
+export interface VideoProjectSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoProjectWhereInput>;
+  AND?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoProjectSubscriptionWhereInput[] | VideoProjectSubscriptionWhereInput
+  >;
+}
+
+export interface VideoStreamSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoStreamWhereInput>;
+  AND?: Maybe<
+    VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoStreamSubscriptionWhereInput[] | VideoStreamSubscriptionWhereInput
+  >;
+}
+
+export interface VideoUnitSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoUnitWhereInput>;
+  AND?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    VideoUnitSubscriptionWhereInput[] | VideoUnitSubscriptionWhereInput
+  >;
+}
+
+export interface VideoUseSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VideoUseWhereInput>;
+  AND?: Maybe<
+    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
+  >;
+  OR?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
+  NOT?: Maybe<
+    VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput
+  >;
+}
+
+export interface NodeNode {
+  id: ID_Output;
+}
+
+export interface Bureau {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface BureauPromise extends Promise<Bureau>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  offices: <T = FragmentableArray<Office>>(args?: {
+    where?: OfficeWhereInput;
+    orderBy?: OfficeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface BureauSubscription
+  extends Promise<AsyncIterator<Bureau>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  offices: <T = Promise<AsyncIterator<OfficeSubscription>>>(args?: {
+    where?: OfficeWhereInput;
+    orderBy?: OfficeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface BureauNullablePromise
+  extends Promise<Bureau | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  offices: <T = FragmentableArray<Office>>(args?: {
+    where?: OfficeWhereInput;
+    orderBy?: OfficeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Office {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface OfficePromise extends Promise<Office>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  bureau: <T = BureauPromise>() => T;
+}
+
+export interface OfficeSubscription
+  extends Promise<AsyncIterator<Office>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  bureau: <T = BureauSubscription>() => T;
+}
+
+export interface OfficeNullablePromise
+  extends Promise<Office | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  bureau: <T = BureauPromise>() => T;
+}
+
+export interface BureauConnection {
+  pageInfo: PageInfo;
+  edges: BureauEdge[];
+}
+
+export interface BureauConnectionPromise
+  extends Promise<BureauConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BureauEdge>>() => T;
+  aggregate: <T = AggregateBureauPromise>() => T;
+}
+
+export interface BureauConnectionSubscription
+  extends Promise<AsyncIterator<BureauConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BureauEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBureauSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BureauEdge {
+  node: Bureau;
+  cursor: String;
+}
+
+export interface BureauEdgePromise extends Promise<BureauEdge>, Fragmentable {
+  node: <T = BureauPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BureauEdgeSubscription
+  extends Promise<AsyncIterator<BureauEdge>>,
+    Fragmentable {
+  node: <T = BureauSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateBureau {
+  count: Int;
+}
+
+export interface AggregateBureauPromise
+  extends Promise<AggregateBureau>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+<<<<<<< HEAD
 export interface CategorySubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8092,19 +8311,32 @@ export interface ContentFieldSubscriptionWhereInput {
   AND?: Maybe<ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput>;
   OR?: Maybe<ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput>;
   NOT?: Maybe<ContentFieldSubscriptionWhereInput[] | ContentFieldSubscriptionWhereInput>;
+=======
+export interface AggregateBureauSubscription
+  extends Promise<AsyncIterator<AggregateBureau>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface CountrySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<CountryWhereInput>;
-  AND?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
-  OR?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
-  NOT?: Maybe<CountrySubscriptionWhereInput[] | CountrySubscriptionWhereInput>;
+export interface Category {
+  id: ID_Output;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
+export interface CategoryPromise extends Promise<Category>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
 export interface DimensionsSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8114,28 +8346,41 @@ export interface DimensionsSubscriptionWhereInput {
   AND?: Maybe<DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput>;
   OR?: Maybe<DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput>;
   NOT?: Maybe<DimensionsSubscriptionWhereInput[] | DimensionsSubscriptionWhereInput>;
+=======
+export interface CategorySubscription
+  extends Promise<AsyncIterator<Category>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  translations: <
+    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
+  >(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface DocumentConversionFormatSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DocumentConversionFormatWhereInput>;
-  AND?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | DocumentConversionFormatSubscriptionWhereInput[]
-    | DocumentConversionFormatSubscriptionWhereInput
-  >;
+export interface CategoryNullablePromise
+  extends Promise<Category | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
+<<<<<<< HEAD
 export interface DocumentFileSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8228,30 +8473,91 @@ export interface LanguageTranslationSubscriptionWhereInput {
   NOT?: Maybe<
     LanguageTranslationSubscriptionWhereInput[] | LanguageTranslationSubscriptionWhereInput
   >;
+=======
+export interface LanguageTranslation {
+  id: ID_Output;
+  name: String;
 }
 
-export interface OfficeSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<OfficeWhereInput>;
-  AND?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
-  OR?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
-  NOT?: Maybe<OfficeSubscriptionWhereInput[] | OfficeSubscriptionWhereInput>;
+export interface LanguageTranslationPromise
+  extends Promise<LanguageTranslation>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
 }
 
-export interface PackageSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PackageWhereInput>;
-  AND?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
-  OR?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
-  NOT?: Maybe<PackageSubscriptionWhereInput[] | PackageSubscriptionWhereInput>;
+export interface LanguageTranslationSubscription
+  extends Promise<AsyncIterator<LanguageTranslation>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  language: <T = LanguageSubscription>() => T;
 }
 
+export interface LanguageTranslationNullablePromise
+  extends Promise<LanguageTranslation | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
+}
+
+export interface Language {
+  id: ID_Output;
+  languageCode: String;
+  locale: String;
+  textDirection: TextDirection;
+  displayName: String;
+  nativeName: String;
+}
+
+export interface LanguagePromise extends Promise<Language>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  languageCode: () => Promise<String>;
+  locale: () => Promise<String>;
+  textDirection: () => Promise<TextDirection>;
+  displayName: () => Promise<String>;
+  nativeName: () => Promise<String>;
+}
+
+export interface LanguageSubscription
+  extends Promise<AsyncIterator<Language>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  languageCode: () => Promise<AsyncIterator<String>>;
+  locale: () => Promise<AsyncIterator<String>>;
+  textDirection: () => Promise<AsyncIterator<TextDirection>>;
+  displayName: () => Promise<AsyncIterator<String>>;
+  nativeName: () => Promise<AsyncIterator<String>>;
+}
+
+export interface LanguageNullablePromise
+  extends Promise<Language | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  languageCode: () => Promise<String>;
+  locale: () => Promise<String>;
+  textDirection: () => Promise<TextDirection>;
+  displayName: () => Promise<String>;
+  nativeName: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface CategoryConnection {
+  pageInfo: PageInfo;
+  edges: CategoryEdge[];
+}
+
+export interface CategoryConnectionPromise
+  extends Promise<CategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CategoryEdge>>() => T;
+  aggregate: <T = AggregateCategoryPromise>() => T;
+}
+
+<<<<<<< HEAD
 export interface PlaybookSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8272,30 +8578,36 @@ export interface PolicyPrioritySubscriptionWhereInput {
   AND?: Maybe<PolicyPrioritySubscriptionWhereInput[] | PolicyPrioritySubscriptionWhereInput>;
   OR?: Maybe<PolicyPrioritySubscriptionWhereInput[] | PolicyPrioritySubscriptionWhereInput>;
   NOT?: Maybe<PolicyPrioritySubscriptionWhereInput[] | PolicyPrioritySubscriptionWhereInput>;
+=======
+export interface CategoryConnectionSubscription
+  extends Promise<AsyncIterator<CategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCategorySubscription>() => T;
 }
 
-export interface ProjectSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProjectWhereInput>;
-  AND?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  OR?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
-  NOT?: Maybe<ProjectSubscriptionWhereInput[] | ProjectSubscriptionWhereInput>;
+export interface CategoryEdge {
+  node: Category;
+  cursor: String;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface RegionSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<RegionWhereInput>;
-  AND?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
-  OR?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
-  NOT?: Maybe<RegionSubscriptionWhereInput[] | RegionSubscriptionWhereInput>;
+export interface CategoryEdgePromise
+  extends Promise<CategoryEdge>,
+    Fragmentable {
+  node: <T = CategoryPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
+export interface CategoryEdgeSubscription
+  extends Promise<AsyncIterator<CategoryEdge>>,
+    Fragmentable {
+  node: <T = CategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+<<<<<<< HEAD
 export interface SocialPlatformSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8327,30 +8639,41 @@ export interface SupportFileUseSubscriptionWhereInput {
   AND?: Maybe<SupportFileUseSubscriptionWhereInput[] | SupportFileUseSubscriptionWhereInput>;
   OR?: Maybe<SupportFileUseSubscriptionWhereInput[] | SupportFileUseSubscriptionWhereInput>;
   NOT?: Maybe<SupportFileUseSubscriptionWhereInput[] | SupportFileUseSubscriptionWhereInput>;
+=======
+export interface AggregateCategory {
+  count: Int;
 }
 
-export interface TagSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TagWhereInput>;
-  AND?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  OR?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
-  NOT?: Maybe<TagSubscriptionWhereInput[] | TagSubscriptionWhereInput>;
+export interface AggregateCategoryPromise
+  extends Promise<AggregateCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
 }
 
-export interface TeamSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<TeamWhereInput>;
-  AND?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
-  OR?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
-  NOT?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
+export interface AggregateCategorySubscription
+  extends Promise<AsyncIterator<AggregateCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
+export interface ContentField {
+  id: ID_Output;
+  type?: String;
+  visibility?: Visibility;
+  content?: String;
+}
+
+export interface ContentFieldPromise
+  extends Promise<ContentField>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  content: () => Promise<String>;
+}
+
+<<<<<<< HEAD
 export interface ThumbnailSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8360,30 +8683,32 @@ export interface ThumbnailSubscriptionWhereInput {
   AND?: Maybe<ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput>;
   OR?: Maybe<ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput>;
   NOT?: Maybe<ThumbnailSubscriptionWhereInput[] | ThumbnailSubscriptionWhereInput>;
+=======
+export interface ContentFieldSubscription
+  extends Promise<AsyncIterator<ContentField>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  type: () => Promise<AsyncIterator<String>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  content: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface ToolkitSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ToolkitWhereInput>;
-  AND?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
-  OR?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
-  NOT?: Maybe<ToolkitSubscriptionWhereInput[] | ToolkitSubscriptionWhereInput>;
+export interface ContentFieldNullablePromise
+  extends Promise<ContentField | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  type: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  content: () => Promise<String>;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+export interface ContentFieldConnection {
+  pageInfo: PageInfo;
+  edges: ContentFieldEdge[];
 }
 
+<<<<<<< HEAD
 export interface VideoFileSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -8437,105 +8762,183 @@ export interface VideoUseSubscriptionWhereInput {
   AND?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
   OR?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
   NOT?: Maybe<VideoUseSubscriptionWhereInput[] | VideoUseSubscriptionWhereInput>;
-}
-
-export interface NodeNode {
-  id: ID_Output;
-}
-
-export interface Bureau {
-  id: ID_Output;
-  name: String;
-  abbr: String;
-}
-
-export interface BureauPromise extends Promise<Bureau>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  offices: <T = FragmentableArray<Office>>(args?: {
-    where?: OfficeWhereInput;
-    orderBy?: OfficeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface BureauSubscription extends Promise<AsyncIterator<Bureau>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-  offices: <T = Promise<AsyncIterator<OfficeSubscription>>>(args?: {
-    where?: OfficeWhereInput;
-    orderBy?: OfficeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface BureauNullablePromise extends Promise<Bureau | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  offices: <T = FragmentableArray<Office>>(args?: {
-    where?: OfficeWhereInput;
-    orderBy?: OfficeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface Office {
-  id: ID_Output;
-  name: String;
-  abbr: String;
-}
-
-export interface OfficePromise extends Promise<Office>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  bureau: <T = BureauPromise>() => T;
-}
-
-export interface OfficeSubscription extends Promise<AsyncIterator<Office>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  abbr: () => Promise<AsyncIterator<String>>;
-  bureau: <T = BureauSubscription>() => T;
-}
-
-export interface OfficeNullablePromise extends Promise<Office | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  bureau: <T = BureauPromise>() => T;
-}
-
-export interface BureauConnection {
-  pageInfo: PageInfo;
-  edges: BureauEdge[];
-}
-
-export interface BureauConnectionPromise extends Promise<BureauConnection>, Fragmentable {
+=======
+export interface ContentFieldConnectionPromise
+  extends Promise<ContentFieldConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BureauEdge>>() => T;
-  aggregate: <T = AggregateBureauPromise>() => T;
+  edges: <T = FragmentableArray<ContentFieldEdge>>() => T;
+  aggregate: <T = AggregateContentFieldPromise>() => T;
 }
 
-export interface BureauConnectionSubscription
-  extends Promise<AsyncIterator<BureauConnection>>,
+export interface ContentFieldConnectionSubscription
+  extends Promise<AsyncIterator<ContentFieldConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ContentFieldEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateContentFieldSubscription>() => T;
+}
+
+export interface ContentFieldEdge {
+  node: ContentField;
+  cursor: String;
+}
+
+export interface ContentFieldEdgePromise
+  extends Promise<ContentFieldEdge>,
+    Fragmentable {
+  node: <T = ContentFieldPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ContentFieldEdgeSubscription
+  extends Promise<AsyncIterator<ContentFieldEdge>>,
+    Fragmentable {
+  node: <T = ContentFieldSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface AggregateContentField {
+  count: Int;
+}
+
+export interface AggregateContentFieldPromise
+  extends Promise<AggregateContentField>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateContentFieldSubscription
+  extends Promise<AsyncIterator<AggregateContentField>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+<<<<<<< HEAD
+export interface BureauSubscription extends Promise<AsyncIterator<Bureau>>, Fragmentable {
+=======
+export interface Country {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface CountryPromise extends Promise<Country>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  region: <T = RegionPromise>() => T;
+}
+
+export interface CountrySubscription
+  extends Promise<AsyncIterator<Country>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  region: <T = RegionSubscription>() => T;
+}
+
+<<<<<<< HEAD
+export interface BureauNullablePromise extends Promise<Bureau | null>, Fragmentable {
+=======
+export interface CountryNullablePromise
+  extends Promise<Country | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  region: <T = RegionPromise>() => T;
+}
+
+export interface Region {
+  id: ID_Output;
+  name: String;
+  abbr: String;
+}
+
+export interface RegionPromise extends Promise<Region>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  countries: <T = FragmentableArray<Country>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
+export interface OfficeSubscription extends Promise<AsyncIterator<Office>>, Fragmentable {
+=======
+export interface RegionSubscription
+  extends Promise<AsyncIterator<Region>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  abbr: () => Promise<AsyncIterator<String>>;
+  countries: <T = Promise<AsyncIterator<CountrySubscription>>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
+export interface OfficeNullablePromise extends Promise<Office | null>, Fragmentable {
+=======
+export interface RegionNullablePromise
+  extends Promise<Region | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  abbr: () => Promise<String>;
+  countries: <T = FragmentableArray<Country>>(args?: {
+    where?: CountryWhereInput;
+    orderBy?: CountryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface CountryConnection {
+  pageInfo: PageInfo;
+  edges: CountryEdge[];
+}
+
+<<<<<<< HEAD
+export interface BureauConnectionPromise extends Promise<BureauConnection>, Fragmentable {
+=======
+export interface CountryConnectionPromise
+  extends Promise<CountryConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CountryEdge>>() => T;
+  aggregate: <T = AggregateCountryPromise>() => T;
+}
+
+export interface CountryConnectionSubscription
+  extends Promise<AsyncIterator<CountryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+<<<<<<< HEAD
   edges: <T = Promise<AsyncIterator<BureauEdgeSubscription>>>() => T;
   aggregate: <T = AggregateBureauSubscription>() => T;
 }
@@ -8559,54 +8962,67 @@ export interface PageInfoSubscription extends Promise<AsyncIterator<PageInfo>>, 
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+=======
+  edges: <T = Promise<AsyncIterator<CountryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCountrySubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface BureauEdge {
-  node: Bureau;
+export interface CountryEdge {
+  node: Country;
   cursor: String;
 }
 
-export interface BureauEdgePromise extends Promise<BureauEdge>, Fragmentable {
-  node: <T = BureauPromise>() => T;
+export interface CountryEdgePromise extends Promise<CountryEdge>, Fragmentable {
+  node: <T = CountryPromise>() => T;
   cursor: () => Promise<String>;
 }
 
+<<<<<<< HEAD
 export interface BureauEdgeSubscription extends Promise<AsyncIterator<BureauEdge>>, Fragmentable {
   node: <T = BureauSubscription>() => T;
+=======
+export interface CountryEdgeSubscription
+  extends Promise<AsyncIterator<CountryEdge>>,
+    Fragmentable {
+  node: <T = CountrySubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateBureau {
+export interface AggregateCountry {
   count: Int;
 }
 
+<<<<<<< HEAD
 export interface AggregateBureauPromise extends Promise<AggregateBureau>, Fragmentable {
+=======
+export interface AggregateCountryPromise
+  extends Promise<AggregateCountry>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
-export interface AggregateBureauSubscription
-  extends Promise<AsyncIterator<AggregateBureau>>,
+export interface AggregateCountrySubscription
+  extends Promise<AsyncIterator<AggregateCountry>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Category {
+export interface Dimensions {
   id: ID_Output;
+  width?: Int;
+  height?: Int;
 }
 
-export interface CategoryPromise extends Promise<Category>, Fragmentable {
+export interface DimensionsPromise extends Promise<Dimensions>, Fragmentable {
   id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  width: () => Promise<Int>;
+  height: () => Promise<Int>;
 }
 
+<<<<<<< HEAD
 export interface CategorySubscription extends Promise<AsyncIterator<Category>>, Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   translations: <T = Promise<AsyncIterator<LanguageTranslationSubscription>>>(args?: {
@@ -8621,45 +9037,65 @@ export interface CategorySubscription extends Promise<AsyncIterator<Category>>, 
 }
 
 export interface CategoryNullablePromise extends Promise<Category | null>, Fragmentable {
+=======
+export interface DimensionsSubscription
+  extends Promise<AsyncIterator<Dimensions>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  width: () => Promise<AsyncIterator<Int>>;
+  height: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DimensionsNullablePromise
+  extends Promise<Dimensions | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
-  translations: <T = FragmentableArray<LanguageTranslation>>(args?: {
-    where?: LanguageTranslationWhereInput;
-    orderBy?: LanguageTranslationOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  width: () => Promise<Int>;
+  height: () => Promise<Int>;
 }
 
-export interface LanguageTranslation {
-  id: ID_Output;
-  name: String;
+export interface DimensionsConnection {
+  pageInfo: PageInfo;
+  edges: DimensionsEdge[];
 }
 
+<<<<<<< HEAD
 export interface LanguageTranslationPromise extends Promise<LanguageTranslation>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   language: <T = LanguagePromise>() => T;
-}
-
-export interface LanguageTranslationSubscription
-  extends Promise<AsyncIterator<LanguageTranslation>>,
+=======
+export interface DimensionsConnectionPromise
+  extends Promise<DimensionsConnection>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  language: <T = LanguageSubscription>() => T;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
+  aggregate: <T = AggregateDimensionsPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface LanguageTranslationNullablePromise
-  extends Promise<LanguageTranslation | null>,
+export interface DimensionsConnectionSubscription
+  extends Promise<AsyncIterator<DimensionsConnection>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  language: <T = LanguagePromise>() => T;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDimensionsSubscription>() => T;
 }
 
+export interface DimensionsEdge {
+  node: Dimensions;
+  cursor: String;
+}
+
+export interface DimensionsEdgePromise
+  extends Promise<DimensionsEdge>,
+    Fragmentable {
+  node: <T = DimensionsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+<<<<<<< HEAD
 export interface Language {
   id: ID_Output;
   languageCode: String;
@@ -8727,109 +9163,147 @@ export interface CategoryEdgePromise extends Promise<CategoryEdge>, Fragmentable
 
 export interface CategoryEdgeSubscription
   extends Promise<AsyncIterator<CategoryEdge>>,
+=======
+export interface DimensionsEdgeSubscription
+  extends Promise<AsyncIterator<DimensionsEdge>>,
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
     Fragmentable {
-  node: <T = CategorySubscription>() => T;
+  node: <T = DimensionsSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCategory {
+export interface AggregateDimensions {
   count: Int;
 }
 
+<<<<<<< HEAD
 export interface AggregateCategoryPromise extends Promise<AggregateCategory>, Fragmentable {
+=======
+export interface AggregateDimensionsPromise
+  extends Promise<AggregateDimensions>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
-export interface AggregateCategorySubscription
-  extends Promise<AsyncIterator<AggregateCategory>>,
+export interface AggregateDimensionsSubscription
+  extends Promise<AsyncIterator<AggregateDimensions>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ContentField {
+export interface DocumentConversionFormat {
   id: ID_Output;
-  type?: String;
-  visibility?: Visibility;
-  content?: String;
+  rawText?: String;
+  html?: String;
+  markdown?: String;
 }
 
+<<<<<<< HEAD
 export interface ContentFieldPromise extends Promise<ContentField>, Fragmentable {
+=======
+export interface DocumentConversionFormatPromise
+  extends Promise<DocumentConversionFormat>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
-  type: () => Promise<String>;
-  visibility: () => Promise<Visibility>;
-  content: () => Promise<String>;
+  rawText: () => Promise<String>;
+  html: () => Promise<String>;
+  markdown: () => Promise<String>;
 }
 
-export interface ContentFieldSubscription
-  extends Promise<AsyncIterator<ContentField>>,
+export interface DocumentConversionFormatSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormat>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  type: () => Promise<AsyncIterator<String>>;
-  visibility: () => Promise<AsyncIterator<Visibility>>;
-  content: () => Promise<AsyncIterator<String>>;
+  rawText: () => Promise<AsyncIterator<String>>;
+  html: () => Promise<AsyncIterator<String>>;
+  markdown: () => Promise<AsyncIterator<String>>;
 }
 
+<<<<<<< HEAD
 export interface ContentFieldNullablePromise extends Promise<ContentField | null>, Fragmentable {
+=======
+export interface DocumentConversionFormatNullablePromise
+  extends Promise<DocumentConversionFormat | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
-  type: () => Promise<String>;
-  visibility: () => Promise<Visibility>;
-  content: () => Promise<String>;
+  rawText: () => Promise<String>;
+  html: () => Promise<String>;
+  markdown: () => Promise<String>;
 }
 
-export interface ContentFieldConnection {
+export interface DocumentConversionFormatConnection {
   pageInfo: PageInfo;
-  edges: ContentFieldEdge[];
+  edges: DocumentConversionFormatEdge[];
 }
 
-export interface ContentFieldConnectionPromise
-  extends Promise<ContentFieldConnection>,
+export interface DocumentConversionFormatConnectionPromise
+  extends Promise<DocumentConversionFormatConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ContentFieldEdge>>() => T;
-  aggregate: <T = AggregateContentFieldPromise>() => T;
+  edges: <T = FragmentableArray<DocumentConversionFormatEdge>>() => T;
+  aggregate: <T = AggregateDocumentConversionFormatPromise>() => T;
 }
 
-export interface ContentFieldConnectionSubscription
-  extends Promise<AsyncIterator<ContentFieldConnection>>,
+export interface DocumentConversionFormatConnectionSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormatConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ContentFieldEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateContentFieldSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<DocumentConversionFormatEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateDocumentConversionFormatSubscription>() => T;
 }
 
-export interface ContentFieldEdge {
-  node: ContentField;
+export interface DocumentConversionFormatEdge {
+  node: DocumentConversionFormat;
   cursor: String;
 }
 
+<<<<<<< HEAD
 export interface ContentFieldEdgePromise extends Promise<ContentFieldEdge>, Fragmentable {
   node: <T = ContentFieldPromise>() => T;
+=======
+export interface DocumentConversionFormatEdgePromise
+  extends Promise<DocumentConversionFormatEdge>,
+    Fragmentable {
+  node: <T = DocumentConversionFormatPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<String>;
 }
 
-export interface ContentFieldEdgeSubscription
-  extends Promise<AsyncIterator<ContentFieldEdge>>,
+export interface DocumentConversionFormatEdgeSubscription
+  extends Promise<AsyncIterator<DocumentConversionFormatEdge>>,
     Fragmentable {
-  node: <T = ContentFieldSubscription>() => T;
+  node: <T = DocumentConversionFormatSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateContentField {
+export interface AggregateDocumentConversionFormat {
   count: Int;
 }
 
+<<<<<<< HEAD
 export interface AggregateContentFieldPromise extends Promise<AggregateContentField>, Fragmentable {
+=======
+export interface AggregateDocumentConversionFormatPromise
+  extends Promise<AggregateDocumentConversionFormat>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
-export interface AggregateContentFieldSubscription
-  extends Promise<AsyncIterator<AggregateContentField>>,
+export interface AggregateDocumentConversionFormatSubscription
+  extends Promise<AsyncIterator<AggregateDocumentConversionFormat>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Country {
+export interface DocumentFile {
   id: ID_Output;
+<<<<<<< HEAD
   name: String;
   abbr: String;
 }
@@ -8849,31 +9323,47 @@ export interface CountrySubscription extends Promise<AsyncIterator<Country>>, Fr
 }
 
 export interface CountryNullablePromise extends Promise<Country | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  region: <T = RegionPromise>() => T;
+=======
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  title?: String;
+  filetype?: String;
+  filename?: String;
+  filesize?: Float;
+  status?: PublishStatus;
+  excerpt?: String;
+  url?: String;
+  signedUrl?: String;
+  visibility?: Visibility;
 }
 
-export interface Region {
-  id: ID_Output;
-  name: String;
-  abbr: String;
-}
-
-export interface RegionPromise extends Promise<Region>, Fragmentable {
+export interface DocumentFilePromise
+  extends Promise<DocumentFile>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  abbr: () => Promise<String>;
-  countries: <T = FragmentableArray<Country>>(args?: {
-    where?: CountryWhereInput;
-    orderBy?: CountryOrderByInput;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  title: () => Promise<String>;
+  language: <T = LanguagePromise>() => T;
+  filetype: () => Promise<String>;
+  filename: () => Promise<String>;
+  filesize: () => Promise<Float>;
+  status: () => Promise<PublishStatus>;
+  excerpt: () => Promise<String>;
+  content: <T = DocumentConversionFormatPromise>() => T;
+  image: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+<<<<<<< HEAD
 }
 
 export interface RegionSubscription extends Promise<AsyncIterator<Region>>, Fragmentable {
@@ -8883,18 +9373,30 @@ export interface RegionSubscription extends Promise<AsyncIterator<Region>>, Frag
   countries: <T = Promise<AsyncIterator<CountrySubscription>>>(args?: {
     where?: CountryWhereInput;
     orderBy?: CountryOrderByInput;
+=======
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  use: <T = DocumentUsePromise>() => T;
+  bureaus: <T = FragmentableArray<Bureau>>(args?: {
+    where?: BureauWhereInput;
+    orderBy?: BureauOrderByInput;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+<<<<<<< HEAD
 }
 
 export interface RegionNullablePromise extends Promise<Region | null>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   abbr: () => Promise<String>;
+=======
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   countries: <T = FragmentableArray<Country>>(args?: {
     where?: CountryWhereInput;
     orderBy?: CountryOrderByInput;
@@ -8904,8 +9406,27 @@ export interface RegionNullablePromise extends Promise<Region | null>, Fragmenta
     first?: Int;
     last?: Int;
   }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
+<<<<<<< HEAD
 export interface CountryConnection {
   pageInfo: PageInfo;
   edges: CountryEdge[];
@@ -8946,258 +9467,7 @@ export interface AggregateCountry {
 
 export interface AggregateCountryPromise extends Promise<AggregateCountry>, Fragmentable {
   count: () => Promise<Int>;
-}
-
-export interface AggregateCountrySubscription
-  extends Promise<AsyncIterator<AggregateCountry>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Dimensions {
-  id: ID_Output;
-  width?: Int;
-  height?: Int;
-}
-
-export interface DimensionsPromise extends Promise<Dimensions>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  width: () => Promise<Int>;
-  height: () => Promise<Int>;
-}
-
-export interface DimensionsSubscription extends Promise<AsyncIterator<Dimensions>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  width: () => Promise<AsyncIterator<Int>>;
-  height: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DimensionsNullablePromise extends Promise<Dimensions | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  width: () => Promise<Int>;
-  height: () => Promise<Int>;
-}
-
-export interface DimensionsConnection {
-  pageInfo: PageInfo;
-  edges: DimensionsEdge[];
-}
-
-export interface DimensionsConnectionPromise extends Promise<DimensionsConnection>, Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
-  aggregate: <T = AggregateDimensionsPromise>() => T;
-}
-
-export interface DimensionsConnectionSubscription
-  extends Promise<AsyncIterator<DimensionsConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DimensionsEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDimensionsSubscription>() => T;
-}
-
-export interface DimensionsEdge {
-  node: Dimensions;
-  cursor: String;
-}
-
-export interface DimensionsEdgePromise extends Promise<DimensionsEdge>, Fragmentable {
-  node: <T = DimensionsPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DimensionsEdgeSubscription
-  extends Promise<AsyncIterator<DimensionsEdge>>,
-    Fragmentable {
-  node: <T = DimensionsSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateDimensions {
-  count: Int;
-}
-
-export interface AggregateDimensionsPromise extends Promise<AggregateDimensions>, Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDimensionsSubscription
-  extends Promise<AsyncIterator<AggregateDimensions>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DocumentConversionFormat {
-  id: ID_Output;
-  rawText?: String;
-  html?: String;
-  markdown?: String;
-}
-
-export interface DocumentConversionFormatPromise
-  extends Promise<DocumentConversionFormat>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  rawText: () => Promise<String>;
-  html: () => Promise<String>;
-  markdown: () => Promise<String>;
-}
-
-export interface DocumentConversionFormatSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormat>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  rawText: () => Promise<AsyncIterator<String>>;
-  html: () => Promise<AsyncIterator<String>>;
-  markdown: () => Promise<AsyncIterator<String>>;
-}
-
-export interface DocumentConversionFormatNullablePromise
-  extends Promise<DocumentConversionFormat | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  rawText: () => Promise<String>;
-  html: () => Promise<String>;
-  markdown: () => Promise<String>;
-}
-
-export interface DocumentConversionFormatConnection {
-  pageInfo: PageInfo;
-  edges: DocumentConversionFormatEdge[];
-}
-
-export interface DocumentConversionFormatConnectionPromise
-  extends Promise<DocumentConversionFormatConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DocumentConversionFormatEdge>>() => T;
-  aggregate: <T = AggregateDocumentConversionFormatPromise>() => T;
-}
-
-export interface DocumentConversionFormatConnectionSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormatConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DocumentConversionFormatEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDocumentConversionFormatSubscription>() => T;
-}
-
-export interface DocumentConversionFormatEdge {
-  node: DocumentConversionFormat;
-  cursor: String;
-}
-
-export interface DocumentConversionFormatEdgePromise
-  extends Promise<DocumentConversionFormatEdge>,
-    Fragmentable {
-  node: <T = DocumentConversionFormatPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DocumentConversionFormatEdgeSubscription
-  extends Promise<AsyncIterator<DocumentConversionFormatEdge>>,
-    Fragmentable {
-  node: <T = DocumentConversionFormatSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateDocumentConversionFormat {
-  count: Int;
-}
-
-export interface AggregateDocumentConversionFormatPromise
-  extends Promise<AggregateDocumentConversionFormat>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDocumentConversionFormatSubscription
-  extends Promise<AsyncIterator<AggregateDocumentConversionFormat>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DocumentFile {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  publishedAt?: DateTimeOutput;
-  title?: String;
-  filetype?: String;
-  filename?: String;
-  filesize?: Float;
-  status?: PublishStatus;
-  excerpt?: String;
-  url?: String;
-  signedUrl?: String;
-  visibility?: Visibility;
-}
-
-export interface DocumentFilePromise extends Promise<DocumentFile>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  publishedAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-  language: <T = LanguagePromise>() => T;
-  filetype: () => Promise<String>;
-  filename: () => Promise<String>;
-  filesize: () => Promise<Float>;
-  status: () => Promise<PublishStatus>;
-  excerpt: () => Promise<String>;
-  content: <T = DocumentConversionFormatPromise>() => T;
-  image: <T = FragmentableArray<ImageFile>>(args?: {
-    where?: ImageFileWhereInput;
-    orderBy?: ImageFileOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  url: () => Promise<String>;
-  signedUrl: () => Promise<String>;
-  visibility: () => Promise<Visibility>;
-  use: <T = DocumentUsePromise>() => T;
-  bureaus: <T = FragmentableArray<Bureau>>(args?: {
-    where?: BureauWhereInput;
-    orderBy?: BureauOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  countries: <T = FragmentableArray<Country>>(args?: {
-    where?: CountryWhereInput;
-    orderBy?: CountryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  categories: <T = FragmentableArray<Category>>(args?: {
-    where?: CategoryWhereInput;
-    orderBy?: CategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  tags: <T = FragmentableArray<Tag>>(args?: {
-    where?: TagWhereInput;
-    orderBy?: TagOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
+=======
 export interface DocumentFileSubscription
   extends Promise<AsyncIterator<DocumentFile>>,
     Fragmentable {
@@ -9262,9 +9532,12 @@ export interface DocumentFileSubscription
     first?: Int;
     last?: Int;
   }) => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface DocumentFileNullablePromise extends Promise<DocumentFile | null>, Fragmentable {
+export interface DocumentFileNullablePromise
+  extends Promise<DocumentFile | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -9377,7 +9650,13 @@ export interface ImageFilePromise extends Promise<ImageFile>, Fragmentable {
   }) => T;
 }
 
-export interface ImageFileSubscription extends Promise<AsyncIterator<ImageFile>>, Fragmentable {
+<<<<<<< HEAD
+export interface DimensionsSubscription extends Promise<AsyncIterator<Dimensions>>, Fragmentable {
+=======
+export interface ImageFileSubscription
+  extends Promise<AsyncIterator<ImageFile>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -9408,7 +9687,13 @@ export interface ImageFileSubscription extends Promise<AsyncIterator<ImageFile>>
   }) => T;
 }
 
-export interface ImageFileNullablePromise extends Promise<ImageFile | null>, Fragmentable {
+<<<<<<< HEAD
+export interface DimensionsNullablePromise extends Promise<Dimensions | null>, Fragmentable {
+=======
+export interface ImageFileNullablePromise
+  extends Promise<ImageFile | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -9444,19 +9729,36 @@ export interface ImageUse {
   name: String;
 }
 
+<<<<<<< HEAD
+export interface DimensionsConnectionPromise extends Promise<DimensionsConnection>, Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DimensionsEdge>>() => T;
+  aggregate: <T = AggregateDimensionsPromise>() => T;
+=======
 export interface ImageUsePromise extends Promise<ImageUse>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface ImageUseSubscription extends Promise<AsyncIterator<ImageUse>>, Fragmentable {
+export interface ImageUseSubscription
+  extends Promise<AsyncIterator<ImageUse>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ImageUseNullablePromise extends Promise<ImageUse | null>, Fragmentable {
+<<<<<<< HEAD
+export interface DimensionsEdgePromise extends Promise<DimensionsEdge>, Fragmentable {
+  node: <T = DimensionsPromise>() => T;
+  cursor: () => Promise<String>;
+=======
+export interface ImageUseNullablePromise
+  extends Promise<ImageUse | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface GraphicStyle {
@@ -9464,19 +9766,28 @@ export interface GraphicStyle {
   name: String;
 }
 
-export interface GraphicStylePromise extends Promise<GraphicStyle>, Fragmentable {
+export interface GraphicStylePromise
+  extends Promise<GraphicStyle>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
+<<<<<<< HEAD
+export interface AggregateDimensionsPromise extends Promise<AggregateDimensions>, Fragmentable {
+  count: () => Promise<Int>;
+=======
 export interface GraphicStyleSubscription
   extends Promise<AsyncIterator<GraphicStyle>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
-export interface GraphicStyleNullablePromise extends Promise<GraphicStyle | null>, Fragmentable {
+export interface GraphicStyleNullablePromise
+  extends Promise<GraphicStyle | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
@@ -9486,7 +9797,9 @@ export interface SocialPlatform {
   name: String;
 }
 
-export interface SocialPlatformPromise extends Promise<SocialPlatform>, Fragmentable {
+export interface SocialPlatformPromise
+  extends Promise<SocialPlatform>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
@@ -9515,14 +9828,24 @@ export interface DocumentUsePromise extends Promise<DocumentUse>, Fragmentable {
   name: () => Promise<String>;
 }
 
-export interface DocumentUseSubscription extends Promise<AsyncIterator<DocumentUse>>, Fragmentable {
+export interface DocumentUseSubscription
+  extends Promise<AsyncIterator<DocumentUse>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface DocumentUseNullablePromise extends Promise<DocumentUse | null>, Fragmentable {
+export interface DocumentUseNullablePromise
+  extends Promise<DocumentUse | null>,
+    Fragmentable {
+<<<<<<< HEAD
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DocumentConversionFormatEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDocumentConversionFormatSubscription>() => T;
+=======
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface Tag {
@@ -9542,9 +9865,13 @@ export interface TagPromise extends Promise<Tag>, Fragmentable {
   }) => T;
 }
 
-export interface TagSubscription extends Promise<AsyncIterator<Tag>>, Fragmentable {
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  translations: <T = Promise<AsyncIterator<LanguageTranslationSubscription>>>(args?: {
+  translations: <
+    T = Promise<AsyncIterator<LanguageTranslationSubscription>>
+  >(args?: {
     where?: LanguageTranslationWhereInput;
     orderBy?: LanguageTranslationOrderByInput;
     skip?: Int;
@@ -9594,7 +9921,9 @@ export interface DocumentFileEdge {
   cursor: String;
 }
 
-export interface DocumentFileEdgePromise extends Promise<DocumentFileEdge>, Fragmentable {
+export interface DocumentFileEdgePromise
+  extends Promise<DocumentFileEdge>,
+    Fragmentable {
   node: <T = DocumentFilePromise>() => T;
   cursor: () => Promise<String>;
 }
@@ -9610,7 +9939,9 @@ export interface AggregateDocumentFile {
   count: Int;
 }
 
-export interface AggregateDocumentFilePromise extends Promise<AggregateDocumentFile>, Fragmentable {
+export interface AggregateDocumentFilePromise
+  extends Promise<AggregateDocumentFile>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
@@ -9625,7 +9956,9 @@ export interface DocumentUseConnection {
   edges: DocumentUseEdge[];
 }
 
-export interface DocumentUseConnectionPromise extends Promise<DocumentUseConnection>, Fragmentable {
+export interface DocumentUseConnectionPromise
+  extends Promise<DocumentUseConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<DocumentUseEdge>>() => T;
   aggregate: <T = AggregateDocumentUsePromise>() => T;
@@ -9644,7 +9977,9 @@ export interface DocumentUseEdge {
   cursor: String;
 }
 
-export interface DocumentUseEdgePromise extends Promise<DocumentUseEdge>, Fragmentable {
+export interface DocumentUseEdgePromise
+  extends Promise<DocumentUseEdge>,
+    Fragmentable {
   node: <T = DocumentUsePromise>() => T;
   cursor: () => Promise<String>;
 }
@@ -9660,7 +9995,9 @@ export interface AggregateDocumentUse {
   count: Int;
 }
 
-export interface AggregateDocumentUsePromise extends Promise<AggregateDocumentUse>, Fragmentable {
+export interface AggregateDocumentUsePromise
+  extends Promise<AggregateDocumentUse>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
@@ -9684,7 +10021,13 @@ export interface GraphicProject {
   visibility?: Visibility;
 }
 
-export interface GraphicProjectPromise extends Promise<GraphicProject>, Fragmentable {
+<<<<<<< HEAD
+export interface DocumentFilePromise extends Promise<DocumentFile>, Fragmentable {
+=======
+export interface GraphicProjectPromise
+  extends Promise<GraphicProject>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -9794,9 +10137,13 @@ export interface GraphicProjectSubscription
   }) => T;
 }
 
+<<<<<<< HEAD
+export interface DocumentFileNullablePromise extends Promise<DocumentFile | null>, Fragmentable {
+=======
 export interface GraphicProjectNullablePromise
   extends Promise<GraphicProject | null>,
     Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -9883,7 +10230,9 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   isConfirmed: () => Promise<Boolean>;
 }
 
-export interface UserSubscription extends Promise<AsyncIterator<User>>, Fragmentable {
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
@@ -9900,7 +10249,9 @@ export interface UserSubscription extends Promise<AsyncIterator<User>>, Fragment
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface UserNullablePromise extends Promise<User | null>, Fragmentable {
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
@@ -9942,7 +10293,13 @@ export interface TeamPromise extends Promise<Team>, Fragmentable {
   isConfirmed: () => Promise<Boolean>;
 }
 
-export interface TeamSubscription extends Promise<AsyncIterator<Team>>, Fragmentable {
+<<<<<<< HEAD
+export interface ImageFileSubscription extends Promise<AsyncIterator<ImageFile>>, Fragmentable {
+=======
+export interface TeamSubscription
+  extends Promise<AsyncIterator<Team>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   organization: () => Promise<AsyncIterator<String>>;
@@ -9959,7 +10316,13 @@ export interface TeamSubscription extends Promise<AsyncIterator<Team>>, Fragment
   isConfirmed: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface TeamNullablePromise extends Promise<Team | null>, Fragmentable {
+<<<<<<< HEAD
+export interface ImageFileNullablePromise extends Promise<ImageFile | null>, Fragmentable {
+=======
+export interface TeamNullablePromise
+  extends Promise<Team | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   organization: () => Promise<String>;
@@ -10006,7 +10369,13 @@ export interface SupportFilePromise extends Promise<SupportFile>, Fragmentable {
   use: <T = SupportFileUsePromise>() => T;
 }
 
-export interface SupportFileSubscription extends Promise<AsyncIterator<SupportFile>>, Fragmentable {
+<<<<<<< HEAD
+export interface ImageUseSubscription extends Promise<AsyncIterator<ImageUse>>, Fragmentable {
+=======
+export interface SupportFileSubscription
+  extends Promise<AsyncIterator<SupportFile>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -10022,7 +10391,13 @@ export interface SupportFileSubscription extends Promise<AsyncIterator<SupportFi
   use: <T = SupportFileUseSubscription>() => T;
 }
 
-export interface SupportFileNullablePromise extends Promise<SupportFile | null>, Fragmentable {
+<<<<<<< HEAD
+export interface ImageUseNullablePromise extends Promise<ImageUse | null>, Fragmentable {
+=======
+export interface SupportFileNullablePromise
+  extends Promise<SupportFile | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -10043,7 +10418,13 @@ export interface SupportFileUse {
   name: String;
 }
 
-export interface SupportFileUsePromise extends Promise<SupportFileUse>, Fragmentable {
+<<<<<<< HEAD
+export interface GraphicStylePromise extends Promise<GraphicStyle>, Fragmentable {
+=======
+export interface SupportFileUsePromise
+  extends Promise<SupportFileUse>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
@@ -10055,9 +10436,13 @@ export interface SupportFileUseSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
+<<<<<<< HEAD
+export interface GraphicStyleNullablePromise extends Promise<GraphicStyle | null>, Fragmentable {
+=======
 export interface SupportFileUseNullablePromise
   extends Promise<SupportFileUse | null>,
     Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
@@ -10067,12 +10452,18 @@ export interface GraphicProjectConnection {
   edges: GraphicProjectEdge[];
 }
 
+<<<<<<< HEAD
+export interface SocialPlatformPromise extends Promise<SocialPlatform>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+=======
 export interface GraphicProjectConnectionPromise
   extends Promise<GraphicProjectConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<GraphicProjectEdge>>() => T;
   aggregate: <T = AggregateGraphicProjectPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface GraphicProjectConnectionSubscription
@@ -10088,7 +10479,9 @@ export interface GraphicProjectEdge {
   cursor: String;
 }
 
-export interface GraphicProjectEdgePromise extends Promise<GraphicProjectEdge>, Fragmentable {
+export interface GraphicProjectEdgePromise
+  extends Promise<GraphicProjectEdge>,
+    Fragmentable {
   node: <T = GraphicProjectPromise>() => T;
   cursor: () => Promise<String>;
 }
@@ -10104,6 +10497,16 @@ export interface AggregateGraphicProject {
   count: Int;
 }
 
+<<<<<<< HEAD
+export interface DocumentUseSubscription extends Promise<AsyncIterator<DocumentUse>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface DocumentUseNullablePromise extends Promise<DocumentUse | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+=======
 export interface AggregateGraphicProjectPromise
   extends Promise<AggregateGraphicProject>,
     Fragmentable {
@@ -10114,6 +10517,7 @@ export interface AggregateGraphicProjectSubscription
   extends Promise<AsyncIterator<AggregateGraphicProject>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface GraphicStyleConnection {
@@ -10129,12 +10533,26 @@ export interface GraphicStyleConnectionPromise
   aggregate: <T = AggregateGraphicStylePromise>() => T;
 }
 
+<<<<<<< HEAD
+export interface TagSubscription extends Promise<AsyncIterator<Tag>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  translations: <T = Promise<AsyncIterator<LanguageTranslationSubscription>>>(args?: {
+    where?: LanguageTranslationWhereInput;
+    orderBy?: LanguageTranslationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+=======
 export interface GraphicStyleConnectionSubscription
   extends Promise<AsyncIterator<GraphicStyleConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<GraphicStyleEdgeSubscription>>>() => T;
   aggregate: <T = AggregateGraphicStyleSubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface GraphicStyleEdge {
@@ -10142,7 +10560,9 @@ export interface GraphicStyleEdge {
   cursor: String;
 }
 
-export interface GraphicStyleEdgePromise extends Promise<GraphicStyleEdge>, Fragmentable {
+export interface GraphicStyleEdgePromise
+  extends Promise<GraphicStyleEdge>,
+    Fragmentable {
   node: <T = GraphicStylePromise>() => T;
   cursor: () => Promise<String>;
 }
@@ -10158,7 +10578,9 @@ export interface AggregateGraphicStyle {
   count: Int;
 }
 
-export interface AggregateGraphicStylePromise extends Promise<AggregateGraphicStyle>, Fragmentable {
+export interface AggregateGraphicStylePromise
+  extends Promise<AggregateGraphicStyle>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
@@ -10173,7 +10595,9 @@ export interface ImageFileConnection {
   edges: ImageFileEdge[];
 }
 
-export interface ImageFileConnectionPromise extends Promise<ImageFileConnection>, Fragmentable {
+export interface ImageFileConnectionPromise
+  extends Promise<ImageFileConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<ImageFileEdge>>() => T;
   aggregate: <T = AggregateImageFilePromise>() => T;
@@ -10192,8 +10616,15 @@ export interface ImageFileEdge {
   cursor: String;
 }
 
-export interface ImageFileEdgePromise extends Promise<ImageFileEdge>, Fragmentable {
+<<<<<<< HEAD
+export interface DocumentFileEdgePromise extends Promise<DocumentFileEdge>, Fragmentable {
+  node: <T = DocumentFilePromise>() => T;
+=======
+export interface ImageFileEdgePromise
+  extends Promise<ImageFileEdge>,
+    Fragmentable {
   node: <T = ImageFilePromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<String>;
 }
 
@@ -10208,7 +10639,13 @@ export interface AggregateImageFile {
   count: Int;
 }
 
-export interface AggregateImageFilePromise extends Promise<AggregateImageFile>, Fragmentable {
+<<<<<<< HEAD
+export interface AggregateDocumentFilePromise extends Promise<AggregateDocumentFile>, Fragmentable {
+=======
+export interface AggregateImageFilePromise
+  extends Promise<AggregateImageFile>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
@@ -10223,12 +10660,916 @@ export interface ImageUseConnection {
   edges: ImageUseEdge[];
 }
 
-export interface ImageUseConnectionPromise extends Promise<ImageUseConnection>, Fragmentable {
+<<<<<<< HEAD
+export interface DocumentUseConnectionPromise extends Promise<DocumentUseConnection>, Fragmentable {
+=======
+export interface ImageUseConnectionPromise
+  extends Promise<ImageUseConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<ImageUseEdge>>() => T;
   aggregate: <T = AggregateImageUsePromise>() => T;
 }
 
+export interface ImageUseConnectionSubscription
+  extends Promise<AsyncIterator<ImageUseConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ImageUseEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateImageUseSubscription>() => T;
+}
+
+export interface ImageUseEdge {
+  node: ImageUse;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface DocumentUseEdgePromise extends Promise<DocumentUseEdge>, Fragmentable {
+  node: <T = DocumentUsePromise>() => T;
+=======
+export interface ImageUseEdgePromise
+  extends Promise<ImageUseEdge>,
+    Fragmentable {
+  node: <T = ImageUsePromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface ImageUseEdgeSubscription
+  extends Promise<AsyncIterator<ImageUseEdge>>,
+    Fragmentable {
+  node: <T = ImageUseSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateImageUse {
+  count: Int;
+}
+
+<<<<<<< HEAD
+export interface AggregateDocumentUsePromise extends Promise<AggregateDocumentUse>, Fragmentable {
+=======
+export interface AggregateImageUsePromise
+  extends Promise<AggregateImageUse>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  count: () => Promise<Int>;
+}
+
+export interface AggregateImageUseSubscription
+  extends Promise<AsyncIterator<AggregateImageUse>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LanguageConnection {
+  pageInfo: PageInfo;
+  edges: LanguageEdge[];
+}
+
+<<<<<<< HEAD
+export interface GraphicProjectPromise extends Promise<GraphicProject>, Fragmentable {
+=======
+export interface LanguageConnectionPromise
+  extends Promise<LanguageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LanguageEdge>>() => T;
+  aggregate: <T = AggregateLanguagePromise>() => T;
+}
+
+export interface LanguageConnectionSubscription
+  extends Promise<AsyncIterator<LanguageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LanguageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLanguageSubscription>() => T;
+}
+
+export interface LanguageEdge {
+  node: Language;
+  cursor: String;
+}
+
+export interface LanguageEdgePromise
+  extends Promise<LanguageEdge>,
+    Fragmentable {
+  node: <T = LanguagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LanguageEdgeSubscription
+  extends Promise<AsyncIterator<LanguageEdge>>,
+    Fragmentable {
+  node: <T = LanguageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateLanguage {
+  count: Int;
+}
+
+export interface AggregateLanguagePromise
+  extends Promise<AggregateLanguage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLanguageSubscription
+  extends Promise<AsyncIterator<AggregateLanguage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface LanguageTranslationConnection {
+  pageInfo: PageInfo;
+  edges: LanguageTranslationEdge[];
+}
+
+export interface LanguageTranslationConnectionPromise
+  extends Promise<LanguageTranslationConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<LanguageTranslationEdge>>() => T;
+  aggregate: <T = AggregateLanguageTranslationPromise>() => T;
+}
+
+export interface LanguageTranslationConnectionSubscription
+  extends Promise<AsyncIterator<LanguageTranslationConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<LanguageTranslationEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateLanguageTranslationSubscription>() => T;
+}
+
+export interface LanguageTranslationEdge {
+  node: LanguageTranslation;
+  cursor: String;
+}
+
+export interface LanguageTranslationEdgePromise
+  extends Promise<LanguageTranslationEdge>,
+    Fragmentable {
+  node: <T = LanguageTranslationPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LanguageTranslationEdgeSubscription
+  extends Promise<AsyncIterator<LanguageTranslationEdge>>,
+    Fragmentable {
+  node: <T = LanguageTranslationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateLanguageTranslation {
+  count: Int;
+}
+
+export interface AggregateLanguageTranslationPromise
+  extends Promise<AggregateLanguageTranslation>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateLanguageTranslationSubscription
+  extends Promise<AsyncIterator<AggregateLanguageTranslation>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface OfficeConnection {
+  pageInfo: PageInfo;
+  edges: OfficeEdge[];
+}
+
+export interface OfficeConnectionPromise
+  extends Promise<OfficeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<OfficeEdge>>() => T;
+  aggregate: <T = AggregateOfficePromise>() => T;
+}
+
+export interface OfficeConnectionSubscription
+  extends Promise<AsyncIterator<OfficeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OfficeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOfficeSubscription>() => T;
+}
+
+export interface OfficeEdge {
+  node: Office;
+  cursor: String;
+}
+
+export interface OfficeEdgePromise extends Promise<OfficeEdge>, Fragmentable {
+  node: <T = OfficePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface OfficeEdgeSubscription
+  extends Promise<AsyncIterator<OfficeEdge>>,
+    Fragmentable {
+  node: <T = OfficeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateOffice {
+  count: Int;
+}
+
+export interface AggregateOfficePromise
+  extends Promise<AggregateOffice>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateOfficeSubscription
+  extends Promise<AsyncIterator<AggregateOffice>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Package {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  type: PackageType;
+  title: String;
+  assetPath?: String;
+  desc?: String;
+  status?: PublishStatus;
+  visibility?: Visibility;
+}
+
+export interface PackagePromise extends Promise<Package>, Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<PackageType>;
+  title: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  desc: () => Promise<String>;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  documents: <T = FragmentableArray<DocumentFile>>(args?: {
+    where?: DocumentFileWhereInput;
+    orderBy?: DocumentFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PackageSubscription
+  extends Promise<AsyncIterator<Package>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<PackageType>>;
+  title: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+  desc: () => Promise<AsyncIterator<String>>;
+  status: () => Promise<AsyncIterator<PublishStatus>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  documents: <T = Promise<AsyncIterator<DocumentFileSubscription>>>(args?: {
+    where?: DocumentFileWhereInput;
+    orderBy?: DocumentFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PackageNullablePromise
+  extends Promise<Package | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<PackageType>;
+  title: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  desc: () => Promise<String>;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  documents: <T = FragmentableArray<DocumentFile>>(args?: {
+    where?: DocumentFileWhereInput;
+    orderBy?: DocumentFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PackageConnection {
+  pageInfo: PageInfo;
+  edges: PackageEdge[];
+}
+
+export interface PackageConnectionPromise
+  extends Promise<PackageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PackageEdge>>() => T;
+  aggregate: <T = AggregatePackagePromise>() => T;
+}
+
+<<<<<<< HEAD
+export interface UserSubscription extends Promise<AsyncIterator<User>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  tempToken: () => Promise<AsyncIterator<String>>;
+  tempTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  jobTitle: () => Promise<AsyncIterator<String>>;
+  country: () => Promise<AsyncIterator<String>>;
+  city: () => Promise<AsyncIterator<String>>;
+  howHeard: () => Promise<AsyncIterator<String>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  team: <T = TeamSubscription>() => T;
+  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface UserNullablePromise extends Promise<User | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  tempToken: () => Promise<String>;
+  tempTokenExpiry: () => Promise<Float>;
+  jobTitle: () => Promise<String>;
+  country: () => Promise<String>;
+  city: () => Promise<String>;
+  howHeard: () => Promise<String>;
+  permissions: () => Promise<Permission[]>;
+  team: <T = TeamPromise>() => T;
+  isConfirmed: () => Promise<Boolean>;
+=======
+export interface PackageConnectionSubscription
+  extends Promise<AsyncIterator<PackageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PackageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePackageSubscription>() => T;
+}
+
+export interface PackageEdge {
+  node: Package;
+  cursor: String;
+}
+
+export interface PackageEdgePromise extends Promise<PackageEdge>, Fragmentable {
+  node: <T = PackagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PackageEdgeSubscription
+  extends Promise<AsyncIterator<PackageEdge>>,
+    Fragmentable {
+  node: <T = PackageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface AggregatePackage {
+  count: Int;
+}
+
+export interface AggregatePackagePromise
+  extends Promise<AggregatePackage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePackageSubscription
+  extends Promise<AsyncIterator<AggregatePackage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Playbook {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  type: PackageType;
+  title: String;
+  assetPath?: String;
+  desc?: String;
+  status?: PublishStatus;
+  visibility?: Visibility;
+}
+
+export interface PlaybookPromise extends Promise<Playbook>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<PackageType>;
+  title: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  desc: () => Promise<String>;
+  content: <T = DocumentConversionFormatPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  policy: <T = PolicyPriorityPromise>() => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+<<<<<<< HEAD
+  contentTypes: () => Promise<ContentType[]>;
+  isConfirmed: () => Promise<Boolean>;
+}
+
+export interface TeamSubscription extends Promise<AsyncIterator<Team>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  organization: () => Promise<AsyncIterator<String>>;
+  members: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+=======
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+<<<<<<< HEAD
+  contentTypes: () => Promise<AsyncIterator<ContentType[]>>;
+  isConfirmed: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface TeamNullablePromise extends Promise<Team | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  organization: () => Promise<String>;
+  members: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+=======
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
+export interface SupportFileSubscription extends Promise<AsyncIterator<SupportFile>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  editable: () => Promise<AsyncIterator<Boolean>>;
+  use: <T = SupportFileUseSubscription>() => T;
+}
+
+export interface SupportFileNullablePromise extends Promise<SupportFile | null>, Fragmentable {
+=======
+export interface PlaybookSubscription
+  extends Promise<AsyncIterator<Playbook>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<PackageType>>;
+  title: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+  desc: () => Promise<AsyncIterator<String>>;
+  content: <T = DocumentConversionFormatSubscription>() => T;
+  status: () => Promise<AsyncIterator<PublishStatus>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  policy: <T = PolicyPrioritySubscription>() => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PlaybookNullablePromise
+  extends Promise<Playbook | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<PackageType>;
+  title: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  desc: () => Promise<String>;
+  content: <T = DocumentConversionFormatPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  policy: <T = PolicyPriorityPromise>() => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface PolicyPriority {
+  id: ID_Output;
+  name: String;
+  theme?: String;
+}
+
+<<<<<<< HEAD
+export interface SupportFileUsePromise extends Promise<SupportFileUse>, Fragmentable {
+=======
+export interface PolicyPriorityPromise
+  extends Promise<PolicyPriority>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  theme: () => Promise<String>;
+}
+
+export interface PolicyPrioritySubscription
+  extends Promise<AsyncIterator<PolicyPriority>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  theme: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PolicyPriorityNullablePromise
+  extends Promise<PolicyPriority | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  theme: () => Promise<String>;
+}
+
+export interface PlaybookConnection {
+  pageInfo: PageInfo;
+  edges: PlaybookEdge[];
+}
+
+export interface PlaybookConnectionPromise
+  extends Promise<PlaybookConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PlaybookEdge>>() => T;
+  aggregate: <T = AggregatePlaybookPromise>() => T;
+}
+
+export interface PlaybookConnectionSubscription
+  extends Promise<AsyncIterator<PlaybookConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PlaybookEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePlaybookSubscription>() => T;
+}
+
+export interface PlaybookEdge {
+  node: Playbook;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface GraphicProjectEdgePromise extends Promise<GraphicProjectEdge>, Fragmentable {
+  node: <T = GraphicProjectPromise>() => T;
+=======
+export interface PlaybookEdgePromise
+  extends Promise<PlaybookEdge>,
+    Fragmentable {
+  node: <T = PlaybookPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface PlaybookEdgeSubscription
+  extends Promise<AsyncIterator<PlaybookEdge>>,
+    Fragmentable {
+  node: <T = PlaybookSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePlaybook {
+  count: Int;
+}
+
+export interface AggregatePlaybookPromise
+  extends Promise<AggregatePlaybook>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePlaybookSubscription
+  extends Promise<AsyncIterator<AggregatePlaybook>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PolicyPriorityConnection {
+  pageInfo: PageInfo;
+  edges: PolicyPriorityEdge[];
+}
+
+export interface PolicyPriorityConnectionPromise
+  extends Promise<PolicyPriorityConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PolicyPriorityEdge>>() => T;
+  aggregate: <T = AggregatePolicyPriorityPromise>() => T;
+}
+
+export interface PolicyPriorityConnectionSubscription
+  extends Promise<AsyncIterator<PolicyPriorityConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PolicyPriorityEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePolicyPrioritySubscription>() => T;
+}
+
+export interface PolicyPriorityEdge {
+  node: PolicyPriority;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface GraphicStyleEdgePromise extends Promise<GraphicStyleEdge>, Fragmentable {
+  node: <T = GraphicStylePromise>() => T;
+=======
+export interface PolicyPriorityEdgePromise
+  extends Promise<PolicyPriorityEdge>,
+    Fragmentable {
+  node: <T = PolicyPriorityPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface PolicyPriorityEdgeSubscription
+  extends Promise<AsyncIterator<PolicyPriorityEdge>>,
+    Fragmentable {
+  node: <T = PolicyPrioritySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePolicyPriority {
+  count: Int;
+}
+
+<<<<<<< HEAD
+export interface AggregateGraphicStylePromise extends Promise<AggregateGraphicStyle>, Fragmentable {
+=======
+export interface AggregatePolicyPriorityPromise
+  extends Promise<AggregatePolicyPriority>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePolicyPrioritySubscription
+  extends Promise<AsyncIterator<AggregatePolicyPriority>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface RegionConnection {
+  pageInfo: PageInfo;
+  edges: RegionEdge[];
+}
+
+<<<<<<< HEAD
+export interface ImageFileConnectionPromise extends Promise<ImageFileConnection>, Fragmentable {
+=======
+export interface RegionConnectionPromise
+  extends Promise<RegionConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RegionEdge>>() => T;
+  aggregate: <T = AggregateRegionPromise>() => T;
+}
+
+export interface RegionConnectionSubscription
+  extends Promise<AsyncIterator<RegionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RegionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRegionSubscription>() => T;
+}
+
+export interface RegionEdge {
+  node: Region;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface ImageFileEdgePromise extends Promise<ImageFileEdge>, Fragmentable {
+  node: <T = ImageFilePromise>() => T;
+=======
+export interface RegionEdgePromise extends Promise<RegionEdge>, Fragmentable {
+  node: <T = RegionPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface RegionEdgeSubscription
+  extends Promise<AsyncIterator<RegionEdge>>,
+    Fragmentable {
+  node: <T = RegionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateRegion {
+  count: Int;
+}
+
+<<<<<<< HEAD
+export interface AggregateImageFilePromise extends Promise<AggregateImageFile>, Fragmentable {
+=======
+export interface AggregateRegionPromise
+  extends Promise<AggregateRegion>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRegionSubscription
+  extends Promise<AsyncIterator<AggregateRegion>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SocialPlatformConnection {
+  pageInfo: PageInfo;
+  edges: SocialPlatformEdge[];
+}
+
+<<<<<<< HEAD
+export interface ImageUseConnectionPromise extends Promise<ImageUseConnection>, Fragmentable {
+=======
+export interface SocialPlatformConnectionPromise
+  extends Promise<SocialPlatformConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SocialPlatformEdge>>() => T;
+  aggregate: <T = AggregateSocialPlatformPromise>() => T;
+}
+
+<<<<<<< HEAD
 export interface ImageUseConnectionSubscription
   extends Promise<AsyncIterator<ImageUseConnection>>,
     Fragmentable {
@@ -11427,188 +12768,7 @@ export interface VideoFileNullablePromise extends Promise<VideoFile | null>, Fra
     first?: Int;
     last?: Int;
   }) => T;
-}
-
-export interface VideoUse {
-  id: ID_Output;
-  name: String;
-}
-
-export interface VideoUsePromise extends Promise<VideoUse>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface VideoUseSubscription extends Promise<AsyncIterator<VideoUse>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoUseNullablePromise extends Promise<VideoUse | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface VideoStream {
-  id: ID_Output;
-  site?: String;
-  url?: String;
-  embedUrl?: String;
-}
-
-export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
-}
-
-export interface VideoStreamSubscription extends Promise<AsyncIterator<VideoStream>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  site: () => Promise<AsyncIterator<String>>;
-  url: () => Promise<AsyncIterator<String>>;
-  embedUrl: () => Promise<AsyncIterator<String>>;
-}
-
-export interface VideoStreamNullablePromise extends Promise<VideoStream | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  site: () => Promise<String>;
-  url: () => Promise<String>;
-  embedUrl: () => Promise<String>;
-}
-
-export interface Thumbnail {
-  id: ID_Output;
-  size?: ThumbnailSize;
-}
-
-export interface ThumbnailPromise extends Promise<Thumbnail>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  size: () => Promise<ThumbnailSize>;
-  image: <T = ImageFilePromise>() => T;
-}
-
-export interface ThumbnailSubscription extends Promise<AsyncIterator<Thumbnail>>, Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  size: () => Promise<AsyncIterator<ThumbnailSize>>;
-  image: <T = ImageFileSubscription>() => T;
-}
-
-export interface ThumbnailNullablePromise extends Promise<Thumbnail | null>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  size: () => Promise<ThumbnailSize>;
-  image: <T = ImageFilePromise>() => T;
-}
-
-export interface ProjectConnection {
-  pageInfo: PageInfo;
-  edges: ProjectEdge[];
-}
-
-export interface ProjectConnectionPromise extends Promise<ProjectConnection>, Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProjectEdge>>() => T;
-  aggregate: <T = AggregateProjectPromise>() => T;
-}
-
-export interface ProjectConnectionSubscription
-  extends Promise<AsyncIterator<ProjectConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProjectEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProjectSubscription>() => T;
-}
-
-export interface ProjectEdge {
-  node: Project;
-  cursor: String;
-}
-
-export interface ProjectEdgePromise extends Promise<ProjectEdge>, Fragmentable {
-  node: <T = ProjectPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ProjectEdgeSubscription extends Promise<AsyncIterator<ProjectEdge>>, Fragmentable {
-  node: <T = ProjectSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateProject {
-  count: Int;
-}
-
-export interface AggregateProjectPromise extends Promise<AggregateProject>, Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateProjectSubscription
-  extends Promise<AsyncIterator<AggregateProject>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface RegionConnection {
-  pageInfo: PageInfo;
-  edges: RegionEdge[];
-}
-
-export interface RegionConnectionPromise extends Promise<RegionConnection>, Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RegionEdge>>() => T;
-  aggregate: <T = AggregateRegionPromise>() => T;
-}
-
-export interface RegionConnectionSubscription
-  extends Promise<AsyncIterator<RegionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RegionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRegionSubscription>() => T;
-}
-
-export interface RegionEdge {
-  node: Region;
-  cursor: String;
-}
-
-export interface RegionEdgePromise extends Promise<RegionEdge>, Fragmentable {
-  node: <T = RegionPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface RegionEdgeSubscription extends Promise<AsyncIterator<RegionEdge>>, Fragmentable {
-  node: <T = RegionSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateRegion {
-  count: Int;
-}
-
-export interface AggregateRegionPromise extends Promise<AggregateRegion>, Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateRegionSubscription
-  extends Promise<AsyncIterator<AggregateRegion>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface SocialPlatformConnection {
-  pageInfo: PageInfo;
-  edges: SocialPlatformEdge[];
-}
-
-export interface SocialPlatformConnectionPromise
-  extends Promise<SocialPlatformConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<SocialPlatformEdge>>() => T;
-  aggregate: <T = AggregateSocialPlatformPromise>() => T;
-}
-
+=======
 export interface SocialPlatformConnectionSubscription
   extends Promise<AsyncIterator<SocialPlatformConnection>>,
     Fragmentable {
@@ -11622,9 +12782,12 @@ export interface SocialPlatformEdge {
   cursor: String;
 }
 
-export interface SocialPlatformEdgePromise extends Promise<SocialPlatformEdge>, Fragmentable {
+export interface SocialPlatformEdgePromise
+  extends Promise<SocialPlatformEdge>,
+    Fragmentable {
   node: <T = SocialPlatformPromise>() => T;
   cursor: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface SocialPlatformEdgeSubscription
@@ -11638,6 +12801,16 @@ export interface AggregateSocialPlatform {
   count: Int;
 }
 
+<<<<<<< HEAD
+export interface VideoUseSubscription extends Promise<AsyncIterator<VideoUse>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoUseNullablePromise extends Promise<VideoUse | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+=======
 export interface AggregateSocialPlatformPromise
   extends Promise<AggregateSocialPlatform>,
     Fragmentable {
@@ -11648,6 +12821,7 @@ export interface AggregateSocialPlatformSubscription
   extends Promise<AsyncIterator<AggregateSocialPlatform>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface SupportFileConnection {
@@ -11655,12 +12829,28 @@ export interface SupportFileConnection {
   edges: SupportFileEdge[];
 }
 
-export interface SupportFileConnectionPromise extends Promise<SupportFileConnection>, Fragmentable {
+export interface SupportFileConnectionPromise
+  extends Promise<SupportFileConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<SupportFileEdge>>() => T;
   aggregate: <T = AggregateSupportFilePromise>() => T;
 }
 
+<<<<<<< HEAD
+export interface VideoStreamSubscription extends Promise<AsyncIterator<VideoStream>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  site: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  embedUrl: () => Promise<AsyncIterator<String>>;
+}
+
+export interface VideoStreamNullablePromise extends Promise<VideoStream | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
+=======
 export interface SupportFileConnectionSubscription
   extends Promise<AsyncIterator<SupportFileConnection>>,
     Fragmentable {
@@ -11674,9 +12864,12 @@ export interface SupportFileEdge {
   cursor: String;
 }
 
-export interface SupportFileEdgePromise extends Promise<SupportFileEdge>, Fragmentable {
+export interface SupportFileEdgePromise
+  extends Promise<SupportFileEdge>,
+    Fragmentable {
   node: <T = SupportFilePromise>() => T;
   cursor: () => Promise<String>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface SupportFileEdgeSubscription
@@ -11690,7 +12883,21 @@ export interface AggregateSupportFile {
   count: Int;
 }
 
-export interface AggregateSupportFilePromise extends Promise<AggregateSupportFile>, Fragmentable {
+<<<<<<< HEAD
+export interface ThumbnailSubscription extends Promise<AsyncIterator<Thumbnail>>, Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+  image: <T = ImageFileSubscription>() => T;
+}
+
+export interface ThumbnailNullablePromise extends Promise<Thumbnail | null>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+  image: <T = ImageFilePromise>() => T;
+=======
+export interface AggregateSupportFilePromise
+  extends Promise<AggregateSupportFile>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
@@ -11698,6 +12905,7 @@ export interface AggregateSupportFileSubscription
   extends Promise<AsyncIterator<AggregateSupportFile>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface SupportFileUseConnection {
@@ -11705,9 +12913,13 @@ export interface SupportFileUseConnection {
   edges: SupportFileUseEdge[];
 }
 
+<<<<<<< HEAD
+export interface ProjectConnectionPromise extends Promise<ProjectConnection>, Fragmentable {
+=======
 export interface SupportFileUseConnectionPromise
   extends Promise<SupportFileUseConnection>,
     Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<SupportFileUseEdge>>() => T;
   aggregate: <T = AggregateSupportFileUsePromise>() => T;
@@ -11726,15 +12938,22 @@ export interface SupportFileUseEdge {
   cursor: String;
 }
 
-export interface SupportFileUseEdgePromise extends Promise<SupportFileUseEdge>, Fragmentable {
+export interface SupportFileUseEdgePromise
+  extends Promise<SupportFileUseEdge>,
+    Fragmentable {
   node: <T = SupportFileUsePromise>() => T;
   cursor: () => Promise<String>;
 }
 
+<<<<<<< HEAD
+export interface ProjectEdgeSubscription extends Promise<AsyncIterator<ProjectEdge>>, Fragmentable {
+  node: <T = ProjectSubscription>() => T;
+=======
 export interface SupportFileUseEdgeSubscription
   extends Promise<AsyncIterator<SupportFileUseEdge>>,
     Fragmentable {
   node: <T = SupportFileUseSubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -11742,9 +12961,13 @@ export interface AggregateSupportFileUse {
   count: Int;
 }
 
+<<<<<<< HEAD
+export interface AggregateProjectPromise extends Promise<AggregateProject>, Fragmentable {
+=======
 export interface AggregateSupportFileUsePromise
   extends Promise<AggregateSupportFileUse>,
     Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
@@ -11759,7 +12982,13 @@ export interface TagConnection {
   edges: TagEdge[];
 }
 
-export interface TagConnectionPromise extends Promise<TagConnection>, Fragmentable {
+<<<<<<< HEAD
+export interface RegionConnectionPromise extends Promise<RegionConnection>, Fragmentable {
+=======
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<TagEdge>>() => T;
   aggregate: <T = AggregateTagPromise>() => T;
@@ -11783,8 +13012,15 @@ export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
   cursor: () => Promise<String>;
 }
 
-export interface TagEdgeSubscription extends Promise<AsyncIterator<TagEdge>>, Fragmentable {
+<<<<<<< HEAD
+export interface RegionEdgeSubscription extends Promise<AsyncIterator<RegionEdge>>, Fragmentable {
+  node: <T = RegionSubscription>() => T;
+=======
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
   node: <T = TagSubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -11792,7 +13028,13 @@ export interface AggregateTag {
   count: Int;
 }
 
-export interface AggregateTagPromise extends Promise<AggregateTag>, Fragmentable {
+<<<<<<< HEAD
+export interface AggregateRegionPromise extends Promise<AggregateRegion>, Fragmentable {
+=======
+export interface AggregateTagPromise
+  extends Promise<AggregateTag>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
@@ -11807,7 +13049,9 @@ export interface TeamConnection {
   edges: TeamEdge[];
 }
 
-export interface TeamConnectionPromise extends Promise<TeamConnection>, Fragmentable {
+export interface TeamConnectionPromise
+  extends Promise<TeamConnection>,
+    Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<TeamEdge>>() => T;
   aggregate: <T = AggregateTeamPromise>() => T;
@@ -11826,12 +13070,19 @@ export interface TeamEdge {
   cursor: String;
 }
 
+<<<<<<< HEAD
+export interface SocialPlatformEdgePromise extends Promise<SocialPlatformEdge>, Fragmentable {
+  node: <T = SocialPlatformPromise>() => T;
+=======
 export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
   node: <T = TeamPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<String>;
 }
 
-export interface TeamEdgeSubscription extends Promise<AsyncIterator<TeamEdge>>, Fragmentable {
+export interface TeamEdgeSubscription
+  extends Promise<AsyncIterator<TeamEdge>>,
+    Fragmentable {
   node: <T = TeamSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
@@ -11840,7 +13091,9 @@ export interface AggregateTeam {
   count: Int;
 }
 
-export interface AggregateTeamPromise extends Promise<AggregateTeam>, Fragmentable {
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
+    Fragmentable {
   count: () => Promise<Int>;
 }
 
@@ -11850,12 +13103,45 @@ export interface AggregateTeamSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface Thumbnail {
+  id: ID_Output;
+  size?: ThumbnailSize;
+}
+
+export interface ThumbnailPromise extends Promise<Thumbnail>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+  image: <T = ImageFilePromise>() => T;
+}
+
+export interface ThumbnailSubscription
+  extends Promise<AsyncIterator<Thumbnail>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  size: () => Promise<AsyncIterator<ThumbnailSize>>;
+  image: <T = ImageFileSubscription>() => T;
+}
+
+export interface ThumbnailNullablePromise
+  extends Promise<Thumbnail | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  size: () => Promise<ThumbnailSize>;
+  image: <T = ImageFilePromise>() => T;
+}
+
 export interface ThumbnailConnection {
   pageInfo: PageInfo;
   edges: ThumbnailEdge[];
 }
 
-export interface ThumbnailConnectionPromise extends Promise<ThumbnailConnection>, Fragmentable {
+<<<<<<< HEAD
+export interface SupportFileConnectionPromise extends Promise<SupportFileConnection>, Fragmentable {
+=======
+export interface ThumbnailConnectionPromise
+  extends Promise<ThumbnailConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   pageInfo: <T = PageInfoPromise>() => T;
   edges: <T = FragmentableArray<ThumbnailEdge>>() => T;
   aggregate: <T = AggregateThumbnailPromise>() => T;
@@ -11874,8 +13160,15 @@ export interface ThumbnailEdge {
   cursor: String;
 }
 
-export interface ThumbnailEdgePromise extends Promise<ThumbnailEdge>, Fragmentable {
+<<<<<<< HEAD
+export interface SupportFileEdgePromise extends Promise<SupportFileEdge>, Fragmentable {
+  node: <T = SupportFilePromise>() => T;
+=======
+export interface ThumbnailEdgePromise
+  extends Promise<ThumbnailEdge>,
+    Fragmentable {
   node: <T = ThumbnailPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   cursor: () => Promise<String>;
 }
 
@@ -11890,7 +13183,13 @@ export interface AggregateThumbnail {
   count: Int;
 }
 
-export interface AggregateThumbnailPromise extends Promise<AggregateThumbnail>, Fragmentable {
+<<<<<<< HEAD
+export interface AggregateSupportFilePromise extends Promise<AggregateSupportFile>, Fragmentable {
+=======
+export interface AggregateThumbnailPromise
+  extends Promise<AggregateThumbnail>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   count: () => Promise<Int>;
 }
 
@@ -11957,7 +13256,9 @@ export interface ToolkitPromise extends Promise<Toolkit>, Fragmentable {
   }) => T;
 }
 
-export interface ToolkitSubscription extends Promise<AsyncIterator<Toolkit>>, Fragmentable {
+export interface ToolkitSubscription
+  extends Promise<AsyncIterator<Toolkit>>,
+    Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -12001,7 +13302,9 @@ export interface ToolkitSubscription extends Promise<AsyncIterator<Toolkit>>, Fr
   }) => T;
 }
 
-export interface ToolkitNullablePromise extends Promise<Toolkit | null>, Fragmentable {
+export interface ToolkitNullablePromise
+  extends Promise<Toolkit | null>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -12043,6 +13346,742 @@ export interface ToolkitNullablePromise extends Promise<Toolkit | null>, Fragmen
     first?: Int;
     last?: Int;
   }) => T;
+}
+
+export interface ToolkitConnection {
+  pageInfo: PageInfo;
+  edges: ToolkitEdge[];
+}
+
+export interface ToolkitConnectionPromise
+  extends Promise<ToolkitConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ToolkitEdge>>() => T;
+  aggregate: <T = AggregateToolkitPromise>() => T;
+}
+
+export interface ToolkitConnectionSubscription
+  extends Promise<AsyncIterator<ToolkitConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ToolkitEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateToolkitSubscription>() => T;
+}
+
+export interface ToolkitEdge {
+  node: Toolkit;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface SupportFileUseEdgePromise extends Promise<SupportFileUseEdge>, Fragmentable {
+  node: <T = SupportFileUsePromise>() => T;
+=======
+export interface ToolkitEdgePromise extends Promise<ToolkitEdge>, Fragmentable {
+  node: <T = ToolkitPromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface ToolkitEdgeSubscription
+  extends Promise<AsyncIterator<ToolkitEdge>>,
+    Fragmentable {
+  node: <T = ToolkitSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateToolkit {
+  count: Int;
+}
+
+export interface AggregateToolkitPromise
+  extends Promise<AggregateToolkit>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateToolkitSubscription
+  extends Promise<AsyncIterator<AggregateToolkit>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+<<<<<<< HEAD
+export interface TagConnectionPromise extends Promise<TagConnection>, Fragmentable {
+=======
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+<<<<<<< HEAD
+export interface TagEdgeSubscription extends Promise<AsyncIterator<TagEdge>>, Fragmentable {
+  node: <T = TagSubscription>() => T;
+=======
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+<<<<<<< HEAD
+export interface AggregateTagPromise extends Promise<AggregateTag>, Fragmentable {
+=======
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoFile {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  filetype?: String;
+  filename?: String;
+  visibility?: Visibility;
+  quality?: VideoQuality;
+  videoBurnedInStatus?: VideoBurnedInStatus;
+  url?: String;
+  signedUrl?: String;
+  md5?: String;
+  duration?: Float;
+  bitrate?: Float;
+  filesize?: Float;
+}
+
+<<<<<<< HEAD
+export interface TeamConnectionPromise extends Promise<TeamConnection>, Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TeamEdge>>() => T;
+  aggregate: <T = AggregateTeamPromise>() => T;
+=======
+export interface VideoFilePromise extends Promise<VideoFile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  filetype: () => Promise<String>;
+  filename: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  use: <T = VideoUsePromise>() => T;
+  quality: () => Promise<VideoQuality>;
+  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  md5: () => Promise<String>;
+  duration: () => Promise<Float>;
+  bitrate: () => Promise<Float>;
+  filesize: () => Promise<Float>;
+  dimensions: <T = DimensionsPromise>() => T;
+  stream: <T = FragmentableArray<VideoStream>>(args?: {
+    where?: VideoStreamWhereInput;
+    orderBy?: VideoStreamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoFileSubscription
+  extends Promise<AsyncIterator<VideoFile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  filetype: () => Promise<AsyncIterator<String>>;
+  filename: () => Promise<AsyncIterator<String>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  use: <T = VideoUseSubscription>() => T;
+  quality: () => Promise<AsyncIterator<VideoQuality>>;
+  videoBurnedInStatus: () => Promise<AsyncIterator<VideoBurnedInStatus>>;
+  url: () => Promise<AsyncIterator<String>>;
+  signedUrl: () => Promise<AsyncIterator<String>>;
+  md5: () => Promise<AsyncIterator<String>>;
+  duration: () => Promise<AsyncIterator<Float>>;
+  bitrate: () => Promise<AsyncIterator<Float>>;
+  filesize: () => Promise<AsyncIterator<Float>>;
+  dimensions: <T = DimensionsSubscription>() => T;
+  stream: <T = Promise<AsyncIterator<VideoStreamSubscription>>>(args?: {
+    where?: VideoStreamWhereInput;
+    orderBy?: VideoStreamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface VideoFileNullablePromise
+  extends Promise<VideoFile | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  filetype: () => Promise<String>;
+  filename: () => Promise<String>;
+  visibility: () => Promise<Visibility>;
+  use: <T = VideoUsePromise>() => T;
+  quality: () => Promise<VideoQuality>;
+  videoBurnedInStatus: () => Promise<VideoBurnedInStatus>;
+  url: () => Promise<String>;
+  signedUrl: () => Promise<String>;
+  md5: () => Promise<String>;
+  duration: () => Promise<Float>;
+  bitrate: () => Promise<Float>;
+  filesize: () => Promise<Float>;
+  dimensions: <T = DimensionsPromise>() => T;
+  stream: <T = FragmentableArray<VideoStream>>(args?: {
+    where?: VideoStreamWhereInput;
+    orderBy?: VideoStreamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoUse {
+  id: ID_Output;
+  name: String;
+}
+
+export interface VideoUsePromise extends Promise<VideoUse>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+<<<<<<< HEAD
+export interface TeamEdgeSubscription extends Promise<AsyncIterator<TeamEdge>>, Fragmentable {
+  node: <T = TeamSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+=======
+export interface VideoUseSubscription
+  extends Promise<AsyncIterator<VideoUse>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface VideoUseNullablePromise
+  extends Promise<VideoUse | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+<<<<<<< HEAD
+export interface AggregateTeamPromise extends Promise<AggregateTeam>, Fragmentable {
+  count: () => Promise<Int>;
+=======
+export interface VideoStream {
+  id: ID_Output;
+  site?: String;
+  url?: String;
+  embedUrl?: String;
+}
+
+export interface VideoStreamPromise extends Promise<VideoStream>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
+}
+
+export interface VideoStreamSubscription
+  extends Promise<AsyncIterator<VideoStream>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  site: () => Promise<AsyncIterator<String>>;
+  url: () => Promise<AsyncIterator<String>>;
+  embedUrl: () => Promise<AsyncIterator<String>>;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+}
+
+export interface VideoStreamNullablePromise
+  extends Promise<VideoStream | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  site: () => Promise<String>;
+  url: () => Promise<String>;
+  embedUrl: () => Promise<String>;
+}
+
+export interface VideoFileConnection {
+  pageInfo: PageInfo;
+  edges: VideoFileEdge[];
+}
+
+<<<<<<< HEAD
+export interface ThumbnailConnectionPromise extends Promise<ThumbnailConnection>, Fragmentable {
+=======
+export interface VideoFileConnectionPromise
+  extends Promise<VideoFileConnection>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VideoFileEdge>>() => T;
+  aggregate: <T = AggregateVideoFilePromise>() => T;
+}
+
+export interface VideoFileConnectionSubscription
+  extends Promise<AsyncIterator<VideoFileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VideoFileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVideoFileSubscription>() => T;
+}
+
+export interface VideoFileEdge {
+  node: VideoFile;
+  cursor: String;
+}
+
+<<<<<<< HEAD
+export interface ThumbnailEdgePromise extends Promise<ThumbnailEdge>, Fragmentable {
+  node: <T = ThumbnailPromise>() => T;
+=======
+export interface VideoFileEdgePromise
+  extends Promise<VideoFileEdge>,
+    Fragmentable {
+  node: <T = VideoFilePromise>() => T;
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  cursor: () => Promise<String>;
+}
+
+export interface VideoFileEdgeSubscription
+  extends Promise<AsyncIterator<VideoFileEdge>>,
+    Fragmentable {
+  node: <T = VideoFileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateVideoFile {
+  count: Int;
+}
+
+<<<<<<< HEAD
+export interface AggregateThumbnailPromise extends Promise<AggregateThumbnail>, Fragmentable {
+=======
+export interface AggregateVideoFilePromise
+  extends Promise<AggregateVideoFile>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVideoFileSubscription
+  extends Promise<AsyncIterator<AggregateVideoFile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface VideoProject {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  publishedAt?: DateTimeOutput;
+  projectType: ProjectType;
+  projectTitle: String;
+  descPublic?: String;
+  descInternal?: String;
+  assetPath?: String;
+  status?: PublishStatus;
+  visibility?: Visibility;
+}
+
+export interface VideoProjectPromise
+  extends Promise<VideoProject>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  projectType: () => Promise<ProjectType>;
+  projectTitle: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  descInternal: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  units: <T = FragmentableArray<VideoUnit>>(args?: {
+    where?: VideoUnitWhereInput;
+    orderBy?: VideoUnitOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
+export interface ToolkitSubscription extends Promise<AsyncIterator<Toolkit>>, Fragmentable {
+=======
+export interface VideoProjectSubscription
+  extends Promise<AsyncIterator<VideoProject>>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  publishedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  projectType: () => Promise<AsyncIterator<ProjectType>>;
+  projectTitle: () => Promise<AsyncIterator<String>>;
+  descPublic: () => Promise<AsyncIterator<String>>;
+  descInternal: () => Promise<AsyncIterator<String>>;
+  assetPath: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+  team: <T = TeamSubscription>() => T;
+  status: () => Promise<AsyncIterator<PublishStatus>>;
+  visibility: () => Promise<AsyncIterator<Visibility>>;
+  units: <T = Promise<AsyncIterator<VideoUnitSubscription>>>(args?: {
+    where?: VideoUnitWhereInput;
+    orderBy?: VideoUnitOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = Promise<AsyncIterator<SupportFileSubscription>>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = Promise<AsyncIterator<ImageFileSubscription>>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoProjectNullablePromise
+  extends Promise<VideoProject | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  publishedAt: () => Promise<DateTimeOutput>;
+  projectType: () => Promise<ProjectType>;
+  projectTitle: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  descInternal: () => Promise<String>;
+  assetPath: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+  team: <T = TeamPromise>() => T;
+  status: () => Promise<PublishStatus>;
+  visibility: () => Promise<Visibility>;
+  units: <T = FragmentableArray<VideoUnit>>(args?: {
+    where?: VideoUnitWhereInput;
+    orderBy?: VideoUnitOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  supportFiles: <T = FragmentableArray<SupportFile>>(args?: {
+    where?: SupportFileWhereInput;
+    orderBy?: SupportFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<ImageFile>>(args?: {
+    where?: ImageFileWhereInput;
+    orderBy?: ImageFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoUnit {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  title: String;
+  descPublic?: String;
+}
+
+export interface VideoUnitPromise extends Promise<VideoUnit>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  title: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  files: <T = FragmentableArray<VideoFile>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VideoUnitSubscription
+  extends Promise<AsyncIterator<VideoUnit>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  language: <T = LanguageSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
+  descPublic: () => Promise<AsyncIterator<String>>;
+  files: <T = Promise<AsyncIterator<VideoFileSubscription>>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = Promise<AsyncIterator<CategorySubscription>>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = Promise<AsyncIterator<ThumbnailSubscription>>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+<<<<<<< HEAD
+export interface ToolkitNullablePromise extends Promise<Toolkit | null>, Fragmentable {
+=======
+export interface VideoUnitNullablePromise
+  extends Promise<VideoUnit | null>,
+    Fragmentable {
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  language: <T = LanguagePromise>() => T;
+  title: () => Promise<String>;
+  descPublic: () => Promise<String>;
+  files: <T = FragmentableArray<VideoFile>>(args?: {
+    where?: VideoFileWhereInput;
+    orderBy?: VideoFileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tags: <T = FragmentableArray<Tag>>(args?: {
+    where?: TagWhereInput;
+    orderBy?: TagOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  categories: <T = FragmentableArray<Category>>(args?: {
+    where?: CategoryWhereInput;
+    orderBy?: CategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  thumbnails: <T = FragmentableArray<Thumbnail>>(args?: {
+    where?: ThumbnailWhereInput;
+    orderBy?: ThumbnailOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+<<<<<<< HEAD
 }
 
 export interface ToolkitConnection {
@@ -12189,6 +14228,8 @@ export interface AggregateVideoFileSubscription
   extends Promise<AsyncIterator<AggregateVideoFile>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+=======
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 }
 
 export interface VideoProjectConnection {
@@ -13374,6 +15415,7 @@ export interface PolicyPriorityPreviousValuesSubscription
   theme: () => Promise<AsyncIterator<String>>;
 }
 
+<<<<<<< HEAD
 export interface ProjectSubscriptionPayload {
   mutation: MutationType;
   node: Project;
@@ -13413,6 +15455,8 @@ export interface ProjectPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
 }
 
+=======
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
 export interface RegionSubscriptionPayload {
   mutation: MutationType;
   node: Region;
@@ -14394,12 +16438,17 @@ export const models: Model[] = [
     embedded: false,
   },
   {
+<<<<<<< HEAD
     name: 'Project',
     embedded: false,
   },
   {
     name: 'VideoFile',
     embedded: false,
+=======
+    name: "VideoFile",
+    embedded: false
+>>>>>>> a3e2585 (feat: move Project type from data model to the teams schema)
   },
   {
     name: 'ImageFile',

@@ -1,3 +1,10 @@
+type Project {
+  id: ID!
+  videos: [VideoProject]
+  graphics: [GraphicProject]
+  packages: [Package]
+}
+
 type Query {
   teams(
     where: TeamWhereInput
