@@ -16,7 +16,15 @@ const PackageResolvers = {
       return ctx.prisma.packages( { ...args } );
     },
 
-    package( parent, args, ctx ) {
+    async package( parent, args, ctx ) {
+      const doesPackageExist = await ctx.prisma.$exists.package( { id: args.id } );
+
+      if ( !doesPackageExist ) {
+        throw new UserInputError( 'A package with that id does not exist in the database', {
+          invalidArgs: 'id',
+        } );
+      }
+
       return ctx.prisma.package( { id: args.id } );
     },
   } ),
@@ -53,7 +61,6 @@ const PackageResolvers = {
         data,
         where: { id },
       } = updates;
-
 
       const { documents } = data;
 
