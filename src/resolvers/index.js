@@ -12,6 +12,7 @@ import UtilResolvers from './Util';
 import DocumentResolvers from './Document';
 import VideoResolvers from './Video';
 import PackageResolvers from './Package';
+import PlaybookResolvers from './Playbook';
 import GraphicResolvers from './Graphic';
 
 const resolvers = merge(
@@ -28,6 +29,7 @@ const resolvers = merge(
   DocumentResolvers,
   VideoResolvers,
   PackageResolvers,
+  PlaybookResolvers,
   GraphicResolvers,
 );
 

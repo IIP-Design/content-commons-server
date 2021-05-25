@@ -1,6 +1,9 @@
 type Query {
   packages(where: PackageWhereInput, orderBy: PackageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Package]!
   package(id: ID!): Package 
+
+  playbooks(where: PlaybookWhereInput, orderBy: PlaybookOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Playbook]!
+  playbook(id: ID!): Playbook 
 }
 
 type Mutation {
@@ -9,8 +12,9 @@ type Mutation {
   updateManyPackages(data: PackageUpdateManyMutationInput!, where: PackageWhereInput): BatchPayload!
   deletePackage(id: ID!): Package
   deleteManyPackages(where: PackageWhereInput): BatchPayload!
-  packageExists(where: PackageWhereInput): Boolean!
-
+  packageExists(where: PackageWhereInput): Boolean! 
   publishPackage(id: ID!): Package
   unpublishPackage(id: ID!): Package
+
+   createPlaybook(data: PlaybookCreateInput!): Playbook!
 }

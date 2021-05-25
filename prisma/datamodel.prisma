@@ -13,6 +13,8 @@ enum ContentType {
   GRAPHIC
   TEACHING_MATERIAL
   PACKAGE
+  TOOLKIT
+  PLAYBOOK
 }
 
 enum ProjectType {
@@ -224,12 +226,12 @@ type Playbook {
   author: User
   team: Team
   desc:  String
-  content: DocumentConversionFormat
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: INTERNAL)
-  policy: PolicyPriority
   categories: [Category]
   tags: [Tag]
+  content: DocumentConversionFormat
+  policy: PolicyPriority
   supportFiles: [SupportFile] 
 }
 
@@ -244,12 +246,12 @@ type Toolkit {
   author: User
   team: Team
   desc:  String
-  content: DocumentConversionFormat
   status: PublishStatus @default(value: DRAFT)
   visibility: Visibility @default(value: INTERNAL)
-  policy: PolicyPriority
   categories: [Category]
   tags: [Tag]
+  content: DocumentConversionFormat
+  policy: PolicyPriority
   supportFiles: [SupportFile] 
 }
 

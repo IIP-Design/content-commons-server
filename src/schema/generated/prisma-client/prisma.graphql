@@ -667,6 +667,8 @@ enum ContentType {
   GRAPHIC
   TEACHING_MATERIAL
   PACKAGE
+  TOOLKIT
+  PLAYBOOK
 }
 
 enum Copyright {
