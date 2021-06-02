@@ -52,6 +52,10 @@ const PlaybookResolvers = {
       return ctx.prisma.playbook( { id: parent.id } ).tags( { ...args } );
     },
 
+    content( parent, args, ctx ) {
+      return ctx.prisma.playbook( { id: parent.id } ).content( { ...args } );
+    },
+
     supportFiles( parent, args, ctx ) {
       return ctx.prisma.playbook( { id: parent.id } ).supportFiles( { ...args } );
     },
