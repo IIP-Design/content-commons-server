@@ -13,6 +13,9 @@ _This sections lists changes committed since most recent release_
 - Jest setup file for Cognito `env` variables
 - Toolkit and Playbook to ContentType enum
 - Playbook resolvers
+- Playbook `content` and `policy` field resolvers
+- Playbook `updatePlaybook` mutation
+- Initial tests for Playbook resolvers
 
 **Changed:**
 - Check for existence of package before returning
