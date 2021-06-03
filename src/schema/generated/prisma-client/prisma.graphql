@@ -4075,12 +4075,12 @@ type Playbook {
   author: User
   team: Team
   desc: String
-  content: DocumentConversionFormat
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriority
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  content: DocumentConversionFormat
+  policy: PolicyPriority
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
 }
 
@@ -4099,12 +4099,12 @@ input PlaybookCreateInput {
   author: UserCreateOneInput
   team: TeamCreateOneInput
   desc: String
-  content: DocumentConversionFormatCreateOneInput
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriorityCreateOneInput
   categories: CategoryCreateManyInput
   tags: TagCreateManyInput
+  content: DocumentConversionFormatCreateOneInput
+  policy: PolicyPriorityCreateOneInput
   supportFiles: SupportFileCreateManyInput
 }
 
@@ -4175,12 +4175,12 @@ input PlaybookUpdateInput {
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   desc: String
-  content: DocumentConversionFormatUpdateOneInput
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriorityUpdateOneInput
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
+  content: DocumentConversionFormatUpdateOneInput
+  policy: PolicyPriorityUpdateOneInput
   supportFiles: SupportFileUpdateManyInput
 }
 
@@ -4281,7 +4281,6 @@ input PlaybookWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
-  content: DocumentConversionFormatWhereInput
   status: PublishStatus
   status_not: PublishStatus
   status_in: [PublishStatus!]
@@ -4290,13 +4289,14 @@ input PlaybookWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
-  policy: PolicyPriorityWhereInput
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  content: DocumentConversionFormatWhereInput
+  policy: PolicyPriorityWhereInput
   supportFiles_every: SupportFileWhereInput
   supportFiles_some: SupportFileWhereInput
   supportFiles_none: SupportFileWhereInput
@@ -5994,12 +5994,12 @@ type Toolkit {
   author: User
   team: Team
   desc: String
-  content: DocumentConversionFormat
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriority
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  content: DocumentConversionFormat
+  policy: PolicyPriority
   supportFiles(where: SupportFileWhereInput, orderBy: SupportFileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SupportFile!]
 }
 
@@ -6018,12 +6018,12 @@ input ToolkitCreateInput {
   author: UserCreateOneInput
   team: TeamCreateOneInput
   desc: String
-  content: DocumentConversionFormatCreateOneInput
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriorityCreateOneInput
   categories: CategoryCreateManyInput
   tags: TagCreateManyInput
+  content: DocumentConversionFormatCreateOneInput
+  policy: PolicyPriorityCreateOneInput
   supportFiles: SupportFileCreateManyInput
 }
 
@@ -6094,12 +6094,12 @@ input ToolkitUpdateInput {
   author: UserUpdateOneInput
   team: TeamUpdateOneInput
   desc: String
-  content: DocumentConversionFormatUpdateOneInput
   status: PublishStatus
   visibility: Visibility
-  policy: PolicyPriorityUpdateOneInput
   categories: CategoryUpdateManyInput
   tags: TagUpdateManyInput
+  content: DocumentConversionFormatUpdateOneInput
+  policy: PolicyPriorityUpdateOneInput
   supportFiles: SupportFileUpdateManyInput
 }
 
@@ -6200,7 +6200,6 @@ input ToolkitWhereInput {
   desc_not_starts_with: String
   desc_ends_with: String
   desc_not_ends_with: String
-  content: DocumentConversionFormatWhereInput
   status: PublishStatus
   status_not: PublishStatus
   status_in: [PublishStatus!]
@@ -6209,13 +6208,14 @@ input ToolkitWhereInput {
   visibility_not: Visibility
   visibility_in: [Visibility!]
   visibility_not_in: [Visibility!]
-  policy: PolicyPriorityWhereInput
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  content: DocumentConversionFormatWhereInput
+  policy: PolicyPriorityWhereInput
   supportFiles_every: SupportFileWhereInput
   supportFiles_some: SupportFileWhereInput
   supportFiles_none: SupportFileWhereInput

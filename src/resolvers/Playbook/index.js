@@ -33,6 +33,19 @@ const PlaybookResolvers = {
         throw new ApolloError( err );
       }
     },
+
+    updatePlaybook( parent, args, ctx ) {
+      const updates = { ...args };
+      const {
+        data,
+        where: { id },
+      } = updates;
+
+      return ctx.prisma.updatePlaybook( {
+        data,
+        where: { id },
+      } );
+    },
   } ),
 
   Playbook: {
@@ -50,6 +63,14 @@ const PlaybookResolvers = {
 
     tags( parent, args, ctx ) {
       return ctx.prisma.playbook( { id: parent.id } ).tags( { ...args } );
+    },
+
+    content( parent, args, ctx ) {
+      return ctx.prisma.playbook( { id: parent.id } ).content( { ...args } );
+    },
+
+    policy( parent, args, ctx ) {
+      return ctx.prisma.playbook( { id: parent.id } ).policy( { ...args } );
     },
 
     supportFiles( parent, args, ctx ) {
