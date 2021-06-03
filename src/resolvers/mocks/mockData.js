@@ -448,3 +448,51 @@ export const documentFile = {
     },
   ],
 };
+
+export const playbook = {
+  id: 'ckp5t372c015607201qkzfuob',
+  createdAt: '2021-06-13T12:44:20.145Z',
+  updatedAt: '2021-06-30T14:54:40.647Z',
+  publishedAt: '2021-06-30T15:44:51.511Z',
+  title: 'COVID-19 Playbook',
+  type: 'PLAYBOOK',
+  assetPath: 'playbook/2021/06/commons.america.gov_ckp5t372c015607201qkzfuob',
+  author: {
+    id: 'ck8embiwq0b1n0765ps892v3n',
+    email: 'reganta@america.gov',
+    firstName: 'Terri',
+    lastName: 'Regan',
+  },
+  team: teams[0],
+  desc: 'the description',
+  status: 'PUBLISHED',
+  visibility: 'PUBLIC',
+  categories: [categories[0]],
+  tags: [tags[0]],
+  content: {
+    id: 'ckp5t373t01570720xwn14xq4',
+    rawText: 'Content from database heading some text',
+    html: '<p>Content from database</p><h2>heading</h2><p>some <a href="https://www.google.com">text</a></p>',
+    markdown: '',
+  },
+  policy: {
+    id: 'ckobsqf4w00ax07202yr52c6s',
+    name: 'COVID-19 Recovery',
+    theme: '#d07b43',
+  },
+  supportFiles: [
+    {
+      id: 'ckp5hkumm00fe0720c2rfavee',
+      createdAt: '2021-06-03T15:44:38.502Z',
+      updatedAt: '2021-06-03T15:44:38.502Z',
+      language: languages.english,
+      url: '2021/06/commons.america.gov_ck8en7r8x0b7007652jpf9a59/support-file-1.pdf',
+      signedUrl: 'https://signedurl.com',
+      filename: 'support-file-1.pdf',
+      filetype: 'application/pdf',
+      filesize: 3193,
+      visibility: 'PUBLIC',
+      use: null,
+    },
+  ],
+};
