@@ -69,6 +69,10 @@ const PlaybookResolvers = {
       return ctx.prisma.playbook( { id: parent.id } ).content( { ...args } );
     },
 
+    policy( parent, args, ctx ) {
+      return ctx.prisma.playbook( { id: parent.id } ).policy( { ...args } );
+    },
+
     supportFiles( parent, args, ctx ) {
       return ctx.prisma.playbook( { id: parent.id } ).supportFiles( { ...args } );
     },
