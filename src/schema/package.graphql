@@ -16,5 +16,6 @@ type Mutation {
   publishPackage(id: ID!): Package
   unpublishPackage(id: ID!): Package
 
-   createPlaybook(data: PlaybookCreateInput!): Playbook!
+  createPlaybook(data: PlaybookCreateInput!): Playbook!
+  updatePlaybook(data: PlaybookUpdateInput!, where: PlaybookWhereUniqueInput!): Playbook
 }

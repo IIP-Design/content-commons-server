@@ -33,6 +33,19 @@ const PlaybookResolvers = {
         throw new ApolloError( err );
       }
     },
+
+    updatePlaybook( parent, args, ctx ) {
+      const updates = { ...args };
+      const {
+        data,
+        where: { id },
+      } = updates;
+
+      return ctx.prisma.updatePlaybook( {
+        data,
+        where: { id },
+      } );
+    },
   } ),
 
   Playbook: {
