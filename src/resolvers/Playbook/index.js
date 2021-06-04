@@ -46,6 +46,24 @@ const PlaybookResolvers = {
         where: { id },
       } );
     },
+
+    async deletePlaybook( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before continuing
+      const playbook = await ctx.prisma
+        .playbook( { id } );
+
+      // 2. Notify user if the requested playbook does not exist
+      if ( !playbook ) {
+        throw new UserInputError( 'A playbook with that id does not exist in the database', {
+          invalidArgs: 'id',
+        } );
+      }
+
+      // 3. TODO: Delete files if they exist
+
+      // 4. Return id of deleted project
+      return ctx.prisma.deletePlaybook( { id } );
+    },
   } ),
 
   Playbook: {
