@@ -138,7 +138,7 @@ const GraphicResolvers = {
         .graphicProject( { id } )
         .$fragment( GRAPHIC_PROJECT_FULL );
 
-      // 2. Notify user is we don't have aproject
+      // 2. Notify user if the requested project does not exist
       if ( !graphicProject ) {
         throw new UserInputError( 'A package with that id does not exist in the database', {
           invalidArgs: 'id',

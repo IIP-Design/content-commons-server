@@ -1,7 +1,9 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
+import { getAssetPath, deleteAllS3Assets } from '../../services/aws/s3';
 import { requiresLogin } from '../../lib/authentication';
-import { getAssetPath } from '../../services/aws/s3';
+
+const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 const PlaybookResolvers = {
 
@@ -45,6 +47,31 @@ const PlaybookResolvers = {
         data,
         where: { id },
       } );
+    },
+
+    async deletePlaybook( parent, { id }, ctx ) {
+      // 1. Verify we have a valid project before continuing
+      const playbook = await ctx.prisma
+        .playbook( { id } );
+
+      // 2. Notify user if the requested playbook does not exist
+      if ( !playbook ) {
+        throw new UserInputError( 'A playbook with that id does not exist in the database', {
+          invalidArgs: 'id',
+        } );
+      }
+
+      // 3. Delete files if they exist
+      if ( playbook?.supportFiles?.length ) {
+        if ( playbook.assetPath ) {
+          await deleteAllS3Assets( playbook.assetPath, PUBLISHER_BUCKET ).catch( err => console.log(
+            `Error in [deleteAllS3Assets] for project ${playbook.title} - ${playbook.id}. ${err}`,
+          ) );
+        }
+      }
+
+      // 4. Return id of deleted project
+      return ctx.prisma.deletePlaybook( { id } );
     },
   } ),
 
