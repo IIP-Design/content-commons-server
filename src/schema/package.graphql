@@ -35,4 +35,7 @@ type Mutation {
   createPlaybook(data: PlaybookCreateInput!): Playbook!
   deletePlaybook(id: ID!): Playbook!
   updatePlaybook(data: PlaybookUpdateInput!, where: PlaybookWhereUniqueInput!): Playbook
+  playbookExists(where: PlaybookWhereInput): Boolean!
+  publishPlaybook(id: ID!): Playbook
+  unpublishPlaybook(id: ID!): Playbook
 }
