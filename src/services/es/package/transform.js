@@ -1,43 +1,6 @@
+import { english, transformTaxonomy, transformLanguage } from '../common/transform';
 import { getUrlToProdS3 } from '..';
 
-const english = {
-  language_code: 'en',
-  locale: 'en-us',
-  text_direction: 'ltr',
-  display_name: 'English',
-  native_name: 'English',
-};
-
-
-/**
- * Convert a taxonomy field (categories/tags) into translated ES terms based on the provided language.
- *
- * @param taxonomyTerms
- * @param language
- * @returns {Array}
- */
-const transformTaxonomy = ( taxonomyTerms, language ) => {
-  if ( !taxonomyTerms || !taxonomyTerms.length ) return [];
-  const terms = [];
-
-  taxonomyTerms.forEach( ( { translations = [] } ) => {
-    const translation = translations.find( trans => trans.language.id === language.id );
-
-    if ( translation ) {
-      terms.push( translation.name );
-    }
-  } );
-
-  return terms;
-};
-
-const transformLanguage = language => ( {
-  language_code: language.languageCode,
-  locale: language.locale,
-  text_direction: language.textDirection.toLowerCase(),
-  display_name: language.displayName,
-  native_name: language.nativeName,
-} );
 
 const transformDocument = ( document, team ) => {
   const now = new Date().toISOString();

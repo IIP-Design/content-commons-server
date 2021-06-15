@@ -1,4 +1,5 @@
 import { getVimeoId, getYouTubeId } from '../../../lib/projectParser';
+import { transformLanguage } from '../common/transform';
 import { maybeGetUrlToProdS3 } from '..';
 
 const ENGLISH_LOCALE = 'en-us';
@@ -17,14 +18,6 @@ function getEmbedUrl( url ) {
 
   return url;
 }
-
-const transformLanguage = language => ( {
-  language_code: language.languageCode,
-  locale: language.locale,
-  text_direction: language.textDirection.toLowerCase(),
-  display_name: language.displayName,
-  native_name: language.nativeName,
-} );
 
 const transformThumbnail = image => ( {
   url: maybeGetUrlToProdS3( image.url ),
