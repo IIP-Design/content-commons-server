@@ -1,37 +1,9 @@
+import {
+  transformLanguage,
+  transformSupportFile,
+  transformTaxonomy,
+} from '../common/transform';
 import { getUrlToProdS3 } from '..';
-
-const transformLanguage = language => ( {
-  language_code: language.languageCode,
-  locale: language.locale,
-  text_direction: language.textDirection.toLowerCase(),
-  display_name: language.displayName,
-  native_name: language.nativeName,
-} );
-
-
-const transformSupportFile = file => {
-  const {
-    title,
-    language,
-    filename,
-    filetype,
-    visibility,
-    editable,
-    url,
-  } = file;
-
-  const supportFile = {
-    title,
-    visibility,
-    editable: editable || false,
-    filename,
-    filetype,
-    url: getUrlToProdS3( url ),
-    language: transformLanguage( language ),
-  };
-
-  return supportFile;
-};
 
 const transformImage = ( file, alt ) => {
   const { title,
@@ -63,28 +35,6 @@ const transformImage = ( file, alt ) => {
   return image;
 };
 
-
-/**
- * Convert a taxonomy field (categories/tags) into translated ES terms based on the provided language.
- *
- * @param taxonomyTerms
- * @param language
- * @returns {Array}
- */
-const transformTaxonomy = ( taxonomyTerms, locale ) => {
-  if ( !taxonomyTerms || !taxonomyTerms.length ) return [];
-  const terms = [];
-
-  taxonomyTerms.forEach( ( { translations = [] } ) => {
-    const translation = translations.find( trans => trans.language.locale === locale );
-
-    if ( translation ) {
-      terms.push( translation.name );
-    }
-  } );
-
-  return terms;
-};
 
 const transformDesc = desc => {
   const { content, visibility } = desc;

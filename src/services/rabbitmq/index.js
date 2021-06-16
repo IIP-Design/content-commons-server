@@ -2,6 +2,7 @@ import initialize, { getConsumerChannel } from './initialize';
 import video from './video';
 import graphic from './graphic';
 import pkg from './package';
+import playbook from './playbook';
 
 const consumePublishSuccess = async () => {
   const channel = await getConsumerChannel();
@@ -19,6 +20,8 @@ const consumePublishSuccess = async () => {
           pkg.consumePublishSuccess( channel, msg );
         } else if ( routingKey.includes( 'graphic' ) ) {
           graphic.consumeSuccess( channel, msg );
+        } else if ( routingKey.includes( 'playbook' ) ) {
+          playbook.consumeSuccess( channel, msg );
         }
         // TODO handle not having handler for routing keu
       }
@@ -65,7 +68,10 @@ const consumeErrors = async () => {
           pkg.consumeError( channel, msg );
         } else if ( routingKey.includes( 'graphic' ) ) {
           graphic.consumeError( channel, msg );
+        } else if ( routingKey.includes( 'playbook' ) ) {
+          playbook.consumeError( channel, msg );
         }
+
         // TODO handle not having error handler for routing key
       }
       // TODO handle no routing key

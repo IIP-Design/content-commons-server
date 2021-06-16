@@ -10,7 +10,7 @@ const updateDatabase = async ( id, data ) => {
  *
  * @param {string} id project id
  * @param {object} data project data
- * @param {object} status project stastus
+ * @param {object} status project status
  * @param {object} projectDirectory path to S3 dir
  *
  * NOTE: function name follows [exchange][routing key] convention

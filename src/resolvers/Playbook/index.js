@@ -2,6 +2,9 @@ import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { getAssetPath, deleteAllS3Assets } from '../../services/aws/s3';
 import { requiresLogin } from '../../lib/authentication';
+import transformPlaybook from '../../services/es/playbook/transform';
+import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/playbook';
+import { PLAYBOOK_FULL } from '../../fragments/playbook';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -72,6 +75,44 @@ const PlaybookResolvers = {
 
       // 4. Return id of deleted project
       return ctx.prisma.deletePlaybook( { id } );
+    },
+
+    async publishPlaybook( parent, { id }, ctx ) {
+      // 1. Get data for playbook to publish from db
+      const playbook = await ctx.prisma.playbook( { id } ).$fragment( PLAYBOOK_FULL );
+
+      if ( !playbook ) {
+        throw new UserInputError( `Unable to publish playbook as a playbook does not exist with id: ${id}`, {
+          invalidArgs: 'id',
+        } );
+      }
+
+      // 2. Transform it into the acceptable elasticsearch data structure
+      const esData = transformPlaybook( playbook );
+      const { status, assetPath } = playbook;
+
+      // 3. Put on the queue for processing
+      if ( status === 'DRAFT' ) {
+        publishCreate( id, esData, status, assetPath );
+      } else {
+        publishUpdate( id, esData, status, assetPath );
+      }
+
+      return playbook;
+    },
+
+    async unpublishPlaybook( parent, { id }, ctx ) {
+      const playbook = await ctx.prisma.playbook( { id } ).$fragment( PLAYBOOK_FULL );
+
+      if ( !playbook ) {
+        return ctx.prisma
+          .updatePlaybook( { data: { status: 'UNPUBLISH_FAILURE' }, where: { id } } )
+          .catch( err => console.error( err ) );
+      }
+
+      publishDelete( id, playbook.assetPath );
+
+      return playbook;
     },
   } ),
 
