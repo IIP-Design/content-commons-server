@@ -6,7 +6,7 @@ const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
 /**
  * Removes both the document and its associated thumbnail image
- * @param {object} ctx graphQL context ohject
+ * @param {object} ctx graphQL context object
  * @param {string} id id of document fetch
  * @returns promises array
  */
@@ -38,7 +38,7 @@ export const deleteAsset = async ( ctx, id ) => {
 
 /**
  *
- * @param {object} ctx graphQL context ohject
+ * @param {object} ctx graphQL context object
  * @param {array} assetsToDelete documents to delete
  * @returns Promise
  */
