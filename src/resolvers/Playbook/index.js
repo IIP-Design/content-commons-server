@@ -1,10 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
+import { deleteAssets } from './controller';
 import { getAssetPath, deleteAllS3Assets } from '../../services/aws/s3';
+import { PLAYBOOK_FULL } from '../../fragments/playbook';
+import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/playbook';
 import { requiresLogin } from '../../lib/authentication';
 import transformPlaybook from '../../services/es/playbook/transform';
-import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/playbook';
-import { PLAYBOOK_FULL } from '../../fragments/playbook';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -41,10 +42,20 @@ const PlaybookResolvers = {
 
     updatePlaybook( parent, args, ctx ) {
       const updates = { ...args };
+
       const {
         data,
         where: { id },
       } = updates;
+
+      const { supportFiles } = data;
+
+      // Delete support files
+      if ( supportFiles?.delete ) {
+        const fileToDelete = supportFiles.delete;
+
+        deleteAssets( ctx, fileToDelete ).catch( err => `Unable to delete assets ${err.toString()}` );
+      }
 
       return ctx.prisma.updatePlaybook( {
         data,
