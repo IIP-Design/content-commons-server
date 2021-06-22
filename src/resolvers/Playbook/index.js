@@ -1,10 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
+import { deleteAssets } from './controller';
 import { getAssetPath, deleteAllS3Assets } from '../../services/aws/s3';
+import { PLAYBOOK_FULL } from '../../fragments/playbook';
+import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/playbook';
 import { requiresLogin } from '../../lib/authentication';
 import transformPlaybook from '../../services/es/playbook/transform';
-import { publishCreate, publishUpdate, publishDelete } from '../../services/rabbitmq/playbook';
-import { PLAYBOOK_FULL } from '../../fragments/playbook';
 
 const PUBLISHER_BUCKET = process.env.AWS_S3_AUTHORING_BUCKET;
 
@@ -41,10 +42,20 @@ const PlaybookResolvers = {
 
     updatePlaybook( parent, args, ctx ) {
       const updates = { ...args };
+
       const {
         data,
         where: { id },
       } = updates;
+
+      const { supportFiles } = data;
+
+      // Delete support files
+      if ( supportFiles?.delete ) {
+        const fileToDelete = supportFiles.delete;
+
+        deleteAssets( ctx, fileToDelete ).catch( err => `Unable to delete assets ${err.toString()}` );
+      }
 
       return ctx.prisma.updatePlaybook( {
         data,
@@ -54,26 +65,34 @@ const PlaybookResolvers = {
 
     async deletePlaybook( parent, { id }, ctx ) {
       // 1. Verify we have a valid project before continuing
-      const playbook = await ctx.prisma
-        .playbook( { id } );
+      const playbookExists = await ctx.prisma.$exists.playbook( { id } );
 
       // 2. Notify user if the requested playbook does not exist
-      if ( !playbook ) {
+      if ( !playbookExists ) {
         throw new UserInputError( 'A playbook with that id does not exist in the database', {
           invalidArgs: 'id',
         } );
       }
 
-      // 3. Delete files if they exist
+      // 3. If playbook does exist, retrieve it's information.
+      const playbook = await ctx.prisma.playbook( { id } ).$fragment( PLAYBOOK_FULL );
+
+      // 4. Delete files if they exist
       if ( playbook?.supportFiles?.length ) {
+        let deleteS3;
+
         if ( playbook.assetPath ) {
-          await deleteAllS3Assets( playbook.assetPath, PUBLISHER_BUCKET ).catch( err => console.log(
+          deleteS3 = deleteAllS3Assets( playbook.assetPath, PUBLISHER_BUCKET ).catch( err => console.log(
             `Error in [deleteAllS3Assets] for project ${playbook.title} - ${playbook.id}. ${err}`,
           ) );
         }
+
+        if ( deleteS3 ) {
+          await deleteS3;
+        }
       }
 
-      // 4. Return id of deleted project
+      // 5. Return id of deleted project
       return ctx.prisma.deletePlaybook( { id } );
     },
 
