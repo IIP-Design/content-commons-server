@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased](https://github.com/IIP-Design/content-commons-server/compare/v5.4.2...HEAD)
 _This sections lists changes committed since most recent release_
 
+# [5.4.3](https://github.com/IIP-Design/content-commons-server/compare/v5.4.2...v5.4.3) (2021-06-25)
+**Security:**
+- Add check for valid user before allowing queries
+
 # [5.4.2](https://github.com/IIP-Design/content-commons-server/compare/v5.4.1...v5.4.2) (2021-03-18)
 **Added:**
 - Admin priority tags
