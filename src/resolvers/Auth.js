@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { randomBytes } from 'crypto';
-import { requiresLogin } from '../lib/authentication';
+import { requiresLogin, requiresNone } from '../lib/authentication';
 import { isEmailWhitelisted } from '../lib/whitelist';
 import { getSignedUrlPromisePut, getSignedUrlPromiseGet } from '../services/aws/s3';
 import { sendSesEmail, setSesParams } from '../services/aws/ses';
@@ -491,7 +491,7 @@ const AuthResolvers = {
       }
     } ),
 
-    getSignedS3UrlGet: requiresLogin( async ( parent, args ) => {
+    getSignedS3UrlGet: requiresNone( async ( parent, args ) => {
       const { bucket, key } = args;
 
       if ( !key ) {
