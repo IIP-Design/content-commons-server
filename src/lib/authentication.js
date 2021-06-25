@@ -6,7 +6,7 @@ import mapValues from 'lodash/mapValues';
 export const requiresRole = role => resolver => {
   if ( isFunction( resolver ) ) {
     return ( parent, args, context, info ) => {
-      if ( context.user && ( !role || context.user.permissions.includes( role ) ) ) {
+      if ( context.user && context.user.id !== 'public' && ( !role || context.user.permissions.includes( role ) ) ) {
         return resolver( parent, args, context, info );
       }
       throw new AuthenticationError( 'Unauthorized' );
