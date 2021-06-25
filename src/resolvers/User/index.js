@@ -1,7 +1,7 @@
 import { requiresLogin } from '../../lib/authentication';
 
 const UserResolvers = {
-  Query: {
+  Query: requiresLogin( {
     authenticatedUser( parent, args, ctx ) {
       return ctx.user;
     },
@@ -9,7 +9,7 @@ const UserResolvers = {
     users( parent, args, ctx ) {
       return ctx.prisma.users();
     },
-  },
+  } ),
 
   Mutation: requiresLogin( {
     async updateUser( parent, args, ctx ) {
