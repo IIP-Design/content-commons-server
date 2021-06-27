@@ -1,6 +1,6 @@
 {
   "name": "@gpa-lab/content-commons-server",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "The Content Commons administrative backend.",
   "main": "index.js",
   "scripts": {

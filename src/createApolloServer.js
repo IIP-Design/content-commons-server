@@ -43,7 +43,7 @@ const fetchUser = async req => {
 const createApolloServer = () => new ApolloServer( {
   typeDefs,
   resolvers,
-  introspection: true,
+  introspection: process.env.NODE_ENV !== 'production',
   // subscriptions: { // currently disabled
   //   path: '/subscription',
   //   onConnect: () => {},
