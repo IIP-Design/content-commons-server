@@ -1,3 +1,5 @@
+scalar Json
+
 # Redefine to not reveal sensitive user fields
 type User {
   id: ID!
@@ -18,7 +20,8 @@ type Mutation {
 }
 
 type Query {
+  permissionEnum: Json
+
   authenticatedUser: User
   users: [User]!
 }
-

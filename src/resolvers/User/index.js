@@ -5,6 +5,20 @@ const UserResolvers = {
     users( parent, args, ctx ) {
       return ctx.prisma.users();
     },
+
+    permissionEnum( parent, args, ctx ) {
+      const query = `
+       query {
+          __type(name: "Permission") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
   } ),
 
   Mutation: requiresLogin( {
