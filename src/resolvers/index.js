@@ -7,7 +7,7 @@ import BureauResolvers from './Bureau';
 import TaxonomyResolvers from './Taxonomy';
 import TeamResolvers from './Team';
 import PolicyPriorityResolvers from './PolicyPriority';
-import UserResolvers from './User';
+import UserResolvers, { CurrentUserResolvers } from './User';
 import UtilResolvers from './Util';
 import DocumentResolvers from './Document';
 import VideoResolvers from './Video';
@@ -18,6 +18,7 @@ import GraphicResolvers from './Graphic';
 const resolvers = merge(
   AuthResolvers,
   UtilResolvers,
+  CurrentUserResolvers,
   // SharedResolvers,
   LanguageResolvers,
   TaxonomyResolvers,

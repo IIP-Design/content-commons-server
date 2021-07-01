@@ -110,6 +110,48 @@ const VideoResolvers = {
     videoStream( parent, args, ctx ) {
       return ctx.prisma.videoStream( { id: args.id } );
     },
+
+    imageQualityEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "ImageQuality") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
+
+    videoBurnedInStatusEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "VideoBurnedInStatus") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
+
+    videoQualityEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "VideoQuality") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
   } ),
 
   Mutation: requiresLogin( {

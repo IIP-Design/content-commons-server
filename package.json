@@ -1,6 +1,6 @@
 {
   "name": "@gpa-lab/content-commons-server",
-  "version": "5.4.2",
+  "version": "5.5.0",
   "main": "index.js",
   "author": "U.S. Department of State, Bureau of Global Public Affairs Digital Lab <gpa-lab@america.gov>",
   "description": "The Content Commons administrative backend.",

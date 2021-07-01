@@ -34,6 +34,34 @@ const GraphicResolvers = {
     socialPlatform( parent, args, ctx ) {
       return ctx.prisma.socialPlatform( { id: args.id } );
     },
+
+    copyrightEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "Copyright") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
+
+    visibilityEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "Visibility") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
   } ),
 
   Mutation: requiresLogin( {
