@@ -5,6 +5,25 @@ import { prisma } from '../../schema/generated/prisma-client';
 const updateDatabase = async ( id, data ) => prisma.updatePlaybook( { data, where: { id } } )
   .catch( err => console.error( err ) );
 
+/**
+ * Sets an initial publish date for a playbook that has never been published
+ * @param {string} status publish action completed, either publish or unpublish
+ * @param {string} id playbook's id
+ * @returns object
+ */
+const maybeSetInitialPublishDate = async ( status, id ) => {
+  if ( status === 'PUBLISH_SUCCESS' ) {
+    const res = await prisma.playbook( { id } );
+
+    if ( !res.initialPublishedAt ) {
+      // set initial publish date
+      return { status, initialPublishedAt: new Date().toISOString() };
+    }
+  }
+
+  // this is either an unpublish or a re-publish so simply return status
+  return { status };
+};
 
 /**
  * Put publish creation request on publish.create queue
@@ -76,9 +95,12 @@ const consumeSuccess = async ( channel, msg ) => {
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
-  // 2. on successful result, update db with applicable status using the returned projectId
+  // 2. on successful result, using the returned projectId update db with applicable status
+  // and initialPublishedAt date if playbook has never been published
   try {
-    updateDatabase( projectId, { status } );
+    const data = await maybeSetInitialPublishDate( status, projectId );
+
+    updateDatabase( projectId, data );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }
