@@ -27,6 +27,20 @@ const PackageResolvers = {
 
       return ctx.prisma.package( { id: args.id } );
     },
+
+    packageTypeEnum( parent, args, ctx ) {
+      const query = `
+        query {
+          __type(name: "PackageType") {
+            enumValues {
+              name
+            }
+          }
+        }
+      `;
+
+      return ctx.prisma.$graphql( query );
+    },
   } ),
 
   Mutation: requiresLogin( {
