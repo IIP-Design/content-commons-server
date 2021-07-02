@@ -1,4 +1,8 @@
+scalar Json
+
 type Query {
+  packageTypeEnum: Json
+
   packages(
     where: PackageWhereInput
     orderBy: PackageOrderByInput
