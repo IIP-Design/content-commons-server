@@ -5,25 +5,6 @@ import { prisma } from '../../schema/generated/prisma-client';
 const updateDatabase = async ( id, data ) => prisma.updatePlaybook( { data, where: { id } } )
   .catch( err => console.error( err ) );
 
-/**
- * Sets an initial publish date for a playbook that has never been published
- * @param {string} status publish action completed, either publish or unpublish
- * @param {string} id playbook's id
- * @returns object
- */
-const maybeSetInitialPublishDate = async ( status, id ) => {
-  if ( status === 'PUBLISH_SUCCESS' ) {
-    const res = await prisma.playbook( { id } );
-
-    if ( !res.initialPublishedAt ) {
-      // set initial publish date
-      return { status, initialPublishedAt: new Date().toISOString() };
-    }
-  }
-
-  // this is either an unpublish or a re-publish so simply return status
-  return { status };
-};
 
 /**
  * Put publish creation request on publish.create queue
@@ -90,15 +71,19 @@ export const publishUpdate = async ( id, data, status, projectDirectory ) => {
 
 const consumeSuccess = async ( channel, msg ) => {
   // 1. parse message
-  const { routingKey, data: { projectId } } = parseMessage( msg );
+  const { routingKey, data: { projectId, initialPublished } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
   // 2. on successful result, using the returned projectId update db with applicable status
-  // and initialPublishedAt date if playbook has never been published
+  // and initialPublishedAt date if prop is present.
   try {
-    const data = await maybeSetInitialPublishDate( status, projectId );
+    const data = { status };
+
+    if ( initialPublished ) {
+      data.initialPublishedAt = initialPublished;
+    }
 
     updateDatabase( projectId, data );
   } catch ( err ) {
