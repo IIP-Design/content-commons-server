@@ -4,6 +4,7 @@ export const PLAYBOOK_FULL = `
     createdAt
     updatedAt
     publishedAt
+    initialPublishedAt
     type
     title
     desc
