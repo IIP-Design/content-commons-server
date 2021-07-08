@@ -4069,6 +4069,7 @@ type Playbook {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -4093,6 +4094,7 @@ type PlaybookConnection {
 input PlaybookCreateInput {
   id: ID
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -4122,6 +4124,8 @@ enum PlaybookOrderByInput {
   updatedAt_DESC
   publishedAt_ASC
   publishedAt_DESC
+  initialPublishedAt_ASC
+  initialPublishedAt_DESC
   type_ASC
   type_DESC
   title_ASC
@@ -4141,6 +4145,7 @@ type PlaybookPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -4169,6 +4174,7 @@ input PlaybookSubscriptionWhereInput {
 
 input PlaybookUpdateInput {
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType
   title: String
   assetPath: String
@@ -4186,6 +4192,7 @@ input PlaybookUpdateInput {
 
 input PlaybookUpdateManyMutationInput {
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType
   title: String
   assetPath: String
@@ -4233,6 +4240,14 @@ input PlaybookWhereInput {
   publishedAt_lte: DateTime
   publishedAt_gt: DateTime
   publishedAt_gte: DateTime
+  initialPublishedAt: DateTime
+  initialPublishedAt_not: DateTime
+  initialPublishedAt_in: [DateTime!]
+  initialPublishedAt_not_in: [DateTime!]
+  initialPublishedAt_lt: DateTime
+  initialPublishedAt_lte: DateTime
+  initialPublishedAt_gt: DateTime
+  initialPublishedAt_gte: DateTime
   type: PackageType
   type_not: PackageType
   type_in: [PackageType!]
@@ -5988,6 +6003,7 @@ type Toolkit {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -6012,6 +6028,7 @@ type ToolkitConnection {
 input ToolkitCreateInput {
   id: ID
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -6041,6 +6058,8 @@ enum ToolkitOrderByInput {
   updatedAt_DESC
   publishedAt_ASC
   publishedAt_DESC
+  initialPublishedAt_ASC
+  initialPublishedAt_DESC
   type_ASC
   type_DESC
   title_ASC
@@ -6060,6 +6079,7 @@ type ToolkitPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -6088,6 +6108,7 @@ input ToolkitSubscriptionWhereInput {
 
 input ToolkitUpdateInput {
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType
   title: String
   assetPath: String
@@ -6105,6 +6126,7 @@ input ToolkitUpdateInput {
 
 input ToolkitUpdateManyMutationInput {
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType
   title: String
   assetPath: String
@@ -6152,6 +6174,14 @@ input ToolkitWhereInput {
   publishedAt_lte: DateTime
   publishedAt_gt: DateTime
   publishedAt_gte: DateTime
+  initialPublishedAt: DateTime
+  initialPublishedAt_not: DateTime
+  initialPublishedAt_in: [DateTime!]
+  initialPublishedAt_not_in: [DateTime!]
+  initialPublishedAt_lt: DateTime
+  initialPublishedAt_lte: DateTime
+  initialPublishedAt_gt: DateTime
+  initialPublishedAt_gte: DateTime
   type: PackageType
   type_not: PackageType
   type_in: [PackageType!]

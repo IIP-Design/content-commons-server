@@ -71,14 +71,21 @@ export const publishUpdate = async ( id, data, status, projectDirectory ) => {
 
 const consumeSuccess = async ( channel, msg ) => {
   // 1. parse message
-  const { routingKey, data: { projectId } } = parseMessage( msg );
+  const { routingKey, data: { projectId, initialPublished } } = parseMessage( msg );
   const status = routingKey.includes( '.delete' ) ? 'UNPUBLISH_SUCCESS' : 'PUBLISH_SUCCESS';
 
   console.log( `[√] RECEIVED a publish ${routingKey} result for project ${projectId}` );
 
-  // 2. on successful result, update db with applicable status using the returned projectId
+  // 2. on successful result, using the returned projectId update db with applicable status
+  // and initialPublishedAt date if prop is present.
   try {
-    updateDatabase( projectId, { status } );
+    const data = { status };
+
+    if ( initialPublished ) {
+      data.initialPublishedAt = initialPublished;
+    }
+
+    updateDatabase( projectId, data );
   } catch ( err ) {
     console.log( `Error: ${err.message}` );
   }

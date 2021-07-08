@@ -220,6 +220,7 @@ type Playbook {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
@@ -240,6 +241,7 @@ type Toolkit {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   publishedAt: DateTime
+  initialPublishedAt: DateTime
   type: PackageType!
   title: String!
   assetPath: String
