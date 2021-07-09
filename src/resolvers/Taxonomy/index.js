@@ -1,5 +1,7 @@
+import { requiresLogin } from '../../lib/authentication';
+
 const TaxonomyResolvers = {
-  Query: {
+  Query: requiresLogin( {
     categories( parent, args, ctx ) {
       return ctx.prisma.categories( { ...args } );
     },
@@ -15,9 +17,9 @@ const TaxonomyResolvers = {
     tag( parent, args, ctx ) {
       return ctx.prisma.tag( { ...args } );
     },
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createCategory( parent, args, ctx ) {
       const { data } = args;
       const category = await ctx.prisma.createCategory( {
@@ -43,7 +45,7 @@ const TaxonomyResolvers = {
     updateTag( parent, args, ctx ) {
       return ctx.prisma.updateTag( { ...args } );
     },
-  },
+  } ),
 
   Category: {
     translations( parent, args, ctx ) {

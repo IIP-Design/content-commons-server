@@ -1,5 +1,7 @@
+import { requiresLogin } from '../../lib/authentication';
+
 const BureauResolvers = {
-  Query: {
+  Query: requiresLogin( {
     bureaus( parent, args, ctx ) {
       return ctx.prisma.bureaus( { ...args } );
     },
@@ -7,16 +9,16 @@ const BureauResolvers = {
     bureau( parent, args, ctx ) {
       return ctx.prisma.bureau( { ...args } );
     },
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createBureau( parent, args, ctx ) {
       const { data } = args;
       const bureau = await ctx.prisma.createBureau( { ...data } );
 
       return bureau;
     },
-  },
+  } ),
 
   Bureau: {
     offices( parent, args, ctx ) {
