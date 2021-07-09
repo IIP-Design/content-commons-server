@@ -61,7 +61,7 @@ const transformPlaybook = playbook => {
     esData.supportFiles = playbook.supportFiles.map( file => transformSupportFile( file ) );
   }
 
-  // console.log( 'playbook', JSON.stringify( playbook, null, 2 ) );
+  console.log( 'playbook', JSON.stringify( playbook, null, 2 ) );
   console.log( 'esdata', JSON.stringify( esData, null, 2 ) );
 
   return esData;
