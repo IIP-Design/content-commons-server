@@ -1,12 +1,12 @@
 import { requiresLogin } from '../../lib/authentication';
 
 const UserResolvers = {
-  Query: requiresLogin( {
-    users( parent, args, ctx ) {
-      return ctx.prisma.users();
-    },
+  Query: {
+    authenticatedUser: ( parent, args, ctx ) => ctx.user,
 
-    permissionEnum( parent, args, ctx ) {
+    users: requiresLogin( ( parent, args, ctx ) => ctx.prisma.users() ),
+
+    permissionEnum: requiresLogin( ( parent, args, ctx ) => {
       const query = `
        query {
           __type(name: "Permission") {
@@ -18,8 +18,8 @@ const UserResolvers = {
       `;
 
       return ctx.prisma.$graphql( query );
-    },
-  } ),
+    } ),
+  },
 
   Mutation: requiresLogin( {
     async updateUser( parent, args, ctx ) {
@@ -37,14 +37,6 @@ const UserResolvers = {
   User: {
     team( parent, args, ctx ) {
       return ctx.prisma.user( { id: parent.id } ).team( { ...args } );
-    },
-  },
-};
-
-export const CurrentUserResolvers = {
-  Query: {
-    authenticatedUser( parent, args, ctx ) {
-      return ctx.user;
     },
   },
 };
