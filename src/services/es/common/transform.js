@@ -55,22 +55,22 @@ export const transformTaxonomy = ( taxonomyTerms, locale ) => {
   return terms;
 };
 
-export const transformSupportFile = file => {
-  const {
-    title,
-    language,
-    filename,
-    filetype,
-    visibility,
-    editable,
-    url,
-  } = file;
-
+export const transformSupportFile = ( {
+  title,
+  language,
+  filename,
+  filesize,
+  filetype,
+  visibility,
+  editable,
+  url,
+} ) => {
   const supportFile = {
     title,
     visibility,
     editable: editable || false,
     filename,
+    filesize,
     filetype,
     url: getUrlToProdS3( url ),
     language: transformLanguage( language ),

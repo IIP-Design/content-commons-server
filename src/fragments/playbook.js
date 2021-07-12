@@ -74,8 +74,8 @@ export const PLAYBOOK_FULL = `
       }
       url 
       filename
+      filesize
       filetype
-      filename
       visibility 
       editable
     }

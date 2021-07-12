@@ -9,8 +9,8 @@ import {
  * Transforms data from a GraphQL Playbook into a Playbook format
  * accepted by the Public API for Elastic Search.
  *
- * @param playbook
- * @returns object
+ * @param {Object} playbook
+ * @returns {Object}
  */
 const transformPlaybook = playbook => {
   const now = new Date().toISOString();
@@ -66,6 +66,5 @@ const transformPlaybook = playbook => {
 
   return esData;
 };
-
 
 export default transformPlaybook;
