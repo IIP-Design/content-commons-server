@@ -1,3 +1,5 @@
+import { requiresLogin } from '../../lib/authentication';
+
 const RegionResolvers = {
   Query: {
     regions( parent, args, ctx ) {
@@ -17,14 +19,14 @@ const RegionResolvers = {
     },
   },
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createRegion( parent, args, ctx ) {
       const { data } = args;
       const region = await ctx.prisma.createRegion( { ...data } );
 
       return region;
     },
-  },
+  } ),
 
   Region: {
     countries( parent, args, ctx ) {

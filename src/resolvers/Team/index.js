@@ -1,7 +1,7 @@
 import { requiresLogin } from '../../lib/authentication';
 
 const TeamResolvers = {
-  Query: {
+  Query: requiresLogin( {
     teams( parent, args, ctx ) {
       return ctx.prisma.teams( { ...args } );
     },
@@ -9,7 +9,7 @@ const TeamResolvers = {
     team( parent, args, ctx ) {
       return ctx.prisma.team( { id: args.id } );
     },
-  },
+  } ),
 
   Mutation: requiresLogin( {
     async createTeam( parent, args, ctx ) {

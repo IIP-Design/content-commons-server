@@ -1,5 +1,7 @@
+import { requiresLogin } from '../../lib/authentication';
+
 const LanguageResolvers = {
-  Query: {
+  Query: requiresLogin( {
     languages( parent, args, ctx ) {
       return ctx.prisma.languages( { ...args } );
     },
@@ -15,9 +17,9 @@ const LanguageResolvers = {
     languageTranslation( parent, args, ctx ) {
       return ctx.prisma.languageTranslation( { ...args } );
     },
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createLanguage( parent, args, ctx ) {
       const { data } = args;
       const language = await ctx.prisma.createLanguage( {
@@ -36,7 +38,7 @@ const LanguageResolvers = {
         where: { id },
       } );
     },
-  },
+  } ),
 
   LanguageTranslation: {
     language( parent, args, ctx ) {

@@ -1,5 +1,7 @@
+import { requiresLogin } from '../../lib/authentication';
+
 const PolicyPriorityResolvers = {
-  Query: {
+  Query: requiresLogin( {
     policyPriorities( parent, args, ctx ) {
       return ctx.prisma.policyPriorities( { ...args } );
     },
@@ -7,9 +9,9 @@ const PolicyPriorityResolvers = {
     policyPriority( parent, args, ctx ) {
       return ctx.prisma.policyPriority( { ...args } );
     },
-  },
+  } ),
 
-  Mutation: {
+  Mutation: requiresLogin( {
     async createPolicyPriority( parent, args, ctx ) {
       const { data } = args;
       const policyPriority = await ctx.prisma.createPolicyPriority( { ...data } );
@@ -26,7 +28,7 @@ const PolicyPriorityResolvers = {
 
       return ctx.prisma.deletePolicyPriority( { id, name } );
     },
-  },
+  } ),
 };
 
 export default PolicyPriorityResolvers;
